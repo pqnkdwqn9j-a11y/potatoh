@@ -110,6 +110,36 @@ local S = {
 	NoRecoilMethod = 1,
 	HighJump       = false,
 	HighJumpHeight = 100,
+
+	AutoFire       = false,
+	AutoFireDelay  = 0.08,
+	TargetHUD      = false,
+	HitLogsEnabled = false,
+	HitLogsDuration = 5,
+	HitmarkerEnabled = false,
+	HitmarkerSize  = 12,
+	HitmarkerThickness = 2,
+	HitmarkerDuration = 2.5,
+	DamageFXEnabled = false,
+	DamageFXStyle  = "Foam",
+	DamageFXCount  = 12,
+	DamageFXSpeed  = 20,
+	DamageFXSize   = 0.25,
+	DamageFXLifetime = 0.8,
+	KillNotify     = false,
+	XRay           = false,
+	XRayTransparency = 0.5,
+	ToolOutline    = false,
+	CustomWater    = false,
+	WaterReflectance = 0.3,
+	SwimSpeed      = false,
+	SwimSpeedValue = 50,
+	CopterSpeed    = false,
+	CopterSpeedValue = 50,
+	NoFallDamage   = false,
+	NoJumpDelay    = false,
+	CopterFly      = false,
+	CopterFlySpeed = 100,
 }
 
 local AC      = Color3.fromRGB(255, 255, 255)
@@ -125,6 +155,12 @@ local AC_HP   = Color3.fromRGB(255, 255, 255)
 local AC_WEAPON = Color3.fromRGB(255, 255, 255)
 local AC_CHAMS = Color3.fromRGB(255, 255, 255)
 local AC_CHAMS_OUTLINE = Color3.fromRGB(255, 255, 255)
+Runtime.ExtraColors = {
+	Hitmarker = Color3.fromRGB(255, 255, 255),
+	DamageFX = Color3.fromRGB(255, 255, 255),
+	ToolOutline = Color3.fromRGB(255, 255, 255),
+	Water = Color3.fromRGB(128, 128, 128),
+}
 local BK      = Color3.fromRGB(0, 0, 0)
 
 local _visParams = RaycastParams.new()
@@ -1897,6 +1933,7 @@ do
 			AC_FILL=AC_FILL,AC_HP=AC_HP,AC_WEAPON=AC_WEAPON,
 			AC_CHAMS=AC_CHAMS,AC_CHAMS_OUTLINE=AC_CHAMS_OUTLINE}
 		for k,v in pairs(cols) do cfg[k] = c2t(v) end
+		for name, color in pairs(Runtime.ExtraColors) do cfg["AC_EXTRA_"..name] = c2t(color) end
 
 		cfg["CH_enabled"]   = crosshairSettings.crosshairEnabled
 		cfg["CH_type"]      = crosshairSettings.crosshairType
@@ -1953,6 +1990,10 @@ do
 		if cfg.AC_WEAPON   then AC_WEAPON   = t2c(cfg.AC_WEAPON)   end
 		if cfg.AC_CHAMS    then AC_CHAMS    = t2c(cfg.AC_CHAMS)    end
 		if cfg.AC_CHAMS_OUTLINE then AC_CHAMS_OUTLINE = t2c(cfg.AC_CHAMS_OUTLINE) end
+		for name in pairs(Runtime.ExtraColors) do
+			local key = "AC_EXTRA_"..name
+			if cfg[key] then Runtime.ExtraColors[name] = t2c(cfg[key]) end
+		end
 
 		if cfg.CH_enabled   ~= nil then crosshairSettings.crosshairEnabled   = cfg.CH_enabled   end
 		if cfg.CH_type      ~= nil then crosshairSettings.crosshairType      = cfg.CH_type      end
@@ -2009,6 +2050,20 @@ do
 		applyToggle("Speed",                 S.SpeedRostAlpha)
 		applyToggle("High Jump",             S.HighJump)
 		applyToggle("Spider",                S.Spider)
+		applyToggle("Auto Fire",             S.AutoFire)
+		applyToggle("Target HUD",            S.TargetHUD)
+		applyToggle("Hit Logs",              S.HitLogsEnabled)
+		applyToggle("Hitmarker",             S.HitmarkerEnabled)
+		applyToggle("Damage FX",             S.DamageFXEnabled)
+		applyToggle("Kill Notify",           S.KillNotify)
+		applyToggle("X-Ray",                 S.XRay)
+		applyToggle("Tool Outline",          S.ToolOutline)
+		applyToggle("Custom Water",          S.CustomWater)
+		applyToggle("Swim Speed",            S.SwimSpeed)
+		applyToggle("Copter Speed",          S.CopterSpeed)
+		applyToggle("No Fall Damage",        S.NoFallDamage)
+		applyToggle("No Jump Delay",         S.NoJumpDelay)
+		applyToggle("Copter Fly",            S.CopterFly)
 
 		applyToggle("Hit Sound",             HitSoundSettings.Enabled)
 
@@ -2564,6 +2619,7 @@ local _espLastUpdate = 0
 local espConnection
 
 do
+local function initializeESP()
 local ESPCoreGui = game:GetService("CoreGui")
 
 local function removeDrawing(object)
@@ -2974,7 +3030,9 @@ espConnection = RunService.Heartbeat:Connect(function()
 		end
 	end
 end)
-end -- scoped ESP helpers; public state above remains available to runtime hooks.
+end
+initializeESP()
+end -- function-scoped ESP helpers; public state above remains available to runtime hooks.
 onCleanup(function()
 	if espConnection then espConnection:Disconnect() end
 end)
@@ -3912,6 +3970,675 @@ if not Runtime.GetSilentStatus then
 		return { path = Runtime.SilentPath, projectile = false, packet = false, error = Runtime.ProjectileError }
 	end
 end
+
+
+-- Additional rost-alpha features adapted from the saved VOMAGLA reference.
+-- Owned objects only: no remote loaders, camera writes, hitbox expansion or world deletion.
+
+Runtime.ExtraFeatures = {
+	Status = { autoFireCalls = 0, damageEvents = 0 },
+}
+
+do
+local function initializeExtraFeatures()
+local ExtraFeatures = Runtime.ExtraFeatures
+local extraConnections = {}
+local function connect(signal, callback)
+	local connection = signal:Connect(callback)
+	table.insert(extraConnections, connection)
+	return connection
+end
+local function destroyObject(object)
+	if object then pcall(function() object:Destroy() end) end
+end
+
+-- Shared monochrome GUI for Target HUD and hit/kill logs.
+local extraGui = newScreenGui()
+extraGui.Name = "BurmaldaHookExtra"
+extraGui.ResetOnSpawn = false
+extraGui.IgnoreGuiInset = true
+extraGui.DisplayOrder = 999997
+extraGui.Parent = pGui
+
+local targetFrame = Instance.new("Frame")
+targetFrame.Name = "TargetHUD"
+targetFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+targetFrame.Position = UDim2.new(0.5, 0, 0.84, 0)
+targetFrame.Size = UDim2.new(0, 300, 0, 92)
+targetFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+targetFrame.BackgroundTransparency = 0.08
+targetFrame.BorderSizePixel = 0
+targetFrame.Visible = false
+targetFrame.Parent = extraGui
+Instance.new("UICorner", targetFrame).CornerRadius = UDim.new(0, 4)
+local targetStroke = Instance.new("UIStroke")
+targetStroke.Color = Color3.fromRGB(52, 52, 52)
+targetStroke.Parent = targetFrame
+
+local function makeText(parent, text, position, size, textSize, color)
+	local label = Instance.new("TextLabel")
+	label.BackgroundTransparency = 1
+	label.BorderSizePixel = 0
+	label.Position = position
+	label.Size = size
+	label.Text = text or ""
+	label.TextColor3 = color or Color3.fromRGB(242, 242, 242)
+	label.Font = Enum.Font.Gotham
+	label.TextSize = textSize or 11
+	label.TextXAlignment = Enum.TextXAlignment.Left
+	label.Parent = parent
+	return label
+end
+
+local targetName = makeText(targetFrame, "", UDim2.new(0, 14, 0, 8), UDim2.new(1, -28, 0, 22), 16)
+targetName.Font = Enum.Font.GothamBold
+local targetDistance = makeText(targetFrame, "", UDim2.new(0, 14, 0, 32), UDim2.new(1, -28, 0, 17), 11, Color3.fromRGB(190, 190, 190))
+local targetWeapon = makeText(targetFrame, "", UDim2.new(0, 14, 0, 51), UDim2.new(1, -28, 0, 16), 10, Color3.fromRGB(135, 135, 135))
+local targetHealthBack = Instance.new("Frame")
+targetHealthBack.Position = UDim2.new(0, 14, 1, -15)
+targetHealthBack.Size = UDim2.new(1, -28, 0, 5)
+targetHealthBack.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
+targetHealthBack.BorderSizePixel = 0
+targetHealthBack.Parent = targetFrame
+local targetHealthFill = Instance.new("Frame")
+targetHealthFill.Size = UDim2.new(1, 0, 1, 0)
+targetHealthFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+targetHealthFill.BorderSizePixel = 0
+targetHealthFill.Parent = targetHealthBack
+
+local logHolder = Instance.new("Frame")
+logHolder.Name = "HitLogs"
+logHolder.AnchorPoint = Vector2.new(0.5, 0)
+logHolder.Position = UDim2.new(0.5, 0, 0.61, 0)
+logHolder.Size = UDim2.new(0, 560, 0, 120)
+logHolder.BackgroundTransparency = 1
+logHolder.Parent = extraGui
+local logLayout = Instance.new("UIListLayout")
+logLayout.Padding = UDim.new(0, 3)
+logLayout.SortOrder = Enum.SortOrder.LayoutOrder
+logLayout.Parent = logHolder
+
+local logEntries, logOrder = {}, 0
+local function removeLog(label)
+	for index, entry in ipairs(logEntries) do
+		if entry == label then table.remove(logEntries, index) break end
+	end
+	destroyObject(label)
+end
+local function pushLog(text)
+	if Runtime.Unloaded then return end
+	logOrder += 1
+	local label = makeText(logHolder, tostring(text), UDim2.new(), UDim2.new(1, 0, 0, 18), 12)
+	label.Font = Enum.Font.Code
+	label.LayoutOrder = -logOrder
+	label.TextStrokeTransparency = 0.5
+	table.insert(logEntries, label)
+	while #logEntries > 5 do removeLog(logEntries[1]) end
+	task.delay(math.max(1, S.HitLogsDuration), function()
+		if label.Parent then removeLog(label) end
+	end)
+end
+local function clearLogs()
+	for _, label in ipairs(logEntries) do destroyObject(label) end
+	table.clear(logEntries)
+end
+ExtraFeatures.PushLog = pushLog
+ExtraFeatures.ClearLogs = clearLogs
+ExtraFeatures.GetLogCount = function() return #logEntries end
+ExtraFeatures.ShowHitLog = function(playerName, partName, damage, health)
+	if not S.HitLogsEnabled then return end
+	pushLog("[ Burmalda.hook ] Hit " .. tostring(playerName) .. " / " .. tostring(partName)
+		.. " / " .. tostring(damage) .. " damage / " .. tostring(health) .. " HP")
+end
+
+-- World-positioned Drawing hitmarkers.
+local hitmarkers = {}
+local markerDirections = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}}
+local function clearHitmarkers()
+	for _, marker in ipairs(hitmarkers) do
+		for _, line in ipairs(marker.lines) do pcall(function() line:Remove() end) end
+	end
+	table.clear(hitmarkers)
+end
+local function spawnHitmarker(worldPosition, isKill)
+	if Runtime.Unloaded or not S.HitmarkerEnabled or not worldPosition then return end
+	local lines = {}
+	for index = 1, 4 do
+		local line = newDrawing("Line")
+		line.Visible = false
+		line.Thickness = S.HitmarkerThickness
+		line.ZIndex = 5
+		lines[index] = line
+	end
+	table.insert(hitmarkers, {position = worldPosition, born = os.clock(), kill = isKill == true, lines = lines})
+end
+local function updateHitmarkers()
+	local now = os.clock()
+	for index = #hitmarkers, 1, -1 do
+		local marker = hitmarkers[index]
+		local age = now - marker.born
+		if age > S.HitmarkerDuration then
+			for _, line in ipairs(marker.lines) do pcall(function() line:Remove() end) end
+			table.remove(hitmarkers, index)
+		else
+			local projected, visible = Camera:WorldToViewportPoint(marker.position)
+			for lineIndex, line in ipairs(marker.lines) do
+				local direction = markerDirections[lineIndex]
+				line.Visible = S.HitmarkerEnabled and visible == true
+				line.Transparency = math.clamp(1 - age / math.max(0.01, S.HitmarkerDuration), 0, 1)
+				line.Color = marker.kill and Color3.fromRGB(255, 90, 90) or Runtime.ExtraColors.Hitmarker
+				line.Thickness = S.HitmarkerThickness
+				line.From = Vector2.new(projected.X + direction[1] * S.HitmarkerSize * 0.3, projected.Y + direction[2] * S.HitmarkerSize * 0.3)
+				line.To = Vector2.new(projected.X + direction[1] * S.HitmarkerSize, projected.Y + direction[2] * S.HitmarkerSize)
+			end
+		end
+	end
+end
+ExtraFeatures.SpawnHitmarker = spawnHitmarker
+ExtraFeatures.ClearHitmarkers = clearHitmarkers
+ExtraFeatures.GetHitmarkerCount = function() return #hitmarkers end
+
+-- Lightweight owned damage particles; all instances are destroyed on cleanup.
+local Debris = game:GetService("Debris")
+local damageParts = {}
+local damageTextures = {
+	Foam = "rbxassetid://8297030850",
+	Crescents = "rbxassetid://12509373457",
+	Residue = "rbxassetid://4509687978",
+	Electric = "rbxassetid://10547286472",
+}
+local function spawnDamageFX(worldPosition)
+	if Runtime.Unloaded or not S.DamageFXEnabled or not worldPosition then return end
+	local part = Instance.new("Part")
+	part.Name = "BurmaldaHookDamageFX"
+	part.Size = Vector3.new(0.2, 0.2, 0.2)
+	part.Transparency = 1
+	part.Anchored = true
+	part.CanCollide = false
+	part.CanQuery = false
+	part.CanTouch = false
+	part.CastShadow = false
+	part.Position = worldPosition + Vector3.new(0, 1, 0)
+	part.Parent = workspace
+	local attachment = Instance.new("Attachment")
+	attachment.Parent = part
+	local emitter = Instance.new("ParticleEmitter")
+	emitter.Enabled = false
+	emitter.Rate = 0
+	emitter.Texture = damageTextures[S.DamageFXStyle] or damageTextures.Foam
+	emitter.Color = ColorSequence.new(Runtime.ExtraColors.DamageFX)
+	emitter.Lifetime = NumberRange.new(S.DamageFXLifetime)
+	emitter.Speed = NumberRange.new(S.DamageFXSpeed)
+	emitter.Size = NumberSequence.new(S.DamageFXSize)
+	emitter.SpreadAngle = Vector2.new(180, 180)
+	emitter.LightEmission = 0.5
+	emitter.Parent = attachment
+	pcall(function() emitter:Emit(math.max(1, math.floor(S.DamageFXCount))) end)
+	table.insert(damageParts, part)
+	while #damageParts > 24 do destroyObject(table.remove(damageParts, 1)) end
+	if Debris and Debris.AddItem then
+		pcall(function() Debris:AddItem(part, math.max(1, S.DamageFXLifetime + 0.5)) end)
+	else
+		task.delay(math.max(1, S.DamageFXLifetime + 0.5), function() destroyObject(part) end)
+	end
+	return part
+end
+local function clearDamageFX()
+	for _, part in ipairs(damageParts) do destroyObject(part) end
+	table.clear(damageParts)
+end
+ExtraFeatures.SpawnDamageFX = spawnDamageFX
+ExtraFeatures.ClearDamageFX = clearDamageFX
+ExtraFeatures.GetDamageFXCount = function()
+	local count = 0
+	for _, part in ipairs(damageParts) do if part.Parent then count += 1 end end
+	return count
+end
+
+-- X-Ray affects only the reference's twig building parts and restores transparency.
+local xrayCache = {}
+local xrayNames = {"TwigWall", "SoloTwigFrame", "TrigTwigRoof", "TwigFrame", "TwigWindow", "TwigRoof"}
+local function isXRayPart(object)
+	if not object:IsA("BasePart") then return false end
+	for _, keyword in ipairs(xrayNames) do
+		if string.find(object.Name, keyword, 1, true) then return true end
+	end
+	return false
+end
+local function registerXRay(object)
+	if not isXRayPart(object) or xrayCache[object] then return end
+	xrayCache[object] = object.Transparency
+	object.Transparency = S.XRayTransparency
+end
+local function scanXRay()
+	if not S.XRay then return end
+	for _, object in ipairs(workspace:GetDescendants()) do registerXRay(object) end
+end
+local function restoreXRay()
+	for object, transparency in pairs(xrayCache) do
+		if object and object.Parent then pcall(function() object.Transparency = transparency end) end
+	end
+	table.clear(xrayCache)
+end
+local function setXRay(enabled)
+	S.XRay = enabled
+	if enabled then scanXRay() else restoreXRay() end
+end
+ExtraFeatures.ScanXRay = scanXRay
+ExtraFeatures.SetXRay = setXRay
+connect(workspace.DescendantAdded, function(object)
+	if S.XRay and not Runtime.Unloaded then pcall(registerXRay, object) end
+end)
+
+-- Custom Terrain water with original-value restoration.
+local terrain = workspace.Terrain or workspace:FindFirstChildOfClass("Terrain")
+local waterOriginal = nil
+local function applyWater()
+	if not terrain then return end
+	terrain.WaterColor = Runtime.ExtraColors.Water
+	terrain.WaterReflectance = S.WaterReflectance
+end
+local function restoreWater()
+	if terrain and waterOriginal then
+		pcall(function()
+			terrain.WaterColor = waterOriginal.Color
+			terrain.WaterReflectance = waterOriginal.Reflectance
+		end)
+	end
+	waterOriginal = nil
+end
+local function setWater(enabled)
+	S.CustomWater = enabled
+	if enabled then
+		if terrain and not waterOriginal then
+			waterOriginal = {Color = terrain.WaterColor, Reflectance = terrain.WaterReflectance}
+		end
+		applyWater()
+	else
+		restoreWater()
+	end
+end
+ExtraFeatures.SetWater = setWater
+ExtraFeatures.ApplyWater = applyWater
+
+-- Local Backpack/equipped Tool outlines, never global workspace Highlights.
+local toolHighlights = {}
+local function clearToolOutline()
+	for _, highlight in pairs(toolHighlights) do destroyObject(highlight) end
+	table.clear(toolHighlights)
+end
+local function updateToolOutline()
+	if not S.ToolOutline or Runtime.Unloaded then clearToolOutline() return end
+	local seen = {}
+	local character = LocalPlayer.Character
+	local backpack = LocalPlayer:FindFirstChild("Backpack")
+	local containers = {}
+	if character then table.insert(containers, character) end
+	if backpack then table.insert(containers, backpack) end
+	for _, container in ipairs(containers) do
+		if container then
+			for _, tool in ipairs(container:GetChildren()) do
+				if tool:IsA("Tool") then
+					seen[tool] = true
+					local highlight = toolHighlights[tool]
+					if not highlight then
+						highlight = Instance.new("Highlight")
+						highlight.Name = "BurmaldaHookToolOutline"
+						highlight.Parent = tool
+						toolHighlights[tool] = highlight
+					end
+					highlight.Adornee = tool
+					highlight.FillTransparency = 1
+					highlight.OutlineTransparency = 0
+					highlight.OutlineColor = Runtime.ExtraColors.ToolOutline
+					highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+					highlight.Enabled = true
+				end
+			end
+		end
+	end
+	for tool, highlight in pairs(toolHighlights) do
+		if not seen[tool] then
+			destroyObject(highlight)
+			toolHighlights[tool] = nil
+		end
+	end
+end
+ExtraFeatures.UpdateToolOutline = updateToolOutline
+ExtraFeatures.GetToolOutline = function(tool) return toolHighlights[tool] end
+
+-- Auto Fire uses input only when Silent Aim already has a target and the menu is closed.
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local lastAutoFire = -1000
+local function fireAutoClick()
+	if type(mouse1click) == "function" then
+		local ok = pcall(mouse1click)
+		if ok then ExtraFeatures.Status.autoFireCalls += 1 end
+		return
+	end
+	if not VirtualInputManager then return end
+	local viewport = Camera.ViewportSize
+	local x, y = viewport.X * 0.5, viewport.Y * 0.5
+	local ok = pcall(function()
+		VirtualInputManager:SendMouseButtonEvent(x, y, 0, true, game, 0)
+	end)
+	if ok then
+		ExtraFeatures.Status.autoFireCalls += 1
+		task.defer(function()
+			pcall(function() VirtualInputManager:SendMouseButtonEvent(x, y, 0, false, game, 0) end)
+		end)
+	end
+end
+local function updateAutoFire()
+	if not S.AutoFire or not S.SilentAim or menuOpen then return end
+	local target = SA_CurrentTarget
+	local character = LocalPlayer.Character
+	local tool = character and character:FindFirstChildOfClass("Tool")
+	if not target or not target.Parent or not tool then return end
+	local now = os.clock()
+	if now - lastAutoFire < math.max(0.01, S.AutoFireDelay) then return end
+	lastAutoFire = now
+	fireAutoClick()
+end
+
+-- Movement additions. All physics helpers are owned and removed when no longer needed.
+local noFallParams = RaycastParams.new()
+noFallParams.FilterType = Enum.RaycastFilterType.Exclude
+local swimVelocity = nil
+local flyVelocity, flyGyro, flySeat, flyHumanoid, flyOldAutoRotate = nil, nil, nil, nil, nil
+local function destroySwim()
+	destroyObject(swimVelocity)
+	swimVelocity = nil
+end
+local function destroyFly()
+	destroyObject(flyVelocity)
+	destroyObject(flyGyro)
+	flyVelocity, flyGyro, flySeat = nil, nil, nil
+	if flyHumanoid and flyOldAutoRotate ~= nil then
+		pcall(function() flyHumanoid.AutoRotate = flyOldAutoRotate end)
+	end
+	flyHumanoid, flyOldAutoRotate = nil, nil
+end
+local function ensureFly(humanoid, seat)
+	if flyVelocity and flySeat == seat and flyVelocity.Parent == seat then return end
+	destroyFly()
+	flySeat, flyHumanoid = seat, humanoid
+	flyOldAutoRotate = humanoid.AutoRotate
+	humanoid.AutoRotate = false
+	flyVelocity = Instance.new("BodyVelocity")
+	flyVelocity.Name = "BurmaldaHookCopterFly"
+	flyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+	flyVelocity.Velocity = Vector3.new()
+	flyVelocity.Parent = seat
+	flyGyro = Instance.new("BodyGyro")
+	flyGyro.Name = "BurmaldaHookCopterGyro"
+	flyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+	flyGyro.P = 9000
+	flyGyro.CFrame = seat.CFrame
+	flyGyro.Parent = seat
+end
+local function updateFly(humanoid)
+	local seat = humanoid.SeatPart
+	if not seat then destroyFly() return end
+	ensureFly(humanoid, seat)
+	local cameraCF = Camera.CFrame
+	local look = cameraCF.LookVector
+	local right = cameraCF.RightVector or Vector3.new(-look.Z, 0, look.X)
+	local movement = Vector3.new()
+	if UIS:IsKeyDown(Enum.KeyCode.W) then movement += look end
+	if UIS:IsKeyDown(Enum.KeyCode.S) then movement -= look end
+	if UIS:IsKeyDown(Enum.KeyCode.D) then movement += right end
+	if UIS:IsKeyDown(Enum.KeyCode.A) then movement -= right end
+	local vertical = 0
+	if UIS:IsKeyDown(Enum.KeyCode.LeftShift) then vertical = 1 end
+	if UIS:IsKeyDown(Enum.KeyCode.LeftControl) or UIS:IsKeyDown(Enum.KeyCode.RightControl) then vertical = -1 end
+	if movement.Magnitude > 0 or vertical ~= 0 then
+		flyVelocity.Velocity = (movement + Vector3.new(0, vertical, 0)).Unit * S.CopterFlySpeed
+	else
+		flyVelocity.Velocity = Vector3.new()
+	end
+	flyGyro.CFrame = cameraCF
+end
+ExtraFeatures.GetFlyObjects = function() return flyVelocity, flyGyro end
+
+local toolScanElapsed = 0
+local function physicsStep(dt)
+	if Runtime.Unloaded then return end
+	updateAutoFire()
+	local character = LocalPlayer.Character
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	if not root or not humanoid or humanoid.Health <= 0 then
+		destroySwim()
+		destroyFly()
+		return
+	end
+
+	if S.CopterSpeed and not S.CopterFly and humanoid.Sit and humanoid.MoveDirection.Magnitude > 0 then
+		local direction = humanoid.MoveDirection
+		local velocity = root.AssemblyLinearVelocity
+		root.AssemblyLinearVelocity = Vector3.new(direction.X * S.CopterSpeedValue, velocity.Y, direction.Z * S.CopterSpeedValue)
+	end
+
+	local state = humanoid.GetState and humanoid:GetState() or nil
+	if S.SwimSpeed and state == Enum.HumanoidStateType.Swimming then
+		if not swimVelocity or swimVelocity.Parent ~= root then
+			destroySwim()
+			swimVelocity = Instance.new("BodyVelocity")
+			swimVelocity.Name = "BurmaldaHookSwim"
+			swimVelocity.MaxForce = Vector3.new(1e5, 1e5, 1e5)
+			swimVelocity.Parent = root
+		end
+		swimVelocity.Velocity = humanoid.MoveDirection * S.SwimSpeedValue
+	else
+		destroySwim()
+	end
+
+	if S.NoFallDamage and root.AssemblyLinearVelocity.Y < -55 then
+		noFallParams.FilterDescendantsInstances = {character}
+		local result = workspace:Raycast(root.Position, Vector3.new(0, -10, 0), noFallParams)
+		if result then
+			local velocity = root.AssemblyLinearVelocity
+			root.AssemblyLinearVelocity = Vector3.new(velocity.X, -2, velocity.Z)
+		end
+	end
+
+	if S.CopterFly then updateFly(humanoid) else destroyFly() end
+	toolScanElapsed += dt or 0
+	if toolScanElapsed >= 0.5 then
+		toolScanElapsed = 0
+		updateToolOutline()
+	end
+end
+ExtraFeatures.Physics = physicsStep
+
+local lastJumpRequest = -1000
+connect(UIS.JumpRequest, function()
+	if Runtime.Unloaded or not S.NoJumpDelay then return end
+	local now = os.clock()
+	if now - lastJumpRequest < 0.1 then return end
+	local character = LocalPlayer.Character
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	if not humanoid or humanoid.Health <= 0 then return end
+	local state = humanoid.GetState and humanoid:GetState() or nil
+	if state == Enum.HumanoidStateType.Freefall or state == Enum.HumanoidStateType.Flying then return end
+	lastJumpRequest = now
+	humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+end)
+
+-- Damage/death tracking for visual feedback. It never modifies health or remotes.
+local trackedCharacters, humanoidStates = {}, {}
+local recentTargets, lastHits = {}, {}
+local function isOurDamage(player, character)
+	if SA_CurrentTarget and SA_CurrentTarget.Parent == character then return true end
+	local seen = recentTargets[player]
+	return seen ~= nil and os.clock() - seen <= 2
+end
+local function onDamaged(player, character, damage, newHealth)
+	if damage <= 0.05 or not isOurDamage(player, character) then return end
+	local part = SA_CurrentTarget and SA_CurrentTarget.Parent == character and SA_CurrentTarget
+		or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head") or character:FindFirstChild("HumanoidRootPart")
+	if not part then return end
+	lastHits[player] = os.clock()
+	ExtraFeatures.Status.damageEvents += 1
+	ExtraFeatures.ShowHitLog(player.DisplayName or player.Name, part.Name, math.floor(damage + 0.5), math.floor(newHealth + 0.5))
+	spawnHitmarker(part.Position, false)
+	spawnDamageFX(part.Position)
+end
+local function attachHumanoid(player, character, humanoid)
+	if humanoidStates[humanoid] then return end
+	humanoidStates[humanoid] = {health = humanoid.Health}
+	connect(humanoid.HealthChanged, function(newHealth)
+		local state = humanoidStates[humanoid]
+		local previous = state and state.health or newHealth
+		if state then state.health = newHealth end
+		if newHealth < previous then onDamaged(player, character, previous - newHealth, newHealth) end
+	end)
+	connect(humanoid.Died, function()
+		if S.KillNotify and not Runtime.Unloaded then
+			pushLog("[ Burmalda.hook ] " .. tostring(player.DisplayName or player.Name) .. " died")
+		end
+		local hitTime = lastHits[player]
+		if hitTime and os.clock() - hitTime <= 5 then
+			local root = character and character:FindFirstChild("HumanoidRootPart")
+			if root then spawnHitmarker(root.Position, true) end
+		end
+		lastHits[player] = nil
+	end)
+end
+local function trackCharacter(player, character)
+	if not character or trackedCharacters[character] then return end
+	trackedCharacters[character] = true
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	if humanoid then attachHumanoid(player, character, humanoid) end
+	connect(character.ChildAdded, function(child)
+		if child:IsA("Humanoid") then attachHumanoid(player, character, child) end
+	end)
+end
+local function trackPlayer(player)
+	if player == LocalPlayer then return end
+	if player.Character then trackCharacter(player, player.Character) end
+	connect(player.CharacterAdded, function(character) trackCharacter(player, character) end)
+end
+for _, player in ipairs(Players:GetPlayers()) do trackPlayer(player) end
+connect(Players.PlayerAdded, trackPlayer)
+connect(Players.PlayerRemoving, function(player)
+	recentTargets[player] = nil
+	lastHits[player] = nil
+end)
+
+local function updateRecentTarget()
+	local target = SA_CurrentTarget
+	local character = target and target.Parent
+	if not character then return end
+	local ok, player = pcall(Players.GetPlayerFromCharacter, Players, character)
+	if ok and player then recentTargets[player] = os.clock() end
+end
+local function updateTargetHUD()
+	local target = SA_CurrentTarget
+	local character = target and target.Parent
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	if not S.TargetHUD or not character or not humanoid or not root or humanoid.Health <= 0 then
+		targetFrame.Visible = false
+		return
+	end
+	local ok, player = pcall(Players.GetPlayerFromCharacter, Players, character)
+	targetName.Text = ok and player and (player.DisplayName or player.Name) or character.Name
+	local localCharacter = LocalPlayer.Character
+	local localRoot = localCharacter and localCharacter:FindFirstChild("HumanoidRootPart")
+	targetDistance.Text = localRoot and string.format("Distance: %.1f m", (localRoot.Position - root.Position).Magnitude) or "Distance: —"
+	local tool = character:FindFirstChildOfClass("Tool")
+	targetWeapon.Text = tool and ("Holding: " .. tool.Name) or "Unarmed"
+	local ratio = humanoid.MaxHealth > 0 and math.clamp(humanoid.Health / humanoid.MaxHealth, 0, 1) or 0
+	targetHealthFill.Size = UDim2.new(ratio, 0, 1, 0)
+	targetFrame.Visible = true
+end
+local function visualUpdate(_)
+	if Runtime.Unloaded then return end
+	updateRecentTarget()
+	updateTargetHUD()
+	updateHitmarkers()
+	for index = #damageParts, 1, -1 do
+		if not damageParts[index].Parent then table.remove(damageParts, index) end
+	end
+end
+ExtraFeatures.Update = visualUpdate
+ExtraFeatures.GetTargetHUD = function()
+	return targetFrame, targetName, targetDistance, targetWeapon, targetHealthFill
+end
+
+-- Existing monochrome widget API; no reference UI or external assets are imported.
+do
+	local autoSet = createFeature(smartCol("COMBAT"), "Auto Fire", false, function(v) S.AutoFire = v end)
+	addSlider(autoSet, "Fire Delay", 1, 50, 8, function(v) S.AutoFireDelay = v / 100 end)
+end
+do
+	local hudSet = createFeature(smartCol("VISUALS"), "Target HUD", false, function(v) S.TargetHUD = v end)
+	local logsSet = createFeature(smartCol("VISUALS"), "Hit Logs", false, function(v) S.HitLogsEnabled = v end)
+	addSlider(logsSet, "Duration", 1, 15, 5, function(v) S.HitLogsDuration = v end)
+	local markerSet = createFeature(smartCol("VISUALS"), "Hitmarker", false, function(v) S.HitmarkerEnabled = v end)
+	addSlider(markerSet, "Size", 5, 40, 12, function(v) S.HitmarkerSize = v end)
+	addSlider(markerSet, "Thickness", 1, 5, 2, function(v) S.HitmarkerThickness = v end)
+	addSlider(markerSet, "Duration", 5, 60, 25, function(v) S.HitmarkerDuration = v / 10 end)
+	addColor(markerSet, "Color", function(c) Runtime.ExtraColors.Hitmarker = c end)
+	local damageSet = createFeature(smartCol("VISUALS"), "Damage FX", false, function(v) S.DamageFXEnabled = v end)
+	addDropdown(damageSet, "Style", {"Foam", "Crescents", "Residue", "Electric"}, 1, function(v) S.DamageFXStyle = v end)
+	addSlider(damageSet, "Count", 1, 60, 12, function(v) S.DamageFXCount = v end)
+	addSlider(damageSet, "Speed", 5, 60, 20, function(v) S.DamageFXSpeed = v end)
+	addSlider(damageSet, "Size", 5, 100, 25, function(v) S.DamageFXSize = v / 100 end)
+	addSlider(damageSet, "Lifetime", 2, 40, 8, function(v) S.DamageFXLifetime = v / 10 end)
+	addColor(damageSet, "Color", function(c) Runtime.ExtraColors.DamageFX = c end)
+	local toolSet = createFeature(smartCol("VISUALS"), "Tool Outline", false, function(v) S.ToolOutline = v end)
+	addColor(toolSet, "Outline Color", function(c) Runtime.ExtraColors.ToolOutline = c; if S.ToolOutline then updateToolOutline() end end)
+	local outlineSet = createFeature(smartCol("VISUALS"), "X-Ray", false, function(v) setXRay(v) end)
+	addSlider(outlineSet, "Transparency", 0, 9, 5, function(v)
+		S.XRayTransparency = v / 10
+		if S.XRay then for object in pairs(xrayCache) do if object.Parent then object.Transparency = S.XRayTransparency end end end
+	end)
+	local waterSet = createFeature(smartCol("VISUALS"), "Custom Water", false, function(v) setWater(v) end)
+	addColor(waterSet, "Water Color", function(c) Runtime.ExtraColors.Water = c; if S.CustomWater then applyWater() end end)
+	addSlider(waterSet, "Reflectance", 0, 10, 3, function(v) S.WaterReflectance = v / 10; if S.CustomWater then applyWater() end end)
+end
+do
+	createFeature(smartCol("MISC"), "Kill Notify", false, function(v) S.KillNotify = v end)
+end
+do
+	local swimSet = createFeature(smartCol("MOVEMENT"), "Swim Speed", false, function(v) S.SwimSpeed = v end)
+	addSlider(swimSet, "Value", 20, 200, 50, function(v) S.SwimSpeedValue = v end)
+	local copterSet = createFeature(smartCol("MOVEMENT"), "Copter Speed", false, function(v) S.CopterSpeed = v end)
+	addSlider(copterSet, "Value", 20, 100, 50, function(v) S.CopterSpeedValue = v end)
+	createFeature(smartCol("MOVEMENT"), "No Fall Damage", false, function(v) S.NoFallDamage = v end, false)
+	createFeature(smartCol("MOVEMENT"), "No Jump Delay", false, function(v) S.NoJumpDelay = v end, false)
+	local flySet = createFeature(smartCol("MOVEMENT"), "Copter Fly", false, function(v)
+		S.CopterFly = v
+		if not v then destroyFly() end
+	end)
+	addSlider(flySet, "Fly Speed", 50, 450, 100, function(v) S.CopterFlySpeed = v end)
+end
+
+Runtime.ExtraHeartbeat = RunService.Heartbeat:Connect(physicsStep)
+Runtime.ExtraRender = RunService.RenderStepped:Connect(visualUpdate)
+local function cleanup()
+	for _, connection in ipairs(extraConnections) do pcall(function() connection:Disconnect() end) end
+	table.clear(extraConnections)
+	if Runtime.ExtraHeartbeat then Runtime.ExtraHeartbeat:Disconnect() end
+	if Runtime.ExtraRender then Runtime.ExtraRender:Disconnect() end
+	clearLogs()
+	clearHitmarkers()
+	clearDamageFX()
+	restoreXRay()
+	restoreWater()
+	clearToolOutline()
+	destroySwim()
+	destroyFly()
+	targetFrame.Visible = false
+end
+ExtraFeatures.Cleanup = cleanup
+onCleanup(cleanup)
+end
+initializeExtraFeatures()
+end -- function-scoped helpers; ExtraFeatures is the public runtime/test surface.
 
 
 task.spawn(function()
