@@ -1,7 +1,13 @@
+-- Burmalda.hook | rost alpha | direct build
+local __burmaldaDirectEnv = getgenv and getgenv() or _G
+__burmaldaDirectEnv.PHOOKGATE = "1347571535"
+__burmaldaDirectEnv.BURMALDA_GAME = "rost alpha"
+
 -- Burmalda.hook | rost alpha | cleaned NullWave-derived build
 -- Target: official rost alpha, PlaceId 13769775130; no PlaceId execution gate.
--- Removed: anti-dump, heartbeat, anti-spy, remote loaders, Force Hit and hitbox expansion.
--- Silent Aim below is an unverified Workspace Raycast compatibility path, not a live projectile proof.
+-- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt is untested.
+-- Removed: Xeno support, anti-dump, heartbeat, anti-spy, remote loaders, Force Hit and hitbox expansion.
+-- Silent Aim: GunBase.fire + FireServer + Workspace Raycast; live proof remains executor-specific.
 
 local _burmaldaEnv = getgenv and getgenv() or _G
 if _burmaldaEnv.PHOOKGATE ~= nil then
@@ -15,14 +21,42 @@ if _burmaldaEnv.BurmaldaRost and _burmaldaEnv.BurmaldaRost.Unload then
 	pcall(_burmaldaEnv.BurmaldaRost.Unload)
 end
 
+local executorName = "unknown"
+if type(identifyexecutor) == "function" then
+	local ok, name = pcall(identifyexecutor)
+	if ok and name ~= nil then executorName = tostring(name) end
+elseif type(getexecutorname) == "function" then
+	local ok, name = pcall(getexecutorname)
+	if ok and name ~= nil then executorName = tostring(name) end
+end
+if string.find(executorName:lower(), "xeno", 1, true) then
+	warn("[Burmalda.hook] Xeno is not supported. Use Real, Opiumware, Madium, Potassium, Synapse Z or Volt.")
+	return
+end
+
 local Runtime = {
 	Unloaded = false,
 	Cleanup = {},
 	Drawings = {},
 	Guis = {},
 	SilentPath = "GunBase.fire + FireServer + Workspace Raycast",
+	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt" },
 }
 _burmaldaEnv.BurmaldaRost = Runtime
+Runtime.ExecutorName = executorName
+Runtime.ModuleRequireMode = "standard"
+do
+	Runtime.RequireGameModule = function(module)
+		if not module then return nil, "module-missing" end
+		local ok, result = pcall(require, module)
+		if not ok then
+			Runtime.LastModuleRequireError = tostring(result)
+			return nil, Runtime.LastModuleRequireError
+		end
+		Runtime.LastModuleRequireError = nil
+		return result, nil
+	end
+end
 local ProjectileCore, ProjectileSilent
 
 local function onCleanup(fn)
@@ -108,6 +142,7 @@ local S = {
 	SpiderSpeed    = 20,
 	NoRecoil       = false,
 	NoRecoilMethod = 1,
+	LowPC          = false,
 	HighJump       = false,
 	HighJumpHeight = 100,
 
@@ -871,6 +906,8 @@ local function createFeature(parent, name, default, callback, hasSettings)
 	if callback then callback(state) end
 	tClick.MouseButton1Click:Connect(function()
 		state = not state
+		Runtime.LastFeatureName = name
+		Runtime.LastFeatureState = state
 		if callback then callback(state) end
 		updateToggle()
 	end)
@@ -908,6 +945,8 @@ local function createFeature(parent, name, default, callback, hasSettings)
 
 	_fFS[name] = function(value)
 		state = value
+		Runtime.LastFeatureName = name
+		Runtime.LastFeatureState = state
 		if callback then callback(state) end
 		updateToggle()
 	end
@@ -1284,12 +1323,18 @@ local recoilMod = nil
 local function setupNoRecoil(enabled)
 	if enabled then
 		if not recoilMod then
-			pcall(function()
-				recoilMod = require(ReplicatedStorage:WaitForChild("Gun"):WaitForChild("Scripts"):WaitForChild("RecoilHandler"))
-			end)
+			local gun = ReplicatedStorage:WaitForChild("Gun", 10)
+			local scripts = gun and gun:WaitForChild("Scripts", 10)
+			local module = scripts and scripts:WaitForChild("RecoilHandler", 10) or nil
+			local loaded, err = Runtime.RequireGameModule(module)
+			if type(loaded) == "table" then
+				recoilMod = loaded
+			else
+				Runtime.NoRecoilError = err or "RecoilHandler did not return a table"
+			end
 		end
 
-		if recoilMod then
+		if recoilMod and type(recoilMod.nextStep) == "function" and type(recoilMod.setRecoilMultiplier) == "function" then
 			if not recoilMod._o_nS then
 				recoilMod._o_nS = recoilMod.nextStep
 			end
@@ -1299,7 +1344,13 @@ local function setupNoRecoil(enabled)
 
 			recoilMod.nextStep = function() end
 			recoilMod.setRecoilMultiplier = function() end
+			Runtime.NoRecoilError = nil
+			S.NoRecoil = true
+			return true
 		end
+		Runtime.NoRecoilError = Runtime.NoRecoilError or "RecoilHandler methods are unavailable"
+		S.NoRecoil = false
+		return false
 	else
 		if recoilMod then
 			if recoilMod._o_nS then
@@ -1311,6 +1362,8 @@ local function setupNoRecoil(enabled)
 				recoilMod._o_sRM = nil
 			end
 		end
+		S.NoRecoil = false
+		return true
 	end
 end
 onCleanup(function() setupNoRecoil(false) end)
@@ -1344,6 +1397,10 @@ do
 
 	local mbSet = createFeature(lc, "Silent Aim", false, function(v)
 		S.SilentAim = v
+		if v and ProjectileSilent and not ProjectileSilent.Installed.GunBase and type(ProjectileSilent.Refresh) == "function" then
+			local ok, err = pcall(ProjectileSilent.Refresh)
+			if ok then Runtime.SilentError = nil else Runtime.SilentError = tostring(err) end
+		end
 		if not v then
 
 			_mbSubState.FOVCircle    = S.FOVCircle
@@ -1390,15 +1447,19 @@ do
 	end)
 	_fDD["TargetLine"] = _forceTargetLineDD
 	addColor(mbSet, "Line Color", function(c) S.MBTargetLineColor = c end)
-	addBind(mbSet, "Toggle Bind", "None", function() S.SilentAim = not S.SilentAim end)
+	addBind(mbSet, "Toggle Bind", "None", function()
+		if _fFS["Silent Aim"] then _fFS["Silent Aim"](not S.SilentAim) end
+	end)
 
 	local noRecoilSet = createFeature(rc, "No Recoil", false, function(v)
 		S.NoRecoil = v
-		setupNoRecoil(v)
+		local applied = setupNoRecoil(v)
+		if v and not applied and _fFS["No Recoil"] then
+			_fFS["No Recoil"](false)
+		end
 	end, false)
 	addBind(noRecoilSet, "Toggle Bind", "None", function()
-		S.NoRecoil = not S.NoRecoil
-		setupNoRecoil(S.NoRecoil)
+		_fFS["No Recoil"](not S.NoRecoil)
 	end)
 
 end
@@ -2098,6 +2159,7 @@ do
 		applyToggle("Custom Models",         customModelsEnabled)
 		applyToggle("Custom Fog",            fogEnabled)
 		applyToggle("Custom FOV",            fovLockEnabled)
+		applyToggle("Low PC",                S.LowPC)
 		applyToggle("UI Animations",         UIAnimations)
 
 		if fovLockEnabled and targetFOV then Camera.FieldOfView = targetFOV end
@@ -2464,6 +2526,116 @@ do
 		end
 	end, false)
 
+	-- Low PC: reversible rendering reductions only; no game objects are destroyed.
+	do
+		local state = { Backups = {}, Connections = {} }
+		Runtime.LowPCState = state
+
+		local function setProperty(object, key, value)
+			if not object then return end
+			local saved = state.Backups[object]
+			if not saved then
+				saved = {}
+				state.Backups[object] = saved
+			end
+			if saved[key] == nil then
+				local ok, original = pcall(function() return object[key] end)
+				if not ok or original == nil then return end
+				saved[key] = original
+			end
+			pcall(function() object[key] = value end)
+		end
+
+		local function isDecorative(object)
+			local current = object
+			for _ = 1, 4 do
+				if not current then break end
+				-- Never hide a held weapon just because its name resembles foliage.
+				if current.ClassName == "Tool" then return false end
+				local name = string.lower(tostring(current.Name))
+				if string.find(name, "grass", 1, true)
+					or string.find(name, "leav", 1, true) -- leaf / leaves / tree-leaves
+					or string.find(name, "foliage", 1, true)
+					or string.find(name, "cloud", 1, true) then
+					return true
+				end
+				current = current.Parent
+			end
+			return false
+		end
+
+		local function applyObject(object)
+			local className = object.ClassName
+			if className == "ParticleEmitter" or className == "Trail" or className == "Beam"
+				or className == "Smoke" or className == "Fire" or className == "Sparkles"
+				or className == "Clouds"
+				or className == "BloomEffect" or className == "BlurEffect"
+				or className == "SunRaysEffect" or className == "DepthOfFieldEffect" then
+				setProperty(object, "Enabled", false)
+			end
+			if isDecorative(object) then
+				if object:IsA("BasePart") then
+					-- LocalTransparencyModifier hides geometry locally without deleting it
+					-- or changing collision/gameplay state. CastShadow removes its shadow pass.
+					setProperty(object, "LocalTransparencyModifier", 1)
+					setProperty(object, "CastShadow", false)
+				elseif className == "Decal" or className == "Texture" then
+					setProperty(object, "Transparency", 1)
+				end
+			end
+		end
+
+		local function applyLowPC()
+			setProperty(_Lighting, "GlobalShadows", false)
+			local terrain = workspace:FindFirstChildOfClass("Terrain")
+			if terrain then
+				setProperty(terrain, "WaterWaveSize", 0)
+				setProperty(terrain, "WaterWaveSpeed", 0)
+				setProperty(terrain, "Decoration", false)
+			end
+			local ok, rendering = pcall(function() return settings().Rendering end)
+			if ok and rendering then setProperty(rendering, "QualityLevel", Enum.QualityLevel.Level01) end
+			for _, object in ipairs(workspace:GetDescendants()) do applyObject(object) end
+			for _, object in ipairs(_Lighting:GetDescendants()) do applyObject(object) end
+		end
+
+		local function disconnectLowPC()
+			for _, connection in ipairs(state.Connections) do pcall(function() connection:Disconnect() end) end
+			table.clear(state.Connections)
+		end
+
+		local function restoreLowPC()
+			disconnectLowPC()
+			for object, saved in pairs(state.Backups) do
+				for key, value in pairs(saved) do
+					pcall(function() object[key] = value end)
+				end
+			end
+			table.clear(state.Backups)
+		end
+
+		createFeature(rc, "Low PC", false, function(v)
+			S.LowPC = v
+			if v then
+				if #state.Connections == 0 then
+					table.insert(state.Connections, workspace.DescendantAdded:Connect(function(object)
+						if S.LowPC then applyObject(object) end
+					end))
+					table.insert(state.Connections, _Lighting.DescendantAdded:Connect(function(object)
+						if S.LowPC then applyObject(object) end
+					end))
+				end
+				applyLowPC()
+			else
+				restoreLowPC()
+			end
+		end, false)
+		onCleanup(function()
+			S.LowPC = false
+			restoreLowPC()
+		end)
+	end
+
 	-- Custom Hand Position
 	local ViewmodelConfig = { X = 0, Y = 0, Z = 0 }
 	local handPosEnabled = false
@@ -2533,6 +2705,7 @@ do
 	local NA = Color3.fromRGB(255,255,255)
 	local NB = Color3.fromRGB(0,0,0)
 	local NT = 2.5
+	Runtime.PickupSeen = {}
 
 	local nGui = newScreenGui(pGui)
 	nGui.Name = "BurmaldaHookPickup"; nGui.DisplayOrder = 9999; nGui.ResetOnSpawn = false
@@ -2598,8 +2771,14 @@ do
 				if ai then
 
 					for _,ch in ipairs(ai:GetChildren()) do
-						if ch:IsA("TextLabel") and ch.Name=="Example" and ch.Text~="" then
-							local t=ch.Text; ch.Text=""; notify(t)
+						if ch:IsA("TextLabel") and ch.Name=="Example" then
+							local text = ch.Text
+							if text == "" then
+								Runtime.PickupSeen[ch] = nil
+							elseif Runtime.PickupSeen[ch] ~= text then
+								Runtime.PickupSeen[ch] = text
+								notify(text)
+							end
 						end
 					end
 				end
@@ -3184,9 +3363,9 @@ local projectileInitOK, projectileInitError = pcall(function()
 			ProjectileCore.Status.lastShotReason = "gunbase-waiting"
 			return false
 		end
-		local ok, loaded = pcall(require, module)
-		if not ok or type(loaded) ~= "table" or type(loaded.fire) ~= "function" then
-			ProjectileCore.Status.lastShotReason = "gunbase-fire-missing"
+		local loaded, requireError = Runtime.RequireGameModule(module)
+		if type(loaded) ~= "table" or type(loaded.fire) ~= "function" then
+			ProjectileCore.Status.lastShotReason = requireError or "gunbase-fire-missing"
 			return false
 		end
 		GunBase = loaded
@@ -3280,11 +3459,20 @@ local projectileInitOK, projectileInitError = pcall(function()
 	Runtime.SilentPath = Runtime.ProjectilePath
 	Runtime.GetSilentStatus = function()
 		local status = ProjectileCore.Status
+		local hasNamecall = Runtime.NamecallPath ~= nil and Runtime.NamecallPath ~= "unavailable"
 		return {
 			path = Runtime.ProjectilePath,
+			executor = Runtime.ExecutorName,
+			moduleRequireMode = Runtime.ModuleRequireMode,
+			moduleRequireError = Runtime.LastModuleRequireError,
+			namecall = Runtime.NamecallPath or "pending",
+			namecallError = Runtime.NamecallError,
+			silentError = Runtime.SilentError,
+			enabled = S.SilentAim,
+			available = status.gunbase or hasNamecall,
 			gunbase = status.gunbase,
-			fireserver = true,
-			raycast = true,
+			fireserver = hasNamecall,
+			raycast = hasNamecall,
 			calls = status.calls,
 			normalCalls = status.normalCalls,
 			redirects = status.redirects,
@@ -3308,9 +3496,14 @@ if not Runtime.GetSilentStatus then
 	Runtime.GetSilentStatus = function()
 		return {
 			path = Runtime.SilentPath,
+			executor = Runtime.ExecutorName,
+			moduleRequireMode = Runtime.ModuleRequireMode,
+			moduleRequireError = Runtime.LastModuleRequireError,
+			namecall = Runtime.NamecallPath or "pending",
+			namecallError = Runtime.NamecallError,
 			gunbase = false,
-			fireserver = true,
-			raycast = true,
+			fireserver = Runtime.NamecallPath ~= "unavailable",
+			raycast = Runtime.NamecallPath ~= "unavailable",
 			error = Runtime.ProjectileError,
 		}
 	end
@@ -4126,9 +4319,12 @@ local function startSpider()
 end
 startSpider()
 
-local oldNamecall
-oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
-	local method = getnamecallmethod()
+do
+	local oldNamecall = nil
+	local restoreNamecall = nil
+	Runtime.NamecallPath = "pending"
+	local function silentNamecall(self, ...)
+		local method = type(getnamecallmethod) == "function" and getnamecallmethod() or nil
 	local executorCall = checkcaller and checkcaller() or false
 	if Runtime.Unloaded or not S.SilentAim then
 		return oldNamecall(self, ...)
@@ -4194,13 +4390,75 @@ oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
 	end
 	args[1] = Ray.new(ray.Origin, delta.Unit * castDistance)
 	return oldNamecall(self, unpack(args))
-end))
-onCleanup(function()
-	if oldNamecall then
-		pcall(hookmetamethod, game, "__namecall", oldNamecall)
-		oldNamecall = nil
 	end
-end)
+
+	local function makeNamecallClosure(callback)
+		if type(newcclosure) == "function" then
+			local ok, wrapped = pcall(newcclosure, callback)
+			if ok and type(wrapped) == "function" then return wrapped end
+		end
+		return callback
+	end
+	local wrappedNamecall = makeNamecallClosure(silentNamecall)
+
+	Runtime._InstallStandardNamecall = function()
+		if oldNamecall or type(hookmetamethod) ~= "function" then return end
+		local ok, original = pcall(hookmetamethod, game, "__namecall", wrappedNamecall)
+		if ok and type(original) == "function" then
+			oldNamecall = original
+			Runtime.NamecallPath = "hookmetamethod"
+			restoreNamecall = function()
+				pcall(hookmetamethod, game, "__namecall", original)
+			end
+		end
+	end
+	Runtime._InstallStandardNamecall()
+
+	-- Compatibility fallback for supported executors without hookmetamethod.
+	if not oldNamecall and type(getrawmetatable) == "function" then
+		local ok, mt = pcall(getrawmetatable, game)
+		if ok and type(mt) == "table" and type(mt.__namecall) == "function" then
+			local original = mt.__namecall
+			local wasReadonly = true
+			if type(isreadonly) == "function" then
+				pcall(function() wasReadonly = isreadonly(mt) end)
+			end
+			local function setMetaReadonly(value)
+				if type(setreadonly) == "function" then
+					pcall(setreadonly, mt, value)
+				elseif value and type(makereadonly) == "function" then
+					pcall(makereadonly, mt)
+				elseif not value and type(makewriteable) == "function" then
+					pcall(makewriteable, mt)
+				end
+			end
+			setMetaReadonly(false)
+			if pcall(function() mt.__namecall = wrappedNamecall end) and mt.__namecall == wrappedNamecall then
+				oldNamecall = original
+				Runtime.NamecallPath = "raw-metatable"
+				setMetaReadonly(wasReadonly)
+				restoreNamecall = function()
+					setMetaReadonly(false)
+					pcall(function() mt.__namecall = original end)
+					setMetaReadonly(wasReadonly)
+				end
+			else
+				pcall(function() mt.__namecall = original end)
+				setMetaReadonly(wasReadonly)
+			end
+		end
+	end
+	if not oldNamecall then
+		Runtime.NamecallPath = "unavailable"
+		Runtime.NamecallError = "No compatible __namecall hook; GunBase path remains active"
+	end
+	onCleanup(function()
+		if restoreNamecall then pcall(restoreNamecall) end
+		oldNamecall = nil
+		restoreNamecall = nil
+		Runtime._InstallStandardNamecall = nil
+	end)
+end
 
 function Runtime.Unload()
 	if Runtime.Unloaded then return end
