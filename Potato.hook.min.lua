@@ -1,6 +1,6 @@
 -- Burmalda.hook | rost alpha | cleaned NullWave-derived build
 -- Target: official rost alpha, PlaceId 13769775130; no PlaceId execution gate.
--- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt is untested.
+-- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt and Volcano are live-untested.
 -- Access: private JNKIE keys; shared BETA and standalone Open Beta are removed.
 -- Removed: Xeno support, anti-dump, heartbeat, anti-spy, remote loaders and Force Hit.
 -- Silent Aim: GunBase.fire + FireServer + long-range Workspace Raycast; live proof remains executor-specific.
@@ -31,7 +31,7 @@ elseif type(getexecutorname) == "function" then
 	if ok and name ~= nil then executorName = tostring(name) end
 end
 if string.find(executorName:lower(), "xeno", 1, true) then
-	warn("[Burmalda.hook] Xeno is not supported. Use Real, Opiumware, Madium, Potassium, Synapse Z or Volt.")
+	warn("[Burmalda.hook] Xeno is not supported. Use Real, Opiumware, Madium, Potassium, Synapse Z, Volt or Volcano.")
 	return
 end
 
@@ -42,7 +42,7 @@ local Runtime = {
 	Guis = {},
 	CraftingMenuOpen = false,
 	SilentPath = "GunBase.fire + FireServer + Workspace Raycast",
-	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt" },
+	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt", "Volcano" },
 }
 _burmaldaEnv.BurmaldaRost = Runtime
 Runtime.ExecutorName = executorName
