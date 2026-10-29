@@ -1,17 +1,22 @@
 -- Burmalda.hook | rost alpha | cleaned NullWave-derived build
 -- Target: official rost alpha, PlaceId 13769775130; no PlaceId execution gate.
 -- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt is untested.
--- Removed: Xeno support, anti-dump, heartbeat, anti-spy, remote loaders, Force Hit and hitbox expansion.
+-- Access: private JNKIE keys; shared BETA and standalone Open Beta are removed.
+-- Removed: Xeno support, anti-dump, heartbeat, anti-spy, remote loaders and Force Hit.
 -- Silent Aim: GunBase.fire + FireServer + Workspace Raycast; live proof remains executor-specific.
 
 local _burmaldaEnv = getgenv and getgenv() or _G
-if _burmaldaEnv.PHOOKGATE ~= nil then
-	if tostring(_burmaldaEnv.PHOOKGATE) ~= "1347571535" then
-		warn("[Burmalda.hook] Invalid loader gate.")
-		return
-	end
+local _burmaldaKey = tostring(_burmaldaEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
+if tostring(_burmaldaEnv.PHOOKGATE or "") ~= "1347571535"
+	or _burmaldaKey == ""
+	or _burmaldaKey:upper() == "BETA"
+then
 	_burmaldaEnv.PHOOKGATE = nil
+	_burmaldaEnv.SCRIPT_KEY = nil
+	return
 end
+_burmaldaEnv.PHOOKGATE = nil
+_burmaldaEnv.SCRIPT_KEY = nil
 if _burmaldaEnv.BurmaldaRost and _burmaldaEnv.BurmaldaRost.Unload then
 	pcall(_burmaldaEnv.BurmaldaRost.Unload)
 end
