@@ -838,7 +838,8 @@ content.BackgroundTransparency = 1
 content.ClipsDescendants = true
 
 local function createFeature(parent, name, default, callback, hasSettings)
-	hasSettings = hasSettings ~= false
+	-- The legacy fifth argument remains API-compatible. Actual editor controls,
+	-- registered below, decide whether the arrow is shown.
 	local block = Instance.new("Frame", parent)
 	block.Size = UDim2.new(1, 0, 0, 34)
 	block.AutomaticSize = Enum.AutomaticSize.Y
@@ -867,19 +868,23 @@ local function createFeature(parent, name, default, callback, hasSettings)
 	lbl.Position = UDim2.new(0, 13, 0, 0)
 	lbl.BackgroundTransparency = 1
 	lbl.TextXAlignment = Enum.TextXAlignment.Left
-	local expand = Instance.new("TextLabel", topBtn)
-	expand.Text = hasSettings and "+" or ""
+	local expand = Instance.new("TextButton", topBtn)
+	expand.Name = "SettingsArrow"
+	expand.Text = "▼"
 	expand.Font = Enum.Font.Code
-	expand.TextSize = 13
+	expand.TextSize = 11
 	expand.TextColor3 = Theme.Muted
-	expand.Size = UDim2.new(0, 18, 1, 0)
-	expand.Position = UDim2.new(1, -69, 0, 0)
+	expand.Size = UDim2.new(0, 26, 1, 0)
+	expand.Position = UDim2.new(1, -73, 0, 0)
 	expand.BackgroundTransparency = 1
 	expand.TextXAlignment = Enum.TextXAlignment.Center
+	expand.AutoButtonColor = false
+	expand.Visible = false
+	expand.ZIndex = 2
 
 	local tbg = Instance.new("Frame", topBtn)
 	tbg.Size = UDim2.new(0, 27, 0, 14)
-	tbg.Position = UDim2.new(1, -43, 0.5, 0)
+	tbg.Position = UDim2.new(1, -13, 0.5, 0)
 	tbg.AnchorPoint = Vector2.new(1, 0.5)
 	tbg.BorderSizePixel = 0
 	Instance.new("UICorner", tbg).CornerRadius = UDim.new(1, 0)
@@ -913,6 +918,7 @@ local function createFeature(parent, name, default, callback, hasSettings)
 	end)
 
 	local setCont = Instance.new("Frame", block)
+	setCont.Name = "FeatureEditor"
 	setCont.Size = UDim2.new(1, 0, 0, 0)
 	setCont.Position = UDim2.new(0, 0, 0, 34)
 	setCont.BackgroundTransparency = 1
@@ -927,14 +933,24 @@ local function createFeature(parent, name, default, callback, hasSettings)
 	sPad.PaddingLeft = UDim.new(0, 12)
 	sPad.PaddingRight = UDim.new(0, 12)
 	local expanded = false
+	local editor = { Arrow = expand, HasControls = false }
 	local function setExpanded(value)
+		if value and not editor.HasControls then return end
 		expanded = value
 		setCont.Visible = value
 		setCont.AutomaticSize = value and Enum.AutomaticSize.Y or Enum.AutomaticSize.None
-		expand.Text = value and "-" or (hasSettings and "+" or "")
+		expand.Text = value and "▲" or "▼"
 	end
-	topBtn.MouseButton1Click:Connect(function()
-		if hasSettings then setExpanded(not expanded) end
+	editor.SetExpanded = setExpanded
+	_fDD[setCont] = editor
+	expand.MouseButton1Click:Connect(function()
+		if editor.HasControls then setExpanded(not expanded) end
+	end)
+	expand.MouseEnter:Connect(function()
+		uiTween(expand, TweenInfo.new(0.12), { TextColor3 = Theme.Accent }):Play()
+	end)
+	expand.MouseLeave:Connect(function()
+		uiTween(expand, TweenInfo.new(0.12), { TextColor3 = Theme.Muted }):Play()
 	end)
 	topBtn.MouseEnter:Connect(function()
 		uiTween(block, TweenInfo.new(0.12), { BackgroundColor3 = Theme.Panel2 }):Play()
@@ -953,9 +969,18 @@ local function createFeature(parent, name, default, callback, hasSettings)
 	return setCont
 end
 
+_fDD.RegisterEditor = function(p)
+	local editor = _fDD[p]
+	if editor then
+		editor.HasControls = true
+		editor.Arrow.Visible = true
+	end
+end
+
 local bindConnections = {}
 
 local function addBind(p, name, def, onPress)
+	_fDD.RegisterEditor(p)
 	local r = Instance.new("Frame", p)
 	r.Size = UDim2.new(1, 0, 0, 18)
 	r.BackgroundTransparency = 1
@@ -1007,6 +1032,7 @@ local function addBind(p, name, def, onPress)
 end
 
 local function addSlider(p, name, min, max, def, callback)
+	_fDD.RegisterEditor(p)
 	local f = Instance.new("Frame", p)
 	f.Size = UDim2.new(1, 0, 0, 24)
 	f.BackgroundTransparency = 1
@@ -1060,6 +1086,7 @@ local function addSlider(p, name, min, max, def, callback)
 end
 
 local function addDropdown(p, name, options, defIdx, callback)
+	_fDD.RegisterEditor(p)
 	local r = Instance.new("Frame", p)
 	r.Size = UDim2.new(1, 0, 0, 18)
 	r.BackgroundTransparency = 1
@@ -1130,6 +1157,7 @@ local function addDropdown(p, name, options, defIdx, callback)
 end
 
 local function addColor(p, name, callback)
+	_fDD.RegisterEditor(p)
 	local r = Instance.new("Frame", p)
 	r.Size = UDim2.new(1, 0, 0, 18)
 	r.BackgroundTransparency = 1
@@ -1388,37 +1416,14 @@ S.MBTargetLineColor = Color3.fromRGB(255, 255, 255)
 do
 	local lc, rc = getTab("COMBAT")
 
-	local _mbSubState = {
-		FOVCircle = false,
-		FOVFill   = false,
-		MBTargetLine = false,
-	}
-	local _mbWasOff = false
-
 	local mbSet = createFeature(lc, "Silent Aim", false, function(v)
 		S.SilentAim = v
 		if v and ProjectileSilent and not ProjectileSilent.Installed.GunBase and type(ProjectileSilent.Refresh) == "function" then
 			local ok, err = pcall(ProjectileSilent.Refresh)
 			if ok then Runtime.SilentError = nil else Runtime.SilentError = tostring(err) end
 		end
-		if not v then
-
-			_mbSubState.FOVCircle    = S.FOVCircle
-			_mbSubState.FOVFill      = S.FOVFill
-			_mbSubState.MBTargetLine = S.MBTargetLine
-			S.FOVCircle    = false
-			S.FOVFill      = false
-			S.MBTargetLine = false
-			_mbWasOff = true
-		else
-
-			if _mbWasOff then
-				S.FOVCircle    = _mbSubState.FOVCircle
-				S.FOVFill      = _mbSubState.FOVFill
-				S.MBTargetLine = _mbSubState.MBTargetLine
-				_mbWasOff = false
-			end
-		end
+		-- FOV Circle, Fill and Target Line are independent drawing controls.
+		-- Do not restore a stale snapshot when Silent is toggled.
 	end)
 	addSlider(mbSet, "FOV", 10, 250, 120, function(v) S.FOV = v end)
 	addSlider(mbSet, "Hit Chance", 1, 100, 100, function(v) S.MBHitChance = v end)
@@ -2788,27 +2793,34 @@ do
 	end)
 end
 
-local circle = newDrawing("Circle")
-circle.Radius = S.FOV
-circle.Thickness = 1
-circle.Color = AC
-circle.Transparency = 1
-circle.Filled = false
-circle.Visible = S.FOVCircle
-
 local circleFill = newDrawing("Circle")
 circleFill.Radius = S.FOV
 circleFill.Thickness = 0
+circleFill.NumSides = 64
 circleFill.Color = AC_FOV_FILL
-circleFill.Transparency = 0.85
+circleFill.Transparency = S.FOVFillTransparency
 circleFill.Filled = true
 circleFill.Visible = false
+circleFill.Position = Vector2.new(Camera.ViewportSize.X * 0.5, Camera.ViewportSize.Y * 0.5)
+pcall(function() circleFill.ZIndex = 1 end)
+
+local circle = newDrawing("Circle")
+circle.Radius = S.FOV
+circle.Thickness = 1
+circle.NumSides = 64
+circle.Color = AC_FOV
+circle.Transparency = 1
+circle.Filled = false
+circle.Visible = S.FOVCircle
+circle.Position = circleFill.Position
+pcall(function() circle.ZIndex = 2 end)
 
 local TargetLine = newDrawing("Line")
 TargetLine.Visible = false
 TargetLine.Color = S.MBTargetLineColor
 TargetLine.Thickness = 1
 TargetLine.Transparency = 1
+pcall(function() TargetLine.ZIndex = 3 end)
 
 -- ESP v2: Velocity-inspired Drawing renderer with owned Highlight cleanup.
 -- No external fonts, assets, HTTP, loaders or camera writes.
@@ -2894,6 +2906,7 @@ local function createESP(player)
 	box.Color = AC_ESP
 	box.Thickness = 1
 	box.Filled = false
+	box.Transparency = 1
 	box.Visible = false
 
 	local fill = newDrawing("Square")
@@ -2908,6 +2921,7 @@ local function createESP(player)
 		local line = newDrawing("Line")
 		line.Color = AC_ESP
 		line.Thickness = 1
+		line.Transparency = 1
 		line.Visible = false
 		corners[index] = line
 	end
@@ -2915,8 +2929,12 @@ local function createESP(player)
 	local tracer = newDrawing("Line")
 	tracer.Color = AC_TR
 	tracer.Thickness = 1
+	tracer.Transparency = 1
 	tracer.Visible = false
 	local tracerOutline = newDrawing("Line")
+	tracerOutline.Color = Color3.fromRGB(0, 0, 0)
+	tracerOutline.Thickness = 3
+	tracerOutline.Transparency = 1
 	tracerOutline.Visible = false
 
 	local name = newDrawing("Text")
@@ -2924,6 +2942,7 @@ local function createESP(player)
 	name.Center = true
 	name.Outline = true
 	name.Color = AC_NAME
+	name.Transparency = 1
 	name.Visible = false
 
 	local distance = newDrawing("Text")
@@ -2931,6 +2950,7 @@ local function createESP(player)
 	distance.Center = true
 	distance.Outline = true
 	distance.Color = AC_DIST
+	distance.Transparency = 1
 	distance.Visible = false
 
 	local weapon = newDrawing("Text")
@@ -2938,6 +2958,7 @@ local function createESP(player)
 	weapon.Center = true
 	weapon.Outline = true
 	weapon.Color = AC_WEAPON
+	weapon.Transparency = 1
 	weapon.Visible = false
 
 	local hpBg = newDrawing("Square")
@@ -2956,6 +2977,7 @@ local function createESP(player)
 	hpText.Center = true
 	hpText.Outline = true
 	hpText.Color = AC_HP
+	hpText.Transparency = 1
 	hpText.Visible = false
 
 	ESPBoxes[player] = box
@@ -3040,64 +3062,22 @@ Players.PlayerRemoving:Connect(function(player)
 end)
 onCleanup(destroyAllChams)
 
-local _ESP_INTERVAL = 1 / 30
-espConnection = RunService.Heartbeat:Connect(function()
-	if Runtime.Unloaded then return end
-	local now = tick()
-	if now - _espLastUpdate < _ESP_INTERVAL then return end
-	_espLastUpdate = now
-
-	local screenSize = Camera.ViewportSize
-	local center = Vector2.new(screenSize.X * 0.5, screenSize.Y * 0.5)
-	local cameraPosition = Camera.CFrame.Position
-	local fovPosition = S.MBFovMode == "pc" and UIS:GetMouseLocation() or center
-
-	if S.FOVCircle then
-		circle.Visible = true
-		circle.Position = fovPosition
-		circle.Radius = S.FOV
-		circle.Color = AC_FOV
-		circleFill.Visible = S.FOVFill
-		circleFill.Position = fovPosition
-		circleFill.Radius = S.FOV
-		circleFill.Color = AC_FOV_FILL
-		circleFill.Transparency = S.FOVFillTransparency
-	else
-		circle.Visible = false
-		circleFill.Visible = false
-	end
-
-	if S.MBTargetLine and SA_CurrentTarget and SA_CurrentTarget.Parent then
-		local targetPosition = Camera:WorldToViewportPoint(SA_CurrentTarget.Position)
-		TargetLine.From = fovPosition
-		TargetLine.To = Vector2.new(targetPosition.X, targetPosition.Y)
-		TargetLine.Color = S.MBTargetLineColor
-		TargetLine.Visible = true
-	else
-		TargetLine.Visible = false
-	end
-
-	local espEnabled = S.ESPEnabled
-	local tracersOn = S.Tracers
-	local namesOn = S.Names
-	local hpBarOn = S.HPBar
-	local espRadius = S.ESPRadius
-	local anyESP = espEnabled or tracersOn or namesOn or hpBarOn
-		or S.ESPDist or S.ESPWeapon or S.ESPChams
-	if not anyESP then
-		for player in pairs(ESPBoxes) do hideESP2D(player) end
-		destroyAllChams()
-		return
-	end
-
-	for player, box in pairs(ESPBoxes) do
+local function updateESPPlayer(player, box, context)
+	local screenSize = context.screenSize
+	local center = context.center
+	local cameraPosition = context.cameraPosition
+	local espEnabled = context.espEnabled
+	local tracersOn = context.tracersOn
+	local namesOn = context.namesOn
+	local hpBarOn = context.hpBarOn
+	local espRadius = context.espRadius
 		local character = player.Character
 		local root = character and character:FindFirstChild("HumanoidRootPart")
 		local humanoid = character and character:FindFirstChild("Humanoid")
 		if not root or not humanoid or humanoid.Health <= 0 then
 			hideESP2D(player)
 			destroyChams(player)
-			continue
+			return
 		end
 
 		local rootPosition = root.Position
@@ -3105,14 +3085,14 @@ espConnection = RunService.Heartbeat:Connect(function()
 		if distance3D > espRadius then
 			hideESP2D(player)
 			destroyChams(player)
-			continue
+			return
 		end
 
 		updateChams(player, character)
 		local projected, onScreen = Camera:WorldToViewportPoint(rootPosition)
 		if not onScreen then
 			hideESP2D(player)
-			continue
+			return
 		end
 		local screenPosition = Vector2.new(projected.X, projected.Y)
 		local top = Camera:WorldToViewportPoint(rootPosition + Vector3.new(0, 3, 0))
@@ -3231,6 +3211,88 @@ espConnection = RunService.Heartbeat:Connect(function()
 			HPTextObjs[player].Visible = false
 		end
 	end
+
+local _ESP_INTERVAL = 1 / 30
+espConnection = RunService.RenderStepped:Connect(function()
+	if Runtime.Unloaded then return end
+	local now = tick()
+	if now - _espLastUpdate < _ESP_INTERVAL then return end
+	_espLastUpdate = now
+
+	local currentCamera = workspace.CurrentCamera
+	if currentCamera then Camera = currentCamera end
+	if not Camera then
+		circle.Visible = false
+		circleFill.Visible = false
+		TargetLine.Visible = false
+		for player in pairs(ESPBoxes) do hideESP2D(player) end
+		destroyAllChams()
+		return
+	end
+	local screenSize = Camera.ViewportSize
+	local center = Vector2.new(screenSize.X * 0.5, screenSize.Y * 0.5)
+	local cameraPosition = Camera.CFrame.Position
+	local fovPosition = S.MBFovMode == "pc" and UIS:GetMouseLocation() or center
+
+	if S.FOVCircle then
+		circle.Visible = true
+		circle.Transparency = 1
+		circle.Filled = false
+		circle.Position = fovPosition
+		circle.Radius = S.FOV
+		circle.Color = AC_FOV
+		circleFill.Visible = S.FOVFill
+		circleFill.Position = fovPosition
+		circleFill.Radius = S.FOV
+		circleFill.Color = AC_FOV_FILL
+		circleFill.Transparency = S.FOVFillTransparency
+	else
+		circle.Visible = false
+		circleFill.Visible = false
+	end
+
+	if S.MBTargetLine and SA_CurrentTarget and SA_CurrentTarget.Parent then
+		local targetPosition = Camera:WorldToViewportPoint(SA_CurrentTarget.Position)
+		TargetLine.From = fovPosition
+		TargetLine.To = Vector2.new(targetPosition.X, targetPosition.Y)
+		TargetLine.Color = S.MBTargetLineColor
+		TargetLine.Visible = true
+	else
+		TargetLine.Visible = false
+	end
+
+	local espEnabled = S.ESPEnabled
+	local tracersOn = S.Tracers
+	local namesOn = S.Names
+	local hpBarOn = S.HPBar
+	local espRadius = S.ESPRadius
+	local anyESP = espEnabled or tracersOn or namesOn or hpBarOn
+		or S.ESPDist or S.ESPWeapon or S.ESPChams
+	if not anyESP then
+		for player in pairs(ESPBoxes) do hideESP2D(player) end
+		destroyAllChams()
+		return
+	end
+
+	local context = {
+		screenSize = screenSize,
+		center = center,
+		cameraPosition = cameraPosition,
+		espEnabled = espEnabled,
+		tracersOn = tracersOn,
+		namesOn = namesOn,
+		hpBarOn = hpBarOn,
+		espRadius = espRadius,
+	}
+	Runtime.ESPLastError = nil
+	for player, box in pairs(ESPBoxes) do
+		local ok, err = pcall(updateESPPlayer, player, box, context)
+		if not ok then
+			hideESP2D(player)
+			destroyChams(player)
+			Runtime.ESPLastError = tostring(err)
+		end
+	end
 end)
 end
 initializeESP()
@@ -3247,6 +3309,7 @@ end)
 local projectileInitOK, projectileInitError = pcall(function()
 	ProjectileCore = {
 		Running = true,
+		GunBaseRedirecting = false,
 		Status = {
 			gunbase = false,
 			raycast = true,
@@ -3255,6 +3318,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 			redirects = 0,
 			remoteCalls = 0,
 			remoteRedirects = 0,
+			fallbackSkips = 0,
 			bufferWrites = 0,
 			target = "inactive",
 			lastShotReason = "not-fired",
@@ -3347,6 +3411,45 @@ local projectileInitOK, projectileInitError = pcall(function()
 	end
 	ProjectileSilent.Update = updateTarget
 
+	-- Validate the selected part again at the instant of the shot. The 20 Hz selector
+	-- must never leave a dead/despawned or out-of-FOV target armed for a later shot.
+	local function getLiveTarget()
+		local target = ProjectileSilent.TargetPart
+		local character = ProjectileSilent.TargetCharacter
+		local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+		if not target or not target.Parent or not character or not humanoid or humanoid.Health <= 0
+			or not target:IsA("BasePart") or not target:IsDescendantOf(character) then
+			clearTarget()
+			ProjectileCore.Status.target = "stale"
+			return nil
+		end
+		local camera = workspace.CurrentCamera
+		if not camera then
+			clearTarget()
+			ProjectileCore.Status.target = "no-camera"
+			return nil
+		end
+		local localRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+		local worldOrigin = localRoot and localRoot.Position or camera.CFrame.Position
+		if (target.Position - worldOrigin).Magnitude > S.MBMaxDist then
+			clearTarget()
+			ProjectileCore.Status.target = "stale-distance"
+			return nil
+		end
+		local projected, onScreen = camera:WorldToViewportPoint(target.Position)
+		local viewport = camera.ViewportSize
+		local center = S.MBFovMode == "pc" and UIS:GetMouseLocation()
+			or Vector2.new(viewport.X * 0.5, viewport.Y * 0.5)
+		if not onScreen or projected.Z <= 0
+			or (Vector2.new(projected.X, projected.Y) - center).Magnitude > S.FOV then
+			clearTarget()
+			ProjectileCore.Status.target = "stale-fov"
+			return nil
+		end
+		return target
+	end
+	ProjectileSilent.GetTarget = getLiveTarget
+
 	-- VOMAGLA uses this ModuleScript table assignment. It is easy to restore and does
 	-- not require hookfunction support from the executor.
 	local GunBase, originalFire, replacementFire = nil, nil, nil
@@ -3381,8 +3484,8 @@ local projectileInitOK, projectileInitError = pcall(function()
 				ProjectileCore.Status.lastShotReason = "silent-inactive-original"
 				return originalFire(self, ...)
 			end
-			local target = SA_CurrentTarget
-			if not target or not target.Parent then
+			local target = getLiveTarget()
+			if not target then
 				ProjectileCore.Status.lastShotReason = "no-target-original"
 				return originalFire(self, ...)
 			end
@@ -3392,17 +3495,18 @@ local projectileInitOK, projectileInitError = pcall(function()
 			end
 
 			local args = table.pack(...)
+			local targetPosition = target.Position
 			local patched = false
 			for index = 1, args.n do
 				local value = args[index]
 				if typeof(value) == "Vector3" and not patched then
-					args[index] = target.Position
+					args[index] = targetPosition
 					patched = true
 				elseif typeof(value) == "buffer" and not patched and type(buffer) == "table" and type(buffer.writef32) == "function" then
 					local writeOK = pcall(function()
-						buffer.writef32(value, 4, target.Position.X)
-						buffer.writef32(value, 8, target.Position.Y)
-						buffer.writef32(value, 12, target.Position.Z)
+						buffer.writef32(value, 4, targetPosition.X)
+						buffer.writef32(value, 8, targetPosition.Y)
+						buffer.writef32(value, 12, targetPosition.Z)
 					end)
 					if writeOK then
 						patched = true
@@ -3410,13 +3514,21 @@ local projectileInitOK, projectileInitError = pcall(function()
 					end
 				end
 			end
-			if patched then
-				ProjectileCore.Status.redirects += 1
-				ProjectileCore.Status.lastShotReason = "gunbase-redirected"
-			else
+			if not patched then
 				ProjectileCore.Status.lastShotReason = "args-unmatched-original"
+				return originalFire(self, unpack(args, 1, args.n))
 			end
-			return originalFire(self, unpack(args, 1, args.n))
+
+			ProjectileCore.Status.redirects += 1
+			ProjectileCore.Status.lastShotReason = "gunbase-redirected"
+			-- GunBase owns this exact shot. A synchronous FireServer/Raycast made by
+			-- originalFire is a fallback only and must not rewrite it a second time.
+			local previousGunBaseShot = ProjectileCore.GunBaseRedirecting
+			ProjectileCore.GunBaseRedirecting = true
+			local results = table.pack(pcall(originalFire, self, unpack(args, 1, args.n)))
+			ProjectileCore.GunBaseRedirecting = previousGunBaseShot
+			if not results[1] then error(results[2], 0) end
+			return unpack(results, 2, results.n)
 		end
 
 		local assigned = pcall(function() GunBase.fire = replacementFire end)
@@ -3446,6 +3558,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 
 	onCleanup(function()
 		clearTarget()
+		ProjectileCore.GunBaseRedirecting = false
 		if GunBase and originalFire and GunBase.fire == replacementFire then
 			pcall(function() GunBase.fire = originalFire end)
 		end
@@ -3478,6 +3591,8 @@ local projectileInitOK, projectileInitError = pcall(function()
 			redirects = status.redirects,
 			remoteCalls = status.remoteCalls,
 			remoteRedirects = status.remoteRedirects,
+			fallbackSkips = status.fallbackSkips,
+			gunbaseOwnsShot = ProjectileCore.GunBaseRedirecting == true,
 			bufferWrites = status.bufferWrites,
 			target = status.target,
 			lastShotReason = status.lastShotReason,
@@ -4330,11 +4445,20 @@ do
 		return oldNamecall(self, ...)
 	end
 
-	local target = SA_CurrentTarget
+	local gunbaseOwnsShot = ProjectileCore and ProjectileCore.GunBaseRedirecting == true
 	-- VOMAGLA intentionally handles FireServer before checkcaller: the remote can
 	-- be reached from original GunBase.fire after that function was hooked.
 	if method == "FireServer" then
+		if gunbaseOwnsShot then
+			if ProjectileCore then ProjectileCore.Status.fallbackSkips += 1 end
+			return oldNamecall(self, ...)
+		end
+		local target = SA_CurrentTarget
+		if ProjectileSilent and type(ProjectileSilent.GetTarget) == "function" then
+			target = ProjectileSilent.GetTarget()
+		end
 		if not target or not target.Parent then return oldNamecall(self, ...) end
+		local targetPosition = target.Position
 		if ProjectileCore then ProjectileCore.Status.remoteCalls += 1 end
 		if math.random(1, 100) > S.MBHitChance then
 			if ProjectileCore then ProjectileCore.Status.lastShotReason = "fireserver-hit-chance-original" end
@@ -4345,10 +4469,10 @@ do
 		for index = 1, args.n do
 			local value = args[index]
 			if typeof(value) == "Vector3" then
-				args[index] = target.Position
+				args[index] = targetPosition
 				patched = true
 			elseif typeof(value) == "CFrame" then
-				args[index] = CFrame.new(target.Position)
+				args[index] = CFrame.new(targetPosition)
 				patched = true
 			end
 		end
@@ -4362,6 +4486,14 @@ do
 	if executorCall or self ~= workspace then return oldNamecall(self, ...) end
 	if method ~= "Raycast" and method ~= "FindPartOnRay" and method ~= "FindPartOnRayWithIgnoreList" then
 		return oldNamecall(self, ...)
+	end
+	if gunbaseOwnsShot then
+		if ProjectileCore then ProjectileCore.Status.fallbackSkips += 1 end
+		return oldNamecall(self, ...)
+	end
+	local target = SA_CurrentTarget
+	if ProjectileSilent and type(ProjectileSilent.GetTarget) == "function" then
+		target = ProjectileSilent.GetTarget()
 	end
 	if not target or not target.Parent then return oldNamecall(self, ...) end
 	if math.random(1, 100) > S.MBHitChance then return oldNamecall(self, ...) end
