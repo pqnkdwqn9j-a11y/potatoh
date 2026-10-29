@@ -3,7 +3,8 @@
 -- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt is untested.
 -- Access: private JNKIE keys; shared BETA and standalone Open Beta are removed.
 -- Removed: Xeno support, anti-dump, heartbeat, anti-spy, remote loaders and Force Hit.
--- Silent Aim: GunBase.fire + FireServer + Workspace Raycast; live proof remains executor-specific.
+-- Silent Aim: GunBase.fire + FireServer + long-range Workspace Raycast; live proof remains executor-specific.
+-- Short melee/resource rays always pass through so trees and stones remain farmable.
 
 local _burmaldaEnv = getgenv and getgenv() or _G
 local _burmaldaKey = tostring(_burmaldaEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
@@ -39,6 +40,7 @@ local Runtime = {
 	Cleanup = {},
 	Drawings = {},
 	Guis = {},
+	CraftingMenuOpen = false,
 	SilentPath = "GunBase.fire + FireServer + Workspace Raycast",
 	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt" },
 }
@@ -394,6 +396,10 @@ local function startCrosshair()
 	if crosshairConn then crosshairConn:Disconnect(); crosshairConn = nil end
 	crosshairConn = RunService.RenderStepped:Connect(function(dt)
 		if Runtime.Unloaded then return end
+		if Runtime.CraftingMenuOpen then
+			UIS.MouseIconEnabled = true
+			return
+		end
 		if not crosshairSettings.crosshairEnabled then
 			if Crosshair.Enabled then
 				chClear()
@@ -844,6 +850,47 @@ local function toggleMenu(viaSHIFT)
 end
 closeBtn.MouseButton1Click:Connect(function() if menuOpen then toggleMenu(false) end end)
 
+-- The game's crafting UI is PlayerGui.Main.Crafting. While it is open, none of
+-- our ScreenGuis may sink its clicks. Drawing ESP is input-inert and stays intact.
+do
+	local craftGuiStates = {}
+	local function restoreCraftGuis()
+		for gui, enabled in pairs(craftGuiStates) do
+			pcall(function() gui.Enabled = enabled end)
+		end
+		table.clear(craftGuiStates)
+	end
+	local function updateCraftingMenu()
+		if Runtime.Unloaded then return end
+		local gameMain = pGui:FindFirstChild("Main")
+		local crafting = gameMain and gameMain:FindFirstChild("Crafting") or nil
+		local open = crafting ~= nil and crafting.Visible == true and gameMain.Enabled ~= false
+		if open ~= Runtime.CraftingMenuOpen then
+			Runtime.CraftingMenuOpen = open
+			if not open then restoreCraftGuis() end
+		end
+		if open then
+			for gui in pairs(Runtime.Guis) do
+				if craftGuiStates[gui] == nil then craftGuiStates[gui] = gui.Enabled ~= false end
+				gui.Enabled = false
+			end
+		end
+	end
+	Runtime.UpdateCraftingMenu = updateCraftingMenu
+	updateCraftingMenu()
+	task.spawn(function()
+		while not Runtime.Unloaded do
+			updateCraftingMenu()
+			task.wait(0.1)
+		end
+	end)
+	onCleanup(function()
+		Runtime.CraftingMenuOpen = false
+		restoreCraftGuis()
+		Runtime.UpdateCraftingMenu = nil
+	end)
+end
+
 -- Drag the window by its title bar.
 local dragging, dragStart, dragOrigin = false, nil, nil
 header.InputBegan:Connect(function(input)
@@ -881,7 +928,7 @@ openBtn.InputEnded:Connect(function(input)
 	end
 end)
 UIS.InputBegan:Connect(function(input, gp)
-	if gp then return end
+	if gp or Runtime.CraftingMenuOpen then return end
 	if input.KeyCode == Enum.KeyCode.RightShift then toggleMenu(true) end
 end)
 
@@ -3442,6 +3489,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 			remoteCalls = 0,
 			remoteRedirects = 0,
 			fallbackSkips = 0,
+			nonCombatSkips = 0,
 			bufferWrites = 0,
 			target = "inactive",
 			visiblePointChecks = 0,
@@ -3669,9 +3717,9 @@ local projectileInitOK, projectileInitError = pcall(function()
 				return originalFire(self, ...)
 			end
 			ProjectileCore.Status.calls += 1
-			if not S.SilentAim then
+			if not S.SilentAim or Runtime.CraftingMenuOpen then
 				ProjectileCore.Status.normalCalls += 1
-				ProjectileCore.Status.lastShotReason = "silent-inactive-original"
+				ProjectileCore.Status.lastShotReason = Runtime.CraftingMenuOpen and "crafting-menu-original" or "silent-inactive-original"
 				return originalFire(self, ...)
 			end
 			local target, livePosition = getLiveTarget()
@@ -3782,6 +3830,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 			remoteCalls = status.remoteCalls,
 			remoteRedirects = status.remoteRedirects,
 			fallbackSkips = status.fallbackSkips,
+			nonCombatSkips = status.nonCombatSkips,
 			gunbaseOwnsShot = ProjectileCore.GunBaseRedirecting == true,
 			bufferWrites = status.bufferWrites,
 			target = status.target,
@@ -4175,7 +4224,7 @@ end
 ExtraFeatures.UpdateToolOutline = updateToolOutline
 ExtraFeatures.GetToolOutline = function(tool) return toolHighlights[tool] end
 
--- Auto Fire uses input only when Silent Aim already has a target and the menu is closed.
+-- Auto Fire uses input only when Silent Aim already has a target and both our menu and game crafting are closed.
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local lastAutoFire = -1000
 local function fireAutoClick()
@@ -4198,7 +4247,7 @@ local function fireAutoClick()
 	end
 end
 local function updateAutoFire()
-	if not S.AutoFire or not S.SilentAim or menuOpen then return end
+	if not S.AutoFire or not S.SilentAim or menuOpen or Runtime.CraftingMenuOpen then return end
 	local target = SA_CurrentTarget
 	local character = LocalPlayer.Character
 	local tool = character and character:FindFirstChildOfClass("Tool")
@@ -5471,6 +5520,7 @@ do
 		local executorCall = checkcaller and checkcaller() or false
 		local worldRay = self == workspace and (method == "Raycast" or method == "FindPartOnRay" or method == "FindPartOnRayWithIgnoreList")
 		if Runtime.Unloaded then return oldNamecall(self, ...) end
+		if Runtime.CraftingMenuOpen then return oldNamecall(self, ...) end
 
 		if not S.SilentAim then
 			if worldRay and not executorCall and S.BulletTracers then
@@ -5535,6 +5585,18 @@ do
 			return oldNamecall(self, ...)
 		end
 
+		-- VOMAGLA's distance guard is required here: ViewmodelController also uses
+		-- Workspace rays for short melee/resource checks (TreeX, NodeSpark, stones).
+		-- Never pull those interactions toward a selected player or draw gun tracers.
+		local castDistance = method == "Raycast" and args[2].Magnitude or args[1].Direction.Magnitude
+		if castDistance <= 50 then
+			if ProjectileCore then
+				ProjectileCore.Status.nonCombatSkips += 1
+				ProjectileCore.Status.lastShotReason = "short-melee-resource-ray-original"
+			end
+			return oldNamecall(self, ...)
+		end
+
 		local target = SA_CurrentTarget
 		local targetPosition = nil
 		if ProjectileSilent and type(ProjectileSilent.GetTarget) == "function" then
@@ -5551,7 +5613,6 @@ do
 			local newOrigin = origin
 			if S.Manipulation and workspace.CurrentCamera then newOrigin = workspace.CurrentCamera.CFrame.Position end
 			local delta = targetPosition - newOrigin
-			local castDistance = direction.Magnitude
 			if delta.Magnitude == 0 or castDistance == 0 then
 				if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
 				return oldNamecall(self, ...)
@@ -5563,7 +5624,6 @@ do
 
 		local ray = args[1]
 		local delta = targetPosition - ray.Origin
-		local castDistance = ray.Direction.Magnitude
 		if delta.Magnitude == 0 or castDistance == 0 then
 			if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
 			return oldNamecall(self, ...)
