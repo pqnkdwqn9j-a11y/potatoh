@@ -20,7 +20,7 @@ local Runtime = {
 	Cleanup = {},
 	Drawings = {},
 	Guis = {},
-	SilentPath = "GunBase.fire + Workspace Raycast",
+	SilentPath = "GunBase.fire + FireServer + Workspace Raycast",
 }
 _burmaldaEnv.BurmaldaRost = Runtime
 local ProjectileCore, ProjectileSilent
@@ -3074,6 +3074,8 @@ local projectileInitOK, projectileInitError = pcall(function()
 			calls = 0,
 			normalCalls = 0,
 			redirects = 0,
+			remoteCalls = 0,
+			remoteRedirects = 0,
 			bufferWrites = 0,
 			target = "inactive",
 			lastShotReason = "not-fired",
@@ -3094,7 +3096,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 
 	local function targetPartFor(character)
 		if S.MBTargetPart == 2 then
-			return character:FindFirstChild("HumanoidRootPart")
+			return character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head")
 		end
 		if S.MBTargetPart == 3 then
 			local candidates = {}
@@ -3105,7 +3107,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 			if #candidates > 0 then return candidates[math.random(1, #candidates)] end
 			return nil
 		end
-		return character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head")
+		return character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head") or character:FindFirstChild("HumanoidRootPart")
 	end
 
 	local function updateTarget()
@@ -3123,7 +3125,8 @@ local projectileInitOK, projectileInitError = pcall(function()
 		local viewport = camera.ViewportSize
 		local center = S.MBFovMode == "pc" and UIS:GetMouseLocation()
 			or Vector2.new(viewport.X * 0.5, viewport.Y * 0.5)
-		local cameraPosition = camera.CFrame.Position
+		local localRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+		local worldOrigin = localRoot and localRoot.Position or camera.CFrame.Position
 		local bestPart, bestPlayer = nil, nil
 		local bestDistance, bestHP = math.huge, math.huge
 
@@ -3134,7 +3137,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 				if character and humanoid and humanoid.Health > 0 then
 					local part = targetPartFor(character)
 					if part and (not S.MBVisibleOnly or isVisible(part, character)) then
-						local distance3D = (part.Position - cameraPosition).Magnitude
+						local distance3D = (part.Position - worldOrigin).Magnitude
 						if distance3D <= S.MBMaxDist then
 							local projected, onScreen = camera:WorldToViewportPoint(part.Position)
 							if onScreen and projected.Z > 0 then
@@ -3168,14 +3171,17 @@ local projectileInitOK, projectileInitError = pcall(function()
 	-- VOMAGLA uses this ModuleScript table assignment. It is easy to restore and does
 	-- not require hookfunction support from the executor.
 	local GunBase, originalFire, replacementFire = nil, nil, nil
-	local function installGunBase()
+	local function installGunBase(module)
 		if ProjectileSilent.Installed.GunBase then return true end
-		local gun = ReplicatedStorage:FindFirstChild("Gun")
-		local scripts = gun and gun:FindFirstChild("Scripts")
-		local module = scripts and scripts:FindFirstChild("GunBase")
-		module = module or ReplicatedStorage:FindFirstChild("GunBase", true)
+		if not ProjectileCore.Running then return false end
 		if not module then
-			ProjectileCore.Status.lastShotReason = "gunbase-missing"
+			local gun = ReplicatedStorage:FindFirstChild("Gun")
+			local scripts = gun and gun:FindFirstChild("Scripts")
+			module = scripts and scripts:FindFirstChild("GunBase")
+			module = module or ReplicatedStorage:FindFirstChild("GunBase", true)
+		end
+		if not module then
+			ProjectileCore.Status.lastShotReason = "gunbase-waiting"
 			return false
 		end
 		local ok, loaded = pcall(require, module)
@@ -3199,6 +3205,10 @@ local projectileInitOK, projectileInitError = pcall(function()
 			local target = SA_CurrentTarget
 			if not target or not target.Parent then
 				ProjectileCore.Status.lastShotReason = "no-target-original"
+				return originalFire(self, ...)
+			end
+			if math.random(1, 100) > S.MBHitChance then
+				ProjectileCore.Status.lastShotReason = "gunbase-hit-chance-original"
 				return originalFire(self, ...)
 			end
 
@@ -3243,6 +3253,17 @@ local projectileInitOK, projectileInitError = pcall(function()
 	end
 	ProjectileSilent.Refresh = installGunBase
 	installGunBase()
+	task.spawn(function()
+		if not ProjectileCore.Running or ProjectileSilent.Installed.GunBase then return end
+		local ok, module = pcall(function()
+			local gun = ReplicatedStorage:WaitForChild("Gun", 20)
+			local scripts = gun and gun:WaitForChild("Scripts", 20)
+			return scripts and scripts:WaitForChild("GunBase", 20) or nil
+		end)
+		if ok and module and ProjectileCore.Running then
+			installGunBase(module)
+		end
+	end)
 
 	onCleanup(function()
 		clearTarget()
@@ -3255,17 +3276,20 @@ local projectileInitOK, projectileInitError = pcall(function()
 
 	Runtime.Projectile = ProjectileSilent
 	Runtime.ProjectileStatus = ProjectileCore.Status
-	Runtime.ProjectilePath = "GunBase.fire + Workspace Raycast"
+	Runtime.ProjectilePath = "GunBase.fire + FireServer + Workspace Raycast"
 	Runtime.SilentPath = Runtime.ProjectilePath
 	Runtime.GetSilentStatus = function()
 		local status = ProjectileCore.Status
 		return {
 			path = Runtime.ProjectilePath,
 			gunbase = status.gunbase,
+			fireserver = true,
 			raycast = true,
 			calls = status.calls,
 			normalCalls = status.normalCalls,
 			redirects = status.redirects,
+			remoteCalls = status.remoteCalls,
+			remoteRedirects = status.remoteRedirects,
 			bufferWrites = status.bufferWrites,
 			target = status.target,
 			lastShotReason = status.lastShotReason,
@@ -3285,6 +3309,7 @@ if not Runtime.GetSilentStatus then
 		return {
 			path = Runtime.SilentPath,
 			gunbase = false,
+			fireserver = true,
 			raycast = true,
 			error = Runtime.ProjectileError,
 		}
@@ -4020,14 +4045,6 @@ task.spawn(function()
 		if ProjectileSilent and S.SilentAim and ProjectileSilent.TargetPart then
 			target = ProjectileSilent.TargetPart
 		end
-		if target and math.random(100) > S.MBHitChance then
-			target = nil
-			if ProjectileSilent then
-				ProjectileSilent.TargetPart = nil
-				ProjectileSilent.TargetPlayer = nil
-				ProjectileSilent.TargetCharacter = nil
-			end
-		end
 		SA_CurrentTarget = target
 	end
 end)
@@ -4113,18 +4130,45 @@ local oldNamecall
 oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
 	local method = getnamecallmethod()
 	local executorCall = checkcaller and checkcaller() or false
-	if Runtime.Unloaded or executorCall or not S.SilentAim or self ~= workspace then
+	if Runtime.Unloaded or not S.SilentAim then
 		return oldNamecall(self, ...)
 	end
+
+	local target = SA_CurrentTarget
+	-- VOMAGLA intentionally handles FireServer before checkcaller: the remote can
+	-- be reached from original GunBase.fire after that function was hooked.
+	if method == "FireServer" then
+		if not target or not target.Parent then return oldNamecall(self, ...) end
+		if ProjectileCore then ProjectileCore.Status.remoteCalls += 1 end
+		if math.random(1, 100) > S.MBHitChance then
+			if ProjectileCore then ProjectileCore.Status.lastShotReason = "fireserver-hit-chance-original" end
+			return oldNamecall(self, ...)
+		end
+		local args = table.pack(...)
+		local patched = false
+		for index = 1, args.n do
+			local value = args[index]
+			if typeof(value) == "Vector3" then
+				args[index] = target.Position
+				patched = true
+			elseif typeof(value) == "CFrame" then
+				args[index] = CFrame.new(target.Position)
+				patched = true
+			end
+		end
+		if patched and ProjectileCore then
+			ProjectileCore.Status.remoteRedirects += 1
+			ProjectileCore.Status.lastShotReason = "fireserver-redirected"
+		end
+		return oldNamecall(self, unpack(args, 1, args.n))
+	end
+
+	if executorCall or self ~= workspace then return oldNamecall(self, ...) end
 	if method ~= "Raycast" and method ~= "FindPartOnRay" and method ~= "FindPartOnRayWithIgnoreList" then
 		return oldNamecall(self, ...)
 	end
-	local char = LocalPlayer.Character
-	local equippedTool = char and char:FindFirstChildOfClass("Tool")
-	local target = SA_CurrentTarget
-	if not equippedTool or not target or not target.Parent then
-		return oldNamecall(self, ...)
-	end
+	if not target or not target.Parent then return oldNamecall(self, ...) end
+	if math.random(1, 100) > S.MBHitChance then return oldNamecall(self, ...) end
 
 	local args = {...}
 	if method == "Raycast" then
