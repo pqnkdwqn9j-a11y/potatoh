@@ -3501,6 +3501,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 		TargetPosition = nil,
 		TargetPlayer = nil,
 		TargetCharacter = nil,
+		TargetHumanoid = nil,
 		Installed = { GunBase = false },
 	}
 
@@ -3509,6 +3510,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 		ProjectileSilent.TargetPosition = nil
 		ProjectileSilent.TargetPlayer = nil
 		ProjectileSilent.TargetCharacter = nil
+		ProjectileSilent.TargetHumanoid = nil
 	end
 
 	local function targetPartFor(character)
@@ -3600,7 +3602,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 			or Vector2.new(viewport.X * 0.5, viewport.Y * 0.5)
 		local localRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 		local worldOrigin = localRoot and localRoot.Position or camera.CFrame.Position
-		local bestPart, bestPlayer, bestPosition = nil, nil, nil
+		local bestPart, bestPlayer, bestPosition, bestHumanoid = nil, nil, nil, nil
 		local bestDistance, bestHP = math.huge, math.huge
 
 		for _, player in ipairs(Players:GetPlayers()) do
@@ -3624,11 +3626,11 @@ local projectileInitOK, projectileInitError = pcall(function()
 										local hp = humanoid.Health
 										if S.MBPriority == "hp" then
 											if hp < bestHP or (hp == bestHP and screenDistance < bestDistance) then
-												bestPart, bestPlayer, bestPosition = part, player, targetPosition
+												bestPart, bestPlayer, bestPosition, bestHumanoid = part, player, targetPosition, humanoid
 												bestDistance, bestHP = screenDistance, hp
 											end
 										elseif screenDistance < bestDistance then
-											bestPart, bestPlayer, bestPosition = part, player, targetPosition
+											bestPart, bestPlayer, bestPosition, bestHumanoid = part, player, targetPosition, humanoid
 											bestDistance, bestHP = screenDistance, hp
 										end
 									end
@@ -3644,12 +3646,13 @@ local projectileInitOK, projectileInitError = pcall(function()
 		ProjectileSilent.TargetPosition = bestPosition
 		ProjectileSilent.TargetPlayer = bestPlayer
 		ProjectileSilent.TargetCharacter = bestPlayer and bestPlayer.Character or nil
+		ProjectileSilent.TargetHumanoid = bestHumanoid
 		ProjectileCore.Status.target = bestPart and "ok" or "no-target"
 	end
 	ProjectileSilent.Update = updateTarget
 
-	-- Validate the selected part again at the instant of the shot. The 20 Hz selector
-	-- must never leave a dead/despawned or out-of-FOV target armed for a later shot.
+	-- GunBase.fire runs outside __namecall, so it can safely repeat the full live
+	-- Character/FOV/distance validation. Namecall fallbacks use the property-only cache.
 	local function getLiveTarget()
 		local target = ProjectileSilent.TargetPart
 		local character = ProjectileSilent.TargetCharacter
@@ -5515,6 +5518,25 @@ do
 		end
 		return unpack(results, 1, results.n)
 	end
+	-- Opiumware can lose the outer namecall context when a hook performs another
+	-- Roblox method call. Keep this path like VOMAGLA's cached targetPos: property
+	-- reads only, with no GetTarget(), WorldToViewportPoint, FindFirstChild or IsA.
+	local function getCachedTarget()
+		if not ProjectileSilent then
+			local target = SA_CurrentTarget
+			if not target or not target.Parent then return nil end
+			return target, target.Position
+		end
+		local target = ProjectileSilent.TargetPart
+		local humanoid = ProjectileSilent.TargetHumanoid
+		if not target or not target.Parent or (humanoid and humanoid.Health <= 0) then
+			return nil
+		end
+		local targetPosition = ProjectileSilent.TargetPosition
+		if typeof(targetPosition) ~= "Vector3" then targetPosition = target.Position end
+		return target, targetPosition
+	end
+
 	local function silentNamecall(self, ...)
 		local method = type(getnamecallmethod) == "function" and getnamecallmethod() or nil
 		local executorCall = checkcaller and checkcaller() or false
@@ -5538,13 +5560,8 @@ do
 				if ProjectileCore then ProjectileCore.Status.fallbackSkips += 1 end
 				return oldNamecall(self, ...)
 			end
-			local target = SA_CurrentTarget
-			local targetPosition = nil
-			if ProjectileSilent and type(ProjectileSilent.GetTarget) == "function" then
-				target, targetPosition = ProjectileSilent.GetTarget()
-			end
-			if not target or not target.Parent then return oldNamecall(self, ...) end
-			targetPosition = targetPosition or target.Position
+			local target, targetPosition = getCachedTarget()
+			if not target then return oldNamecall(self, ...) end
 			if ProjectileCore then ProjectileCore.Status.remoteCalls += 1 end
 			if math.random(1, 100) > S.MBHitChance then
 				if ProjectileCore then ProjectileCore.Status.lastShotReason = "fireserver-hit-chance-original" end
@@ -5597,16 +5614,11 @@ do
 			return oldNamecall(self, ...)
 		end
 
-		local target = SA_CurrentTarget
-		local targetPosition = nil
-		if ProjectileSilent and type(ProjectileSilent.GetTarget) == "function" then
-			target, targetPosition = ProjectileSilent.GetTarget()
-		end
-		if not target or not target.Parent or math.random(1, 100) > S.MBHitChance then
+		local target, targetPosition = getCachedTarget()
+		if not target or math.random(1, 100) > S.MBHitChance then
 			if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
 			return oldNamecall(self, ...)
 		end
-		targetPosition = targetPosition or target.Position
 
 		if method == "Raycast" then
 			local origin, direction = args[1], args[2]
