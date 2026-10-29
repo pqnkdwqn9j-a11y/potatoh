@@ -20,7 +20,7 @@ local Runtime = {
 	Cleanup = {},
 	Drawings = {},
 	Guis = {},
-	SilentPath = "projectile-packet-with-raycast-fallback-unverified",
+	SilentPath = "GunBase.fire + Workspace Raycast",
 }
 _burmaldaEnv.BurmaldaRost = Runtime
 local ProjectileCore, ProjectileSilent
@@ -981,19 +981,42 @@ local function addSlider(p, name, min, max, def, callback)
 	local fill = Instance.new("Frame", bg)
 	fill.Size = UDim2.new((def-min)/(max-min), 0, 1, 0); fill.BackgroundColor3 = Theme.Accent; registerAccent(fill, "BackgroundColor3"); fill.BorderSizePixel = 0
 
-	bg.InputBegan:Connect(function(i)
-		if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
-			local function up(inp)
-				local pos = math.clamp((inp.Position.X - bg.AbsolutePosition.X) / bg.AbsoluteSize.X, 0, 1)
-				fill.Size = UDim2.new(pos, 0, 1, 0)
-				local val = math.floor(min + (max - min) * pos)
-				v.Text = tostring(val)
-				if callback then callback(val) end
-			end
-			up(i)
-			local mv = UIS.InputChanged:Connect(function(inp) if inp.UserInputType == Enum.UserInputType.MouseMovement or inp.UserInputType == Enum.UserInputType.Touch then up(inp) end end)
-			UIS.InputEnded:Connect(function(inp) if inp.UserInputType == Enum.UserInputType.MouseButton1 or inp.UserInputType == Enum.UserInputType.Touch then mv:Disconnect() end end)
+	-- The visual track is only 2 px high and its fill used to intercept clicks.
+	-- A full-row button keeps both decreasing and increasing draggable/clickable.
+	local hit = Instance.new("TextButton", f)
+	hit.Name = "SliderInput"
+	hit.Size = UDim2.new(1, 0, 1, 0)
+	hit.BackgroundTransparency = 1
+	hit.Text = ""
+	hit.AutoButtonColor = false
+	hit.ZIndex = 5
+	hit.Active = true
+
+	hit.InputBegan:Connect(function(i)
+		if i.UserInputType ~= Enum.UserInputType.MouseButton1 and i.UserInputType ~= Enum.UserInputType.Touch then return end
+		local draggingSlider = true
+		local mv, ended = nil, nil
+		local function up(inp)
+			if not draggingSlider then return end
+			local width = bg.AbsoluteSize.X
+			if width <= 0 then return end
+			local pos = math.clamp((inp.Position.X - bg.AbsolutePosition.X) / width, 0, 1)
+			fill.Size = UDim2.new(pos, 0, 1, 0)
+			local val = math.clamp(math.floor(min + (max - min) * pos), min, max)
+			v.Text = tostring(val)
+			if callback then callback(val) end
 		end
+		local function stop(inp)
+			if inp.UserInputType ~= Enum.UserInputType.MouseButton1 and inp.UserInputType ~= Enum.UserInputType.Touch then return end
+			draggingSlider = false
+			if mv then mv:Disconnect(); mv = nil end
+			if ended then ended:Disconnect(); ended = nil end
+		end
+		up(i)
+		mv = UIS.InputChanged:Connect(function(inp)
+			if inp.UserInputType == Enum.UserInputType.MouseMovement or inp.UserInputType == Enum.UserInputType.Touch then up(inp) end
+		end)
+		ended = UIS.InputEnded:Connect(stop)
 	end)
 end
 
@@ -3038,939 +3061,235 @@ onCleanup(function()
 end)
 
 
--- Burmalda Next projectile/stack/packet path adapted to the new UI.
--- This is a compatibility integration; live rost alpha verification is still required.
+-- Reference-compatible Silent Aim path for rost alpha.
+-- Normal shots always pass through unchanged. VFX.CreateProjectile and VectorUtil.FireRemote
+-- are intentionally not hooked: the previous experimental hooks could break hit registration.
+
 local projectileInitOK, projectileInitError = pcall(function()
 	ProjectileCore = {
 		Running = true,
-		Env = _burmaldaEnv,
-		Players = Players,
-		ReplicatedStorage = ReplicatedStorage,
-		Workspace = workspace,
-		LocalPlayer = LocalPlayer,
-		Flags = { ["SilentAim Activation"] = { Active = true } },
 		Status = {
-			projectile = false, packet = false, recoil = false, bolt = false, toolinfo = false,
-			target = "inactive", projectileCalls = 0, localShots = 0, stackWrites = 0,
-			redirects = 0, packetWrites = 0, lastShotReason = "none", lastCaller = "none",
-			lastStack = "not-scanned", lastPacket = "none", lastData = "none",
-			lastError = "none", diagnosticFile = "not-saved",
+			gunbase = false,
+			raycast = true,
+			calls = 0,
+			normalCalls = 0,
+			redirects = 0,
+			bufferWrites = 0,
+			target = "inactive",
+			lastShotReason = "not-fired",
 		},
 	}
-	function ProjectileCore:Get(name)
-		if name == "SilentAim" then return S.SilentAim end
-		if name == "AlwaysTarget" then return true end
-		if name == "FOVRadius" then return S.FOV end
-		if name == "FOVColor" then return AC_FOV end
-		if name == "VisualizeFOV" then return false end -- the new UI owns the visible circle
-		if name == "SilentAimPart" then
-			return S.MBTargetPart == 2 and "HumanoidRootPart" or "HeadHitbox"
+	ProjectileSilent = {
+		TargetPart = nil,
+		TargetPlayer = nil,
+		TargetCharacter = nil,
+		Installed = { GunBase = false },
+	}
+
+	local function clearTarget()
+		ProjectileSilent.TargetPart = nil
+		ProjectileSilent.TargetPlayer = nil
+		ProjectileSilent.TargetCharacter = nil
+	end
+
+	local function targetPartFor(character)
+		if S.MBTargetPart == 2 then
+			return character:FindFirstChild("HumanoidRootPart")
 		end
-		if name == "VisibleCheck" then return S.MBVisibleOnly end
-		if name == "RandomizeHitPart" then return S.MBTargetPart == 3 end
-		if name == "TargetTeammates" then return false end
-		if name == "TargetLine" then return false end -- the new UI owns the visible line
-		if name == "TargetLineColor" then return S.MBTargetLineColor end
-		if name == "PacketSilent" then return true end
-		if name == "DropMultiplier" then return 1 end
-		if name == "Prediction" then return 1 end
-		-- No Force Hit, hitscan, wallbang, Reach or Instant Bullet flag is exposed here.
-		if name == "InstantBullet" or name == "HitScan" or name == "ForcePenetration"
-			or name == "WallbangPlus" or name == "Reach" then return false end
-		return nil
-	end
-	function ProjectileCore:GetCamera()
-		return workspace.CurrentCamera
-	end
-	function ProjectileCore:GetCharacter()
-		return LocalPlayer.Character
-	end
-	function ProjectileCore:GetRoot()
-		local character = LocalPlayer.Character
-		return character and character:FindFirstChild("HumanoidRootPart") or nil
-	end
-	function ProjectileCore:Require(instance)
-		return require(instance)
-	end
-	function ProjectileCore:AddCleanup(fn)
-		onCleanup(fn)
+		if S.MBTargetPart == 3 then
+			local candidates = {}
+			for _, name in ipairs({"HeadHitbox", "Head", "HumanoidRootPart"}) do
+				local part = character:FindFirstChild(name)
+				if part then table.insert(candidates, part) end
+			end
+			if #candidates > 0 then return candidates[math.random(1, #candidates)] end
+			return nil
+		end
+		return character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head")
 	end
 
-ProjectileSilent = (function(Core)
-    local M = {
-        TargetPart = nil,
-        TargetPlayer = nil,
-        TargetCharacter = nil,
-        BulletStats = { speed = 1000, gravity = 0, range = 1000 },
-        TTHShot = nil,
-        Assigned = {},
-        Installed = { Projectile = false, Packet = false, Reach = false },
-        ModulePaths = { VFX = "missing", VectorUtil = "missing", RaycastUtil = "missing" },
-        LastCaller = "none",
-        GCStats = "not-scanned",
-        VFXFunctionOnly = false,
-        GCCache = { Time = 0, Values = nil },
-        PenCache = { Time = 0, Items = {} },
-    }
-    local Modules, VFX, VectorUtil, RaycastUtil
+	local function updateTarget()
+		if not ProjectileCore.Running or not S.SilentAim then
+			clearTarget()
+			ProjectileCore.Status.target = S.SilentAim and "starting" or "inactive"
+			return
+		end
+		local camera = workspace.CurrentCamera
+		if not camera then
+			clearTarget()
+			ProjectileCore.Status.target = "no-camera"
+			return
+		end
+		local viewport = camera.ViewportSize
+		local center = S.MBFovMode == "pc" and UIS:GetMouseLocation()
+			or Vector2.new(viewport.X * 0.5, viewport.Y * 0.5)
+		local cameraPosition = camera.CFrame.Position
+		local bestPart, bestPlayer = nil, nil
+		local bestDistance, bestHP = math.huge, math.huge
 
-    local function PathOf(instance)
-        local parts, current = {}, instance
-        for _ = 1, 10 do
-            if not current then break end
-            table.insert(parts, 1, tostring(current.Name))
-            current = current.Parent
-        end
-        return table.concat(parts, "/")
-    end
+		for _, player in ipairs(Players:GetPlayers()) do
+			if player ~= LocalPlayer then
+				local character = player.Character
+				local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+				if character and humanoid and humanoid.Health > 0 then
+					local part = targetPartFor(character)
+					if part and (not S.MBVisibleOnly or isVisible(part, character)) then
+						local distance3D = (part.Position - cameraPosition).Magnitude
+						if distance3D <= S.MBMaxDist then
+							local projected, onScreen = camera:WorldToViewportPoint(part.Position)
+							if onScreen and projected.Z > 0 then
+								local screenDistance = (Vector2.new(projected.X, projected.Y) - center).Magnitude
+								if screenDistance <= S.FOV then
+									local hp = humanoid.Health
+									if S.MBPriority == "hp" then
+										if hp < bestHP or (hp == bestHP and screenDistance < bestDistance) then
+											bestPart, bestPlayer = part, player
+											bestDistance, bestHP = screenDistance, hp
+										end
+									elseif screenDistance < bestDistance then
+										bestPart, bestPlayer = part, player
+										bestDistance, bestHP = screenDistance, hp
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
 
-    local function RequireNamed(names)
-        for _, name in ipairs(names) do
-            local instance = Modules and Modules:FindFirstChild(name)
-            instance = instance or Core.ReplicatedStorage:FindFirstChild(name, true)
-            if instance then
-                local loaded = Core:Require(instance)
-                if type(loaded) == "table" then
-                    return loaded, PathOf(instance)
-                end
-            end
-        end
-        if type(getloadedmodules) == "function" then
-            local wanted = {}
-            for _, name in ipairs(names) do wanted[name] = true end
-            local ok, loadedModules = pcall(getloadedmodules)
-            if ok and type(loadedModules) == "table" then
-                for _, instance in pairs(loadedModules) do
-                    if typeof(instance) == "Instance" and instance:IsA("ModuleScript") and wanted[instance.Name] then
-                        local loaded = Core:Require(instance)
-                        if type(loaded) == "table" then
-                            return loaded, "getloadedmodules/" .. PathOf(instance)
-                        end
-                    end
-                end
-            end
-        end
-        return nil, "missing"
-    end
+		ProjectileSilent.TargetPart = bestPart
+		ProjectileSilent.TargetPlayer = bestPlayer
+		ProjectileSilent.TargetCharacter = bestPlayer and bestPlayer.Character or nil
+		ProjectileCore.Status.target = bestPart and "ok" or "no-target"
+	end
+	ProjectileSilent.Update = updateTarget
 
-    local function ResolveModules()
-        Modules = Core.ReplicatedStorage:FindFirstChild("Modules") or Modules
-        if type(VFX) ~= "table" or type(VFX.CreateProjectile) ~= "function" then
-            VFX, M.ModulePaths.VFX = RequireNamed({ "VFXModule" })
-        end
-        if type(VectorUtil) ~= "table" or type(VectorUtil.FireRemote) ~= "function" then
-            VectorUtil, M.ModulePaths.VectorUtil = RequireNamed({ "VectorUtil" })
-        end
-        if type(RaycastUtil) ~= "table" or type(RaycastUtil.Raycast) ~= "function" then
-            RaycastUtil, M.ModulePaths.RaycastUtil = RequireNamed({ "roosterchickens", "RaycastUtil" })
-        end
-    end
+	-- VOMAGLA uses this ModuleScript table assignment. It is easy to restore and does
+	-- not require hookfunction support from the executor.
+	local GunBase, originalFire, replacementFire = nil, nil, nil
+	local function installGunBase()
+		if ProjectileSilent.Installed.GunBase then return true end
+		local gun = ReplicatedStorage:FindFirstChild("Gun")
+		local scripts = gun and gun:FindFirstChild("Scripts")
+		local module = scripts and scripts:FindFirstChild("GunBase")
+		module = module or ReplicatedStorage:FindFirstChild("GunBase", true)
+		if not module then
+			ProjectileCore.Status.lastShotReason = "gunbase-missing"
+			return false
+		end
+		local ok, loaded = pcall(require, module)
+		if not ok or type(loaded) ~= "table" or type(loaded.fire) ~= "function" then
+			ProjectileCore.Status.lastShotReason = "gunbase-fire-missing"
+			return false
+		end
+		GunBase = loaded
+		originalFire = GunBase.fire
 
-    ResolveModules()
+		replacementFire = function(self, ...)
+			if not ProjectileCore.Running then
+				return originalFire(self, ...)
+			end
+			ProjectileCore.Status.calls += 1
+			if not S.SilentAim then
+				ProjectileCore.Status.normalCalls += 1
+				ProjectileCore.Status.lastShotReason = "silent-inactive-original"
+				return originalFire(self, ...)
+			end
+			local target = SA_CurrentTarget
+			if not target or not target.Parent then
+				ProjectileCore.Status.lastShotReason = "no-target-original"
+				return originalFire(self, ...)
+			end
 
-    local FOVCircle = newDrawing("Circle")
-    FOVCircle.Thickness = 1.5
-    FOVCircle.Filled = false
-    FOVCircle.NumSides = 80
-    FOVCircle.Visible = false
-    local TargetLine = newDrawing("Line")
-    TargetLine.Thickness = 1
-    TargetLine.Visible = false
+			local args = table.pack(...)
+			local patched = false
+			for index = 1, args.n do
+				local value = args[index]
+				if typeof(value) == "Vector3" and not patched then
+					args[index] = target.Position
+					patched = true
+				elseif typeof(value) == "buffer" and not patched and type(buffer) == "table" and type(buffer.writef32) == "function" then
+					local writeOK = pcall(function()
+						buffer.writef32(value, 4, target.Position.X)
+						buffer.writef32(value, 8, target.Position.Y)
+						buffer.writef32(value, 12, target.Position.Z)
+					end)
+					if writeOK then
+						patched = true
+						ProjectileCore.Status.bufferWrites += 1
+					end
+				end
+			end
+			if patched then
+				ProjectileCore.Status.redirects += 1
+				ProjectileCore.Status.lastShotReason = "gunbase-redirected"
+			else
+				ProjectileCore.Status.lastShotReason = "args-unmatched-original"
+			end
+			return originalFire(self, unpack(args, 1, args.n))
+		end
 
-    local function Active()
-        if not Core:Get("SilentAim") then
-            return false
-        end
-        if Core:Get("AlwaysTarget") then
-            return true
-        end
-        local key = Core.Flags["SilentAim Activation"]
-        return key and key.Active == true or false
-    end
+		local assigned = pcall(function() GunBase.fire = replacementFire end)
+		if not assigned or GunBase.fire ~= replacementFire then
+			ProjectileCore.Status.lastShotReason = "gunbase-assign-failed"
+			GunBase, originalFire, replacementFire = nil, nil, nil
+			return false
+		end
+		ProjectileSilent.Installed.GunBase = true
+		ProjectileCore.Status.gunbase = true
+		ProjectileCore.Status.lastShotReason = "gunbase-ready"
+		return true
+	end
+	ProjectileSilent.Refresh = installGunBase
+	installGunBase()
 
-    local function HasLineOfSight(origin, destination, targetCharacter)
-        if typeof(origin) ~= "Vector3" or typeof(destination) ~= "Vector3" then
-            return false
-        end
-        local direction = destination - origin
-        if direction.Magnitude < 0.1 then
-            return true
-        end
-        local params = RaycastParams.new()
-        params.FilterType = Enum.RaycastFilterType.Blacklist
-        params.FilterDescendantsInstances = { Core:GetCharacter() }
-        local result = Core.Workspace:Raycast(origin, direction, params)
-        if not result then
-            return true
-        end
-        return targetCharacter and result.Instance and result.Instance:IsDescendantOf(targetCharacter) or false
-    end
-
-    local function IsTeammate(player)
-        if player == Core.LocalPlayer then
-            return false
-        end
-        if Core.LocalPlayer.Team ~= nil or player.Team ~= nil then
-            return Core.LocalPlayer.Team ~= nil and player.Team == Core.LocalPlayer.Team
-        end
-        return Core.LocalPlayer.Neutral ~= true and player.Neutral ~= true
-            and Core.LocalPlayer.TeamColor == player.TeamColor
-    end
-
-    local function SelectVisiblePart(character, preferred)
-        local parts = {}
-        for _, name in ipairs({ preferred, "Head", "UpperTorso", "HumanoidRootPart" }) do
-            local part = character:FindFirstChild(name)
-            if part then
-                table.insert(parts, part)
-            end
-        end
-        local camera = Core:GetCamera()
-        if not camera then
-            return nil
-        end
-        for _, part in ipairs(parts) do
-            if part and part:IsA("BasePart") and HasLineOfSight(camera.CFrame.Position, part.Position, character) then
-                return part
-            end
-        end
-        return nil
-    end
-
-    local function UpdateTarget()
-        local camera = Core:GetCamera()
-        if not camera then
-            M.TargetPart, M.TargetPlayer, M.TargetCharacter = nil, nil, nil
-            Core.Env.BurmaldaTarget = nil
-            Core.Status.target = "no-camera"
-            FOVCircle.Visible = false
-            TargetLine.Visible = false
-            return
-        end
-        local center = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2)
-        local radius = Core:Get("FOVRadius") or 250
-        FOVCircle.Position = center
-        FOVCircle.Radius = radius
-        FOVCircle.Color = Core:Get("FOVColor") or Color3.new(1, 1, 1)
-        FOVCircle.Visible = Core:Get("VisualizeFOV") and Core:Get("SilentAim") or false
-
-        if not Active() then
-            M.TargetPart, M.TargetPlayer, M.TargetCharacter = nil, nil, nil
-            Core.Env.BurmaldaTarget = nil
-            Core.Status.target = Core:Get("SilentAim") and "key-inactive" or "inactive"
-            TargetLine.Visible = false
-            return
-        end
-
-        local preferred = Core:Get("SilentAimPart") or "Head"
-        local bestPart, bestPlayer, bestPoint = nil, nil, nil
-        local bestDistance = radius * radius
-        local sawOnscreen = false
-        for _, player in ipairs(Core.Players:GetPlayers()) do
-            if player ~= Core.LocalPlayer and (Core:Get("TargetTeammates") or not IsTeammate(player)) then
-                local character = player.Character
-                local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-                if character and humanoid and humanoid.Health > 0 then
-                    local part = character:FindFirstChild(preferred)
-                    if Core:Get("VisibleCheck") then
-                        part = SelectVisiblePart(character, preferred)
-                    end
-                    if part then
-                        local point, onscreen = camera:WorldToViewportPoint(part.Position)
-                        if onscreen and point.Z > 0 then
-                            sawOnscreen = true
-                            local dx, dy = point.X - center.X, point.Y - center.Y
-                            local distance = dx * dx + dy * dy
-                            if distance <= bestDistance then
-                                bestDistance = distance
-                                bestPart, bestPlayer, bestPoint = part, player, point
-                            end
-                        end
-                    end
-                end
-            end
-        end
-
-        if Core:Get("RandomizeHitPart") and bestPlayer and bestPlayer.Character then
-            local candidates = {}
-            for _, part in ipairs(bestPlayer.Character:GetChildren()) do
-                if part:IsA("BasePart") and HasLineOfSight(camera.CFrame.Position, part.Position, bestPlayer.Character) then
-                    table.insert(candidates, part)
-                end
-            end
-            if #candidates > 0 then
-                bestPart = candidates[math.random(1, #candidates)]
-                bestPoint = camera:WorldToViewportPoint(bestPart.Position)
-            end
-        end
-
-        M.TargetPart = bestPart
-        M.TargetPlayer = bestPlayer
-        M.TargetCharacter = bestPlayer and bestPlayer.Character or nil
-        Core.Env.BurmaldaTarget = bestPart
-        Core.Status.target = bestPart and "ok" or (sawOnscreen and "no-fov" or "no-onscreen")
-        if bestPoint and Core:Get("TargetLine") then
-            TargetLine.From = center
-            TargetLine.To = Vector2.new(bestPoint.X, bestPoint.Y)
-            TargetLine.Color = Core:Get("TargetLineColor") or Color3.new(1, 1, 1)
-            TargetLine.Visible = true
-        else
-            TargetLine.Visible = false
-        end
-    end
-
-    local function InstallHook(container, name, factory, allowAssignment)
-        if type(container) ~= "table" then
-            return false
-        end
-        local original = rawget(container, name) or container[name]
-        if type(original) ~= "function" then
-            return false
-        end
-        local callOriginal = original
-        local replacement = factory(function(...)
-            return callOriginal(...)
-        end)
-        local ok, old = pcall(function()
-            if type(hookfunction) ~= "function" then
-                return nil
-            end
-            return hookfunction(original, replacement)
-        end)
-        if ok and type(old) == "function" then
-            callOriginal = old
-            return true
-        end
-        if allowAssignment == false then
-            return false
-        end
-        local assigned = pcall(function()
-            container[name] = replacement
-        end)
-        if assigned and container[name] == replacement then
-            table.insert(M.Assigned, { Table = container, Key = name, Original = original })
-            return true
-        end
-        return false
-    end
-
-    local function IsLocalShot(data)
-        if type(data) ~= "table" then
-            return false
-        end
-        M.LastCaller = "not-resolved"
-        if data.StepFunction == "FakeStepFunc" or data.HitFunction == "FakeHitFunc" or tostring(data.HitFunction):find("Ignore") then
-            M.LastCaller = "fake-or-ignore"
-            Core.Status.lastCaller = M.LastCaller
-            return false
-        end
-        local callerName = ""
-        pcall(function()
-            local caller = getcallingscript and getcallingscript()
-            if caller then
-                callerName = caller.Name
-            end
-        end)
-        if callerName == "" then
-            pcall(function()
-                callerName = tostring(debug.traceback())
-            end)
-        end
-        M.LastCaller = callerName ~= "" and callerName or "unknown"
-        Core.Status.lastCaller = M.LastCaller
-        if callerName:find("ViewmodelController") or callerName:find("VFXController") then
-            return true
-        end
-        local origin = data.Position or data.Origin
-        local camera = Core:GetCamera()
-        local root = Core:GetRoot()
-        return typeof(origin) == "Vector3" and camera and ((origin - camera.CFrame.Position).Magnitude < 90
-            or (root and (origin - root.Position).Magnitude < 90)) or false
-    end
-
-    local function IsBowShot()
-        local vms = Core.Workspace:FindFirstChild("VFX") and Core.Workspace.VFX:FindFirstChild("VMs")
-        local current = vms and vms:GetChildren()[1]
-        return current and current.Name:lower():find("bow", 1, true) ~= nil or false
-    end
-
-    -- @STACK_CORE_BEGIN
-    local function FindShotStack(getstack)
-        local selected, selectedLevel, fallback, fallbackLevel = nil, 0, nil, 0
-        local scan = {}
-        for level = 2, 8 do
-            local ok, candidate = pcall(getstack, level)
-            if ok and type(candidate) == "table" then
-                local cframes, vectors, recoil = 0, 0, nil
-                for index = 1, 120 do
-                    local value = rawget(candidate, index)
-                    local kind = typeof(value)
-                    if kind == "CFrame" then
-                        cframes += 1
-                    elseif kind == "Vector3" then
-                        vectors += 1
-                    elseif kind == "table" and rawget(value, "RecoilStart") and rawget(value, "RecoilFinish") then
-                        recoil = value
-                    end
-                end
-                table.insert(scan, string.format("%d:%dC/%dV/%s", level, cframes, vectors, recoil and "R" or "-"))
-                if recoil and cframes >= 2 then
-                    selected, selectedLevel = candidate, level
-                    break
-                end
-                if not fallback and cframes >= 2 and vectors >= 1 then
-                    fallback, fallbackLevel = candidate, level
-                end
-            end
-        end
-        if not selected then
-            selected, selectedLevel = fallback, fallbackLevel
-        end
-        if not selected then
-            Core.Status.lastStack = "not-found [" .. table.concat(scan, ",") .. "]"
-            return nil
-        end
-        local cameraIndex, hrpIndex, flashIndex
-        for index = 1, 80 do
-            local kind = typeof(rawget(selected, index))
-            if kind == "CFrame" then
-                if not cameraIndex then cameraIndex = index elseif not hrpIndex then hrpIndex = index end
-            elseif kind == "Vector3" and not flashIndex then
-                flashIndex = index
-            end
-        end
-        if not cameraIndex or not hrpIndex or not flashIndex then
-            Core.Status.lastStack = string.format("indices-missing level=%d camera=%s hrp=%s flash=%s", selectedLevel, tostring(cameraIndex), tostring(hrpIndex), tostring(flashIndex))
-            return nil
-        end
-        Core.Status.lastStack = string.format("level=%d camera=%d hrp=%d flash=%d", selectedLevel, cameraIndex, hrpIndex, flashIndex)
-        return { Stack = selected, Level = selectedLevel, Camera = cameraIndex, HRP = hrpIndex, Flash = flashIndex }
-    end
-    -- @STACK_CORE_END
-
-    local function IsBody(instance)
-        local model = instance and instance.FindFirstAncestorOfClass and instance:FindFirstAncestorOfClass("Model")
-        return model and model:FindFirstChildOfClass("Humanoid") ~= nil
-    end
-
-    local function PenWorldList()
-        if os.clock() - M.PenCache.Time < 0.6 and #M.PenCache.Items > 0 then
-            return M.PenCache.Items
-        end
-        local items = {}
-        for _, child in ipairs(Core.Workspace:GetChildren()) do
-            if (child:IsA("Folder") or child:IsA("Model")) and child.Name ~= "VFX" and child.Name ~= "Remotes"
-                and not child:FindFirstChildOfClass("Humanoid") and not Core.Players:GetPlayerFromCharacter(child) then
-                table.insert(items, child)
-            end
-        end
-        M.PenCache.Time = os.clock()
-        M.PenCache.Items = items
-        return items
-    end
-
-    local function AddPenetration(list)
-        if type(list) ~= "table" then
-            list = {}
-        elseif table.isfrozen and table.isfrozen(list) then
-            list = table.clone(list)
-        end
-        local present = {}
-        for _, value in ipairs(list) do
-            present[value] = true
-        end
-        local terrain = Core.Workspace:FindFirstChildOfClass("Terrain")
-        if terrain and not present[terrain] then
-            table.insert(list, terrain)
-            present[terrain] = true
-        end
-        for _, child in ipairs(PenWorldList()) do
-            if not present[child] and child.Parent then
-                table.insert(list, child)
-                present[child] = true
-            end
-        end
-        return list
-    end
-
-    local function FlatRoot(origin, destination)
-        local frame = CFrame.lookAt(origin, destination)
-        local _, yaw = frame:ToEulerAnglesYXZ()
-        return CFrame.new(origin) * CFrame.fromEulerAnglesYXZ(0, yaw, 0)
-    end
-
-    local function GetGC()
-        if type(getgc) ~= "function" then
-            return {}
-        end
-        if M.GCCache.Values and os.clock() - M.GCCache.Time < 1 then
-            return M.GCCache.Values
-        end
-        local ok, values = pcall(getgc, true)
-        M.GCCache.Time = os.clock()
-        M.GCCache.Values = ok and type(values) == "table" and values or {}
-        return M.GCCache.Values
-    end
-
-    local function FindTableWithFunction(name)
-        local tables, functions = 0, 0
-        for _, value in pairs(GetGC()) do
-            local kind = type(value)
-            if kind == "table" then
-                tables += 1
-                if type(rawget(value, name)) == "function" then
-                    M.GCStats = string.format("tables=%d functions=%d tableMatch=%s", tables, functions, name)
-                    return value
-                end
-            elseif kind == "function" then
-                functions += 1
-            end
-        end
-        M.GCStats = string.format("tables=%d functions=%d tableMatch=none", tables, functions)
-        return nil
-    end
-
-    local function FindProjectileFunction()
-        local tables, functions = 0, 0
-        local fallback, fallbackPath = nil, nil
-        for _, value in pairs(GetGC()) do
-            local kind = type(value)
-            if kind == "table" then
-                tables += 1
-            elseif kind == "function" then
-                functions += 1
-                local ok, info = pcall(debug.getinfo, value)
-                local name = ok and info and info.name or ""
-                local source = ok and info and tostring(info.source or "") or ""
-                local sourceLower = source:lower()
-                if name == "CreateProjectile" and (source == "" or sourceLower:find("vfx") or sourceLower:find("projectile") or sourceLower:find("viewmodel")) then
-                    M.GCStats = string.format("tables=%d functions=%d functionMatch=CreateProjectile", tables, functions)
-                    return value, "getgc/function/" .. (source ~= "" and source or name)
-                end
-                if not fallback and sourceLower:find("vfxmodule", 1, true) and type(debug.getconstants) == "function" then
-                    local constantsOK, constants = pcall(debug.getconstants, value)
-                    if constantsOK and type(constants) == "table" then
-                        for _, marker in ipairs({ "DirectionFirst", "MaxRange", "StepFunction", "HitFunction" }) do
-                            if table.find(constants, marker) then
-                                fallback = value
-                                fallbackPath = "getgc/constants/" .. source .. "/" .. marker
-                                break
-                            end
-                        end
-                    end
-                end
-            end
-        end
-        if fallback then
-            M.GCStats = string.format("tables=%d functions=%d functionMatch=constants", tables, functions)
-            return fallback, fallbackPath
-        end
-        M.GCStats = string.format("tables=%d functions=%d functionMatch=none", tables, functions)
-        return nil
-    end
-
-    local function InstallProjectile()
-        if M.Installed.Projectile then
-            return true
-        end
-        if type(VFX) ~= "table" or type(VFX.CreateProjectile) ~= "function" then
-            VFX = FindTableWithFunction("CreateProjectile")
-            if VFX then
-                M.VFXFunctionOnly = false
-                M.ModulePaths.VFX = "getgc/table/CreateProjectile"
-            end
-        end
-        if (type(VFX) ~= "table" or type(VFX.CreateProjectile) ~= "function") and type(hookfunction) == "function" then
-            local projectile, path = FindProjectileFunction()
-            if projectile then
-                VFX = { CreateProjectile = projectile }
-                M.VFXFunctionOnly = true
-                M.ModulePaths.VFX = path
-            end
-        end
-        if type(VFX) ~= "table" or type(VFX.CreateProjectile) ~= "function" then
-            Core.Status.projectile = false
-            return false
-        end
-        Core.Status.projectile = InstallHook(VFX, "CreateProjectile", function(CallOriginal)
-            return function(self, ...)
-                if not Core.Running then
-                    return CallOriginal(self, ...)
-                end
-                local args = { ... }
-                local data = args[1]
-                if type(data) ~= "table" then
-                    Core.Status.lastShotReason = "non-table-data"
-                    return CallOriginal(self, ...)
-                end
-                Core.Status.projectileCalls += 1
-                Core.Status.lastData = string.format("speed=%s gravity=%s origin=%s range=%s step=%s hit=%s",
-                    tostring(data.Speed), tostring(data.Gravity), typeof(data.Position or data.Origin),
-                    tostring(data.MaxRange or data.Range), tostring(data.StepFunction), tostring(data.HitFunction))
-                if IsBowShot() then
-                    Core.Status.lastShotReason = "bow-skipped"
-                    return CallOriginal(self, ...)
-                end
-                if not IsLocalShot(data) then
-                    Core.Status.lastShotReason = "not-local"
-                    return CallOriginal(self, ...)
-                end
-                Core.Status.localShots += 1
-                Core.Status.lastShotReason = not Active() and "silent-inactive" or (M.TargetPart and "target-acquired" or "no-target")
-                M.BulletStats = {
-                    speed = tonumber(data.Speed) or 1000,
-                    gravity = tonumber(data.Gravity) or 0,
-                    range = tonumber(data.MaxRange or data.Range) or 1000,
-                }
-
-                if Active() and M.TargetPart and M.TargetPart.Parent then
-                    if type(debug.getstack) == "function" and type(debug.setstack) == "function" then
-                        local shot = FindShotStack(debug.getstack)
-                        if shot then
-                            local cameraStack = rawget(shot.Stack, shot.Camera)
-                            local hrpStack = rawget(shot.Stack, shot.HRP)
-                            local flashStack = rawget(shot.Stack, shot.Flash)
-                            local root = Core:GetRoot()
-                            local camera = Core:GetCamera()
-                            local sane = camera ~= nil and typeof(cameraStack) == "CFrame" and typeof(hrpStack) == "CFrame" and typeof(flashStack) == "Vector3"
-                            if sane and ((cameraStack.p - camera.CFrame.p).Magnitude > 60
-                                or (root and (hrpStack.p - root.CFrame.p).Magnitude > 60)) then
-                                sane = false
-                            end
-                            if sane then
-                                local hitPosition = M.TargetPart.Position
-                                if Core:Get("InstantBullet") and type(data.Speed) == "number" and data.Speed > 1 and type(data.Gravity) == "number" then
-                                    local origin = typeof(data.Position) == "Vector3" and data.Position or camera.CFrame.Position
-                                    local time = (hitPosition - origin).Magnitude / data.Speed
-                                    local gravity = data.Gravity * -Core.Workspace.Gravity
-                                    local drop = -0.5 * gravity * time * time
-                                    if drop == drop then
-                                        hitPosition += Vector3.new(0, drop, 0)
-                                    end
-                                end
-                                local fakeCamera = CFrame.new(cameraStack.p, hitPosition)
-                                local fakeHRP = CFrame.new(hrpStack.p, hitPosition)
-                                local flashPosition = CFrame.new(flashStack, hitPosition).p
-                                local cameraOK = pcall(debug.setstack, shot.Level, shot.Camera, fakeCamera)
-                                local hrpOK = pcall(debug.setstack, shot.Level, shot.HRP, fakeHRP)
-                                local flashOK = pcall(debug.setstack, shot.Level, shot.Flash, flashPosition)
-                                local writes = (cameraOK and 1 or 0) + (hrpOK and 1 or 0) + (flashOK and 1 or 0)
-                                Core.Status.stackWrites += writes
-                                Core.Status.lastStack ..= " writes=" .. tostring(writes)
-                                Core.Status.lastShotReason = writes == 3 and "stack-written" or "stack-write-failed"
-                            else
-                                Core.Status.lastShotReason = "stack-sanity"
-                                Core.Status.lastStack ..= " sanity=failed"
-                            end
-                        else
-                            Core.Status.lastShotReason = "stack-not-found"
-                        end
-                    else
-                        Core.Status.lastShotReason = "stack-api-missing"
-                        Core.Status.lastStack = "debug.getstack/setstack unavailable"
-                    end
-                end
-
-                local instant = Core:Get("InstantBullet") or Core:Get("HitScan")
-                if instant then
-                    data.Speed = 9e9
-                    data.Gravity = 0
-                end
-                local penetration = Core:Get("ForcePenetration") or Core:Get("HitScan") or Core:Get("WallbangPlus")
-                if penetration then
-                    data.RangeMult = 2
-                    data.Filters = AddPenetration(data.Filters)
-                    if type(data.FilterFunction) == "function" then
-                        local previous = data.FilterFunction
-                        data.FilterFunction = function(instance)
-                            if IsBody(instance) then
-                                return nil
-                            end
-                            return previous(instance) or instance
-                        end
-                    end
-                end
-
-                local target = M.TargetPart
-                if target and target.Parent and Active() then
-                    local hitPosition = target.Position
-                    local origin = data.Position or data.Origin
-                    local camera = Core:GetCamera()
-                    if typeof(origin) ~= "Vector3" then
-                        origin = camera.CFrame.Position
-                    end
-                    local speed, gravity = tonumber(data.Speed), tonumber(data.Gravity)
-                    local aimPosition = hitPosition
-                    if not instant and speed and speed > 1 and gravity and gravity > 0.01 then
-                        local flightTime = (hitPosition - origin).Magnitude / speed
-                        local drop = 0.5 * Core.Workspace.Gravity * gravity * flightTime * flightTime
-                        if drop == drop and drop ~= math.huge then
-                            aimPosition += Vector3.new(0, drop * (Core:Get("DropMultiplier") or 1), 0)
-                        end
-                        local velocity = target.AssemblyLinearVelocity
-                        if typeof(velocity) == "Vector3" then
-                            aimPosition += velocity * flightTime * (Core:Get("Prediction") or 1)
-                        end
-                    end
-                    if HasLineOfSight(origin, hitPosition, M.TargetCharacter) or penetration then
-                        local direction = aimPosition - origin
-                        if direction.Magnitude > 0.05 then
-                            local unitDirection = direction.Unit
-                            data.Direction = unitDirection
-                            data.DirectionFirst = unitDirection
-                            local distance = (hitPosition - origin).Magnitude
-                            local range = tonumber(data.MaxRange or data.Range)
-                            if range and range < distance + 100 then
-                                if data.MaxRange ~= nil then data.MaxRange = distance + 100 else data.Range = distance + 100 end
-                            end
-                            Core.Status.redirects += 1
-                            Core.Status.lastShotReason = "redirected"
-                            if Core:Get("PacketSilent") then
-                                M.TTHShot = { dest = hitPosition, t = os.clock() }
-                                Core.Status.lastPacket = "waiting"
-                            else
-                                Core.Status.lastPacket = "disabled"
-                            end
-                        else
-                            Core.Status.lastShotReason = "direction-zero"
-                        end
-                    else
-                        Core.Status.lastShotReason = "los-blocked"
-                    end
-                end
-                return CallOriginal(self, unpack(args))
-            end
-        end, not M.VFXFunctionOnly)
-        M.Installed.Projectile = Core.Status.projectile == true
-        return M.Installed.Projectile
-    end
-
-    local function InstallPacket()
-        if M.Installed.Packet then
-            return true
-        end
-        if type(VectorUtil) ~= "table" or type(VectorUtil.FireRemote) ~= "function" then
-            VectorUtil = FindTableWithFunction("FireRemote")
-            if VectorUtil then
-                M.ModulePaths.VectorUtil = "getgc/table/FireRemote"
-            end
-        end
-        if type(VectorUtil) ~= "table" or type(VectorUtil.FireRemote) ~= "function" then
-            Core.Status.packet = false
-            return false
-        end
-        Core.Status.packet = InstallHook(VectorUtil, "FireRemote", function(CallOriginal)
-            return function(self, ...)
-                local args = { ... }
-                if Core.Running then
-                    local shot = M.TTHShot
-                    Core.Status.lastPacket = "none-staged"
-                    if shot then
-                        if typeof(shot.dest) ~= "Vector3" or os.clock() - shot.t >= 0.25 then
-                            Core.Status.lastPacket = "stale"
-                        else
-                            local matched = false
-                            for index = #args, 1, -1 do
-                                local payload = args[index]
-                                if type(payload) == "table" and #payload >= 8 and typeof(payload[2]) == "string"
-                                    and typeof(payload[3]) == "CFrame" and typeof(payload[4]) == "Vector3"
-                                    and typeof(payload[5]) == "CFrame" and typeof(payload[8]) == "Vector3" then
-                                    matched = true
-                                    if HasLineOfSight(payload[3].Position, shot.dest, M.TargetCharacter)
-                                        or Core:Get("ForcePenetration") or Core:Get("HitScan") or Core:Get("WallbangPlus") then
-                                        payload[3] = CFrame.new(payload[3].Position, shot.dest)
-                                        payload[5] = FlatRoot(payload[5].Position, shot.dest)
-                                        payload[8] = shot.dest
-                                        Core.Status.packetWrites += 1
-                                        Core.Status.lastPacket = "written"
-                                        Core.Status.lastShotReason = "packet-written"
-                                    else
-                                        Core.Status.lastPacket = "los-blocked"
-                                    end
-                                    break
-                                end
-                            end
-                            if not matched then
-                                local signatures = {}
-                                for index = math.max(1, #args - 3), #args do
-                                    local payload = args[index]
-                                    if type(payload) == "table" then
-                                        local fields = {}
-                                        for field = 1, math.min(#payload, 12) do
-                                            table.insert(fields, typeof(payload[field]))
-                                        end
-                                        if #fields == 0 then
-                                            local count = 0
-                                            for key, value in pairs(payload) do
-                                                table.insert(fields, tostring(key) .. "=" .. typeof(value))
-                                                count += 1
-                                                if count >= 8 then break end
-                                            end
-                                        end
-                                        table.insert(signatures, string.format("arg%d#%d:%s", index, #payload, table.concat(fields, ",")))
-                                    else
-                                        table.insert(signatures, "arg" .. tostring(index) .. "=" .. typeof(payload))
-                                    end
-                                end
-                                Core.Status.lastPacket = "payload-mismatch [" .. table.concat(signatures, ";") .. "]"
-                            end
-                        end
-                    end
-                    M.TTHShot = nil
-                end
-                return CallOriginal(self, unpack(args))
-            end
-        end)
-        M.Installed.Packet = Core.Status.packet == true
-        return M.Installed.Packet
-    end
-
-    local function InstallReach()
-        if M.Installed.Reach then
-            return true
-        end
-        if type(RaycastUtil) ~= "table" or type(RaycastUtil.Raycast) ~= "function" then
-            return false
-        end
-        M.Installed.Reach = InstallHook(RaycastUtil, "Raycast", function(CallOriginal)
-            return function(self, ...)
-                local args = { ... }
-                if Core.Running and Core:Get("Reach") and typeof(args[2]) == "Vector3" then
-                    local trace = debug.traceback()
-                    if trace:find("ViewmodelController") or trace:find("VFXController") then
-                        args[2] *= 10
-                    end
-                end
-                return CallOriginal(self, unpack(args))
-            end
-        end)
-        M.Installed.Reach = M.Installed.Reach == true
-        return M.Installed.Reach
-    end
-
-    function M.Refresh(force)
-        if not force and M.Installed.Projectile and M.Installed.Packet and M.Installed.Reach then
-            return true
-        end
-        ResolveModules()
-        InstallProjectile()
-        InstallPacket()
-        InstallReach()
-        return M.Installed.Projectile and M.Installed.Packet or false
-    end
-
-    M.Refresh(true)
-    Core:AddCleanup(function()
-        M.TargetPart, M.TargetPlayer, M.TargetCharacter = nil, nil, nil
-        M.TTHShot = nil
-        Core.Env.BurmaldaTarget = nil
-        pcall(function() FOVCircle:Remove() end)
-        pcall(function() TargetLine:Remove() end)
-        for _, record in ipairs(M.Assigned) do
-            pcall(function()
-                record.Table[record.Key] = record.Original
-            end)
-        end
-    end)
-
-    local function RelevantModule(name)
-        local lower = tostring(name):lower()
-        return lower:find("vfx", 1, true) or lower:find("projectile", 1, true) or lower:find("vector", 1, true)
-            or lower:find("raycast", 1, true) or lower:find("toolinfo", 1, true) or lower:find("chicken", 1, true)
-            or lower:find("recoil", 1, true) or lower:find("gun", 1, true) ~= nil
-    end
-
-    function M.ScanDiscovery()
-        local result = { ModuleScripts = {}, LoadedModules = {}, GCCandidates = {}, GCStats = M.GCStats }
-        pcall(function()
-            for _, instance in ipairs(Core.ReplicatedStorage:GetDescendants()) do
-                if instance:IsA("ModuleScript") and RelevantModule(instance.Name) then
-                    table.insert(result.ModuleScripts, PathOf(instance))
-                    if #result.ModuleScripts >= 40 then break end
-                end
-            end
-        end)
-        if type(getloadedmodules) == "function" then
-            pcall(function()
-                for _, instance in pairs(getloadedmodules()) do
-                    if typeof(instance) == "Instance" and instance:IsA("ModuleScript") and RelevantModule(instance.Name) then
-                        table.insert(result.LoadedModules, PathOf(instance))
-                        if #result.LoadedModules >= 40 then break end
-                    end
-                end
-            end)
-        end
-        local inspected, scanned = 0, 0
-        for _, value in pairs(GetGC()) do
-            scanned += 1
-            if type(value) == "table" then
-                for _, name in ipairs({ "CreateProjectile", "FireRemote", "Raycast" }) do
-                    if type(rawget(value, name)) == "function" then
-                        table.insert(result.GCCandidates, "table/" .. name)
-                    end
-                end
-            elseif type(value) == "function" and inspected < 1500 then
-                inspected += 1
-                local ok, info = pcall(debug.getinfo, value)
-                local name = ok and info and tostring(info.name or "") or ""
-                local source = ok and info and tostring(info.source or "") or ""
-                if name == "CreateProjectile" or name == "FireRemote" or source:lower():find("vfxmodule", 1, true) then
-                    table.insert(result.GCCandidates, "function/" .. name .. "@" .. source)
-                end
-            end
-            if #result.GCCandidates >= 40 or scanned >= 10000 then break end
-        end
-        result.GCStats = tostring(result.GCStats) .. " discoveryScanned=" .. tostring(scanned)
-        return result
-    end
-
-    function M.GetDiagnostics()
-        return {
-            modulePaths = M.ModulePaths,
-            installed = M.Installed,
-            target = M.TargetPart,
-            caller = M.LastCaller,
-            gcStats = M.GCStats,
-        }
-    end
-
-    M.Update = UpdateTarget
-    M.Active = Active
-    M.HasLineOfSight = HasLineOfSight
-    return M
-end)(ProjectileCore)
+	onCleanup(function()
+		clearTarget()
+		if GunBase and originalFire and GunBase.fire == replacementFire then
+			pcall(function() GunBase.fire = originalFire end)
+		end
+		ProjectileSilent.Installed.GunBase = false
+		ProjectileCore.Status.gunbase = false
+	end)
 
 	Runtime.Projectile = ProjectileSilent
 	Runtime.ProjectileStatus = ProjectileCore.Status
-	Runtime.ProjectilePath = "VFX.CreateProjectile + VectorUtil.FireRemote"
+	Runtime.ProjectilePath = "GunBase.fire + Workspace Raycast"
+	Runtime.SilentPath = Runtime.ProjectilePath
 	Runtime.GetSilentStatus = function()
-		local status = ProjectileCore and ProjectileCore.Status or {}
+		local status = ProjectileCore.Status
 		return {
-			path = Runtime.SilentPath,
-			projectile = status.projectile == true,
-			packet = status.packet == true,
+			path = Runtime.ProjectilePath,
+			gunbase = status.gunbase,
+			raycast = true,
+			calls = status.calls,
+			normalCalls = status.normalCalls,
+			redirects = status.redirects,
+			bufferWrites = status.bufferWrites,
 			target = status.target,
 			lastShotReason = status.lastShotReason,
-			lastStack = status.lastStack,
-			lastPacket = status.lastPacket,
+		}
+	end
+end)
+
+if not projectileInitOK then
+	Runtime.ProjectileError = tostring(projectileInitError)
+	ProjectileCore = nil
+	ProjectileSilent = nil
+end
+
+
+if not Runtime.GetSilentStatus then
+	Runtime.GetSilentStatus = function()
+		return {
+			path = Runtime.SilentPath,
+			gunbase = false,
+			raycast = true,
 			error = Runtime.ProjectileError,
 		}
 	end
-	onCleanup(function()
-		if ProjectileCore then ProjectileCore.Running = false end
-	end)
-end)
-if not projectileInitOK then
-	Runtime.ProjectileError = tostring(projectileInitError)
-	Runtime.ProjectileStatus = ProjectileCore and ProjectileCore.Status or nil
-	ProjectileSilent = nil
 end
-if not Runtime.GetSilentStatus then
-	Runtime.GetSilentStatus = function()
-		return { path = Runtime.SilentPath, projectile = false, packet = false, error = Runtime.ProjectileError }
-	end
-end
-
 
 -- Additional rost-alpha features adapted from the saved VOMAGLA reference.
 -- Owned objects only: no remote loaders, camera writes, hitbox expansion or world deletion.
