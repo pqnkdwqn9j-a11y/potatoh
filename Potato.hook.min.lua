@@ -73,7 +73,12 @@ sg.Parent = pGui
 local S = {
 	ESPEnabled     = false,
 	ESPRadius      = 500,
+	ESPBoxType     = "Normal",
 	ESPDist        = false,
+	ESPWeapon      = false,
+	ESPChams       = false,
+	ChamsFillTransparency = 0.5,
+	ChamsOutlineTransparency = 0.2,
 	Tracers        = false,
 	TracerOrigin   = 2,
 	Names          = false,
@@ -86,6 +91,8 @@ local S = {
 	BoxFillTransparency = 0.7,
 	HPBar          = false,
 	HPBarSide      = 1,
+	HPHealthNumber = false,
+	HPDynamicColor = false,
 	SilentAim      = false,
 	MBFovMode      = "mobile",
 	MBHitChance    = 100,
@@ -115,6 +122,9 @@ local AC_NAME = Color3.fromRGB(255, 255, 255)
 local AC_DIST = Color3.fromRGB(255, 255, 255)
 local AC_FILL = Color3.fromRGB(255, 255, 255)
 local AC_HP   = Color3.fromRGB(255, 255, 255)
+local AC_WEAPON = Color3.fromRGB(255, 255, 255)
+local AC_CHAMS = Color3.fromRGB(255, 255, 255)
+local AC_CHAMS_OUTLINE = Color3.fromRGB(255, 255, 255)
 local BK      = Color3.fromRGB(0, 0, 0)
 
 local _visParams = RaycastParams.new()
@@ -1339,6 +1349,7 @@ do
 
 	local espSet = createFeature(lc, "ESP", false, function(v) S.ESPEnabled = v end)
 	addSlider(espSet, "Radius", 50, 1000, 500, function(v) S.ESPRadius = v end)
+	addDropdown(espSet, "Box Type", {"Normal", "Corner"}, 1, function(v) S.ESPBoxType = v end)
 	addColor(espSet, "Box Color", function(c) AC_ESP = c end)
 	addDropdown(espSet, "Box Fill", {"Off", "On"}, 1, function(v) S.BoxFill = v == "On" end)
 	addSlider(espSet, "Fill Alpha", 1, 9, 7, function(v) S.BoxFillTransparency = v / 10 end)
@@ -1363,6 +1374,8 @@ do
 	addDropdown(hpSet, "Position", {"Side", "Top"}, 1, function(v)
 		S.HPBarSide = v == "Side" and 1 or 2
 	end)
+	addDropdown(hpSet, "Health Number", {"Off", "On"}, 1, function(v) S.HPHealthNumber = v == "On" end)
+	addDropdown(hpSet, "Dynamic Color", {"Off", "On"}, 1, function(v) S.HPDynamicColor = v == "On" end)
 	addColor(hpSet, "Color", function(c) AC_HP = c end)
 
 	local namesSet = createFeature(rc, "Names", false, function(v) S.Names = v end)
@@ -1370,6 +1383,15 @@ do
 
 	local distSet = createFeature(lc, "Distance", false, function(v) S.ESPDist = v end)
 	addColor(distSet, "Color", function(c) AC_DIST = c end)
+
+	local weaponSet = createFeature(lc, "Weapon", false, function(v) S.ESPWeapon = v end)
+	addColor(weaponSet, "Color", function(c) AC_WEAPON = c end)
+
+	local chamsSet = createFeature(rc, "Chams", false, function(v) S.ESPChams = v end)
+	addColor(chamsSet, "Fill Color", function(c) AC_CHAMS = c end)
+	addColor(chamsSet, "Outline Color", function(c) AC_CHAMS_OUTLINE = c end)
+	addSlider(chamsSet, "Fill Alpha", 0, 9, 5, function(v) S.ChamsFillTransparency = v / 10 end)
+	addSlider(chamsSet, "Outline Alpha", 0, 9, 2, function(v) S.ChamsOutlineTransparency = v / 10 end)
 end
 
 do
@@ -1872,7 +1894,8 @@ do
 
 		local cols = {AC_ESP=AC_ESP,AC_FOV=AC_FOV,AC_FOV_FILL=AC_FOV_FILL,
 			AC_TR=AC_TR,AC_NAME=AC_NAME,AC_DIST=AC_DIST,
-			AC_FILL=AC_FILL,AC_HP=AC_HP}
+			AC_FILL=AC_FILL,AC_HP=AC_HP,AC_WEAPON=AC_WEAPON,
+			AC_CHAMS=AC_CHAMS,AC_CHAMS_OUTLINE=AC_CHAMS_OUTLINE}
 		for k,v in pairs(cols) do cfg[k] = c2t(v) end
 
 		cfg["CH_enabled"]   = crosshairSettings.crosshairEnabled
@@ -1927,6 +1950,9 @@ do
 		if cfg.AC_DIST     then AC_DIST     = t2c(cfg.AC_DIST)     end
 		if cfg.AC_FILL     then AC_FILL     = t2c(cfg.AC_FILL)     end
 		if cfg.AC_HP       then AC_HP       = t2c(cfg.AC_HP)       end
+		if cfg.AC_WEAPON   then AC_WEAPON   = t2c(cfg.AC_WEAPON)   end
+		if cfg.AC_CHAMS    then AC_CHAMS    = t2c(cfg.AC_CHAMS)    end
+		if cfg.AC_CHAMS_OUTLINE then AC_CHAMS_OUTLINE = t2c(cfg.AC_CHAMS_OUTLINE) end
 
 		if cfg.CH_enabled   ~= nil then crosshairSettings.crosshairEnabled   = cfg.CH_enabled   end
 		if cfg.CH_type      ~= nil then crosshairSettings.crosshairType      = cfg.CH_type      end
@@ -1977,6 +2003,8 @@ do
 		applyToggle("HP Bar",                S.HPBar)
 		applyToggle("Names",                 S.Names)
 		applyToggle("Distance",              S.ESPDist)
+		applyToggle("Weapon",                S.ESPWeapon)
+		applyToggle("Chams",                 S.ESPChams)
 
 		applyToggle("Speed",                 S.SpeedRostAlpha)
 		applyToggle("High Jump",             S.HighJump)
@@ -2525,296 +2553,432 @@ TargetLine.Color = S.MBTargetLineColor
 TargetLine.Thickness = 1
 TargetLine.Transparency = 1
 
-local ESPBoxes, TracerObjs, NameObjs, DistObjs, ESPCorners, ESPFills, HPBars = {}, {}, {}, {}, {}, {}, {}
+-- ESP v2: Velocity-inspired Drawing renderer with owned Highlight cleanup.
+-- No external fonts, assets, HTTP, loaders or camera writes.
 
-local function newLine(col)
-	local l = newDrawing("Line"); l.Color = col or AC; l.Thickness = 1; return l
-end
-
-local function createESP(p)
-	if Runtime.Unloaded then return end
-	local box = newDrawing("Square")
-	box.Color = AC; box.Thickness = 1; box.Filled = false
-	local fill = newDrawing("Square")
-	fill.Color = AC; fill.Thickness = 0; fill.Filled = true; fill.Transparency = 0.7; fill.Visible = false
-	local corners = {}
-	for i = 1, 12 do
-		local l = newDrawing("Line"); l.Color = AC; l.Thickness = 1; l.Visible = false
-		table.insert(corners, l)
-	end
-	local t1 = newDrawing("Line"); t1.Color = AC; t1.Thickness = 1
-	local t2 = newDrawing("Line"); t2.Color = AC; t2.Thickness = 1
-	local name = newDrawing("Text")
-	name.Size = 12; name.Center = true; name.Outline = true; name.Color = AC
-	local dist = newDrawing("Text")
-	dist.Size = 11; dist.Center = true; dist.Outline = true; dist.Color = AC; dist.Visible = false
-
-	local hpBg = newDrawing("Square"); hpBg.Filled = true; hpBg.Color = Color3.fromRGB(0,0,0); hpBg.Transparency = 0.5; hpBg.Visible = false
-	local hpFg = newDrawing("Square"); hpFg.Filled = true; hpFg.Color = Color3.fromRGB(255,255,255); hpFg.Transparency = 1; hpFg.Visible = false
-	ESPBoxes[p] = box; ESPFills[p] = fill; ESPCorners[p] = corners
-	TracerObjs[p] = {t1, t2}; NameObjs[p] = name; DistObjs[p] = dist
-	HPBars[p] = {bg = hpBg, fg = hpFg}
-end
-
-local function w2sv(part)
-	local p3 = Camera:WorldToViewportPoint(part.Position)
-	return Vector2.new(p3.X, p3.Y)
-end
-
-local function drawESPBox(player, sp, hrp, col)
-	local top3 = Camera:WorldToViewportPoint(hrp.Position + Vector3.new(0,3,0))
-	local bot3 = Camera:WorldToViewportPoint(hrp.Position - Vector3.new(0,3,0))
-	local sy = math.abs(top3.Y - bot3.Y)
-	local sx = sy * 0.6
-	local box = ESPBoxes[player]
-	box.Size = Vector2.new(sx, sy)
-	box.Position = Vector2.new(sp.X - sx/2, sp.Y - sy/2)
-	box.Color = col; box.Visible = true
-	for _, l in ipairs(ESPCorners[player]) do l.Visible = false end
-
-	local fill = ESPFills[player]
-	if S.BoxFill then
-		fill.Size = Vector2.new(sx, sy)
-		fill.Position = Vector2.new(sp.X - sx/2, sp.Y - sy/2)
-		fill.Color = AC_FILL
-		fill.Transparency = S.BoxFillTransparency
-		fill.Visible = true
-	else
-		fill.Visible = false
-	end
-end
-
-local function drawTracers(player, sp, col, center, ss)
-	local t1 = TracerObjs[player][1]
-	local t2 = TracerObjs[player][2]
-	local fromY
-	if S.TracerOrigin == 1 then fromY = 0
-	elseif S.TracerOrigin == 2 then fromY = ss.Y
-	else fromY = center.Y end
-	t1.From = Vector2.new(center.X, fromY)
-	t1.To = sp; t1.Color = col; t1.Visible = true
-	t2.Visible = false
-end
-
-for _, p in ipairs(Players:GetPlayers()) do
-	if p ~= LocalPlayer then createESP(p) end
-end
-Players.PlayerAdded:Connect(function(p) if not Runtime.Unloaded then createESP(p) end end)
-Players.PlayerRemoving:Connect(function(p)
-	if ESPBoxes[p] then ESPBoxes[p]:Remove() end
-	if ESPFills[p] then ESPFills[p]:Remove() end
-	if NameObjs[p] then NameObjs[p]:Remove() end
-	if DistObjs[p] then DistObjs[p]:Remove() end
-	if TracerObjs[p] then for _, l in ipairs(TracerObjs[p]) do l:Remove() end end
-	if HPBars[p] then HPBars[p].bg:Remove(); HPBars[p].fg:Remove() end
-	for _, l in ipairs(ESPCorners[p] or {}) do l:Remove() end
-	ESPBoxes[p]=nil; ESPFills[p]=nil; ESPCorners[p]=nil; TracerObjs[p]=nil; NameObjs[p]=nil; DistObjs[p]=nil; HPBars[p]=nil
-
-	if p.Character then
-		local head = p.Character:FindFirstChild("Head")
-		if head then _visCache[head]=nil; _visCacheTime[head]=nil end
-	end
-end)
-
+local ESPBoxes, TracerObjs, NameObjs, DistObjs = {}, {}, {}, {}
+local ESPCorners, ESPFills, HPBars = {}, {}, {}
+local WeaponObjs, HPTextObjs, ChamsObjs = {}, {}, {}
 local SA_CurrentTarget = nil
 local _espLastUpdate = 0
-local _ESP_INTERVAL = 1/30
-
 local espConnection
+
+do
+local ESPCoreGui = game:GetService("CoreGui")
+
+local function removeDrawing(object)
+	if object then pcall(function() object:Remove() end) end
+end
+
+local function hideCorners(player)
+	for _, line in ipairs(ESPCorners[player] or {}) do line.Visible = false end
+end
+
+local function hideESP2D(player)
+	if ESPBoxes[player] then ESPBoxes[player].Visible = false end
+	if ESPFills[player] then ESPFills[player].Visible = false end
+	hideCorners(player)
+	if TracerObjs[player] then
+		TracerObjs[player][1].Visible = false
+		TracerObjs[player][2].Visible = false
+	end
+	if NameObjs[player] then NameObjs[player].Visible = false end
+	if DistObjs[player] then DistObjs[player].Visible = false end
+	if WeaponObjs[player] then WeaponObjs[player].Visible = false end
+	if HPBars[player] then
+		HPBars[player].bg.Visible = false
+		HPBars[player].fg.Visible = false
+	end
+	if HPTextObjs[player] then HPTextObjs[player].Visible = false end
+end
+
+local function destroyChams(player)
+	local highlight = ChamsObjs[player]
+	ChamsObjs[player] = nil
+	if highlight then pcall(function() highlight:Destroy() end) end
+end
+
+local function destroyAllChams()
+	for player in pairs(ChamsObjs) do destroyChams(player) end
+end
+
+local function removeESP(player)
+	hideESP2D(player)
+	destroyChams(player)
+	removeDrawing(ESPBoxes[player])
+	removeDrawing(ESPFills[player])
+	removeDrawing(NameObjs[player])
+	removeDrawing(DistObjs[player])
+	removeDrawing(WeaponObjs[player])
+	removeDrawing(HPTextObjs[player])
+	if TracerObjs[player] then
+		for _, line in ipairs(TracerObjs[player]) do removeDrawing(line) end
+	end
+	if HPBars[player] then
+		removeDrawing(HPBars[player].bg)
+		removeDrawing(HPBars[player].fg)
+	end
+	for _, line in ipairs(ESPCorners[player] or {}) do removeDrawing(line) end
+	ESPBoxes[player] = nil
+	ESPFills[player] = nil
+	ESPCorners[player] = nil
+	TracerObjs[player] = nil
+	NameObjs[player] = nil
+	DistObjs[player] = nil
+	WeaponObjs[player] = nil
+	HPTextObjs[player] = nil
+	HPBars[player] = nil
+end
+
+local function createESP(player)
+	if Runtime.Unloaded or player == LocalPlayer or ESPBoxes[player] then return end
+	local box = newDrawing("Square")
+	box.Color = AC_ESP
+	box.Thickness = 1
+	box.Filled = false
+	box.Visible = false
+
+	local fill = newDrawing("Square")
+	fill.Color = AC_FILL
+	fill.Thickness = 0
+	fill.Filled = true
+	fill.Transparency = S.BoxFillTransparency
+	fill.Visible = false
+
+	local corners = {}
+	for index = 1, 8 do
+		local line = newDrawing("Line")
+		line.Color = AC_ESP
+		line.Thickness = 1
+		line.Visible = false
+		corners[index] = line
+	end
+
+	local tracer = newDrawing("Line")
+	tracer.Color = AC_TR
+	tracer.Thickness = 1
+	tracer.Visible = false
+	local tracerOutline = newDrawing("Line")
+	tracerOutline.Visible = false
+
+	local name = newDrawing("Text")
+	name.Size = 12
+	name.Center = true
+	name.Outline = true
+	name.Color = AC_NAME
+	name.Visible = false
+
+	local distance = newDrawing("Text")
+	distance.Size = 11
+	distance.Center = true
+	distance.Outline = true
+	distance.Color = AC_DIST
+	distance.Visible = false
+
+	local weapon = newDrawing("Text")
+	weapon.Size = 11
+	weapon.Center = true
+	weapon.Outline = true
+	weapon.Color = AC_WEAPON
+	weapon.Visible = false
+
+	local hpBg = newDrawing("Square")
+	hpBg.Filled = true
+	hpBg.Color = Color3.fromRGB(0, 0, 0)
+	hpBg.Transparency = 0.5
+	hpBg.Visible = false
+	local hpFg = newDrawing("Square")
+	hpFg.Filled = true
+	hpFg.Color = AC_HP
+	hpFg.Transparency = 1
+	hpFg.Visible = false
+
+	local hpText = newDrawing("Text")
+	hpText.Size = 10
+	hpText.Center = true
+	hpText.Outline = true
+	hpText.Color = AC_HP
+	hpText.Visible = false
+
+	ESPBoxes[player] = box
+	ESPFills[player] = fill
+	ESPCorners[player] = corners
+	TracerObjs[player] = {tracer, tracerOutline}
+	NameObjs[player] = name
+	DistObjs[player] = distance
+	WeaponObjs[player] = weapon
+	HPBars[player] = {bg = hpBg, fg = hpFg}
+	HPTextObjs[player] = hpText
+end
+
+local function updateChams(player, character)
+	if not S.ESPChams then
+		destroyChams(player)
+		return
+	end
+	local highlight = ChamsObjs[player]
+	if not highlight then
+		local ok, object = pcall(Instance.new, "Highlight")
+		if not ok or not object then return end
+		highlight = object
+		ChamsObjs[player] = highlight
+	end
+	pcall(function()
+		highlight.Name = "BurmaldaHookESP"
+		highlight.Adornee = character
+		highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+		highlight.FillColor = AC_CHAMS
+		highlight.OutlineColor = AC_CHAMS_OUTLINE
+		highlight.FillTransparency = S.ChamsFillTransparency
+		highlight.OutlineTransparency = S.ChamsOutlineTransparency
+		if highlight.Parent ~= ESPCoreGui then highlight.Parent = ESPCoreGui end
+		highlight.Enabled = true
+	end)
+end
+
+local function setCornerLine(player, index, ax, ay, bx, by, color)
+	local line = ESPCorners[player][index]
+	line.From = Vector2.new(ax, ay)
+	line.To = Vector2.new(bx, by)
+	line.Color = color
+	line.Visible = true
+end
+
+local function drawCornerBox(player, x, y, sx, sy, color)
+	local armX = math.max(3, math.min(12, sx * 0.35))
+	local armY = math.max(3, math.min(12, sy * 0.35))
+	setCornerLine(player, 1, x, y, x + armX, y, color)
+	setCornerLine(player, 2, x, y, x, y + armY, color)
+	setCornerLine(player, 3, x + sx - armX, y, x + sx, y, color)
+	setCornerLine(player, 4, x + sx, y, x + sx, y + armY, color)
+	setCornerLine(player, 5, x, y + sy, x + armX, y + sy, color)
+	setCornerLine(player, 6, x, y + sy - armY, x, y + sy, color)
+	setCornerLine(player, 7, x + sx - armX, y + sy, x + sx, y + sy, color)
+	setCornerLine(player, 8, x + sx, y + sy - armY, x + sx, y + sy, color)
+end
+
+local HP_LOW = Color3.fromRGB(255, 60, 60)
+local HP_MEDIUM = Color3.fromRGB(255, 193, 0)
+local HP_HIGH = Color3.fromRGB(80, 220, 100)
+local function getHealthColor(ratio)
+	if not S.HPDynamicColor then return AC_HP end
+	if ratio < 0.5 then return HP_LOW:Lerp(HP_MEDIUM, ratio * 2) end
+	return HP_MEDIUM:Lerp(HP_HIGH, (ratio - 0.5) * 2)
+end
+
+for _, player in ipairs(Players:GetPlayers()) do createESP(player) end
+Players.PlayerAdded:Connect(function(player)
+	if not Runtime.Unloaded then createESP(player) end
+end)
+Players.PlayerRemoving:Connect(function(player)
+	removeESP(player)
+	if player.Character then
+		local head = player.Character:FindFirstChild("Head")
+		if head then
+			_visCache[head] = nil
+			_visCacheTime[head] = nil
+		end
+	end
+end)
+onCleanup(destroyAllChams)
+
+local _ESP_INTERVAL = 1 / 30
 espConnection = RunService.Heartbeat:Connect(function()
 	if Runtime.Unloaded then return end
 	local now = tick()
 	if now - _espLastUpdate < _ESP_INTERVAL then return end
 	_espLastUpdate = now
 
-	local ss     = Camera.ViewportSize
-	local center = Vector2.new(ss.X * 0.5, ss.Y * 0.5)
-	local camCF  = Camera.CFrame
-	local camPos = camCF.Position
-	local fovPos = S.MBFovMode == "pc"
-		and game:GetService("UserInputService"):GetMouseLocation()
-		or center
+	local screenSize = Camera.ViewportSize
+	local center = Vector2.new(screenSize.X * 0.5, screenSize.Y * 0.5)
+	local cameraPosition = Camera.CFrame.Position
+	local fovPosition = S.MBFovMode == "pc" and UIS:GetMouseLocation() or center
 
 	if S.FOVCircle then
-		circle.Visible  = true
-		circle.Position = fovPos
-		circle.Radius   = S.FOV
-		circle.Color    = AC_FOV
-		circleFill.Visible      = S.FOVFill
-		circleFill.Position     = fovPos
-		circleFill.Radius       = S.FOV
-		circleFill.Color        = AC_FOV_FILL
+		circle.Visible = true
+		circle.Position = fovPosition
+		circle.Radius = S.FOV
+		circle.Color = AC_FOV
+		circleFill.Visible = S.FOVFill
+		circleFill.Position = fovPosition
+		circleFill.Radius = S.FOV
+		circleFill.Color = AC_FOV_FILL
 		circleFill.Transparency = S.FOVFillTransparency
 	else
-		circle.Visible     = false
+		circle.Visible = false
 		circleFill.Visible = false
 	end
 
-	local espEnabled  = S.ESPEnabled
-	local tracersOn   = S.Tracers
-	local namesOn     = S.Names
-	local hpBarOn     = S.HPBar
-	local espRadius   = S.ESPRadius
-
-	if not espEnabled and not tracersOn and not namesOn and not hpBarOn then
-		for player, box in pairs(ESPBoxes) do
-			box.Visible = false
-			if ESPFills[player] then ESPFills[player].Visible = false end
-			TracerObjs[player][1].Visible = false; TracerObjs[player][2].Visible = false
-			NameObjs[player].Visible = false
-			if DistObjs[player] then DistObjs[player].Visible = false end
-			if HPBars[player] then HPBars[player].bg.Visible = false; HPBars[player].fg.Visible = false end
-		end
-		return
-	end
-
-	for player, box in pairs(ESPBoxes) do
-		local char = player.Character
-		local hrp  = char and char:FindFirstChild("HumanoidRootPart")
-		local hum  = char and char:FindFirstChild("Humanoid")
-		if not hrp or not hum or hum.Health <= 0 then
-			box.Visible = false
-			if ESPFills[player] then ESPFills[player].Visible = false end
-			for _, l in ipairs(ESPCorners[player]) do l.Visible = false end
-			TracerObjs[player][1].Visible = false
-			TracerObjs[player][2].Visible = false
-			NameObjs[player].Visible = false
-			if DistObjs[player] then DistObjs[player].Visible = false end
-			if HPBars[player] then HPBars[player].bg.Visible = false; HPBars[player].fg.Visible = false end
-			continue
-		end
-
-		local hrpPos = hrp.Position
-		local dist3D = (camPos - hrpPos).Magnitude
-
-		local inESPRange = dist3D <= espRadius
-		if not inESPRange and not tracersOn then
-			box.Visible = false
-			if ESPFills[player] then ESPFills[player].Visible = false end
-			TracerObjs[player][1].Visible = false; TracerObjs[player][2].Visible = false
-			NameObjs[player].Visible = false
-			if DistObjs[player] then DistObjs[player].Visible = false end
-			if HPBars[player] then HPBars[player].bg.Visible = false; HPBars[player].fg.Visible = false end
-			continue
-		end
-
-		local pos3, onScreen = Camera:WorldToViewportPoint(hrpPos)
-		local sp = Vector2.new(pos3.X, pos3.Y)
-
-		local head   = char:FindFirstChild("Head")
-		local espCol = AC_ESP
-
-		if onScreen then
-			local sy, sx
-			local needBox = (espEnabled and inESPRange) or (namesOn and inESPRange) or (hpBarOn and inESPRange) or (S.ESPDist and inESPRange)
-			if needBox then
-				local top3 = Camera:WorldToViewportPoint(hrpPos + Vector3.new(0,3,0))
-				local bot3 = Camera:WorldToViewportPoint(hrpPos - Vector3.new(0,3,0))
-				sy = math.abs(top3.Y - bot3.Y)
-				sx = sy * 0.6
-			end
-
-			if espEnabled and inESPRange then
-				local box2 = ESPBoxes[player]
-				box2.Size = Vector2.new(sx, sy)
-				box2.Position = Vector2.new(sp.X - sx*0.5, sp.Y - sy*0.5)
-				box2.Color = espCol; box2.Visible = true
-				for _, l in ipairs(ESPCorners[player]) do l.Visible = false end
-				local fill = ESPFills[player]
-				if S.BoxFill then
-					fill.Size = Vector2.new(sx, sy)
-					fill.Position = Vector2.new(sp.X - sx*0.5, sp.Y - sy*0.5)
-					fill.Color = AC_FILL
-					fill.Transparency = S.BoxFillTransparency
-					fill.Visible = true
-				else
-					fill.Visible = false
-				end
-			else
-				box.Visible = false
-				if ESPFills[player] then ESPFills[player].Visible = false end
-				for _, l in ipairs(ESPCorners[player]) do l.Visible = false end
-			end
-
-			if tracersOn and inESPRange then
-				drawTracers(player, sp, AC_TR, center, ss)
-			else
-				TracerObjs[player][1].Visible = false
-				TracerObjs[player][2].Visible = false
-			end
-
-			if inESPRange and namesOn then
-				NameObjs[player].Text     = player.Name
-				NameObjs[player].Position = Vector2.new(sp.X, sp.Y - sy * 0.5 - 12)
-				NameObjs[player].Color    = AC_NAME
-				NameObjs[player].Visible  = true
-			else
-				NameObjs[player].Visible = false
-			end
-
-			if inESPRange and S.ESPDist then
-				local sy2 = sy or 40
-				DistObjs[player].Text     = math.floor(dist3D) .. " m"
-				DistObjs[player].Position = Vector2.new(sp.X, sp.Y + sy2 * 0.5 + 4)
-				DistObjs[player].Color    = AC_DIST
-				DistObjs[player].Visible  = true
-			else
-				DistObjs[player].Visible = false
-			end
-
-			if hpBarOn and inESPRange and HPBars[player] then
-				local hpRatio = math.clamp(hum.Health / hum.MaxHealth, 0, 1)
-				local barW = 3
-				local hpBg = HPBars[player].bg
-				local hpFg = HPBars[player].fg
-				if S.HPBarSide == 1 then
-					local bx = sp.X - sx*0.5 - barW - 2
-					local by = sp.Y - sy*0.5
-					hpBg.Size = Vector2.new(barW, sy)
-					hpBg.Position = Vector2.new(bx, by)
-					hpFg.Size = Vector2.new(barW, sy * hpRatio)
-					hpFg.Position = Vector2.new(bx, by + sy * (1 - hpRatio))
-				else
-					local bx = sp.X - sx*0.5
-					local by = sp.Y - sy*0.5 - barW - 2
-					hpBg.Size = Vector2.new(sx, barW)
-					hpBg.Position = Vector2.new(bx, by)
-					hpFg.Size = Vector2.new(sx * hpRatio, barW)
-					hpFg.Position = Vector2.new(bx, by)
-				end
-				hpBg.Visible = true
-				hpFg.Color   = AC_HP
-				hpFg.Visible = true
-			else
-				if HPBars[player] then
-					HPBars[player].bg.Visible = false
-					HPBars[player].fg.Visible = false
-				end
-			end
-
-		else
-			box.Visible = false
-			if ESPFills[player] then ESPFills[player].Visible = false end
-			for _, l in ipairs(ESPCorners[player]) do l.Visible = false end
-			TracerObjs[player][1].Visible = false
-			TracerObjs[player][2].Visible = false
-			NameObjs[player].Visible = false
-			if DistObjs[player] then DistObjs[player].Visible = false end
-			if HPBars[player] then HPBars[player].bg.Visible = false; HPBars[player].fg.Visible = false end
-		end
-	end
-
-	if S.MBTargetLine and SA_CurrentTarget then
-		local targetPos = Camera:WorldToViewportPoint(SA_CurrentTarget.Position)
-		TargetLine.From = fovPos
-		TargetLine.To = Vector2.new(targetPos.X, targetPos.Y)
+	if S.MBTargetLine and SA_CurrentTarget and SA_CurrentTarget.Parent then
+		local targetPosition = Camera:WorldToViewportPoint(SA_CurrentTarget.Position)
+		TargetLine.From = fovPosition
+		TargetLine.To = Vector2.new(targetPosition.X, targetPosition.Y)
 		TargetLine.Color = S.MBTargetLineColor
 		TargetLine.Visible = true
 	else
 		TargetLine.Visible = false
 	end
+
+	local espEnabled = S.ESPEnabled
+	local tracersOn = S.Tracers
+	local namesOn = S.Names
+	local hpBarOn = S.HPBar
+	local espRadius = S.ESPRadius
+	local anyESP = espEnabled or tracersOn or namesOn or hpBarOn
+		or S.ESPDist or S.ESPWeapon or S.ESPChams
+	if not anyESP then
+		for player in pairs(ESPBoxes) do hideESP2D(player) end
+		destroyAllChams()
+		return
+	end
+
+	for player, box in pairs(ESPBoxes) do
+		local character = player.Character
+		local root = character and character:FindFirstChild("HumanoidRootPart")
+		local humanoid = character and character:FindFirstChild("Humanoid")
+		if not root or not humanoid or humanoid.Health <= 0 then
+			hideESP2D(player)
+			destroyChams(player)
+			continue
+		end
+
+		local rootPosition = root.Position
+		local distance3D = (cameraPosition - rootPosition).Magnitude
+		if distance3D > espRadius then
+			hideESP2D(player)
+			destroyChams(player)
+			continue
+		end
+
+		updateChams(player, character)
+		local projected, onScreen = Camera:WorldToViewportPoint(rootPosition)
+		if not onScreen then
+			hideESP2D(player)
+			continue
+		end
+		local screenPosition = Vector2.new(projected.X, projected.Y)
+		local top = Camera:WorldToViewportPoint(rootPosition + Vector3.new(0, 3, 0))
+		local bottom = Camera:WorldToViewportPoint(rootPosition - Vector3.new(0, 3, 0))
+		local sx = 8
+		local sy = 12
+		local x = screenPosition.X - sx * 0.5
+		local y = screenPosition.Y - sy * 0.5
+		if top and bottom then
+			sy = math.max(math.abs(top.Y - bottom.Y), 12)
+			sx = math.max(sy * 0.6, 8)
+			x = (top.X + bottom.X) * 0.5 - sx * 0.5
+			y = math.min(top.Y, bottom.Y)
+		end
+
+		if espEnabled then
+			local cornerStyle = S.ESPBoxType == "Corner"
+			box.Visible = not cornerStyle
+			box.Size = Vector2.new(sx, sy)
+			box.Position = Vector2.new(x, y)
+			box.Color = AC_ESP
+			if cornerStyle then
+				drawCornerBox(player, x, y, sx, sy, AC_ESP)
+			else
+				hideCorners(player)
+			end
+			local fill = ESPFills[player]
+			fill.Visible = S.BoxFill
+			if S.BoxFill then
+				fill.Size = Vector2.new(sx, sy)
+				fill.Position = Vector2.new(x, y)
+				fill.Color = AC_FILL
+				fill.Transparency = S.BoxFillTransparency
+			end
+		else
+			box.Visible = false
+			ESPFills[player].Visible = false
+			hideCorners(player)
+		end
+
+		if tracersOn then
+			local tracer = TracerObjs[player][1]
+			local fromY = S.TracerOrigin == 1 and 0 or S.TracerOrigin == 2 and screenSize.Y or center.Y
+			tracer.From = Vector2.new(center.X, fromY)
+			tracer.To = screenPosition
+			tracer.Color = AC_TR
+			tracer.Visible = true
+			TracerObjs[player][2].Visible = false
+		else
+			TracerObjs[player][1].Visible = false
+			TracerObjs[player][2].Visible = false
+		end
+
+		if namesOn then
+			NameObjs[player].Text = player.Name
+			NameObjs[player].Position = Vector2.new(x + sx * 0.5, y - 12)
+			NameObjs[player].Color = AC_NAME
+			NameObjs[player].Visible = true
+		else
+			NameObjs[player].Visible = false
+		end
+
+		if S.ESPDist then
+			DistObjs[player].Text = math.floor(distance3D + 0.5) .. " m"
+			DistObjs[player].Position = Vector2.new(x + sx * 0.5, y + sy + 4)
+			DistObjs[player].Color = AC_DIST
+			DistObjs[player].Visible = true
+		else
+			DistObjs[player].Visible = false
+		end
+
+		if S.ESPWeapon then
+			local tool = character:FindFirstChildOfClass("Tool")
+			WeaponObjs[player].Text = tool and tool.Name or "Unarmed"
+			WeaponObjs[player].Position = Vector2.new(x + sx * 0.5, y + sy + (S.ESPDist and 18 or 4))
+			WeaponObjs[player].Color = AC_WEAPON
+			WeaponObjs[player].Visible = true
+		else
+			WeaponObjs[player].Visible = false
+		end
+
+		if hpBarOn then
+			local ratio = humanoid.MaxHealth > 0 and math.clamp(humanoid.Health / humanoid.MaxHealth, 0, 1) or 0
+			local healthColor = getHealthColor(ratio)
+			local hpBg = HPBars[player].bg
+			local hpFg = HPBars[player].fg
+			local barWidth = 3
+			if S.HPBarSide == 1 then
+				local bx = x - barWidth - 3
+				hpBg.Size = Vector2.new(barWidth, sy)
+				hpBg.Position = Vector2.new(bx, y)
+				hpFg.Size = Vector2.new(barWidth, sy * ratio)
+				hpFg.Position = Vector2.new(bx, y + sy * (1 - ratio))
+				if S.HPHealthNumber then
+					HPTextObjs[player].Position = Vector2.new(bx - 10, y + sy * (1 - ratio))
+				end
+			else
+				local by = y - barWidth - 3
+				hpBg.Size = Vector2.new(sx, barWidth)
+				hpBg.Position = Vector2.new(x, by)
+				hpFg.Size = Vector2.new(sx * ratio, barWidth)
+				hpFg.Position = Vector2.new(x, by)
+				if S.HPHealthNumber then
+					HPTextObjs[player].Position = Vector2.new(x + sx * ratio, by - 7)
+				end
+			end
+			hpBg.Visible = true
+			hpFg.Color = healthColor
+			hpFg.Visible = true
+			HPTextObjs[player].Text = tostring(math.floor(humanoid.Health + 0.5))
+			HPTextObjs[player].Color = healthColor
+			HPTextObjs[player].Visible = S.HPHealthNumber
+		else
+			HPBars[player].bg.Visible = false
+			HPBars[player].fg.Visible = false
+			HPTextObjs[player].Visible = false
+		end
+	end
 end)
-onCleanup(function() if espConnection then espConnection:Disconnect() end end)
+end -- scoped ESP helpers; public state above remains available to runtime hooks.
+onCleanup(function()
+	if espConnection then espConnection:Disconnect() end
+end)
+
 
 -- Burmalda Next projectile/stack/packet path adapted to the new UI.
 -- This is a compatibility integration; live rost alpha verification is still required.
