@@ -125,14 +125,15 @@ local S = {
 	SilentAim      = false,
 	MBFovMode      = "mobile",
 	MBHitChance    = 100,
-	MBVisibleOnly  = false,
+	MBVisibleOnly  = true,
+	MBUseFOV       = true,
+	Manipulation   = false,
 	MBMaxDist      = 500,
 	MBTargetPart   = 1,
 	MBPriority     = "distance",
 	SpeedRostAlpha = false,
 	HUDEnabled     = true,
-	SpeedRostValue = 24,
-	SpeedRostSmoothing = 0.5,
+	SpeedRostValue = 30,
 	Spider         = false,
 	SpiderSpeed    = 20,
 	NoRecoil       = false,
@@ -142,10 +143,11 @@ local S = {
 	HighJumpHeight = 100,
 
 	AutoFire       = false,
-	AutoFireDelay  = 0.08,
+	AutoFireDelay  = 0.05,
 	TargetHUD      = false,
 	HitLogsEnabled = false,
 	HitLogsDuration = 5,
+	HitLogsPosition = "Center",
 	HitmarkerEnabled = false,
 	HitmarkerSize  = 12,
 	HitmarkerThickness = 2,
@@ -156,6 +158,7 @@ local S = {
 	DamageFXSpeed  = 20,
 	DamageFXSize   = 0.25,
 	DamageFXLifetime = 0.8,
+	DamageFXRainbow = false,
 	KillNotify     = false,
 	XRay           = false,
 	XRayTransparency = 0.5,
@@ -171,10 +174,12 @@ local S = {
 	CopterFly      = false,
 	CopterFlySpeed = 100,
 }
+local SA_CurrentTarget = nil
 
 local AC      = Color3.fromRGB(255, 255, 255)
 local AC_ESP  = Color3.fromRGB(255, 255, 255)
 local AC_FOV  = Color3.fromRGB(255, 255, 255)
+local AC_FOV_TARGET = Color3.fromRGB(255, 0, 0)
 local AC_FOV_FILL = Color3.fromRGB(255, 255, 255)
 local AC_TR   = Color3.fromRGB(255, 255, 255)
 
@@ -187,6 +192,8 @@ local AC_CHAMS = Color3.fromRGB(255, 255, 255)
 local AC_CHAMS_OUTLINE = Color3.fromRGB(255, 255, 255)
 Runtime.ExtraColors = {
 	Hitmarker = Color3.fromRGB(255, 255, 255),
+	HitmarkerKill = Color3.fromRGB(220, 80, 80),
+	HitLogs = Color3.fromRGB(176, 176, 209),
 	DamageFX = Color3.fromRGB(255, 255, 255),
 	ToolOutline = Color3.fromRGB(255, 255, 255),
 	Water = Color3.fromRGB(128, 128, 128),
@@ -261,6 +268,12 @@ local crosshairSettings = {
 	crosshairSpin      = false,
 	crosshairSpinSpeed = 2,
 	crosshairRainbow   = false,
+	crosshairDot       = false,
+	crosshairPulse     = false,
+	crosshairPulseSpeed = 3,
+	crosshairFollowAim = false,
+	crosshairFollowTarget = false,
+	crosshairFollowSmooth = 8,
 }
 
 local Crosshair = {
@@ -271,6 +284,11 @@ local Crosshair = {
 	CurrentType  = nil,
 	Rotation     = 0,
 	RainbowHue   = 0,
+	PulseClock   = 0,
+	CurrentGap   = 4,
+	SmoothX      = nil,
+	SmoothY      = nil,
+	DotSegment   = nil,
 }
 
 local UserInputService = UIS
@@ -303,7 +321,12 @@ local function chClear()
 		Crosshair.MainFrame:Destroy()
 		Crosshair.MainFrame = nil
 	end
+	if Crosshair.DotSegment then
+		Crosshair.DotSegment:Destroy()
+		Crosshair.DotSegment = nil
+	end
 	Crosshair.Segments = {}
+	Crosshair.SmoothX, Crosshair.SmoothY = nil, nil
 end
 
 local function chInit()
@@ -381,22 +404,43 @@ local function startCrosshair()
 		if not Crosshair.MainFrame or Crosshair.CurrentType ~= t2 then
 			chBuild(t2, size, thick)
 		end
-		local pos
-		if crosshairSettings.crosshairCenter then
-			-- mobile: crosshair fixed at screen center, keep system cursor visible
+		local pos, followUsed = nil, false
+		local followPosition = nil
+		if crosshairSettings.crosshairFollowAim and SA_CurrentTarget then
+			followPosition = ProjectileSilent and ProjectileSilent.TargetPosition or SA_CurrentTarget.Position
+		elseif crosshairSettings.crosshairFollowTarget and SA_CurrentTarget then
+			followPosition = SA_CurrentTarget.Position
+		end
+		if followPosition then
+			local activeCamera = workspace.CurrentCamera or Camera
+			local projected, visible = activeCamera:WorldToViewportPoint(followPosition)
+			if visible and projected.Z > 0 then
+				pos = Vector2.new(projected.X, projected.Y)
+				followUsed = true
+				UIS.MouseIconEnabled = false
+			end
+		end
+		if not pos and crosshairSettings.crosshairCenter then
 			UIS.MouseIconEnabled = true
 			local ss2 = Camera.ViewportSize
 			pos = Vector2.new(ss2.X / 2, ss2.Y / 2)
-		else
-			-- pc: pixel-perfect на точке взаимодействия курсора
-			-- IgnoreGuiInset=true: GUI coords от (0,0) экрана
-			-- GetMouseLocation() тоже от (0,0) => inset НЕ вычитаем
+		elseif not pos then
 			UIS.MouseIconEnabled = false
 			pos = UIS:GetMouseLocation()
+		end
+		if followUsed then
+			if not Crosshair.SmoothX then Crosshair.SmoothX, Crosshair.SmoothY = pos.X, pos.Y end
+			local alpha = 1 - math.exp(-math.max(0, dt or 0) * math.clamp(crosshairSettings.crosshairFollowSmooth, 1, 20))
+			Crosshair.SmoothX += (pos.X - Crosshair.SmoothX) * alpha
+			Crosshair.SmoothY += (pos.Y - Crosshair.SmoothY) * alpha
+			pos = Vector2.new(Crosshair.SmoothX, Crosshair.SmoothY)
+		else
+			Crosshair.SmoothX, Crosshair.SmoothY = nil, nil
 		end
 		if Crosshair.MainFrame.Position ~= UDim2.new(0, pos.X, 0, pos.Y) then
 			Crosshair.MainFrame.Position = UDim2.new(0, pos.X, 0, pos.Y)
 		end
+		Crosshair.PulseClock += dt or 0
 		if crosshairSettings.crosshairSpin then
 			Crosshair.Rotation = (Crosshair.Rotation + crosshairSettings.crosshairSpinSpeed * dt * 60) % 360
 			Crosshair.MainFrame.Rotation = Crosshair.Rotation
@@ -409,6 +453,29 @@ local function startCrosshair()
 			col = Color3.fromHSV(Crosshair.RainbowHue, 1, 1)
 		else
 			col = crosshairSettings.crosshairColor
+		end
+		local gap = crosshairSettings.crosshairGap
+		if crosshairSettings.crosshairPulse then
+			gap += math.sin(Crosshair.PulseClock * crosshairSettings.crosshairPulseSpeed) * math.max(gap * 0.4, 2)
+		end
+		Crosshair.CurrentGap = gap
+		if crosshairSettings.crosshairDot then
+			if not Crosshair.DotSegment then
+				local dot = Instance.new("Frame")
+				dot.Name = "CenterDot"
+				dot.AnchorPoint = Vector2.new(0.5, 0.5)
+				dot.Size = UDim2.new(0, 2, 0, 2)
+				dot.BorderSizePixel = 0
+				dot.Parent = Crosshair.ScreenGui
+				Instance.new("UICorner", dot).CornerRadius = UDim.new(0.5, 0)
+				Crosshair.DotSegment = dot
+			end
+			Crosshair.DotSegment.Visible = true
+			Crosshair.DotSegment.Position = UDim2.new(0, pos.X, 0, pos.Y)
+			Crosshair.DotSegment.BackgroundColor3 = col
+		elseif Crosshair.DotSegment then
+			Crosshair.DotSegment:Destroy()
+			Crosshair.DotSegment = nil
 		end
 		for idx, seg in ipairs(Crosshair.Segments) do
 			seg.BackgroundColor3 = col
@@ -423,7 +490,6 @@ local function startCrosshair()
 			elseif t2 == "Dot" then
 				seg.Size = UDim2.new(0, thick * 2, 0, thick * 2)
 			elseif t2 == "Custom" then
-				local gap = crosshairSettings.crosshairGap
 				local len = crosshairSettings.crosshairLength
 				if idx == 1 then
 					seg.Size = UDim2.new(0, thick, 0, len)
@@ -1420,21 +1486,25 @@ do
 		-- FOV Circle, Fill and Target Line are independent drawing controls.
 		-- Do not restore a stale snapshot when Silent is toggled.
 	end)
-	addSlider(mbSet, "FOV", 10, 250, 120, function(v) S.FOV = v end)
-	addSlider(mbSet, "Hit Chance", 1, 100, 100, function(v) S.MBHitChance = v end)
-	addSlider(mbSet, "Max Dist", 50, 1000, 500, function(v) S.MBMaxDist = v end)
-	addDropdown(mbSet, "Target Part", {"Head", "Torso", "Random"}, 1, function(v)
-		if v == "Head" then S.MBTargetPart = 1
-		elseif v == "Torso" then S.MBTargetPart = 2
-		else S.MBTargetPart = 3 end
+	addSlider(mbSet, "FOV", 10, 500, 120, function(v) S.FOV = v end)
+	addSlider(mbSet, "Hit Chance", 0, 100, 100, function(v) S.MBHitChance = v end)
+	addSlider(mbSet, "Max Dist", 50, 3000, 500, function(v) S.MBMaxDist = v end)
+	addDropdown(mbSet, "Target Part", {"HeadHitbox", "Head", "HumanoidRootPart", "Random"}, 1, function(v)
+		if v == "HeadHitbox" then S.MBTargetPart = 1
+		elseif v == "Head" then S.MBTargetPart = 2
+		elseif v == "HumanoidRootPart" then S.MBTargetPart = 3
+		else S.MBTargetPart = 4 end
 	end)
-	addDropdown(mbSet, "Visible Only", {"Off", "On"}, 1, function(v) S.MBVisibleOnly = v == "On" end)
+	addDropdown(mbSet, "Use FOV Filter", {"Off", "On"}, 2, function(v) S.MBUseFOV = v == "On" end)
+	addDropdown(mbSet, "Visible Check", {"Off", "On"}, 2, function(v) S.MBVisibleOnly = v == "On" end)
+	addDropdown(mbSet, "Manipulation", {"Off", "On"}, 1, function(v) S.Manipulation = v == "On" end)
 	addDropdown(mbSet, "Target Priority", {"Distance", "HP"}, 1, function(v)
 		S.MBPriority = v == "HP" and "hp" or "distance"
 	end)
 	addDropdown(mbSet, "FOV Mode", {"mobile", "pc"}, 1, function(v) S.MBFovMode = v end)
 	addDropdown(mbSet, "FOV Circle", {"Off", "On"}, 1, function(v) S.FOVCircle = v == "On" end)
 	addColor(mbSet, "FOV Color", function(c) AC_FOV = c end)
+	addColor(mbSet, "Target Color", function(c) AC_FOV_TARGET = c end)
 	addDropdown(mbSet, "FOV Fill", {"Off", "On"}, 1, function(v) S.FOVFill = v == "On" end)
 	addSlider(mbSet, "Fill Alpha", 1, 9, 8, function(v) S.FOVFillTransparency = v / 10 end)
 	addColor(mbSet, "Fill Color", function(c) AC_FOV_FILL = c end)
@@ -1519,10 +1589,8 @@ do
 
 	local speedSet = createFeature(lc, "Speed", false, function(v)
 		S.SpeedRostAlpha = v
-		if not v and Runtime.RestoreSpeedRost then Runtime.RestoreSpeedRost() end
 	end)
-	addSlider(speedSet, "Value", 16, 40, 24, function(v) S.SpeedRostValue = v end)
-	addSlider(speedSet, "Smoothing", 1, 10, 5, function(v) S.SpeedRostSmoothing = v / 10 end)
+	addSlider(speedSet, "Value", 0, 60, 30, function(v) S.SpeedRostValue = v end)
 	addBind(speedSet, "Toggle Bind", "None", function()
 		if _fFS["Speed"] then _fFS["Speed"](not S.SpeedRostAlpha) end
 	end)
@@ -1557,11 +1625,25 @@ do
 	local lc, rc = getTab("MISC")
 
 	local HitSoundIDs = {
-		["Pop"]      = "rbxassetid://8935436941",
-		["Neverlose"]= "rbxassetid://6607598351",
-		["Bat"]      = "rbxassetid://99362374452374",
-		["Tink"]     = "rbxassetid://134428986251283",
-		["Blum"]     = "rbxassetid://79105299046226",
+		["None"] = "",
+		["Pop"] = "rbxassetid://8935436941",
+		["Neverlose"] = "rbxassetid://6607598351",
+		["Bat"] = "rbxassetid://99362374452374",
+		["Tink"] = "rbxassetid://134428986251283",
+		["Blum"] = "rbxassetid://79105299046226",
+		["Skeet"] = "rbxassetid://83717596220569",
+		["Sonic checkpoint"] = "rbxassetid://6817150445",
+		["Sonic.exe laugh"] = "rbxassetid://18379039436",
+		["Windows XP Error"] = "rbxassetid://9066167010",
+		["Minecraft Hit"] = "rbxassetid://8766809464",
+		["one sit nn dog"] = "rbxassetid://7380502345",
+		["Door Bell"] = "rbxassetid://131845870598154",
+		["Duck"] = "rbxassetid://1139819274",
+		["Mgs"] = "rbxassetid://81845122657643",
+		["Money"] = "rbxassetid://3020841054",
+		["Fart"] = "rbxassetid://4809574295",
+		["Meow"] = "rbxassetid://7148585764",
+		["byebye"] = "rbxassetid://70888261086432",
 	}
 
 	local _hsLastPlayTime = {}
@@ -1572,7 +1654,11 @@ do
 		if not HitSoundSettings.OriginalSounds[snd] then
 			HitSoundSettings.OriginalSounds[snd] = {SoundId = snd.SoundId, Volume = snd.Volume}
 		end
-		snd.SoundId = HitSoundSettings.SoundId
+		if HitSoundSettings.SoundId ~= "" then
+			snd.SoundId = HitSoundSettings.SoundId
+		else
+			snd.SoundId = HitSoundSettings.OriginalSounds[snd].SoundId
+		end
 		snd.Volume  = HitSoundSettings.Volume
 
 		-- Anti-spam: перехватываем воспроизведение через .Played
@@ -1683,8 +1769,8 @@ do
 		end
 	end)
 
-	addDropdown(hsSet, "Sound", {"Pop", "Neverlose", "Bat", "Tink", "Blum"}, 1, function(v)
-		HitSoundSettings.SoundId = HitSoundIDs[v] or HitSoundIDs["Pop"]
+	addDropdown(hsSet, "Sound", {"Pop", "Neverlose", "Bat", "Tink", "Blum", "None", "Skeet", "Sonic checkpoint", "Sonic.exe laugh", "Windows XP Error", "Minecraft Hit", "one sit nn dog", "Door Bell", "Duck", "Mgs", "Money", "Fart", "Meow", "byebye"}, 1, function(v)
+		HitSoundSettings.SoundId = HitSoundIDs[v] or ""
 		if HitSoundSettings.Enabled then debouncedRefresh() end
 	end)
 
@@ -1918,8 +2004,14 @@ do
 	end)
 	addColor(chSet, "Color", function(c) crosshairSettings.crosshairColor = c end)
 	addDropdown(chSet, "Spin", {"Off", "On"}, 1, function(v) crosshairSettings.crosshairSpin = v == "On" end)
-	addSlider(chSet, "Spin Speed", 1, 20, 2, function(v) crosshairSettings.crosshairSpinSpeed = v end)
+	addSlider(chSet, "Spin Speed", -360, 360, 2, function(v) crosshairSettings.crosshairSpinSpeed = v end)
 	addDropdown(chSet, "Rainbow", {"Off", "On"}, 1, function(v) crosshairSettings.crosshairRainbow = v == "On" end)
+	addDropdown(chSet, "Dot", {"Off", "On"}, 1, function(v) crosshairSettings.crosshairDot = v == "On" end)
+	addDropdown(chSet, "Pulse", {"Off", "On"}, 1, function(v) crosshairSettings.crosshairPulse = v == "On" end)
+	addSlider(chSet, "Pulse Speed", 5, 100, 30, function(v) crosshairSettings.crosshairPulseSpeed = v / 10 end)
+	addDropdown(chSet, "Follow Aim Point", {"Off", "On"}, 1, function(v) crosshairSettings.crosshairFollowAim = v == "On" end)
+	addDropdown(chSet, "Follow Target", {"Off", "On"}, 1, function(v) crosshairSettings.crosshairFollowTarget = v == "On" end)
+	addSlider(chSet, "Follow Smoothness", 1, 20, 8, function(v) crosshairSettings.crosshairFollowSmooth = v end)
 
 	createFeature(rc, "Pickup Notifications", false, function(v)
 		PickupNotifEnabled = v
@@ -2011,7 +2103,7 @@ do
 
 		for k,v in pairs(S) do cfg["S_"..k] = v end
 
-		local cols = {AC_ESP=AC_ESP,AC_FOV=AC_FOV,AC_FOV_FILL=AC_FOV_FILL,
+		local cols = {AC_ESP=AC_ESP,AC_FOV=AC_FOV,AC_FOV_TARGET=AC_FOV_TARGET,AC_FOV_FILL=AC_FOV_FILL,
 			AC_TR=AC_TR,AC_NAME=AC_NAME,AC_DIST=AC_DIST,
 			AC_FILL=AC_FILL,AC_HP=AC_HP,AC_WEAPON=AC_WEAPON,
 			AC_CHAMS=AC_CHAMS,AC_CHAMS_OUTLINE=AC_CHAMS_OUTLINE}
@@ -2028,6 +2120,12 @@ do
 		cfg["CH_spin"]      = crosshairSettings.crosshairSpin
 		cfg["CH_spinSpeed"] = crosshairSettings.crosshairSpinSpeed
 		cfg["CH_rainbow"]   = crosshairSettings.crosshairRainbow
+		cfg["CH_dot"]       = crosshairSettings.crosshairDot
+		cfg["CH_pulse"]     = crosshairSettings.crosshairPulse
+		cfg["CH_pulseSpeed"] = crosshairSettings.crosshairPulseSpeed
+		cfg["CH_followAim"] = crosshairSettings.crosshairFollowAim
+		cfg["CH_followTarget"] = crosshairSettings.crosshairFollowTarget
+		cfg["CH_followSmooth"] = crosshairSettings.crosshairFollowSmooth
 		cfg["CH_color"]     = c2t(crosshairSettings.crosshairColor)
 
 		cfg["HS_enabled"] = HitSoundSettings.Enabled
@@ -2064,6 +2162,7 @@ do
 
 		if cfg.AC_ESP      then AC_ESP      = t2c(cfg.AC_ESP)      end
 		if cfg.AC_FOV      then AC_FOV      = t2c(cfg.AC_FOV)      end
+		if cfg.AC_FOV_TARGET then AC_FOV_TARGET = t2c(cfg.AC_FOV_TARGET) end
 		if cfg.AC_FOV_FILL then AC_FOV_FILL = t2c(cfg.AC_FOV_FILL) end
 		if cfg.AC_TR       then AC_TR       = t2c(cfg.AC_TR)       end
 		if cfg.AC_NAME     then AC_NAME     = t2c(cfg.AC_NAME)     end
@@ -2088,6 +2187,12 @@ do
 		if cfg.CH_spin      ~= nil then crosshairSettings.crosshairSpin      = cfg.CH_spin      end
 		if cfg.CH_spinSpeed ~= nil then crosshairSettings.crosshairSpinSpeed = cfg.CH_spinSpeed end
 		if cfg.CH_rainbow   ~= nil then crosshairSettings.crosshairRainbow   = cfg.CH_rainbow   end
+		if cfg.CH_dot       ~= nil then crosshairSettings.crosshairDot       = cfg.CH_dot       end
+		if cfg.CH_pulse     ~= nil then crosshairSettings.crosshairPulse     = cfg.CH_pulse     end
+		if cfg.CH_pulseSpeed ~= nil then crosshairSettings.crosshairPulseSpeed = cfg.CH_pulseSpeed end
+		if cfg.CH_followAim ~= nil then crosshairSettings.crosshairFollowAim = cfg.CH_followAim end
+		if cfg.CH_followTarget ~= nil then crosshairSettings.crosshairFollowTarget = cfg.CH_followTarget end
+		if cfg.CH_followSmooth ~= nil then crosshairSettings.crosshairFollowSmooth = cfg.CH_followSmooth end
 		if cfg.CH_color     ~= nil then crosshairSettings.crosshairColor     = t2c(cfg.CH_color) end
 
 		if cfg.HS_enabled ~= nil then HitSoundSettings.Enabled = cfg.HS_enabled end
@@ -2147,6 +2252,22 @@ do
 		applyToggle("No Fall Damage",        S.NoFallDamage)
 		applyToggle("No Jump Delay",         S.NoJumpDelay)
 		applyToggle("Copter Fly",            S.CopterFly)
+		applyToggle("Rapid Fire",            S.RapidFire)
+		applyToggle("Full Auto",             S.FullAuto)
+		applyToggle("Melee Mods",            S.MeleeMods)
+		applyToggle("Hitbox Expander",       S.HitboxExpander)
+		applyToggle("Reload Indicator",      S.ReloadIndicator)
+		applyToggle("Bullet Tracers",        S.BulletTracers)
+		applyToggle("Third Person",          S.ThirdPerson)
+		applyToggle("Stretch Resolution",    S.Stretch)
+		applyToggle("Jump Circles",          S.JumpCircles)
+		applyToggle("Fullbright",            S.Fullbright)
+		applyToggle("No Decoration",         S.NoDecoration)
+		applyToggle("Sky Color",             S.SkyColorEnabled)
+		applyToggle("Skybox",                S.SkyboxEnabled)
+		applyToggle("Delete Spikes",         S.DeleteSpikes)
+		applyToggle("Delete Leaves",         S.DeleteLeaves)
+		applyToggle("Kill Sound",            S.KillSound)
 
 		applyToggle("Hit Sound",             HitSoundSettings.Enabled)
 
@@ -2445,6 +2566,7 @@ do
 	end)
 
 	local fogSet = createFeature(lc, "Custom Fog", false, function(v)
+		if v and S.Fullbright and _fFS["Fullbright"] then _fFS["Fullbright"](false) end
 		fogEnabled = v
 		if v then enableFog() else disableFog() end
 	end)
@@ -2515,6 +2637,7 @@ do
 
 	onCleanup(function() nvEnabled = false; disableNV() end)
 	local nvSet = createFeature(rc, "Night Vision", false, function(v)
+		if v and S.Fullbright and _fFS["Fullbright"] then _fFS["Fullbright"](false) end
 		nvEnabled = v
 		if v then
 			if fogEnabled then disableFog() end
@@ -2614,6 +2737,7 @@ do
 		end
 
 		createFeature(rc, "Low PC", false, function(v)
+			if v and S.Fullbright and _fFS["Fullbright"] then _fFS["Fullbright"](false) end
 			S.LowPC = v
 			if v then
 				if #state.Connections == 0 then
@@ -2822,7 +2946,7 @@ pcall(function() TargetLine.ZIndex = 3 end)
 local ESPBoxes, TracerObjs, NameObjs, DistObjs = {}, {}, {}, {}
 local ESPCorners, ESPFills, HPBars = {}, {}, {}
 local WeaponObjs, HPTextObjs, ChamsObjs = {}, {}, {}
-local SA_CurrentTarget = nil
+-- SA_CurrentTarget is declared in main.lua before Crosshair, ESP and extra HUD consumers.
 local _espLastUpdate = 0
 local espConnection
 
@@ -3234,7 +3358,7 @@ espConnection = RunService.RenderStepped:Connect(function()
 		circle.Filled = false
 		circle.Position = fovPosition
 		circle.Radius = S.FOV
-		circle.Color = AC_FOV
+		circle.Color = S.SilentAim and SA_CurrentTarget and AC_FOV_TARGET or AC_FOV
 		circleFill.Visible = S.FOVFill
 		circleFill.Position = fovPosition
 		circleFill.Radius = S.FOV
@@ -3315,11 +3439,13 @@ local projectileInitOK, projectileInitError = pcall(function()
 			fallbackSkips = 0,
 			bufferWrites = 0,
 			target = "inactive",
+			visiblePointChecks = 0,
 			lastShotReason = "not-fired",
 		},
 	}
 	ProjectileSilent = {
 		TargetPart = nil,
+		TargetPosition = nil,
 		TargetPlayer = nil,
 		TargetCharacter = nil,
 		Installed = { GunBase = false },
@@ -3327,15 +3453,19 @@ local projectileInitOK, projectileInitError = pcall(function()
 
 	local function clearTarget()
 		ProjectileSilent.TargetPart = nil
+		ProjectileSilent.TargetPosition = nil
 		ProjectileSilent.TargetPlayer = nil
 		ProjectileSilent.TargetCharacter = nil
 	end
 
 	local function targetPartFor(character)
 		if S.MBTargetPart == 2 then
-			return character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head")
+			return character:FindFirstChild("Head") or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("HumanoidRootPart")
 		end
 		if S.MBTargetPart == 3 then
+			return character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head")
+		end
+		if S.MBTargetPart == 4 then
 			local candidates = {}
 			for _, name in ipairs({"HeadHitbox", "Head", "HumanoidRootPart"}) do
 				local part = character:FindFirstChild(name)
@@ -3345,6 +3475,59 @@ local projectileInitOK, projectileInitError = pcall(function()
 			return nil
 		end
 		return character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head") or character:FindFirstChild("HumanoidRootPart")
+	end
+
+	-- VOMAGLA Visible Check: sample the hitbox and aim at the average visible point,
+	-- rather than rejecting an otherwise visible target because its centre is covered.
+	local visibleParams = RaycastParams.new()
+	visibleParams.FilterType = Enum.RaycastFilterType.Exclude
+	visibleParams.IgnoreWater = true
+	local ignoreCache, lastIgnoreRefresh = {}, -1000
+	local testOffsets = {Vector3.new(0, 0, 0)}
+	for x = -1, 1, 2 do
+		for y = -1, 1, 2 do
+			for z = -1, 1, 2 do table.insert(testOffsets, Vector3.new(x * 0.5, y * 0.5, z * 0.5)) end
+		end
+	end
+	for _, offset in ipairs({
+		Vector3.new(0.5, 0, 0), Vector3.new(-0.5, 0, 0),
+		Vector3.new(0, 0.5, 0), Vector3.new(0, -0.5, 0),
+		Vector3.new(0, 0, 0.5), Vector3.new(0, 0, -0.5),
+	}) do table.insert(testOffsets, offset) end
+	local function pointVisible(character, worldPoint, camera)
+		local now = os.clock()
+		if now - lastIgnoreRefresh >= 0.5 then
+			lastIgnoreRefresh = now
+			ignoreCache = {LocalPlayer.Character, camera}
+			for _, player in ipairs(Players:GetPlayers()) do
+				if player.Character then table.insert(ignoreCache, player.Character) end
+			end
+		end
+		visibleParams.FilterDescendantsInstances = ignoreCache
+		local origin = camera.CFrame.Position
+		local result = workspace:Raycast(origin, worldPoint - origin, visibleParams)
+		if not result then return true end
+		local instance = result.Instance
+		if not instance then return false end
+		if instance:IsDescendantOf(character) then return true end
+		return instance:IsA("BasePart") and not instance.CanCollide
+	end
+	local function getVisiblePoint(part, character, camera)
+		if not part or not part:IsA("BasePart") then return nil end
+		ProjectileCore.Status.visiblePointChecks += 1
+		local sumX, sumY, sumZ, count = 0, 0, 0, 0
+		for _, offset in ipairs(testOffsets) do
+			local worldPoint = part.CFrame:PointToWorldSpace(offset * part.Size)
+			if pointVisible(character, worldPoint, camera) then
+				sumX += worldPoint.X
+				sumY += worldPoint.Y
+				sumZ += worldPoint.Z
+				count += 1
+			end
+		end
+		if count == 0 then return nil end
+		if count == #testOffsets then return part.Position end
+		return Vector3.new(sumX / count, sumY / count, sumZ / count)
 	end
 
 	local function updateTarget()
@@ -3364,7 +3547,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 			or Vector2.new(viewport.X * 0.5, viewport.Y * 0.5)
 		local localRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 		local worldOrigin = localRoot and localRoot.Position or camera.CFrame.Position
-		local bestPart, bestPlayer = nil, nil
+		local bestPart, bestPlayer, bestPosition = nil, nil, nil
 		local bestDistance, bestHP = math.huge, math.huge
 
 		for _, player in ipairs(Players:GetPlayers()) do
@@ -3373,22 +3556,28 @@ local projectileInitOK, projectileInitError = pcall(function()
 				local humanoid = character and character:FindFirstChildOfClass("Humanoid")
 				if character and humanoid and humanoid.Health > 0 then
 					local part = targetPartFor(character)
-					if part and (not S.MBVisibleOnly or isVisible(part, character)) then
-						local distance3D = (part.Position - worldOrigin).Magnitude
-						if distance3D <= S.MBMaxDist then
-							local projected, onScreen = camera:WorldToViewportPoint(part.Position)
-							if onScreen and projected.Z > 0 then
-								local screenDistance = (Vector2.new(projected.X, projected.Y) - center).Magnitude
-								if screenDistance <= S.FOV then
-									local hp = humanoid.Health
-									if S.MBPriority == "hp" then
-										if hp < bestHP or (hp == bestHP and screenDistance < bestDistance) then
-											bestPart, bestPlayer = part, player
+					if part then
+						local targetPosition = part.Position
+						if S.MBVisibleOnly then
+							targetPosition = getVisiblePoint(part, character, camera)
+						end
+						if targetPosition then
+							local distance3D = (part.Position - worldOrigin).Magnitude
+							if distance3D <= S.MBMaxDist then
+								local projected, onScreen = camera:WorldToViewportPoint(targetPosition)
+								if onScreen and projected.Z > 0 then
+									local screenDistance = (Vector2.new(projected.X, projected.Y) - center).Magnitude
+									if not S.MBUseFOV or screenDistance <= S.FOV then
+										local hp = humanoid.Health
+										if S.MBPriority == "hp" then
+											if hp < bestHP or (hp == bestHP and screenDistance < bestDistance) then
+												bestPart, bestPlayer, bestPosition = part, player, targetPosition
+												bestDistance, bestHP = screenDistance, hp
+											end
+										elseif screenDistance < bestDistance then
+											bestPart, bestPlayer, bestPosition = part, player, targetPosition
 											bestDistance, bestHP = screenDistance, hp
 										end
-									elseif screenDistance < bestDistance then
-										bestPart, bestPlayer = part, player
-										bestDistance, bestHP = screenDistance, hp
 									end
 								end
 							end
@@ -3399,6 +3588,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 		end
 
 		ProjectileSilent.TargetPart = bestPart
+		ProjectileSilent.TargetPosition = bestPosition
 		ProjectileSilent.TargetPlayer = bestPlayer
 		ProjectileSilent.TargetCharacter = bestPlayer and bestPlayer.Character or nil
 		ProjectileCore.Status.target = bestPart and "ok" or "no-target"
@@ -3430,17 +3620,18 @@ local projectileInitOK, projectileInitError = pcall(function()
 			ProjectileCore.Status.target = "stale-distance"
 			return nil
 		end
-		local projected, onScreen = camera:WorldToViewportPoint(target.Position)
+		local targetPosition = ProjectileSilent.TargetPosition or target.Position
+		local projected, onScreen = camera:WorldToViewportPoint(targetPosition)
 		local viewport = camera.ViewportSize
 		local center = S.MBFovMode == "pc" and UIS:GetMouseLocation()
 			or Vector2.new(viewport.X * 0.5, viewport.Y * 0.5)
-		if not onScreen or projected.Z <= 0
-			or (Vector2.new(projected.X, projected.Y) - center).Magnitude > S.FOV then
+		if not onScreen or projected.Z <= 0 or (S.MBUseFOV
+			and (Vector2.new(projected.X, projected.Y) - center).Magnitude > S.FOV) then
 			clearTarget()
 			ProjectileCore.Status.target = "stale-fov"
 			return nil
 		end
-		return target
+		return target, targetPosition
 	end
 	ProjectileSilent.GetTarget = getLiveTarget
 
@@ -3478,7 +3669,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 				ProjectileCore.Status.lastShotReason = "silent-inactive-original"
 				return originalFire(self, ...)
 			end
-			local target = getLiveTarget()
+			local target, livePosition = getLiveTarget()
 			if not target then
 				ProjectileCore.Status.lastShotReason = "no-target-original"
 				return originalFire(self, ...)
@@ -3489,7 +3680,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 			end
 
 			local args = table.pack(...)
-			local targetPosition = target.Position
+			local targetPosition = livePosition or target.Position
 			local patched = false
 			for index = 1, args.n do
 				local value = args[index]
@@ -3703,6 +3894,29 @@ local logLayout = Instance.new("UIListLayout")
 logLayout.Padding = UDim.new(0, 3)
 logLayout.SortOrder = Enum.SortOrder.LayoutOrder
 logLayout.Parent = logHolder
+local function updateLogPosition()
+	local position = S.HitLogsPosition
+	if position == "Left" then
+		logHolder.AnchorPoint = Vector2.new(0, 0.5)
+		logHolder.Position = UDim2.new(0, 18, 0.5, 0)
+		logLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+	elseif position == "Top" then
+		logHolder.AnchorPoint = Vector2.new(0.5, 0)
+		logHolder.Position = UDim2.new(0.5, 0, 0, 78)
+		logLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	elseif position == "LeftTop" then
+		logHolder.AnchorPoint = Vector2.new(0, 0)
+		logHolder.Position = UDim2.new(0, 18, 0, 78)
+		logLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+	else
+		logHolder.AnchorPoint = Vector2.new(0.5, 0)
+		logHolder.Position = UDim2.new(0.5, 0, 0.62, 0)
+		logLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	end
+end
+updateLogPosition()
+ExtraFeatures.ApplyHitLogPosition = updateLogPosition
+ExtraFeatures.GetLogHolder = function() return logHolder end
 
 local logEntries, logOrder = {}, 0
 local function removeLog(label)
@@ -3716,6 +3930,7 @@ local function pushLog(text)
 	logOrder += 1
 	local label = makeText(logHolder, tostring(text), UDim2.new(), UDim2.new(1, 0, 0, 18), 12)
 	label.Font = Enum.Font.Code
+	label.TextColor3 = Runtime.ExtraColors.HitLogs
 	label.LayoutOrder = -logOrder
 	label.TextStrokeTransparency = 0.5
 	table.insert(logEntries, label)
@@ -3772,7 +3987,7 @@ local function updateHitmarkers()
 				local direction = markerDirections[lineIndex]
 				line.Visible = S.HitmarkerEnabled and visible == true
 				line.Transparency = math.clamp(1 - age / math.max(0.01, S.HitmarkerDuration), 0, 1)
-				line.Color = marker.kill and Color3.fromRGB(255, 90, 90) or Runtime.ExtraColors.Hitmarker
+				line.Color = marker.kill and Runtime.ExtraColors.HitmarkerKill or Runtime.ExtraColors.Hitmarker
 				line.Thickness = S.HitmarkerThickness
 				line.From = Vector2.new(projected.X + direction[1] * S.HitmarkerSize * 0.3, projected.Y + direction[2] * S.HitmarkerSize * 0.3)
 				line.To = Vector2.new(projected.X + direction[1] * S.HitmarkerSize, projected.Y + direction[2] * S.HitmarkerSize)
@@ -3812,7 +4027,9 @@ local function spawnDamageFX(worldPosition)
 	emitter.Enabled = false
 	emitter.Rate = 0
 	emitter.Texture = damageTextures[S.DamageFXStyle] or damageTextures.Foam
-	emitter.Color = ColorSequence.new(Runtime.ExtraColors.DamageFX)
+	local particleColor = Runtime.ExtraColors.DamageFX
+	if S.DamageFXRainbow then particleColor = Color3.fromHSV((os.clock() * 0.5) % 1, 1, 1) end
+	emitter.Color = ColorSequence.new(particleColor)
 	emitter.Lifetime = NumberRange.new(S.DamageFXLifetime)
 	emitter.Speed = NumberRange.new(S.DamageFXSpeed)
 	emitter.Size = NumberSequence.new(S.DamageFXSize)
@@ -4027,7 +4244,8 @@ local function updateFly(humanoid)
 	local seat = humanoid.SeatPart
 	if not seat then destroyFly() return end
 	ensureFly(humanoid, seat)
-	local cameraCF = Camera.CFrame
+	humanoid.Sit = true
+	local cameraCF = (workspace.CurrentCamera or Camera).CFrame
 	local look = cameraCF.LookVector
 	local right = cameraCF.RightVector or Vector3.new(-look.Z, 0, look.X)
 	local movement = Vector3.new()
@@ -4036,7 +4254,7 @@ local function updateFly(humanoid)
 	if UIS:IsKeyDown(Enum.KeyCode.D) then movement += right end
 	if UIS:IsKeyDown(Enum.KeyCode.A) then movement -= right end
 	local vertical = 0
-	if UIS:IsKeyDown(Enum.KeyCode.LeftShift) then vertical = 1 end
+	if UIS:IsKeyDown(Enum.KeyCode.LeftShift) or UIS:IsKeyDown(Enum.KeyCode.RightShift) then vertical = 1 end
 	if UIS:IsKeyDown(Enum.KeyCode.LeftControl) or UIS:IsKeyDown(Enum.KeyCode.RightControl) then vertical = -1 end
 	if movement.Magnitude > 0 or vertical ~= 0 then
 		flyVelocity.Velocity = (movement + Vector3.new(0, vertical, 0)).Unit * S.CopterFlySpeed
@@ -4146,6 +4364,7 @@ local function attachHumanoid(player, character, humanoid)
 		end
 		local hitTime = lastHits[player]
 		if hitTime and os.clock() - hitTime <= 5 then
+			if Runtime.VomaglaFeatures and Runtime.VomaglaFeatures.PlayKillSound then Runtime.VomaglaFeatures.PlayKillSound() end
 			local root = character and character:FindFirstChild("HumanoidRootPart")
 			if root then spawnHitmarker(root.Position, true) end
 		end
@@ -4217,23 +4436,27 @@ end
 -- Existing monochrome widget API; no reference UI or external assets are imported.
 do
 	local autoSet = createFeature(smartCol("COMBAT"), "Auto Fire", false, function(v) S.AutoFire = v end)
-	addSlider(autoSet, "Fire Delay", 1, 50, 8, function(v) S.AutoFireDelay = v / 100 end)
+	addSlider(autoSet, "Fire Delay", 1, 50, 5, function(v) S.AutoFireDelay = v / 100 end)
 end
 do
 	local hudSet = createFeature(smartCol("VISUALS"), "Target HUD", false, function(v) S.TargetHUD = v end)
 	local logsSet = createFeature(smartCol("VISUALS"), "Hit Logs", false, function(v) S.HitLogsEnabled = v end)
+	addDropdown(logsSet, "Position", {"Center", "Left", "Top", "LeftTop"}, 1, function(v) S.HitLogsPosition = v; updateLogPosition() end)
 	addSlider(logsSet, "Duration", 1, 15, 5, function(v) S.HitLogsDuration = v end)
+	addColor(logsSet, "Log Color", function(c) Runtime.ExtraColors.HitLogs = c end)
 	local markerSet = createFeature(smartCol("VISUALS"), "Hitmarker", false, function(v) S.HitmarkerEnabled = v end)
 	addSlider(markerSet, "Size", 5, 40, 12, function(v) S.HitmarkerSize = v end)
 	addSlider(markerSet, "Thickness", 1, 5, 2, function(v) S.HitmarkerThickness = v end)
 	addSlider(markerSet, "Duration", 5, 60, 25, function(v) S.HitmarkerDuration = v / 10 end)
 	addColor(markerSet, "Color", function(c) Runtime.ExtraColors.Hitmarker = c end)
+	addColor(markerSet, "Kill Color", function(c) Runtime.ExtraColors.HitmarkerKill = c end)
 	local damageSet = createFeature(smartCol("VISUALS"), "Damage FX", false, function(v) S.DamageFXEnabled = v end)
 	addDropdown(damageSet, "Style", {"Foam", "Crescents", "Residue", "Electric"}, 1, function(v) S.DamageFXStyle = v end)
 	addSlider(damageSet, "Count", 1, 60, 12, function(v) S.DamageFXCount = v end)
 	addSlider(damageSet, "Speed", 5, 60, 20, function(v) S.DamageFXSpeed = v end)
 	addSlider(damageSet, "Size", 5, 100, 25, function(v) S.DamageFXSize = v / 100 end)
 	addSlider(damageSet, "Lifetime", 2, 40, 8, function(v) S.DamageFXLifetime = v / 10 end)
+	addDropdown(damageSet, "Rainbow", {"Off", "On"}, 1, function(v) S.DamageFXRainbow = v == "On" end)
 	addColor(damageSet, "Color", function(c) Runtime.ExtraColors.DamageFX = c end)
 	local toolSet = createFeature(smartCol("VISUALS"), "Tool Outline", false, function(v) S.ToolOutline = v end)
 	addColor(toolSet, "Outline Color", function(c) Runtime.ExtraColors.ToolOutline = c; if S.ToolOutline then updateToolOutline() end end)
@@ -4285,6 +4508,795 @@ onCleanup(cleanup)
 end
 initializeExtraFeatures()
 end -- function-scoped helpers; ExtraFeatures is the public runtime/test surface.
+
+
+-- VOMAGLA gameplay features integrated into the existing Burmalda runtime/UI.
+-- No external menu, loader or second namecall hook is installed here.
+
+do
+local function initializeVomaglaFeatures()
+local M = {
+	Status = {
+		weaponCacheAvailable = false,
+		weaponScans = 0,
+		reloadHooked = false,
+		bulletTracers = 0,
+		killSoundCalls = 0,
+		lastKillSound = "",
+		lastStretch = nil,
+	},
+	KillSoundState = { Times = {}, LastDouble = -1000 },
+	ReloadState = { Start = 0, Duration = 0, Active = false },
+}
+Runtime.VomaglaFeatures = M
+
+local defaults = {
+	RapidFire = false, RapidFireDelay = 0.02,
+	FullAuto = false,
+	MeleeMods = false, MeleeSpeed = 0.05, MeleeRange = 5,
+	ReloadIndicator = false,
+	BulletTracers = false, BulletTracerStyle = "Beam", BulletTracerWidth = 1.5,
+	BulletTracerTransparency = 0, BulletTracerLifetime = 0.5,
+	HitboxExpander = false, HitboxSize = 5, HitboxTransparency = 0.2,
+	ThirdPerson = false, ThirdPersonDistance = 10,
+	Stretch = false, StretchValue = 0.65,
+	Fullbright = false, NoDecoration = false,
+	SkyColorEnabled = false, SkyboxEnabled = false, SkyboxChoice = "Default",
+	JumpCircles = false, DeleteSpikes = false, DeleteLeaves = false,
+	KillSound = false, KillSoundVolume = 1,
+}
+for key, value in pairs(defaults) do
+	if S[key] == nil then S[key] = value end
+end
+Runtime.ExtraColors.BulletTracer = Runtime.ExtraColors.BulletTracer or Color3.fromRGB(255, 255, 255)
+Runtime.ExtraColors.Hitbox = Runtime.ExtraColors.Hitbox or Color3.fromRGB(255, 0, 0)
+Runtime.ExtraColors.JumpCircle = Runtime.ExtraColors.JumpCircle or Color3.fromRGB(0, 170, 255)
+Runtime.ExtraColors.Sky = Runtime.ExtraColors.Sky or Color3.fromRGB(135, 200, 255)
+
+local moduleConnections = {}
+local function connect(signal, callback)
+	local connection = signal:Connect(callback)
+	table.insert(moduleConnections, connection)
+	return connection
+end
+local function destroyObject(object)
+	if object then pcall(function() object:Destroy() end) end
+end
+
+-- Gun/melee table mods. Original values are remembered per key and restored on Off/Unload.
+do
+	local gunCache, meleeCache = {}, {}
+	local gunOriginals, meleeOriginals = {}, {}
+	local cachesBuilt = false
+
+	local function saveOriginal(originals, object, key)
+		local properties = originals[object]
+		if not properties then
+			properties = {}
+			originals[object] = properties
+		end
+		if properties[key] == nil then properties[key] = { value = rawget(object, key) } end
+	end
+	local function restoreKeys(originals, keys)
+		for object, properties in pairs(originals) do
+			for _, key in ipairs(keys) do
+				local saved = properties[key]
+				if saved then
+					pcall(function() rawset(object, key, saved.value) end)
+					properties[key] = nil
+				end
+			end
+			if next(properties) == nil then originals[object] = nil end
+		end
+	end
+	local rapidKeys = {"FireDelay", "FireRate", "FiringOnCooldown"}
+	local autoKeys = {"FiringType", "FireMode", "Auto"}
+	local meleeKeys = {"UseDelay", "UseTime", "Range", "CharacterRange", "UsingOnCooldown"}
+
+	local function restoreAll()
+		restoreKeys(gunOriginals, rapidKeys)
+		restoreKeys(gunOriginals, autoKeys)
+		restoreKeys(meleeOriginals, meleeKeys)
+	end
+	local function rebuildCaches()
+		restoreAll()
+		table.clear(gunCache)
+		table.clear(meleeCache)
+		cachesBuilt = true
+		M.Status.weaponScans += 1
+		M.Status.weaponCacheAvailable = type(getgc) == "function"
+		if not M.Status.weaponCacheAvailable then return end
+		local ok, objects = pcall(getgc, true)
+		if not ok or type(objects) ~= "table" then return end
+		for _, object in pairs(objects) do
+			if type(object) == "table" then
+				if rawget(object, "FireDelay") ~= nil and rawget(object, "FiringOnCooldown") ~= nil and rawget(object, "OwnerPlayer") ~= nil then
+					table.insert(gunCache, object)
+				end
+				if rawget(object, "UseDelay") ~= nil and rawget(object, "Range") ~= nil
+					and rawget(object, "UsingOnCooldown") ~= nil and rawget(object, "Destroyed") ~= true then
+					table.insert(meleeCache, object)
+				end
+			end
+		end
+	end
+	local function applyWeaponMods()
+		if not cachesBuilt then rebuildCaches() end
+		if S.RapidFire or S.FullAuto then
+			for _, object in ipairs(gunCache) do
+				pcall(function()
+					if S.RapidFire then
+						local speed = math.clamp(tonumber(S.RapidFireDelay) or 0.02, 0.01, 0.5)
+						for _, key in ipairs(rapidKeys) do saveOriginal(gunOriginals, object, key) end
+						rawset(object, "FireDelay", speed)
+						if rawget(object, "FireRate") ~= nil then rawset(object, "FireRate", math.floor(1 / speed)) end
+						rawset(object, "FiringOnCooldown", false)
+					end
+					if S.FullAuto then
+						for _, key in ipairs(autoKeys) do saveOriginal(gunOriginals, object, key) end
+						if rawget(object, "FiringType") ~= nil then rawset(object, "FiringType", 2) end
+						if rawget(object, "FireMode") ~= nil then rawset(object, "FireMode", "Auto") end
+						if rawget(object, "Auto") ~= nil then rawset(object, "Auto", true) end
+					end
+				end)
+			end
+		end
+		if S.MeleeMods then
+			local speed = math.clamp(tonumber(S.MeleeSpeed) or 0.05, 0.01, 0.5)
+			local range = math.clamp(tonumber(S.MeleeRange) or 5, 1, 20)
+			for _, object in ipairs(meleeCache) do
+				pcall(function()
+					if rawget(object, "Destroyed") == true then return end
+					for _, key in ipairs(meleeKeys) do saveOriginal(meleeOriginals, object, key) end
+					rawset(object, "UseDelay", speed)
+					rawset(object, "UseTime", speed)
+					rawset(object, "Range", range)
+					rawset(object, "CharacterRange", range)
+					rawset(object, "UsingOnCooldown", false)
+				end)
+			end
+		end
+	end
+	M.RebuildWeaponCaches = rebuildCaches
+	M.ApplyWeaponMods = applyWeaponMods
+	M.SetRapidFire = function(enabled)
+		S.RapidFire = enabled
+		if enabled then applyWeaponMods() else restoreKeys(gunOriginals, rapidKeys) end
+	end
+	M.SetFullAuto = function(enabled)
+		S.FullAuto = enabled
+		if enabled then applyWeaponMods() else restoreKeys(gunOriginals, autoKeys) end
+	end
+	M.SetMeleeMods = function(enabled)
+		S.MeleeMods = enabled
+		if enabled then applyWeaponMods() else restoreKeys(meleeOriginals, meleeKeys) end
+	end
+	M.GetWeaponCaches = function() return gunCache, meleeCache end
+	M.RestoreWeaponMods = restoreAll
+	local function watchCharacter(character)
+		cachesBuilt = false
+		if character then
+			connect(character.ChildAdded, function(child)
+				if child:IsA("Tool") then cachesBuilt = false end
+			end)
+		end
+	end
+	if LocalPlayer.Character then watchCharacter(LocalPlayer.Character) end
+	connect(LocalPlayer.CharacterAdded, function(character)
+		watchCharacter(character)
+		task.delay(0.15, function() if not Runtime.Unloaded then rebuildCaches() end end)
+	end)
+	local backpack = LocalPlayer:FindFirstChild("Backpack")
+	if backpack then
+		connect(backpack.ChildAdded, function(child)
+			if child:IsA("Tool") then cachesBuilt = false end
+		end)
+	end
+	rebuildCaches()
+end
+
+-- Reload progress uses the same GunBase module table as Silent; only one reload method is wrapped.
+do
+	local reloadGui = newScreenGui()
+	reloadGui.Name = "BurmaldaHookReload"
+	reloadGui.ResetOnSpawn = false
+	reloadGui.IgnoreGuiInset = true
+	reloadGui.DisplayOrder = 999996
+	reloadGui.Parent = pGui
+	local holder = Instance.new("Frame", reloadGui)
+	holder.AnchorPoint = Vector2.new(0.5, 1)
+	holder.Position = UDim2.new(0.5, 0, 1, -80)
+	holder.Size = UDim2.new(0, 160, 0, 16)
+	holder.BackgroundTransparency = 1
+	holder.Visible = false
+	local background = Instance.new("Frame", holder)
+	background.Size = UDim2.new(1, 0, 0, 6)
+	background.Position = UDim2.new(0, 0, 0.5, -3)
+	background.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+	background.BorderSizePixel = 0
+	Instance.new("UICorner", background).CornerRadius = UDim.new(1, 0)
+	local fill = Instance.new("Frame", background)
+	fill.Size = UDim2.new(0, 0, 1, 0)
+	fill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	fill.BorderSizePixel = 0
+	Instance.new("UICorner", fill).CornerRadius = UDim.new(1, 0)
+
+	local gunBase, originalReload, replacementReload, reloadName = nil, nil, nil, nil
+	local lastInstallAttempt = -1000
+	local function installReloadHook()
+		if M.Status.reloadHooked then return true end
+		lastInstallAttempt = os.clock()
+		local gun = ReplicatedStorage:FindFirstChild("Gun")
+		local scripts = gun and gun:FindFirstChild("Scripts")
+		local module = scripts and scripts:FindFirstChild("GunBase")
+		if not module then return false end
+		local loaded = Runtime.RequireGameModule(module)
+		if type(loaded) ~= "table" then return false end
+		for _, name in ipairs({"reload", "Reload", "startReload", "beginReload"}) do
+			if type(loaded[name]) == "function" then
+				gunBase, originalReload, reloadName = loaded, loaded[name], name
+				replacementReload = function(self, ...)
+					local duration = rawget(self, "ReloadTime") or rawget(self, "ReloadDuration")
+						or rawget(self, "reload_time") or rawget(self, "reloadTime") or 2
+					M.ReloadState.Start = os.clock()
+					M.ReloadState.Duration = tonumber(duration) or 2
+					M.ReloadState.Active = true
+					return originalReload(self, ...)
+				end
+				local assigned = pcall(function() gunBase[reloadName] = replacementReload end)
+				if assigned and gunBase[reloadName] == replacementReload then
+					M.Status.reloadHooked = true
+					return true
+				end
+				gunBase, originalReload, replacementReload, reloadName = nil, nil, nil, nil
+			end
+		end
+		return false
+	end
+	M.InstallReloadHook = installReloadHook
+	M.UpdateReload = function()
+		local state = M.ReloadState
+		if S.ReloadIndicator and not M.Status.reloadHooked and os.clock() - lastInstallAttempt > 2 then installReloadHook() end
+		if Runtime.Unloaded or not S.ReloadIndicator or not state.Active then
+			holder.Visible = false
+			return
+		end
+		local progress = (os.clock() - state.Start) / math.max(state.Duration, 0.01)
+		if progress >= 1 then
+			state.Active = false
+			holder.Visible = false
+			return
+		end
+		progress = math.clamp(progress, 0, 1)
+		holder.Visible = true
+		fill.Size = UDim2.new(progress, 0, 1, 0)
+		fill.BackgroundColor3 = Color3.fromRGB(math.floor(255 * (1 - progress) + 0.5), math.floor(180 + 75 * progress + 0.5), 50)
+	end
+	M.GetReloadObjects = function() return holder, fill end
+	M.CleanupReload = function()
+		M.ReloadState.Active = false
+		holder.Visible = false
+		if gunBase and originalReload and reloadName and gunBase[reloadName] == replacementReload then
+			pcall(function() gunBase[reloadName] = originalReload end)
+		end
+		M.Status.reloadHooked = false
+		destroyObject(reloadGui)
+	end
+	installReloadHook()
+end
+
+-- World bullet beams are fed by the existing Workspace Raycast namecall in main.lua.
+do
+	local active = {}
+	local textures = {
+		Beam = "rbxassetid://12781852245", Lightning = "rbxassetid://446111271",
+		Heartrate = "rbxassetid://5830549480", Chain = "rbxassetid://9632168658",
+		Glitch = "rbxassetid://8089467613", Swirl = "rbxassetid://5638168605",
+	}
+	local function clearTracers()
+		for _, tracer in ipairs(active) do destroyObject(tracer.part) end
+		table.clear(active)
+		M.Status.bulletTracers = 0
+	end
+	local function createTracer(startPosition, endPosition)
+		if Runtime.Unloaded or not S.BulletTracers or typeof(startPosition) ~= "Vector3" or typeof(endPosition) ~= "Vector3" then return end
+		local camera = workspace.CurrentCamera
+		if camera and (startPosition - camera.CFrame.Position).Magnitude < 4 then
+			startPosition = camera.CFrame.Position + camera.CFrame.LookVector * 2.5
+		end
+		local part = Instance.new("Part")
+		part.Name = "BurmaldaHookBulletTracer"
+		part.Anchored = true
+		part.CanCollide = false
+		part.CanQuery = false
+		part.CanTouch = false
+		part.Transparency = 1
+		part.Size = Vector3.new(0.1, 0.1, 0.1)
+		part.Parent = workspace
+		local attachment0 = Instance.new("Attachment", part)
+		attachment0.Name = "A0"
+		attachment0.WorldPosition = startPosition
+		local attachment1 = Instance.new("Attachment", part)
+		attachment1.Name = "A1"
+		attachment1.WorldPosition = endPosition
+		local beam = Instance.new("Beam", part)
+		beam.Name = "B"
+		beam.Attachment0 = attachment0
+		beam.Attachment1 = attachment1
+		beam.FaceCamera = true
+		beam.LightEmission = 1
+		beam.LightInfluence = 0
+		beam.TextureLength = 2
+		beam.TextureSpeed = 2
+		beam.Color = ColorSequence.new(Runtime.ExtraColors.BulletTracer)
+		beam.Transparency = NumberSequence.new(S.BulletTracerTransparency)
+		beam.Texture = textures[S.BulletTracerStyle] or textures.Beam
+		beam.Width0 = S.BulletTracerWidth
+		beam.Width1 = S.BulletTracerWidth
+		beam.Enabled = true
+		table.insert(active, {part = part, beam = beam, born = os.clock()})
+		while #active > 25 do destroyObject(table.remove(active, 1).part) end
+		M.Status.bulletTracers = #active
+		return part
+	end
+	M.RecordRaycast = function(origin, hitPosition)
+		if S.BulletTracers then return createTracer(origin, hitPosition) end
+	end
+	M.CreateBulletTracer = createTracer
+	M.UpdateBulletTracers = function()
+		for index = #active, 1, -1 do
+			local tracer = active[index]
+			local alpha = 1 - (os.clock() - tracer.born) / math.max(0.05, S.BulletTracerLifetime)
+			if not tracer.part.Parent or alpha <= 0 then
+				destroyObject(tracer.part)
+				table.remove(active, index)
+			else
+				tracer.beam.Transparency = NumberSequence.new(math.clamp(alpha * (1 - S.BulletTracerTransparency), 0, 1))
+			end
+		end
+		M.Status.bulletTracers = #active
+	end
+	M.GetBulletTracerCount = function() return #active end
+	M.ClearBulletTracers = clearTracers
+	M.SetBulletTracers = function(enabled)
+		S.BulletTracers = enabled
+		if not enabled then clearTracers() end
+	end
+end
+
+-- HeadHitbox expansion is limited to other players and always restores captured properties.
+do
+	local enlarged = {}
+	local elapsed = 0
+	local function restore(part)
+		local original = enlarged[part]
+		if not original then return end
+		if part and part.Parent then
+			pcall(function()
+				part.Size = original.Size
+				part.Color = original.Color
+				part.Transparency = original.Transparency
+				part.Material = original.Material
+			end)
+		end
+		enlarged[part] = nil
+	end
+	local function restoreAll()
+		for part in pairs(enlarged) do restore(part) end
+	end
+	local function updateHitboxes(dt)
+		elapsed += dt or 0
+		if elapsed < 0.08 then return end
+		elapsed = 0
+		local seen = {}
+		for _, player in ipairs(Players:GetPlayers()) do
+			if player ~= LocalPlayer then
+				local character = player.Character
+				local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+				local part = character and character:FindFirstChild("HeadHitbox")
+				if part and humanoid and humanoid.Health > 0 and S.HitboxExpander then
+					seen[part] = true
+					if not enlarged[part] then
+						enlarged[part] = {Size = part.Size, Color = part.Color, Transparency = part.Transparency, Material = part.Material}
+					end
+					local original = enlarged[part]
+					part.Size = original.Size * S.HitboxSize
+					part.Color = Runtime.ExtraColors.Hitbox
+					part.Transparency = S.HitboxTransparency
+					part.Material = Enum.Material.Neon
+				end
+			end
+		end
+		for part in pairs(enlarged) do
+			if not seen[part] then restore(part) end
+		end
+	end
+	M.UpdateHitboxes = updateHitboxes
+	M.ApplyHitboxVisuals = function()
+		for part, original in pairs(enlarged) do
+			if part.Parent then
+				part.Size = original.Size * S.HitboxSize
+				part.Color = Runtime.ExtraColors.Hitbox
+				part.Transparency = S.HitboxTransparency
+			end
+		end
+	end
+	M.RestoreHitboxes = restoreAll
+	M.SetHitboxExpander = function(enabled)
+		S.HitboxExpander = enabled
+		if enabled then updateHitboxes(1) else restoreAll() end
+	end
+	M.GetHitboxCount = function()
+		local count = 0
+		for _ in pairs(enlarged) do count += 1 end
+		return count
+	end
+end
+
+-- Third Person and Stretch use the reference camera transforms; Off restores the last pre-transform frame.
+do
+	local thirdOriginal, stretchOriginal = nil, nil
+	local function disableThirdPerson()
+		local camera = workspace.CurrentCamera
+		if camera and thirdOriginal then pcall(function() camera.CFrame = thirdOriginal end) end
+		thirdOriginal = nil
+	end
+	local function disableStretch()
+		local camera = workspace.CurrentCamera
+		if camera and stretchOriginal then pcall(function() camera.CFrame = stretchOriginal end) end
+		stretchOriginal = nil
+		M.Status.lastStretch = nil
+	end
+	M.SetThirdPerson = function(enabled)
+		S.ThirdPerson = enabled
+		if not enabled then disableThirdPerson() end
+	end
+	M.SetStretch = function(enabled)
+		S.Stretch = enabled
+		if not enabled then disableStretch() end
+	end
+	M.UpdateCamera = function()
+		local camera = workspace.CurrentCamera
+		if not camera then return end
+		if S.ThirdPerson then
+			local character = LocalPlayer.Character
+			local root = character and character:FindFirstChild("HumanoidRootPart")
+			if root then
+				local original = camera.CFrame
+				thirdOriginal = original
+				camera.CFrame = CFrame.new(root.Position - original.LookVector * S.ThirdPersonDistance, root.Position)
+			end
+		else
+			thirdOriginal = nil
+		end
+		if S.Stretch then
+			local original = camera.CFrame
+			stretchOriginal = original
+			camera.CFrame = original * CFrame.new(0, 0, 0, 1, 0, 0, 0, S.StretchValue, 0, 0, 0, 1)
+			M.Status.lastStretch = S.StretchValue
+		else
+			stretchOriginal = nil
+			M.Status.lastStretch = nil
+		end
+	end
+	M.CleanupCamera = function()
+		disableStretch()
+		disableThirdPerson()
+	end
+end
+
+-- Fullbright, terrain decoration, sky tint and reversible Skybox property overrides.
+do
+	local fullbrightOriginal = nil
+	local function applyFullbright()
+		_Lighting.Brightness = 2
+		_Lighting.ClockTime = 14
+		_Lighting.FogEnd = 100000
+		_Lighting.GlobalShadows = false
+		_Lighting.Ambient = Color3.fromRGB(178, 178, 178)
+	end
+	M.SetFullbright = function(enabled)
+		S.Fullbright = enabled
+		if enabled then
+			if not fullbrightOriginal then
+				fullbrightOriginal = {Brightness = _Lighting.Brightness, ClockTime = _Lighting.ClockTime, FogEnd = _Lighting.FogEnd,
+					GlobalShadows = _Lighting.GlobalShadows, Ambient = _Lighting.Ambient}
+			end
+			applyFullbright()
+		elseif fullbrightOriginal then
+			for key, value in pairs(fullbrightOriginal) do pcall(function() _Lighting[key] = value end) end
+			fullbrightOriginal = nil
+		end
+	end
+	M.ApplyFullbright = function() if S.Fullbright then applyFullbright() end end
+
+	local terrain = workspace:FindFirstChildOfClass("Terrain")
+	local decorationOriginal = nil
+	M.SetNoDecoration = function(enabled)
+		S.NoDecoration = enabled
+		if not terrain then return end
+		if enabled then
+			if decorationOriginal == nil then decorationOriginal = terrain.Decoration end
+			if type(sethiddenproperty) == "function" then
+				pcall(sethiddenproperty, terrain, "Decoration", false)
+			else
+				pcall(function() terrain.Decoration = false end)
+			end
+		elseif decorationOriginal ~= nil then
+			pcall(function() terrain.Decoration = decorationOriginal end)
+			decorationOriginal = nil
+		end
+	end
+
+	local skyFx = nil
+	M.SetSkyColorEnabled = function(enabled)
+		S.SkyColorEnabled = enabled
+		if enabled then
+			if not skyFx then
+				skyFx = Instance.new("ColorCorrectionEffect")
+				skyFx.Name = "BurmaldaHookSky"
+				skyFx.Parent = _Lighting
+			end
+			skyFx.TintColor = Runtime.ExtraColors.Sky
+		else
+			destroyObject(skyFx)
+			skyFx = nil
+		end
+	end
+	M.ApplySkyColor = function() if skyFx then skyFx.TintColor = Runtime.ExtraColors.Sky end end
+	M.GetSkyEffect = function() return skyFx end
+
+	local skyData = {
+		["Blue Sky"] = {591058823, 591059876, 591058104, 591057861, 591057625, 591059642},
+		["Vaporwave"] = {1417494030, 1417494146, 1417494253, 1417494402, 1417494499, 1417494643},
+		["Redshift"] = {401664839, 401664862, 401664960, 401664881, 401664901, 401664936},
+		["Blaze"] = {150939022, 150939038, 150939047, 150939056, 150939063, 150939082},
+		["Among Us"] = {5752463190, 5752463190, 5752463190, 5752463190, 5752463190, 5752463190},
+		["Dark Night"] = {6285719338, 6285721078, 6285722964, 6285724682, 6285726335, 6285730635},
+		["Bright Pink"] = {271042516, 271077243, 271042556, 271042310, 271042467, 271077958},
+		["Purple Sky"] = {570557514, 570557775, 570557559, 570557620, 570557672, 570557727},
+		["Galaxy"] = {15125283003, 15125281008, 15125277539, 15125279325, 15125274388, 15125275800},
+		["Pinky Sky"] = {11427769401, 11427770685, 11427769401, 11427769401, 11427769401, 11427771954},
+		["Sky 2"] = {17279854976, 17279856318, 17279858447, 17279860360, 17279862234, 17279864507},
+		["Sky 3"] = {12064107, 12064152, 12064121, 12063984, 12064115, 12064131},
+	}
+	local skyNames = {"Default", "Blue Sky", "Vaporwave", "Redshift", "Blaze", "Among Us", "Dark Night", "Bright Pink", "Purple Sky", "Galaxy", "Pinky Sky", "Sky 2", "Sky 3"}
+	M.SkyboxNames = skyNames
+	local ownedSky, skyOriginal = nil, nil
+	local skyProperties = {"SkyboxBk", "SkyboxDn", "SkyboxFt", "SkyboxLf", "SkyboxRt", "SkyboxUp"}
+	local function restoreSkybox()
+		if ownedSky then
+			destroyObject(ownedSky)
+			ownedSky = nil
+		elseif skyOriginal and skyOriginal.Object and skyOriginal.Object.Parent then
+			for _, key in ipairs(skyProperties) do pcall(function() skyOriginal.Object[key] = skyOriginal[key] end) end
+		end
+		skyOriginal = nil
+	end
+	local function applySkybox()
+		restoreSkybox()
+		if not S.SkyboxEnabled or S.SkyboxChoice == "Default" or not skyData[S.SkyboxChoice] then return end
+		local sky = _Lighting:FindFirstChildOfClass("Sky")
+		if sky then
+			skyOriginal = {Object = sky}
+			for _, key in ipairs(skyProperties) do skyOriginal[key] = sky[key] end
+		else
+			sky = Instance.new("Sky")
+			sky.Name = "BurmaldaHookSkybox"
+			sky.Parent = _Lighting
+			ownedSky = sky
+		end
+		local data = skyData[S.SkyboxChoice]
+		for index, key in ipairs(skyProperties) do sky[key] = "rbxassetid://" .. tostring(data[index]) end
+	end
+	M.ApplySkybox = applySkybox
+	M.SetSkyboxEnabled = function(enabled)
+		S.SkyboxEnabled = enabled
+		applySkybox()
+	end
+	M.RestoreWorldVisuals = function()
+		M.SetFullbright(false)
+		M.SetNoDecoration(false)
+		M.SetSkyColorEnabled(false)
+		S.SkyboxEnabled = false
+		restoreSkybox()
+	end
+end
+
+-- Reference-style local removal of named spikes/leaves, including later descendants.
+do
+	local function matches(object)
+		return (S.DeleteSpikes and object.Name == "Spikes")
+			or (S.DeleteLeaves and (object.Name == "LeavesTop" or object.Name == "Leafs"))
+	end
+	local function scan()
+		if not S.DeleteSpikes and not S.DeleteLeaves then return end
+		for _, object in ipairs(workspace:GetDescendants()) do
+			if matches(object) then pcall(function() object:Destroy() end) end
+		end
+	end
+	connect(workspace.DescendantAdded, function(object)
+		if not Runtime.Unloaded and matches(object) then task.defer(function() pcall(function() object:Destroy() end) end) end
+	end)
+	M.ScanWorldRemovals = scan
+	M.SetDeleteSpikes = function(enabled) S.DeleteSpikes = enabled; if enabled then scan() end end
+	M.SetDeleteLeaves = function(enabled) S.DeleteLeaves = enabled; if enabled then scan() end end
+end
+
+-- Jump ring effects and kill/double-kill sounds use owned instances only.
+do
+	local jumpParts = {}
+	local function clearJumpParts()
+		for _, part in ipairs(jumpParts) do destroyObject(part) end
+		table.clear(jumpParts)
+	end
+	local function onJump(_, newState)
+		if newState ~= Enum.HumanoidStateType.Jumping or not S.JumpCircles or Runtime.Unloaded then return end
+		local character = LocalPlayer.Character
+		local root = character and character:FindFirstChild("HumanoidRootPart")
+		if not root then return end
+		local part = Instance.new("Part")
+		part.Name = "BurmaldaHookJumpCircle"
+		part.Anchored = true
+		part.CanCollide = false
+		part.CanQuery = false
+		part.CanTouch = false
+		part.Material = Enum.Material.Neon
+		part.Color = Runtime.ExtraColors.JumpCircle
+		part.CFrame = CFrame.new(root.Position - Vector3.new(0, 2.9, 0)) * CFrame.Angles(math.rad(90), 0, 0)
+		part.Parent = workspace
+		local mesh = Instance.new("SpecialMesh", part)
+		mesh.MeshId = "rbxassetid://3270017"
+		mesh.MeshType = Enum.MeshType.FileMesh
+		local tweenService = game:GetService("TweenService")
+		if tweenService and tweenService.Create then
+			pcall(function()
+				tweenService:Create(part, TweenInfo.new(0.4), {Transparency = 1}):Play()
+				tweenService:Create(mesh, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Scale = Vector3.new(8, 8, 0.2)}):Play()
+			end)
+		end
+		table.insert(jumpParts, part)
+		while #jumpParts > 12 do destroyObject(table.remove(jumpParts, 1)) end
+		task.delay(0.45, function() destroyObject(part) end)
+	end
+	local function attachCharacter(character)
+		local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+		if humanoid then connect(humanoid.StateChanged, onJump) end
+	end
+	if LocalPlayer.Character then attachCharacter(LocalPlayer.Character) end
+	connect(LocalPlayer.CharacterAdded, attachCharacter)
+	M.TriggerJumpCircle = onJump
+	M.GetJumpCircleCount = function()
+		local count = 0
+		for _, part in ipairs(jumpParts) do if part.Parent then count += 1 end end
+		return count
+	end
+	M.ClearJumpCircles = clearJumpParts
+	M.SetJumpCircles = function(enabled) S.JumpCircles = enabled; if not enabled then clearJumpParts() end end
+
+	local soundService = game:GetService("SoundService")
+	local sounds = {}
+	local killIds = {"6350854289", "132050044560917", "125662494668382", "130940311850179"}
+	local doubleId = "116907610084760"
+	local function clearSounds()
+		for _, sound in ipairs(sounds) do destroyObject(sound) end
+		table.clear(sounds)
+	end
+	M.PlayKillSound = function()
+		if not S.KillSound or Runtime.Unloaded then return end
+		local state = M.KillSoundState
+		local now = os.clock()
+		table.insert(state.Times, now)
+		for index = #state.Times, 1, -1 do if now - state.Times[index] > 10 then table.remove(state.Times, index) end end
+		local id
+		if #state.Times >= 2 and now - state.LastDouble > 1 then
+			id = doubleId
+			state.LastDouble = now
+		else
+			id = killIds[math.random(1, #killIds)]
+		end
+		local sound = Instance.new("Sound")
+		sound.Name = "BurmaldaHookKillSound"
+		sound.Volume = S.KillSoundVolume
+		sound.SoundId = "rbxassetid://" .. id
+		sound.Parent = soundService or pGui
+		sound:Play()
+		table.insert(sounds, sound)
+		while #sounds > 12 do destroyObject(table.remove(sounds, 1)) end
+		M.Status.killSoundCalls += 1
+		M.Status.lastKillSound = sound.SoundId
+		task.delay(6, function() destroyObject(sound) end)
+		return sound
+	end
+	M.ClearKillSounds = clearSounds
+	M.SetKillSound = function(enabled) S.KillSound = enabled; if not enabled then clearSounds() end end
+end
+
+-- Menu registration reuses our feature rows and editors; no VOMAGLA UI is loaded.
+local function column(tabName, right)
+	local left, rightColumn = getTab(tabName)
+	return right and rightColumn or left
+end
+local rapidSet = createFeature(column("COMBAT", true), "Rapid Fire", false, function(v) M.SetRapidFire(v) end)
+addSlider(rapidSet, "Fire Delay", 1, 50, 2, function(v) S.RapidFireDelay = v / 100 end)
+createFeature(column("COMBAT", true), "Full Auto", false, function(v) M.SetFullAuto(v) end, false)
+local meleeSet = createFeature(column("COMBAT", true), "Melee Mods", false, function(v) M.SetMeleeMods(v) end)
+addSlider(meleeSet, "Melee Speed", 1, 50, 5, function(v) S.MeleeSpeed = v / 100 end)
+addSlider(meleeSet, "Melee Range", 1, 20, 5, function(v) S.MeleeRange = v end)
+local hitboxSet = createFeature(column("COMBAT", true), "Hitbox Expander", false, function(v) M.SetHitboxExpander(v) end)
+addSlider(hitboxSet, "Size Multiplier", 50, 205, 50, function(v) S.HitboxSize = v / 10; M.ApplyHitboxVisuals() end)
+addSlider(hitboxSet, "Transparency", 0, 10, 2, function(v) S.HitboxTransparency = v / 10; M.ApplyHitboxVisuals() end)
+addColor(hitboxSet, "Color", function(color) Runtime.ExtraColors.Hitbox = color; M.ApplyHitboxVisuals() end)
+
+createFeature(column("VISUALS", true), "Reload Indicator", false, function(v)
+	S.ReloadIndicator = v
+	if v then M.InstallReloadHook() end
+	M.UpdateReload()
+end, false)
+local bulletSet = createFeature(column("VISUALS", true), "Bullet Tracers", false, function(v) M.SetBulletTracers(v) end)
+addDropdown(bulletSet, "Texture", {"Beam", "Lightning", "Heartrate", "Chain", "Glitch", "Swirl"}, 1, function(v) S.BulletTracerStyle = v end)
+addSlider(bulletSet, "Width", 1, 50, 15, function(v) S.BulletTracerWidth = v / 10 end)
+addSlider(bulletSet, "Transparency", 0, 10, 0, function(v) S.BulletTracerTransparency = v / 10 end)
+addSlider(bulletSet, "Life Time", 1, 30, 5, function(v) S.BulletTracerLifetime = v / 10 end)
+addColor(bulletSet, "Color", function(color) Runtime.ExtraColors.BulletTracer = color end)
+local thirdSet = createFeature(column("VISUALS", true), "Third Person", false, function(v) M.SetThirdPerson(v) end)
+addSlider(thirdSet, "Camera Distance", 5, 50, 10, function(v) S.ThirdPersonDistance = v end)
+local stretchSet = createFeature(column("VISUALS", true), "Stretch Resolution", false, function(v) M.SetStretch(v) end)
+addSlider(stretchSet, "Stretch Amount", 30, 100, 65, function(v) S.StretchValue = v / 100 end)
+local jumpSet = createFeature(column("VISUALS", true), "Jump Circles", false, function(v) M.SetJumpCircles(v) end)
+addColor(jumpSet, "Circle Color", function(color) Runtime.ExtraColors.JumpCircle = color end)
+
+createFeature(column("VISUALS", false), "Fullbright", false, function(v)
+	if v then
+		if _fFS["Night Vision"] then _fFS["Night Vision"](false) end
+		if fogEnabled and _fFS["Custom Fog"] then _fFS["Custom Fog"](false) end
+		if S.LowPC and _fFS["Low PC"] then _fFS["Low PC"](false) end
+	end
+	M.SetFullbright(v)
+end, false)
+createFeature(column("VISUALS", false), "No Decoration", false, function(v) M.SetNoDecoration(v) end, false)
+local skyColorSet = createFeature(column("VISUALS", false), "Sky Color", false, function(v) M.SetSkyColorEnabled(v) end)
+addColor(skyColorSet, "Tint", function(color) Runtime.ExtraColors.Sky = color; M.ApplySkyColor() end)
+local skyboxSet = createFeature(column("VISUALS", false), "Skybox", false, function(v) M.SetSkyboxEnabled(v) end)
+addDropdown(skyboxSet, "Preset", M.SkyboxNames, 1, function(v) S.SkyboxChoice = v; M.ApplySkybox() end)
+createFeature(column("VISUALS", false), "Delete Spikes", false, function(v) M.SetDeleteSpikes(v) end, false)
+createFeature(column("VISUALS", false), "Delete Leaves", false, function(v) M.SetDeleteLeaves(v) end, false)
+local killSoundSet = createFeature(column("MISC", true), "Kill Sound", false, function(v) M.SetKillSound(v) end)
+addSlider(killSoundSet, "Kill Volume", 0, 50, 10, function(v) S.KillSoundVolume = v / 10 end)
+
+M.Heartbeat = function(dt)
+	if Runtime.Unloaded then return end
+	M.ApplyWeaponMods()
+	M.UpdateReload()
+	M.UpdateBulletTracers()
+	M.UpdateHitboxes(dt)
+	M.ApplyFullbright()
+end
+M.Render = function()
+	if not Runtime.Unloaded then M.UpdateCamera() end
+end
+M.HeartbeatConnection = RunService.Heartbeat:Connect(M.Heartbeat)
+M.RenderConnection = RunService.RenderStepped:Connect(M.Render)
+
+local function cleanup()
+	if M.HeartbeatConnection then pcall(function() M.HeartbeatConnection:Disconnect() end) end
+	if M.RenderConnection then pcall(function() M.RenderConnection:Disconnect() end) end
+	for _, connection in ipairs(moduleConnections) do pcall(function() connection:Disconnect() end) end
+	table.clear(moduleConnections)
+	M.RestoreWeaponMods()
+	M.CleanupReload()
+	M.ClearBulletTracers()
+	M.RestoreHitboxes()
+	M.CleanupCamera()
+	M.RestoreWorldVisuals()
+	M.ClearJumpCircles()
+	M.ClearKillSounds()
+end
+M.Cleanup = cleanup
+onCleanup(cleanup)
+end
+initializeVomaglaFeatures()
+end -- function-scoped locals keep the combined loader below Luau's register limit.
 
 
 task.spawn(function()
@@ -4352,54 +5364,24 @@ task.spawn(function()
 end)
 
 local speedRostConn = nil
-Runtime.SpeedRost = { Humanoid = nil, Original = nil, Applied = nil }
-Runtime.RestoreSpeedRost = function()
-	local state = Runtime.SpeedRost
-	local hum = state.Humanoid
-	if hum and hum.Parent and state.Original ~= nil then
-		-- Restore only our own last value; do not overwrite a newer game effect.
-		if state.Applied == nil or math.abs(hum.WalkSpeed - state.Applied) < 0.05 then
-			hum.WalkSpeed = state.Original
-		end
-	end
-	state.Humanoid = nil
-	state.Original = nil
-	state.Applied = nil
-end
 local function startSpeedRost()
 	if speedRostConn then speedRostConn:Disconnect(); speedRostConn = nil end
-	speedRostConn = RunService.Heartbeat:Connect(function(dt)
+	speedRostConn = RunService.Heartbeat:Connect(function()
 		if Runtime.Unloaded or not S.SpeedRostAlpha then return end
 		local char = LocalPlayer.Character
 		local hum = char and char:FindFirstChildOfClass("Humanoid")
-		local state = Runtime.SpeedRost
-		if not hum or hum.Health <= 0 then
-			if state.Humanoid then Runtime.RestoreSpeedRost() end
-			return
-		end
-		if state.Humanoid ~= hum then
-			Runtime.RestoreSpeedRost()
-			state.Humanoid = hum
-			state.Original = hum.WalkSpeed
-			state.Applied = nil
-		end
-
-		local original = state.Original or hum.WalkSpeed
-		local moving = hum.MoveDirection.Magnitude > 0.05
-		local configured = math.clamp(tonumber(S.SpeedRostValue) or 24, 16, 40)
-		local target = moving and configured or original
-		local stepDt = math.clamp(tonumber(dt) or (1 / 60), 0, 0.1)
-		local smoothing = math.clamp(tonumber(S.SpeedRostSmoothing) or 0.5, 0.1, 1)
-		local maxDelta = (4 + smoothing * 12) * stepDt
-		local current = hum.WalkSpeed
-		local nextSpeed = current + math.clamp(target - current, -maxDelta, maxDelta)
-		if math.abs(target - nextSpeed) < 0.001 then nextSpeed = target end
-		if math.abs(nextSpeed - current) > 0.0001 then hum.WalkSpeed = nextSpeed end
-		state.Applied = nextSpeed
+		local root = char and char:FindFirstChild("HumanoidRootPart")
+		if not hum or not root or hum.Health <= 0 then return end
+		local direction = hum.MoveDirection
+		if direction.Magnitude <= 0 then return end
+		-- VOMAGLA's working Speed path: horizontal physics velocity, preserving Y.
+		-- WalkSpeed and camera are never rewritten; Off simply stops further writes.
+		local velocity = root.AssemblyLinearVelocity
+		local speed = math.clamp(tonumber(S.SpeedRostValue) or 30, 0, 60)
+		root.AssemblyLinearVelocity = Vector3.new(direction.X * speed, velocity.Y, direction.Z * speed)
 	end)
 	onCleanup(function()
 		if speedRostConn then speedRostConn:Disconnect(); speedRostConn = nil end
-		Runtime.RestoreSpeedRost()
 	end)
 end
 startSpeedRost()
@@ -4462,93 +5444,127 @@ end
 startSpider()
 
 do
+	local function installSilentNamecall()
 	local oldNamecall = nil
 	local restoreNamecall = nil
 	Runtime.NamecallPath = "pending"
+	Runtime.CallWorldRay = function(self, beamOrigin, ...)
+		local results = table.pack(oldNamecall(self, ...))
+		if S.BulletTracers and Runtime.VomaglaFeatures then
+			local hitPosition = nil
+			if typeof(results[1]) == "RaycastResult" then
+				hitPosition = results[1].Position
+			elseif typeof(results[2]) == "Vector3" then
+				hitPosition = results[2]
+			end
+			if hitPosition then Runtime.VomaglaFeatures.RecordRaycast(beamOrigin, hitPosition) end
+		end
+		return unpack(results, 1, results.n)
+	end
 	local function silentNamecall(self, ...)
 		local method = type(getnamecallmethod) == "function" and getnamecallmethod() or nil
-	local executorCall = checkcaller and checkcaller() or false
-	if Runtime.Unloaded or not S.SilentAim then
-		return oldNamecall(self, ...)
-	end
+		local executorCall = checkcaller and checkcaller() or false
+		local worldRay = self == workspace and (method == "Raycast" or method == "FindPartOnRay" or method == "FindPartOnRayWithIgnoreList")
+		if Runtime.Unloaded then return oldNamecall(self, ...) end
 
-	local gunbaseOwnsShot = ProjectileCore and ProjectileCore.GunBaseRedirecting == true
-	-- VOMAGLA intentionally handles FireServer before checkcaller: the remote can
-	-- be reached from original GunBase.fire after that function was hooked.
-	if method == "FireServer" then
+		if not S.SilentAim then
+			if worldRay and not executorCall and S.BulletTracers then
+				local args = {...}
+				local origin = method == "Raycast" and args[1] or (typeof(args[1]) == "Ray" and args[1].Origin or nil)
+				if typeof(origin) == "Vector3" then return Runtime.CallWorldRay(self, origin, ...) end
+			end
+			return oldNamecall(self, ...)
+		end
+
+		local gunbaseOwnsShot = ProjectileCore and ProjectileCore.GunBaseRedirecting == true
+		-- FireServer remains before checkcaller: original GunBase.fire can reach it synchronously.
+		if method == "FireServer" then
+			if gunbaseOwnsShot then
+				if ProjectileCore then ProjectileCore.Status.fallbackSkips += 1 end
+				return oldNamecall(self, ...)
+			end
+			local target = SA_CurrentTarget
+			local targetPosition = nil
+			if ProjectileSilent and type(ProjectileSilent.GetTarget) == "function" then
+				target, targetPosition = ProjectileSilent.GetTarget()
+			end
+			if not target or not target.Parent then return oldNamecall(self, ...) end
+			targetPosition = targetPosition or target.Position
+			if ProjectileCore then ProjectileCore.Status.remoteCalls += 1 end
+			if math.random(1, 100) > S.MBHitChance then
+				if ProjectileCore then ProjectileCore.Status.lastShotReason = "fireserver-hit-chance-original" end
+				return oldNamecall(self, ...)
+			end
+			local args = table.pack(...)
+			local patched = false
+			for index = 1, args.n do
+				local value = args[index]
+				if typeof(value) == "Vector3" then
+					args[index] = targetPosition
+					patched = true
+				elseif typeof(value) == "CFrame" then
+					args[index] = CFrame.new(targetPosition)
+					patched = true
+				end
+			end
+			if patched and ProjectileCore then
+				ProjectileCore.Status.remoteRedirects += 1
+				ProjectileCore.Status.lastShotReason = "fireserver-redirected"
+			end
+			return oldNamecall(self, unpack(args, 1, args.n))
+		end
+
+		if executorCall or not worldRay then return oldNamecall(self, ...) end
+		local args = {...}
+		local originalOrigin = nil
+		if method == "Raycast" then
+			if typeof(args[1]) ~= "Vector3" or typeof(args[2]) ~= "Vector3" then return oldNamecall(self, ...) end
+			originalOrigin = args[1]
+		else
+			if typeof(args[1]) ~= "Ray" then return oldNamecall(self, ...) end
+			originalOrigin = args[1].Origin
+		end
 		if gunbaseOwnsShot then
 			if ProjectileCore then ProjectileCore.Status.fallbackSkips += 1 end
+			if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
 			return oldNamecall(self, ...)
 		end
+
 		local target = SA_CurrentTarget
+		local targetPosition = nil
 		if ProjectileSilent and type(ProjectileSilent.GetTarget) == "function" then
-			target = ProjectileSilent.GetTarget()
+			target, targetPosition = ProjectileSilent.GetTarget()
 		end
-		if not target or not target.Parent then return oldNamecall(self, ...) end
-		local targetPosition = target.Position
-		if ProjectileCore then ProjectileCore.Status.remoteCalls += 1 end
-		if math.random(1, 100) > S.MBHitChance then
-			if ProjectileCore then ProjectileCore.Status.lastShotReason = "fireserver-hit-chance-original" end
+		if not target or not target.Parent or math.random(1, 100) > S.MBHitChance then
+			if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
 			return oldNamecall(self, ...)
 		end
-		local args = table.pack(...)
-		local patched = false
-		for index = 1, args.n do
-			local value = args[index]
-			if typeof(value) == "Vector3" then
-				args[index] = targetPosition
-				patched = true
-			elseif typeof(value) == "CFrame" then
-				args[index] = CFrame.new(targetPosition)
-				patched = true
+		targetPosition = targetPosition or target.Position
+
+		if method == "Raycast" then
+			local origin, direction = args[1], args[2]
+			local newOrigin = origin
+			if S.Manipulation and workspace.CurrentCamera then newOrigin = workspace.CurrentCamera.CFrame.Position end
+			local delta = targetPosition - newOrigin
+			local castDistance = direction.Magnitude
+			if delta.Magnitude == 0 or castDistance == 0 then
+				if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
+				return oldNamecall(self, ...)
 			end
+			args[1] = newOrigin
+			args[2] = delta.Unit * castDistance
+			return Runtime.CallWorldRay(self, newOrigin, unpack(args))
 		end
-		if patched and ProjectileCore then
-			ProjectileCore.Status.remoteRedirects += 1
-			ProjectileCore.Status.lastShotReason = "fireserver-redirected"
-		end
-		return oldNamecall(self, unpack(args, 1, args.n))
-	end
 
-	if executorCall or self ~= workspace then return oldNamecall(self, ...) end
-	if method ~= "Raycast" and method ~= "FindPartOnRay" and method ~= "FindPartOnRayWithIgnoreList" then
-		return oldNamecall(self, ...)
-	end
-	if gunbaseOwnsShot then
-		if ProjectileCore then ProjectileCore.Status.fallbackSkips += 1 end
-		return oldNamecall(self, ...)
-	end
-	local target = SA_CurrentTarget
-	if ProjectileSilent and type(ProjectileSilent.GetTarget) == "function" then
-		target = ProjectileSilent.GetTarget()
-	end
-	if not target or not target.Parent then return oldNamecall(self, ...) end
-	if math.random(1, 100) > S.MBHitChance then return oldNamecall(self, ...) end
-
-	local args = {...}
-	if method == "Raycast" then
-		local origin, direction = args[1], args[2]
-		if typeof(origin) ~= "Vector3" or typeof(direction) ~= "Vector3" then
-			return oldNamecall(self, ...)
-		end
-		local delta = target.Position - origin
-		local castDistance = direction.Magnitude
+		local ray = args[1]
+		local delta = targetPosition - ray.Origin
+		local castDistance = ray.Direction.Magnitude
 		if delta.Magnitude == 0 or castDistance == 0 then
+			if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
 			return oldNamecall(self, ...)
 		end
-		args[2] = delta.Unit * castDistance
-		return oldNamecall(self, unpack(args))
-	end
-
-	local ray = args[1]
-	if typeof(ray) ~= "Ray" then return oldNamecall(self, ...) end
-	local delta = target.Position - ray.Origin
-	local castDistance = ray.Direction.Magnitude
-	if delta.Magnitude == 0 or castDistance == 0 then
-		return oldNamecall(self, ...)
-	end
-	args[1] = Ray.new(ray.Origin, delta.Unit * castDistance)
-	return oldNamecall(self, unpack(args))
+		args[1] = Ray.new(ray.Origin, delta.Unit * castDistance)
+		return Runtime.CallWorldRay(self, ray.Origin, unpack(args))
 	end
 
 	local function makeNamecallClosure(callback)
@@ -4616,7 +5632,10 @@ do
 		oldNamecall = nil
 		restoreNamecall = nil
 		Runtime._InstallStandardNamecall = nil
+		Runtime.CallWorldRay = nil
 	end)
+	end
+	installSilentNamecall()
 end
 
 function Runtime.Unload()
