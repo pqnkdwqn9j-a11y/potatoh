@@ -1,13 +1,7 @@
 -- Burmalda.hook | rost alpha | cleaned NullWave-derived build
--- Target: official rost alpha, PlaceId 13769775130.
+-- Target: official rost alpha, PlaceId 13769775130; no PlaceId execution gate.
 -- Removed: anti-dump, heartbeat, anti-spy, remote loaders, Force Hit and hitbox expansion.
 -- Silent Aim below is an unverified Workspace Raycast compatibility path, not a live projectile proof.
-
-local TARGET_PLACE_ID = 13769775130
-if game.PlaceId ~= TARGET_PLACE_ID then
-	warn("[Burmalda.hook] This build only supports rost alpha (13769775130).")
-	return
-end
 
 local _burmaldaEnv = getgenv and getgenv() or _G
 if _burmaldaEnv.PHOOKGATE ~= nil then
