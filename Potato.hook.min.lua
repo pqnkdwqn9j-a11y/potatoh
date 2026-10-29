@@ -1,253 +1,3 @@
-do
--- Burmalda.hook | rost alpha | JNKIE UI Source / standalone Open Beta UI
--- Set this file as JNKIE UI Source; Original Code continues after Submit.
--- Open Beta uses one shared key: BETA. No HWID or per-user key is required.
-local GET_KEY_URL = "https://jnkie.com/get-key/potatohook"
-local DISCORD_URL = "https://discord.gg/kYxbtF3TUc"
-local GATE = "1347571535"
-local OPEN_BETA = true
-local BETA_KEY = "BETA"
-local Env = getgenv and getgenv() or _G
-Env.SCRIPT_KEY = nil
-Env.UI_CLOSED = false
-
-local CoreGui
-pcall(function() CoreGui = gethui and gethui() end)
-CoreGui = CoreGui or game:GetService("CoreGui")
-local Old = CoreGui:FindFirstChild("BurmaldaHookJNKIE")
-if Old then Old:Destroy() end
-
-local Accent = typeof(Env.BurmaldaAccent) == "Color3" and Env.BurmaldaAccent or Color3.fromRGB(255, 255, 255)
-local Colors = {
-	Background = Color3.fromRGB(7, 7, 7),
-	Panel = Color3.fromRGB(13, 13, 13),
-	Field = Color3.fromRGB(19, 19, 19),
-	Hover = Color3.fromRGB(30, 30, 30),
-	Stroke = Color3.fromRGB(52, 52, 52),
-	Text = Color3.fromRGB(242, 242, 242),
-	Muted = Color3.fromRGB(135, 135, 135),
-	Error = Color3.fromRGB(255, 110, 110),
-}
-local TweenService = game:GetService("TweenService")
-local Screen = Instance.new("ScreenGui")
-Screen.Name = "BurmaldaHookJNKIE"
-Screen.ResetOnSpawn = false
-Screen.IgnoreGuiInset = true
-Screen.DisplayOrder = 1000001
-Screen.Parent = CoreGui
-
-local function New(className, properties, parent)
-	local object = Instance.new(className)
-	for key, value in pairs(properties or {}) do object[key] = value end
-	object.Parent = parent
-	return object
-end
-local function Corner(parent, radius)
-	return New("UICorner", { CornerRadius = UDim.new(0, radius or 3) }, parent)
-end
-local function Label(parent, text, position, size, textSize, color, font)
-	return New("TextLabel", {
-		Text = text, Position = position, Size = size, TextSize = textSize or 12,
-		TextColor3 = color or Colors.Text, Font = font or Enum.Font.Gotham,
-		BackgroundTransparency = 1, BorderSizePixel = 0,
-		TextXAlignment = Enum.TextXAlignment.Left, TextYAlignment = Enum.TextYAlignment.Center,
-	}, parent)
-end
-
-local accentObjects = {}
-local function SetAccent(color)
-	if typeof(color) ~= "Color3" then return end
-	Accent = color
-	Env.BurmaldaAccent = color
-	for _, entry in ipairs(accentObjects) do
-		if entry.Property then
-			entry.Object[entry.Property] = color
-		elseif entry.Primary then
-			entry.Object.BackgroundColor3 = color
-		end
-	end
-end
-local function Button(parent, text, position, size, primary)
-	local button = New("TextButton", {
-		Text = text, Position = position, Size = size,
-		BackgroundColor3 = primary and Accent or Colors.Field,
-		TextColor3 = primary and Color3.fromRGB(0, 0, 0) or Colors.Text,
-		Font = Enum.Font.GothamMedium, TextSize = 11,
-		BorderSizePixel = 0, AutoButtonColor = false,
-	}, parent)
-	Corner(button, 3)
-	local stroke = New("UIStroke", { Color = primary and Accent or Colors.Stroke, Thickness = 1 }, button)
-	table.insert(accentObjects, { Object = button, Primary = primary == true })
-	if primary then table.insert(accentObjects, { Object = stroke, Property = "Color" }) end
-	button.MouseEnter:Connect(function()
-		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = primary and Accent or Colors.Hover }):Play()
-	end)
-	button.MouseLeave:Connect(function()
-		TweenService:Create(button, TweenInfo.new(0.12), { BackgroundColor3 = primary and Accent or Colors.Field }):Play()
-	end)
-	return button
-end
-
-local Panel = New("Frame", {
-	Name = "Panel", Size = UDim2.new(0, 430, 0, 330), Position = UDim2.new(0.5, 0, 0.5, 0),
-	AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = Colors.Background,
-	BackgroundTransparency = 1, BorderSizePixel = 0,
-}, Screen)
-Corner(Panel, 4)
-New("UIStroke", { Color = Colors.Stroke, Thickness = 1 }, Panel)
-local Scale = New("UIScale", { Scale = 0.92 }, Panel)
-local TopLine = New("Frame", { Size = UDim2.new(1, 0, 0, 2), BackgroundColor3 = Accent, BorderSizePixel = 0 }, Panel)
-table.insert(accentObjects, { Object = TopLine, Property = "BackgroundColor3" })
-Label(Panel, "Burmalda.hook", UDim2.new(0, 22, 0, 20), UDim2.new(1, -44, 0, 26), 18, Colors.Text, Enum.Font.GothamBold)
-local Subtitle = Label(Panel, "SELECT GAME", UDim2.new(0, 23, 0, 49), UDim2.new(1, -46, 0, 16), 10, Colors.Muted, Enum.Font.Code)
-local Close = Button(Panel, "X", UDim2.new(1, -43, 0, 15), UDim2.new(0, 27, 0, 23), false)
-
-local GamePage = New("Frame", {
-	Name = "GamePage", Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1,
-}, Panel)
-local KeyPage = New("Frame", {
-	Name = "KeyPage", Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Visible = false,
-}, Panel)
-
--- Game selection. Only the officially supported rost alpha Place ID is listed.
-local SelectedGame = "rost alpha"
-Label(GamePage, "GAME", UDim2.new(0, 23, 0, 84), UDim2.new(1, -46, 0, 16), 10, Colors.Muted, Enum.Font.Code)
-local GameCard = New("TextButton", {
-	Text = "", Position = UDim2.new(0, 22, 0, 103), Size = UDim2.new(1, -44, 0, 64),
-	BackgroundColor3 = Colors.Field, BorderSizePixel = 0, AutoButtonColor = false,
-}, GamePage)
-Corner(GameCard, 3)
-local GameStroke = New("UIStroke", { Color = Accent, Thickness = 1 }, GameCard)
-table.insert(accentObjects, { Object = GameStroke, Property = "Color" })
-local GameIcon = New("Frame", {
-	Size = UDim2.new(0, 38, 0, 38), Position = UDim2.new(0, 14, 0.5, 0), AnchorPoint = Vector2.new(0, 0.5),
-	BackgroundColor3 = Colors.Background, BorderSizePixel = 0,
-}, GameCard)
-Corner(GameIcon, 3)
-New("UIStroke", { Color = Colors.Stroke, Thickness = 1 }, GameIcon)
-local GameLetter = Label(GameIcon, "R", UDim2.new(0, 0, 0, 0), UDim2.new(1, 0, 1, 0), 16, Accent, Enum.Font.Code)
-GameLetter.TextXAlignment = Enum.TextXAlignment.Center
-table.insert(accentObjects, { Object = GameLetter, Property = "TextColor3" })
-Label(GameCard, "rost alpha", UDim2.new(0, 64, 0, 13), UDim2.new(1, -120, 0, 20), 13, Colors.Text, Enum.Font.GothamMedium)
-Label(GameCard, "PLACE ID 13769775130", UDim2.new(0, 64, 0, 36), UDim2.new(1, -120, 0, 14), 9, Colors.Muted, Enum.Font.Code)
-local CheckDot = New("Frame", {
-	Size = UDim2.new(0, 8, 0, 8), Position = UDim2.new(1, -25, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5),
-	BackgroundColor3 = Accent, BorderSizePixel = 0,
-}, GameCard)
-Corner(CheckDot, 8)
-table.insert(accentObjects, { Object = CheckDot, Property = "BackgroundColor3" })
-GameCard.Activated:Connect(function() SelectedGame = "rost alpha" end)
-local Continue = Button(GamePage, "CONTINUE", UDim2.new(0, 22, 0, 184), UDim2.new(1, -44, 0, 36), true)
-
--- Key submission page.
-local Back = Button(KeyPage, "< GAME", UDim2.new(0, 22, 0, 77), UDim2.new(0, 58, 0, 22), false)
-Back.TextSize = 10
-local SelectedLabel = Label(KeyPage, "rost alpha", UDim2.new(1, -180, 0, 80), UDim2.new(0, 158, 0, 16), 10, Colors.Muted, Enum.Font.Code)
-SelectedLabel.TextXAlignment = Enum.TextXAlignment.Right
-Label(KeyPage, "KEY", UDim2.new(0, 23, 0, 107), UDim2.new(1, -46, 0, 16), 10, Colors.Muted, Enum.Font.Code)
-local KeyBox = New("TextBox", {
-	Text = OPEN_BETA and BETA_KEY or "", PlaceholderText = OPEN_BETA and BETA_KEY or "Paste key", ClearTextOnFocus = false,
-	Position = UDim2.new(0, 22, 0, 126), Size = UDim2.new(1, -44, 0, 38),
-	BackgroundColor3 = Colors.Field, TextColor3 = Colors.Text, PlaceholderColor3 = Colors.Muted,
-	Font = Enum.Font.Code, TextSize = 12, TextXAlignment = Enum.TextXAlignment.Left,
-	BorderSizePixel = 0,
-}, KeyPage)
-Corner(KeyBox, 3)
-New("UIStroke", { Color = Colors.Stroke, Thickness = 1 }, KeyBox)
-New("UIPadding", { PaddingLeft = UDim.new(0, 12), PaddingRight = UDim.new(0, 12) }, KeyBox)
-local Status = Label(KeyPage, OPEN_BETA and "OPEN BETA  /  KEY: BETA" or "Get a key or paste an existing one", UDim2.new(0, 23, 0, 171), UDim2.new(1, -46, 0, 16), 10, Colors.Muted)
-local GetKey = Button(KeyPage, "GET KEY", UDim2.new(0, 22, 0, 194), UDim2.new(0.5, -28, 0, 32), false)
-local Discord = Button(KeyPage, "DISCORD", UDim2.new(0.5, 6, 0, 194), UDim2.new(0.5, -28, 0, 32), false)
-local Launch = Button(KeyPage, "LAUNCH", UDim2.new(0, 22, 0, 236), UDim2.new(1, -44, 0, 36), true)
-
-local function ShowPage(page)
-	local isKey = page == "key"
-	GamePage.Visible = not isKey
-	KeyPage.Visible = isKey
-	Subtitle.Text = isKey and (SelectedGame .. (OPEN_BETA and "  /  OPEN BETA" or "  /  JNKIE ACCESS")) or "SELECT GAME"
-	if isKey then SelectedLabel.Text = SelectedGame end
-end
-Continue.Activated:Connect(function() ShowPage("key") end)
-Back.Activated:Connect(function() ShowPage("game") end)
-
-Label(Panel, "ACCENT", UDim2.new(0, 23, 1, -28), UDim2.new(0, 55, 0, 16), 9, Colors.Muted, Enum.Font.Code)
-local White = Button(Panel, "W", UDim2.new(0, 84, 1, -30), UDim2.new(0, 25, 0, 18), false)
-local Silver = Button(Panel, "S", UDim2.new(0, 113, 1, -30), UDim2.new(0, 25, 0, 18), false)
-local Graphite = Button(Panel, "G", UDim2.new(0, 142, 1, -30), UDim2.new(0, 25, 0, 18), false)
-White.Activated:Connect(function() SetAccent(Color3.fromRGB(255, 255, 255)) end)
-Silver.Activated:Connect(function() SetAccent(Color3.fromRGB(190, 190, 190)) end)
-Graphite.Activated:Connect(function() SetAccent(Color3.fromRGB(105, 105, 105)) end)
-
-local ProgressBack = New("Frame", {
-	Size = UDim2.new(1, -44, 0, 2), Position = UDim2.new(0, 22, 1, -7),
-	BackgroundColor3 = Colors.Field, BorderSizePixel = 0,
-}, Panel)
-local Progress = New("Frame", { Size = UDim2.new(0, 0, 1, 0), BackgroundColor3 = Accent, BorderSizePixel = 0 }, ProgressBack)
-table.insert(accentObjects, { Object = Progress, Property = "BackgroundColor3" })
-
-local Done, Cancelled, SelectedKey = false, false, nil
-local function CopyLink(link, label)
-	pcall(function() if setclipboard then setclipboard(link) end end)
-	Status.TextColor3 = Accent
-	Status.Text = label .. " copied"
-end
-GetKey.Activated:Connect(function() CopyLink(GET_KEY_URL, "Get Key") end)
-Discord.Activated:Connect(function() CopyLink(DISCORD_URL, "Discord") end)
-Close.Activated:Connect(function()
-	Cancelled = true
-	Done = true
-end)
-local function Submit()
-	if Done or not KeyPage.Visible then return end
-	local key = tostring(KeyBox.Text or ""):match("^%s*(.-)%s*$")
-	if key == "" then
-		Status.TextColor3 = Colors.Error
-		Status.Text = OPEN_BETA and "Enter the beta key: BETA" or "Enter a key first"
-		Launch.Active = true
-		return
-	end
-	if OPEN_BETA and key:upper() ~= BETA_KEY then
-		Status.TextColor3 = Colors.Error
-		Status.Text = "Invalid key  /  Open beta key: BETA"
-		Progress.Size = UDim2.new(0, 0, 1, 0)
-		Launch.Active = true
-		return
-	end
-	Launch.Active = false
-	Status.TextColor3 = Accent
-	Status.Text = OPEN_BETA and "BETA KEY ACCEPTED  /  LOADING" or "KEY SUBMITTED  /  LOADING"
-	for step = 1, 12 do
-		Progress.Size = UDim2.new(step / 12, 0, 1, 0)
-		task.wait(0.025)
-	end
-	SelectedKey = OPEN_BETA and BETA_KEY or key
-	Done = true
-end
-Launch.Activated:Connect(Submit)
-KeyBox.FocusLost:Connect(function(enterPressed)
-	if enterPressed then Submit() end
-end)
-
-TweenService:Create(Scale, TweenInfo.new(0.22, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = 1 }):Play()
-TweenService:Create(Panel, TweenInfo.new(0.18), { BackgroundTransparency = 0.02 }):Play()
-while not Done do task.wait(0.05) end
-if Cancelled or not SelectedKey then
-	Env.UI_CLOSED = true
-	Screen:Destroy()
-	return
-end
-Env.SCRIPT_KEY = SelectedKey
-Env.PHOOKGATE = GATE
-Env.BURMALDA_GAME = "rost alpha"
-Env.UI_CLOSED = false
-Screen:Destroy()
-
-end
--- Burmalda.hook | rost alpha | direct build
-local __burmaldaDirectEnv = getgenv and getgenv() or _G
-__burmaldaDirectEnv.PHOOKGATE = "1347571535"
-__burmaldaDirectEnv.BURMALDA_GAME = "rost alpha"
-
 -- Burmalda.hook | rost alpha | cleaned NullWave-derived build
 -- Target: official rost alpha, PlaceId 13769775130; no PlaceId execution gate.
 -- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt is untested.
@@ -381,7 +131,7 @@ local S = {
 	MBPriority     = "distance",
 	SpeedRostAlpha = false,
 	HUDEnabled     = true,
-	SpeedRostValue = 60,
+	SpeedRostValue = 24,
 	SpeedRostSmoothing = 0.5,
 	Spider         = false,
 	SpiderSpeed    = 20,
@@ -1769,14 +1519,13 @@ do
 
 	local speedSet = createFeature(lc, "Speed", false, function(v)
 		S.SpeedRostAlpha = v
-		if not v and LocalPlayer.Character then
-			local hum = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-			if hum then hum.WalkSpeed = 16 end
-		end
+		if not v and Runtime.RestoreSpeedRost then Runtime.RestoreSpeedRost() end
 	end)
-	addSlider(speedSet, "Value", 10, 200, 60, function(v) S.SpeedRostValue = v end)
+	addSlider(speedSet, "Value", 16, 40, 24, function(v) S.SpeedRostValue = v end)
 	addSlider(speedSet, "Smoothing", 1, 10, 5, function(v) S.SpeedRostSmoothing = v / 10 end)
-	addBind(speedSet, "Toggle Bind", "None", function() S.SpeedRostAlpha = not S.SpeedRostAlpha end)
+	addBind(speedSet, "Toggle Bind", "None", function()
+		if _fFS["Speed"] then _fFS["Speed"](not S.SpeedRostAlpha) end
+	end)
 
 	local hjSet = createFeature(lc, "High Jump", false, function(v)
 		S.HighJump = v
@@ -4603,21 +4352,54 @@ task.spawn(function()
 end)
 
 local speedRostConn = nil
+Runtime.SpeedRost = { Humanoid = nil, Original = nil, Applied = nil }
+Runtime.RestoreSpeedRost = function()
+	local state = Runtime.SpeedRost
+	local hum = state.Humanoid
+	if hum and hum.Parent and state.Original ~= nil then
+		-- Restore only our own last value; do not overwrite a newer game effect.
+		if state.Applied == nil or math.abs(hum.WalkSpeed - state.Applied) < 0.05 then
+			hum.WalkSpeed = state.Original
+		end
+	end
+	state.Humanoid = nil
+	state.Original = nil
+	state.Applied = nil
+end
 local function startSpeedRost()
 	if speedRostConn then speedRostConn:Disconnect(); speedRostConn = nil end
-	speedRostConn = RunService.Heartbeat:Connect(function()
+	speedRostConn = RunService.Heartbeat:Connect(function(dt)
 		if Runtime.Unloaded or not S.SpeedRostAlpha then return end
 		local char = LocalPlayer.Character
 		local hum = char and char:FindFirstChildOfClass("Humanoid")
-		if hum and hum.Health > 0 and hum.WalkSpeed ~= S.SpeedRostValue then
-			hum.WalkSpeed = S.SpeedRostValue
+		local state = Runtime.SpeedRost
+		if not hum or hum.Health <= 0 then
+			if state.Humanoid then Runtime.RestoreSpeedRost() end
+			return
 		end
+		if state.Humanoid ~= hum then
+			Runtime.RestoreSpeedRost()
+			state.Humanoid = hum
+			state.Original = hum.WalkSpeed
+			state.Applied = nil
+		end
+
+		local original = state.Original or hum.WalkSpeed
+		local moving = hum.MoveDirection.Magnitude > 0.05
+		local configured = math.clamp(tonumber(S.SpeedRostValue) or 24, 16, 40)
+		local target = moving and configured or original
+		local stepDt = math.clamp(tonumber(dt) or (1 / 60), 0, 0.1)
+		local smoothing = math.clamp(tonumber(S.SpeedRostSmoothing) or 0.5, 0.1, 1)
+		local maxDelta = (4 + smoothing * 12) * stepDt
+		local current = hum.WalkSpeed
+		local nextSpeed = current + math.clamp(target - current, -maxDelta, maxDelta)
+		if math.abs(target - nextSpeed) < 0.001 then nextSpeed = target end
+		if math.abs(nextSpeed - current) > 0.0001 then hum.WalkSpeed = nextSpeed end
+		state.Applied = nextSpeed
 	end)
 	onCleanup(function()
 		if speedRostConn then speedRostConn:Disconnect(); speedRostConn = nil end
-		local char = LocalPlayer.Character
-		local hum = char and char:FindFirstChildOfClass("Humanoid")
-		if hum then hum.WalkSpeed = 16 end
+		Runtime.RestoreSpeedRost()
 	end)
 end
 startSpeedRost()
