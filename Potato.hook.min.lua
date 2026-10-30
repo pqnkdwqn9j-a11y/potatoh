@@ -1,6 +1,6 @@
 -- Burmalda.hook | rost alpha | cleaned NullWave-derived build
 -- Target: official rost alpha, PlaceId 13769775130; no PlaceId execution gate.
--- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt, Volcano and Xeno are live-untested.
+-- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt and Volcano are live-untested. Xeno is unsupported.
 -- Access: private JNKIE keys; shared BETA and standalone Open Beta are removed.
 -- Removed: anti-dump, heartbeat, anti-spy, remote loaders and Force Hit.
 -- Silent Aim: GunBase.fire + FireServer + long-range Workspace Raycast; live proof remains executor-specific.
@@ -30,6 +30,9 @@ elseif type(getexecutorname) == "function" then
 	local ok, name = pcall(getexecutorname)
 	if ok and name ~= nil then executorName = tostring(name) end
 end
+-- Xeno support was removed by user request. Reject before Runtime, module
+-- require, Drawing, GUI or namecall initialization; Real is unaffected.
+if string.find(string.lower(executorName), "xeno", 1, true) then return end
 local Runtime = {
 	Unloaded = false,
 	Cleanup = {},
@@ -37,19 +40,48 @@ local Runtime = {
 	Guis = {},
 	CraftingMenuOpen = false,
 	SilentPath = "GunBase.fire + FireServer + Workspace Raycast",
-	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt", "Volcano", "Xeno" },
+	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt", "Volcano" },
 }
 _burmaldaEnv.BurmaldaRost = Runtime
 Runtime.ExecutorName = executorName
 Runtime.ModuleRequireMode = "standard"
+Runtime.ModuleRequirePolicy = "feature-lazy + success-cache + 2s-error-backoff"
+Runtime.ModuleRequireBackoffSeconds = 2
+Runtime.ModuleRequireCache = {}
+Runtime.ModuleRequireRetry = {}
 do
 	Runtime.RequireGameModule = function(module)
 		if not module then return nil, "module-missing" end
-		local ok, result = pcall(require, module)
-		if not ok then
-			Runtime.LastModuleRequireError = tostring(result)
-			return nil, Runtime.LastModuleRequireError
+
+		local cached = Runtime.ModuleRequireCache[module]
+		if cached ~= nil then
+			Runtime.LastModuleRequireError = nil
+			return cached, nil
 		end
+
+		-- A capability/context failure can otherwise be retried by several
+		-- independent features every frame. Keep the standard one-argument
+		-- require, but deduplicate successes and briefly back off failures.
+		local retry = Runtime.ModuleRequireRetry[module]
+		local now = os.clock()
+		if retry and now < retry.Until then
+			Runtime.LastModuleRequireError = retry.Error
+			return nil, retry.Error
+		end
+
+		local ok, result = pcall(require, module)
+		if not ok or result == nil then
+			local message = ok and "module-returned-nil" or tostring(result)
+			Runtime.LastModuleRequireError = message
+			Runtime.ModuleRequireRetry[module] = {
+				Until = now + Runtime.ModuleRequireBackoffSeconds,
+				Error = message,
+			}
+			return nil, message
+		end
+
+		Runtime.ModuleRequireCache[module] = result
+		Runtime.ModuleRequireRetry[module] = nil
 		Runtime.LastModuleRequireError = nil
 		return result, nil
 	end
@@ -59,6 +91,11 @@ local ProjectileCore, ProjectileSilent
 local function onCleanup(fn)
 	table.insert(Runtime.Cleanup, fn)
 end
+
+onCleanup(function()
+	table.clear(Runtime.ModuleRequireCache)
+	table.clear(Runtime.ModuleRequireRetry)
+end)
 
 local function trackDrawing(obj)
 	table.insert(Runtime.Drawings, obj)
@@ -540,20 +577,33 @@ local function updateHUD() hudContainer.Visible = S.HUDEnabled end
 
 local function hudMakeDrag(gui)
 	local drag, di, ds, sp
-	gui.InputBegan:Connect(function(i)
+	local connections = {}
+	local changedConnection = nil
+	table.insert(connections, gui.InputBegan:Connect(function(i)
 		if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
 			drag = true; ds = i.Position; sp = gui.Position
-			i.Changed:Connect(function() if i.UserInputState == Enum.UserInputState.End then drag = false end end)
+			if changedConnection then changedConnection:Disconnect() end
+			changedConnection = i.Changed:Connect(function()
+				if i.UserInputState == Enum.UserInputState.End then
+					drag = false
+					if changedConnection then changedConnection:Disconnect(); changedConnection = nil end
+				end
+			end)
 		end
-	end)
-	gui.InputChanged:Connect(function(i)
+	end))
+	table.insert(connections, gui.InputChanged:Connect(function(i)
 		if i.UserInputType == Enum.UserInputType.MouseMovement or i.UserInputType == Enum.UserInputType.Touch then di = i end
-	end)
-	UIS.InputChanged:Connect(function(i)
-		if i == di and drag then
+	end))
+	table.insert(connections, UIS.InputChanged:Connect(function(i)
+		if not Runtime.Unloaded and i == di and drag then
 			local d = i.Position - ds
 			gui.Position = UDim2.new(sp.X.Scale, sp.X.Offset + d.X, sp.Y.Scale, sp.Y.Offset + d.Y)
 		end
+	end))
+	onCleanup(function()
+		drag = false
+		if changedConnection then pcall(function() changedConnection:Disconnect() end); changedConnection = nil end
+		for _, connection in ipairs(connections) do pcall(function() connection:Disconnect() end) end
 	end)
 end
 
@@ -705,24 +755,37 @@ btnIco.Image = "rbxassetid://110686514699024"
 btnIco.ScaleType = Enum.ScaleType.Fit
 hudMakeDrag(openBtn)
 
--- UI v2: video-matched 370x409 base geometry rendered at 2x (740x818).
--- The independent Burmalda stats HUD remains visible while this window is open.
+-- Restored black Burmalda menu: 620x380, five tabs, monochrome accent.
+-- UI recovered from release 6e9a45d; current gameplay and cleanup remain modular.
 local UIAnimations = true
 local Theme = {
-	Background = Color3.fromRGB(28, 28, 28),
-	Panel = Color3.fromRGB(20, 20, 20),
-	Panel2 = Color3.fromRGB(14, 14, 14),
-	Off = Color3.fromRGB(12, 12, 12),
-	Stroke = Color3.fromRGB(48, 48, 52),
-	Text = Color3.fromRGB(190, 190, 190),
+	Background = Color3.fromRGB(7, 7, 7),
+	Panel = Color3.fromRGB(13, 13, 13),
+	Panel2 = Color3.fromRGB(19, 19, 19),
+	Off = Color3.fromRGB(38, 38, 38),
+	Stroke = Color3.fromRGB(52, 52, 52),
+	Text = Color3.fromRGB(242, 242, 242),
 	Muted = Color3.fromRGB(135, 135, 135),
-	Accent = Color3.fromRGB(0, 82, 255),
+	Accent = Color3.fromRGB(255, 255, 255),
 }
 if typeof(_burmaldaEnv.BurmaldaAccent) == "Color3" then
 	Theme.Accent = _burmaldaEnv.BurmaldaAccent
 end
 
 local accentObjects, accentUpdaters = {}, {}
+local uiConnections = {}
+local function connectUI(signal, callback)
+	local connection = signal:Connect(callback)
+	table.insert(uiConnections, connection)
+	return connection
+end
+onCleanup(function()
+	for _, connection in ipairs(uiConnections) do
+		pcall(function() connection:Disconnect() end)
+	end
+	table.clear(uiConnections)
+end)
+
 local function uiTween(object, info, properties)
 	if UIAnimations then
 		return TS:Create(object, info, properties)
@@ -750,69 +813,69 @@ local function setMenuAccent(color)
 end
 
 local main = Instance.new("Frame")
-main.Name = "MenuV2"
-main.Size = UDim2.new(0, 370, 0, 409)
+main.Name = "MenuBlack"
+main.Size = UDim2.new(0, 620, 0, 380)
 main.Position = UDim2.new(0.5, 0, 0.5, 0)
 main.AnchorPoint = Vector2.new(0.5, 0.5)
 main.BackgroundColor3 = Theme.Background
-main.BackgroundTransparency = 0
+main.BackgroundTransparency = 0.02
 main.BorderSizePixel = 0
 main.Visible = false
 main.ClipsDescendants = true
 main.Parent = sg
-Instance.new("UICorner", main).CornerRadius = UDim.new(0, 0)
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 4)
 local mainStroke = Instance.new("UIStroke", main)
-mainStroke.Color = Color3.fromRGB(48, 78, 116)
+mainStroke.Color = Theme.Stroke
 mainStroke.Thickness = 1
 local mainScale = Instance.new("UIScale", main)
-local baseMenuScale = 2
-mainScale.Scale = baseMenuScale
+local baseMenuScale = _isLargeScreen and 1 or 0.82
+mainScale.Scale = baseMenuScale * 0.94
 
 local topAccent = Instance.new("Frame", main)
-topAccent.Size = UDim2.new(1, 0, 0, 1)
+topAccent.Size = UDim2.new(1, 0, 0, 2)
 topAccent.BorderSizePixel = 0
-topAccent.BackgroundTransparency = 1
 registerAccent(topAccent, "BackgroundColor3")
 
 local header = Instance.new("Frame", main)
-header.Size = UDim2.new(1, 0, 0, 25)
+header.Size = UDim2.new(1, 0, 0, 42)
 header.BackgroundTransparency = 1
 local title = Instance.new("TextLabel", header)
 title.Text = "Burmalda.hook"
-title.Font = Enum.Font.Code
-title.TextSize = 11
+title.Font = Enum.Font.GothamBold
+title.TextSize = 14
 title.TextColor3 = Theme.Text
-title.Position = UDim2.new(0, 7, 0, 4)
-title.Size = UDim2.new(0, 180, 0, 16)
+title.Position = UDim2.new(0, 18, 0, 8)
+title.Size = UDim2.new(0, 250, 0, 20)
 title.BackgroundTransparency = 1
 title.TextXAlignment = Enum.TextXAlignment.Left
 local subtitle = Instance.new("TextLabel", header)
-subtitle.Text = "ROST ALPHA"
-subtitle.Font = Enum.Font.Code
-subtitle.TextSize = 9
+subtitle.Text = "rost alpha"
+subtitle.Font = Enum.Font.Gotham
+subtitle.TextSize = 10
 subtitle.TextColor3 = Theme.Muted
-subtitle.Position = UDim2.new(1, -157, 0, 5)
-subtitle.Size = UDim2.new(0, 150, 0, 15)
+subtitle.Position = UDim2.new(0, 19, 0, 27)
+subtitle.Size = UDim2.new(0, 200, 0, 12)
 subtitle.BackgroundTransparency = 1
-subtitle.TextXAlignment = Enum.TextXAlignment.Right
+subtitle.TextXAlignment = Enum.TextXAlignment.Left
 local closeBtn = Instance.new("TextButton", header)
-closeBtn.Size = UDim2.new(0, 12, 0, 12)
-closeBtn.Position = UDim2.new(1, -14, 0, 2)
-closeBtn.BackgroundTransparency = 1
+closeBtn.Size = UDim2.new(0, 30, 0, 26)
+closeBtn.Position = UDim2.new(1, -38, 0, 8)
+closeBtn.BackgroundColor3 = Theme.Panel
 closeBtn.BorderSizePixel = 0
-closeBtn.Text = ""
+closeBtn.Text = "X"
 closeBtn.Font = Enum.Font.Code
-closeBtn.TextSize = 9
+closeBtn.TextSize = 12
 closeBtn.TextColor3 = Theme.Muted
 closeBtn.AutoButtonColor = false
+Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 3)
 closeBtn.MouseEnter:Connect(function() uiTween(closeBtn, TweenInfo.new(0.12), { TextColor3 = Theme.Accent }):Play() end)
 closeBtn.MouseLeave:Connect(function() uiTween(closeBtn, TweenInfo.new(0.12), { TextColor3 = Theme.Muted }):Play() end)
 
 local menuOpen = false
 local menuOpenedViaShift = false
 local tabFrames = {}
-local tabs = { "COMBAT", "VISUALS", "MOVEMENT", "MISC", "CONFIG", "SETTINGS" }
-local tabAliases = { ESP = "VISUALS", VISUAL = "VISUALS", HUD = "MISC" }
+local tabs = { "COMBAT", "VISUALS", "MOVEMENT", "MISC", "CONFIG" }
+local tabAliases = { ESP = "VISUALS", VISUAL = "VISUALS", HUD = "MISC", SETTINGS = "CONFIG" }
 local activeBtn, activeFrame, activeLine = nil, nil, nil
 local _fFS, _fDD = {}, {}
 
@@ -823,10 +886,10 @@ local function toggleMenu(viaSHIFT)
 		main.Visible = true
 		openBtn.Visible = false
 		-- Keep the second-screen stats HUD independent from menu visibility.
-		uiTween(mainScale, TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Scale = baseMenuScale }):Play()
-		uiTween(main, TweenInfo.new(0.14), { BackgroundTransparency = 0 }):Play()
+		uiTween(mainScale, TweenInfo.new(0.22, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = baseMenuScale }):Play()
+		uiTween(main, TweenInfo.new(0.16), { BackgroundTransparency = 0.02 }):Play()
 	else
-		uiTween(mainScale, TweenInfo.new(0.14, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Scale = baseMenuScale * 0.97 }):Play()
+		uiTween(mainScale, TweenInfo.new(0.16, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Scale = baseMenuScale * 0.94 }):Play()
 		uiTween(main, TweenInfo.new(0.16), { BackgroundTransparency = 1 }):Play()
 		local function finishClose()
 			if menuOpen then return end
@@ -892,7 +955,7 @@ end)
 header.InputEnded:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then dragging = false end
 end)
-UIS.InputChanged:Connect(function(input)
+connectUI(UIS.InputChanged, function(input)
 	if dragging and dragStart and dragOrigin and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
 		local delta = input.Position - dragStart
 		main.Position = UDim2.new(dragOrigin.X.Scale, dragOrigin.X.Offset + delta.X, dragOrigin.Y.Scale, dragOrigin.Y.Offset + delta.Y)
@@ -906,7 +969,7 @@ openBtn.InputBegan:Connect(function(input)
 		btnDragStart = input.Position
 	end
 end)
-UIS.InputChanged:Connect(function(input)
+connectUI(UIS.InputChanged, function(input)
 	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
 		if (input.Position - btnDragStart).Magnitude > 6 then btnMoved = true end
 	end
@@ -916,27 +979,26 @@ openBtn.InputEnded:Connect(function(input)
 		if not btnMoved then toggleMenu(false) end
 	end
 end)
-UIS.InputBegan:Connect(function(input, gp)
+connectUI(UIS.InputBegan, function(input, gp)
 	if gp or Runtime.CraftingMenuOpen then return end
 	if input.KeyCode == Enum.KeyCode.RightShift then toggleMenu(true) end
 end)
 
 local tabsCont = Instance.new("Frame", main)
-tabsCont.Size = UDim2.new(0, 334, 0, 16)
-tabsCont.Position = UDim2.new(0, 18, 0, 27)
+tabsCont.Size = UDim2.new(1, -28, 0, 30)
+tabsCont.Position = UDim2.new(0, 14, 0, 42)
 tabsCont.BackgroundTransparency = 1
 local tabsLayout = Instance.new("UIListLayout", tabsCont)
 tabsLayout.FillDirection = Enum.FillDirection.Horizontal
 tabsLayout.Padding = UDim.new(0, 2)
 local tabRule = Instance.new("Frame", main)
-tabRule.Size = UDim2.new(1, -36, 0, 1)
-tabRule.Position = UDim2.new(0, 18, 0, 45)
+tabRule.Size = UDim2.new(1, -28, 0, 1)
+tabRule.Position = UDim2.new(0, 14, 0, 72)
 tabRule.BackgroundColor3 = Theme.Stroke
-tabRule.BackgroundTransparency = 1
 tabRule.BorderSizePixel = 0
 local content = Instance.new("Frame", main)
-content.Size = UDim2.new(1, -36, 1, -59)
-content.Position = UDim2.new(0, 18, 0, 48)
+content.Size = UDim2.new(1, -20, 1, -84)
+content.Position = UDim2.new(0, 10, 0, 80)
 content.BackgroundTransparency = 1
 content.ClipsDescendants = true
 
@@ -944,65 +1006,70 @@ local function createFeature(parent, name, default, callback, hasSettings)
 	-- The legacy fifth argument remains API-compatible. Actual editor controls,
 	-- registered below, decide whether the arrow is shown.
 	local block = Instance.new("Frame", parent)
-	block.Size = UDim2.new(1, 0, 0, 15)
+	block.Size = UDim2.new(1, 0, 0, 34)
 	block.AutomaticSize = Enum.AutomaticSize.Y
 	block.BackgroundColor3 = Theme.Panel
-	block.BackgroundTransparency = 1
+	block.BackgroundTransparency = 0.08
 	block.BorderSizePixel = 0
 	block.ClipsDescendants = true
+	Instance.new("UICorner", block).CornerRadius = UDim.new(0, 3)
+	local stripe = Instance.new("Frame", block)
+	stripe.Size = UDim2.new(0, 2, 0, 18)
+	stripe.Position = UDim2.new(0, 0, 0, 8)
+	stripe.BorderSizePixel = 0
+	registerAccent(stripe, "BackgroundColor3")
 
 	local topBtn = Instance.new("TextButton", block)
-	topBtn.Size = UDim2.new(1, 0, 0, 15)
+	topBtn.Size = UDim2.new(1, 0, 0, 34)
 	topBtn.BackgroundTransparency = 1
 	topBtn.Text = ""
 	topBtn.AutoButtonColor = false
 	local lbl = Instance.new("TextLabel", topBtn)
 	lbl.Text = name
-	lbl.Font = Enum.Font.Code
-	lbl.TextSize = 9
+	lbl.Font = Enum.Font.GothamMedium
+	lbl.TextSize = 11
 	lbl.TextColor3 = Theme.Text
-	lbl.Size = UDim2.new(1, -42, 1, 0)
-	lbl.Position = UDim2.new(0, 18, 0, 0)
+	lbl.Size = UDim2.new(1, -92, 1, 0)
+	lbl.Position = UDim2.new(0, 13, 0, 0)
 	lbl.BackgroundTransparency = 1
 	lbl.TextXAlignment = Enum.TextXAlignment.Left
-	lbl.TextTruncate = Enum.TextTruncate.AtEnd
 	local expand = Instance.new("TextButton", topBtn)
 	expand.Name = "SettingsArrow"
 	expand.Text = "▼"
 	expand.Font = Enum.Font.Code
-	expand.TextSize = 9
+	expand.TextSize = 11
 	expand.TextColor3 = Theme.Muted
-	expand.Size = UDim2.new(0, 18, 0, 14)
-	expand.Position = UDim2.new(1, -19, 0, 0)
-	expand.BackgroundColor3 = Theme.Panel2
-	expand.BackgroundTransparency = 0
-	expand.BorderSizePixel = 0
+	expand.Size = UDim2.new(0, 26, 1, 0)
+	expand.Position = UDim2.new(1, -73, 0, 0)
+	expand.BackgroundTransparency = 1
 	expand.TextXAlignment = Enum.TextXAlignment.Center
 	expand.AutoButtonColor = false
 	expand.Visible = false
 	expand.ZIndex = 2
-	local expandStroke = Instance.new("UIStroke", expand)
-	expandStroke.Color = Theme.Stroke
-	expandStroke.Thickness = 1
 
 	local tbg = Instance.new("Frame", topBtn)
-	tbg.Size = UDim2.new(0, 9, 0, 9)
-	tbg.Position = UDim2.new(0, 4, 0.5, 0)
-	tbg.AnchorPoint = Vector2.new(0, 0.5)
+	tbg.Size = UDim2.new(0, 27, 0, 14)
+	tbg.Position = UDim2.new(1, -13, 0.5, 0)
+	tbg.AnchorPoint = Vector2.new(1, 0.5)
 	tbg.BorderSizePixel = 0
-	local toggleStroke = Instance.new("UIStroke", tbg)
-	toggleStroke.Color = Theme.Stroke
-	toggleStroke.Thickness = 1
+	Instance.new("UICorner", tbg).CornerRadius = UDim.new(1, 0)
+	local dot = Instance.new("Frame", tbg)
+	dot.Size = UDim2.new(0, 8, 0, 8)
+	dot.BorderSizePixel = 0
+	Instance.new("UICorner", dot).CornerRadius = UDim.new(1, 0)
 	local tClick = Instance.new("TextButton", tbg)
-	tClick.Size = UDim2.new(0, 14, 0, 14)
-	tClick.Position = UDim2.new(0.5, 0, 0.5, 0)
-	tClick.AnchorPoint = Vector2.new(0.5, 0.5)
+	tClick.Size = UDim2.new(1, 0, 1, 0)
 	tClick.BackgroundTransparency = 1
 	tClick.Text = ""
 
 	local state = default
 	local function updateToggle()
-		uiTween(tbg, TweenInfo.new(0.12), { BackgroundColor3 = state and Theme.Accent or Theme.Off }):Play()
+		uiTween(tbg, TweenInfo.new(0.14), { BackgroundColor3 = state and Theme.Accent or Theme.Off }):Play()
+		uiTween(dot, TweenInfo.new(0.14), {
+			Position = state and UDim2.new(1, -10, 0.5, 0) or UDim2.new(0, 2, 0.5, 0),
+			BackgroundColor3 = state and Color3.fromRGB(0, 0, 0) or Color3.fromRGB(220, 220, 220),
+		}):Play()
+		dot.AnchorPoint = Vector2.new(0, 0.5)
 	end
 	registerAccentUpdater(function() updateToggle() end)
 	updateToggle()
@@ -1018,20 +1085,20 @@ local function createFeature(parent, name, default, callback, hasSettings)
 	local setCont = Instance.new("Frame", block)
 	setCont.Name = "FeatureEditor"
 	setCont.Size = UDim2.new(1, 0, 0, 0)
-	setCont.Position = UDim2.new(0, 0, 0, 15)
+	setCont.Position = UDim2.new(0, 0, 0, 34)
 	setCont.BackgroundTransparency = 1
 	setCont.ClipsDescendants = true
 	setCont.Visible = false
 	local sLayout = Instance.new("UIListLayout", setCont)
-	sLayout.Padding = UDim.new(0, 0)
+	sLayout.Padding = UDim.new(0, 5)
 	sLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	local sPad = Instance.new("UIPadding", setCont)
-	sPad.PaddingTop = UDim.new(0, 0)
-	sPad.PaddingBottom = UDim.new(0, 4)
-	sPad.PaddingLeft = UDim.new(0, 4)
-	sPad.PaddingRight = UDim.new(0, 4)
+	sPad.PaddingTop = UDim.new(0, 3)
+	sPad.PaddingBottom = UDim.new(0, 7)
+	sPad.PaddingLeft = UDim.new(0, 12)
+	sPad.PaddingRight = UDim.new(0, 12)
 	local expanded = false
-	local editor = { Arrow = expand, HasControls = false, DefaultOpen = name == "Silent Aim", Initialized = false }
+	local editor = { Arrow = expand, HasControls = false }
 	local function setExpanded(value)
 		if value and not editor.HasControls then return end
 		expanded = value
@@ -1051,10 +1118,10 @@ local function createFeature(parent, name, default, callback, hasSettings)
 		uiTween(expand, TweenInfo.new(0.12), { TextColor3 = Theme.Muted }):Play()
 	end)
 	topBtn.MouseEnter:Connect(function()
-		uiTween(block, TweenInfo.new(0.12), { BackgroundColor3 = Theme.Panel2, BackgroundTransparency = 0.65 }):Play()
+		uiTween(block, TweenInfo.new(0.12), { BackgroundColor3 = Theme.Panel2 }):Play()
 	end)
 	topBtn.MouseLeave:Connect(function()
-		uiTween(block, TweenInfo.new(0.12), { BackgroundColor3 = Theme.Panel, BackgroundTransparency = 1 }):Play()
+		uiTween(block, TweenInfo.new(0.12), { BackgroundColor3 = Theme.Panel }):Play()
 	end)
 
 	_fFS[name] = function(value)
@@ -1072,33 +1139,37 @@ _fDD.RegisterEditor = function(p)
 	if editor then
 		editor.HasControls = true
 		editor.Arrow.Visible = true
-		if editor.DefaultOpen and not editor.Initialized then
-			editor.Initialized = true
-			editor.SetExpanded(true)
-		end
 	end
 end
-
-local bindConnections = {}
 
 local function addBind(p, name, def, onPress)
 	_fDD.RegisterEditor(p)
 	local r = Instance.new("Frame", p)
-	r.Size = UDim2.new(1, 0, 0, 15)
+	r.Size = UDim2.new(1, 0, 0, 18)
 	r.BackgroundTransparency = 1
 	local l = Instance.new("TextLabel", r)
-	l.Text = name; l.TextColor3 = Theme.Text; l.Font = Enum.Font.Code; l.TextSize = 9; l.Size = UDim2.new(1, -32, 1, 0); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
+	l.Text = name; l.TextColor3 = Color3.fromRGB(150,150,150); l.Font = Enum.Font.Gotham; l.TextSize = 10; l.Size = UDim2.new(0.5, 0, 1, 0); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
 	local b = Instance.new("TextButton", r)
-	b.Size = UDim2.new(0, 28, 0, 14); b.Position = UDim2.new(1, 0, 0.5, 0); b.AnchorPoint = Vector2.new(1, 0.5)
-	b.BackgroundColor3 = Theme.Panel2; b.BackgroundTransparency = 0; b.BorderSizePixel = 0
-	b.Text = "["..def.."]"; b.TextColor3 = Theme.Text; b.Font = Enum.Font.Code; b.TextSize = 8
-	local bindStroke = Instance.new("UIStroke", b)
-	bindStroke.Color = Theme.Stroke
-	bindStroke.Thickness = 1
+	b.Size = UDim2.new(0, 55, 0, 18); b.Position = UDim2.new(1, 0, 0.5, 0); b.AnchorPoint = Vector2.new(1, 0.5)
+	b.BackgroundColor3 = Color3.fromRGB(30,30,30); b.BackgroundTransparency = 0
+	b.Text = "["..def.."]"; b.TextColor3 = Color3.new(1,1,1); b.Font = Enum.Font.Code; b.TextSize = 10
+	Instance.new("UICorner", b).CornerRadius = UDim.new(0, 3)
 
 	local listening = false
-	local boundKey = nil
-	local inputConn = nil
+	local boundKey, boundMouse = nil, nil
+	local inputConn, pressConn = nil, nil
+	local lastBoundInput = nil
+	local function installPress(sourceInput)
+		if pressConn then pressConn:Disconnect(); pressConn = nil end
+		lastBoundInput = sourceInput
+		if not onPress then return end
+		pressConn = connectUI(UIS.InputBegan, function(i2, gp2)
+			if gp2 or Runtime.Unloaded or listening or i2 == lastBoundInput then return end
+			if (boundKey and i2.KeyCode == boundKey) or (boundMouse and i2.UserInputType == boundMouse) then
+				onPress()
+			end
+		end)
+	end
 
 	b.MouseButton1Click:Connect(function()
 		if listening then return end
@@ -1106,30 +1177,25 @@ local function addBind(p, name, def, onPress)
 		b.Text = "[...]"
 		b.TextColor3 = Color3.fromRGB(255, 255, 255)
 		if inputConn then inputConn:Disconnect() end
-		inputConn = UIS.InputBegan:Connect(function(inp, gp)
+		inputConn = connectUI(UIS.InputBegan, function(inp, gp)
 			if gp then return end
 			if inp.UserInputType == Enum.UserInputType.Keyboard then
 				local kn = inp.KeyCode.Name
-				boundKey = inp.KeyCode
+				boundKey, boundMouse = inp.KeyCode, nil
 				b.Text = "["..kn.."]"
 				b.TextColor3 = Color3.new(1,1,1)
 				listening = false
 				inputConn:Disconnect()
-
-				if onPress then
-					local pressConn = UIS.InputBegan:Connect(function(i2, gp2)
-						if gp2 then return end
-						if i2.KeyCode == boundKey then onPress() end
-					end)
-					table.insert(bindConnections, pressConn)
-				end
+				installPress(inp)
 			elseif inp.UserInputType == Enum.UserInputType.MouseButton1
 				or inp.UserInputType == Enum.UserInputType.MouseButton2 then
 				local mn = inp.UserInputType == Enum.UserInputType.MouseButton1 and "LMB" or "RMB"
+				boundKey, boundMouse = nil, inp.UserInputType
 				b.Text = "["..mn.."]"
 				b.TextColor3 = Color3.new(1,1,1)
 				listening = false
 				inputConn:Disconnect()
+				installPress(inp)
 			end
 		end)
 	end)
@@ -1141,16 +1207,17 @@ local function addSlider(p, name, min, max, def, callback)
 	f.Size = UDim2.new(1, 0, 0, 24)
 	f.BackgroundTransparency = 1
 	local l = Instance.new("TextLabel", f)
-	l.Text = name; l.TextColor3 = Theme.Text; l.Font = Enum.Font.Code; l.TextSize = 9; l.Size = UDim2.new(1, 0, 0, 13); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
+	l.Text = name; l.TextColor3 = Color3.fromRGB(150,150,150); l.Font = Enum.Font.Gotham; l.TextSize = 10; l.Size = UDim2.new(0.5, 0, 0, 12); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
 	local v = Instance.new("TextLabel", f)
-	v.Text = tostring(def) .. "/" .. tostring(max); v.TextColor3 = Theme.Text; v.Font = Enum.Font.Code; v.TextSize = 8; v.Size = UDim2.new(1, 0, 0, 9); v.Position = UDim2.new(0, 0, 0, 15); v.BackgroundTransparency = 1; v.TextXAlignment = Enum.TextXAlignment.Center
+	v.Text = tostring(def); v.TextColor3 = Color3.fromRGB(150,150,150); v.Font = Enum.Font.Gotham; v.TextSize = 10; v.Size = UDim2.new(0.5, 0, 0, 12); v.Position = UDim2.new(0.5, 0, 0, 0); v.BackgroundTransparency = 1; v.TextXAlignment = Enum.TextXAlignment.Right
 
 	local bg = Instance.new("Frame", f)
-	bg.Size = UDim2.new(1, 0, 0, 9); bg.Position = UDim2.new(0, 0, 0, 15); bg.BackgroundColor3 = Theme.Off; bg.BorderSizePixel = 0
+	bg.Size = UDim2.new(1, 0, 0, 2); bg.Position = UDim2.new(0, 0, 0, 20); bg.BackgroundColor3 = Color3.fromRGB(20,20,20); bg.BorderSizePixel = 0
 	local fill = Instance.new("Frame", bg)
 	fill.Size = UDim2.new((def-min)/(max-min), 0, 1, 0); fill.BackgroundColor3 = Theme.Accent; registerAccent(fill, "BackgroundColor3"); fill.BorderSizePixel = 0
 
-	-- The visual fill never owns input: the full-row button supports both directions.
+	-- The visual track is only 2 px high and its fill used to intercept clicks.
+	-- A full-row button keeps both decreasing and increasing draggable/clickable.
 	local hit = Instance.new("TextButton", f)
 	hit.Name = "SliderInput"
 	hit.Size = UDim2.new(1, 0, 1, 0)
@@ -1171,7 +1238,7 @@ local function addSlider(p, name, min, max, def, callback)
 			local pos = math.clamp((inp.Position.X - bg.AbsolutePosition.X) / width, 0, 1)
 			fill.Size = UDim2.new(pos, 0, 1, 0)
 			local val = math.clamp(math.floor(min + (max - min) * pos), min, max)
-			v.Text = tostring(val) .. "/" .. tostring(max)
+			v.Text = tostring(val)
 			if callback then callback(val) end
 		end
 		local function stop(inp)
@@ -1181,27 +1248,25 @@ local function addSlider(p, name, min, max, def, callback)
 			if ended then ended:Disconnect(); ended = nil end
 		end
 		up(i)
-		mv = UIS.InputChanged:Connect(function(inp)
+		mv = connectUI(UIS.InputChanged, function(inp)
 			if inp.UserInputType == Enum.UserInputType.MouseMovement or inp.UserInputType == Enum.UserInputType.Touch then up(inp) end
 		end)
-		ended = UIS.InputEnded:Connect(stop)
+		ended = connectUI(UIS.InputEnded, stop)
 	end)
 end
 
 local function addDropdown(p, name, options, defIdx, callback)
 	_fDD.RegisterEditor(p)
 	local r = Instance.new("Frame", p)
-	r.Size = UDim2.new(1, 0, 0, 31)
+	r.Size = UDim2.new(1, 0, 0, 18)
 	r.BackgroundTransparency = 1
 	local l = Instance.new("TextLabel", r)
-	l.Text = name; l.TextColor3 = Theme.Text; l.Font = Enum.Font.Code; l.TextSize = 9; l.Size = UDim2.new(1, 0, 0, 13); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left; l.TextTruncate = Enum.TextTruncate.AtEnd
+	l.Text = name; l.TextColor3 = Color3.fromRGB(150,150,150); l.Font = Enum.Font.Gotham; l.TextSize = 10; l.Size = UDim2.new(0.5, 0, 1, 0); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
 	local b = Instance.new("TextButton", r)
-	b.Size = UDim2.new(1, 0, 0, 16); b.Position = UDim2.new(0, 0, 0, 15)
-	b.BackgroundColor3 = Theme.Panel2; b.BackgroundTransparency = 0
-	b.Text = options[defIdx]; b.TextColor3 = Theme.Text; b.Font = Enum.Font.Code; b.TextSize = 9; b.BorderSizePixel = 0
-	local dropdownStroke = Instance.new("UIStroke", b)
-	dropdownStroke.Color = Theme.Stroke
-	dropdownStroke.Thickness = 1
+	b.Size = UDim2.new(0, 50, 0, 18); b.Position = UDim2.new(1, 0, 0.5, 0); b.AnchorPoint = Vector2.new(1, 0.5)
+	b.BackgroundColor3 = Color3.fromRGB(30,30,30); b.BackgroundTransparency = 0
+	b.Text = options[defIdx]; b.TextColor3 = Color3.new(1,1,1); b.Font = Enum.Font.Gotham; b.TextSize = 9
+	Instance.new("UICorner", b).CornerRadius = UDim.new(0, 3)
 
 	local lc = Instance.new("Frame", p)
 	lc.Size = UDim2.new(1, 0, 0, 0)
@@ -1223,14 +1288,15 @@ local function addDropdown(p, name, options, defIdx, callback)
 
 	for _, opt in ipairs(options) do
 		local ob = Instance.new("TextButton", lc)
-		ob.Size = UDim2.new(1, 0, 0, 16)
-		ob.BackgroundColor3 = Theme.Panel2
+		ob.Size = UDim2.new(0, 50, 0, 16)
+		ob.BackgroundColor3 = Color3.fromRGB(25,25,25)
 		ob.BorderSizePixel = 0
 		ob.Text = opt
-		ob.TextColor3 = Theme.Muted
-		ob.Font = Enum.Font.Code
+		ob.TextColor3 = Color3.fromRGB(150,150,150)
+		ob.Font = Enum.Font.Gotham
 		ob.TextSize = 9
 		ob.Visible = (opt ~= currentVal)
+		Instance.new("UICorner", ob).CornerRadius = UDim.new(0, 3)
 		table.insert(optBtns, ob)
 		ob.MouseButton1Click:Connect(function()
 			currentVal = opt
@@ -1263,13 +1329,14 @@ end
 local function addColor(p, name, callback)
 	_fDD.RegisterEditor(p)
 	local r = Instance.new("Frame", p)
-	r.Size = UDim2.new(1, 0, 0, 14)
+	r.Size = UDim2.new(1, 0, 0, 18)
 	r.BackgroundTransparency = 1
 	local l = Instance.new("TextLabel", r)
-	l.Text = name; l.TextColor3 = Theme.Text; l.Font = Enum.Font.Code; l.TextSize = 9; l.Size = UDim2.new(1, -22, 1, 0); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
+	l.Text = name; l.TextColor3 = Color3.fromRGB(150,150,150); l.Font = Enum.Font.Gotham; l.TextSize = 10; l.Size = UDim2.new(0.5, 0, 1, 0); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
 	local cBtn = Instance.new("TextButton", r)
-	cBtn.Size = UDim2.new(0, 18, 0, 10); cBtn.Position = UDim2.new(1, 0, 0.5, 0); cBtn.AnchorPoint = Vector2.new(1, 0.5)
-	cBtn.BackgroundColor3 = Color3.new(1,1,1); cBtn.Text = ""; cBtn.BorderSizePixel = 0
+	cBtn.Size = UDim2.new(0, 18, 0, 18); cBtn.Position = UDim2.new(1, 0, 0.5, 0); cBtn.AnchorPoint = Vector2.new(1, 0.5)
+	cBtn.BackgroundColor3 = Color3.new(1,1,1); cBtn.Text = ""
+	Instance.new("UICorner", cBtn).CornerRadius = UDim.new(0, 4)
 
 	local pal = Instance.new("Frame", p)
 	pal.Size = UDim2.new(1, 0, 0, 0)
@@ -1332,8 +1399,11 @@ local function addColor(p, name, callback)
 		uiTween(pal, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = pOpen and UDim2.new(1, 0, 0, 70) or UDim2.new(1, 0, 0, 0)}):Play()
 	end)
 
+	local paletteMove, paletteEnded = nil, nil
 	pBtn.InputBegan:Connect(function(i)
 		if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+			if paletteMove then paletteMove:Disconnect(); paletteMove = nil end
+			if paletteEnded then paletteEnded:Disconnect(); paletteEnded = nil end
 			local function up(inp)
 				local mp = inp.Position
 				local lp = pBase.AbsolutePosition
@@ -1354,8 +1424,15 @@ local function addColor(p, name, callback)
 				if callback then callback(col) end
 			end
 			up(i)
-			local mv = UIS.InputChanged:Connect(function(inp) if inp.UserInputType == Enum.UserInputType.MouseMovement or inp.UserInputType == Enum.UserInputType.Touch then up(inp) end end)
-			UIS.InputEnded:Connect(function(ie) if ie.UserInputType == Enum.UserInputType.MouseButton1 or ie.UserInputType == Enum.UserInputType.Touch then mv:Disconnect() end end)
+			paletteMove = connectUI(UIS.InputChanged, function(inp)
+				if inp.UserInputType == Enum.UserInputType.MouseMovement or inp.UserInputType == Enum.UserInputType.Touch then up(inp) end
+			end)
+			paletteEnded = connectUI(UIS.InputEnded, function(ie)
+				if ie.UserInputType == Enum.UserInputType.MouseButton1 or ie.UserInputType == Enum.UserInputType.Touch then
+					if paletteMove then paletteMove:Disconnect(); paletteMove = nil end
+					if paletteEnded then paletteEnded:Disconnect(); paletteEnded = nil end
+				end
+			end)
 		end
 	end)
 end
@@ -1376,61 +1453,17 @@ local function selectTab(tabName, animate)
 	uiTween(data.tf, TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 0, 0) }):Play()
 end
 
-local tabLabels = { COMBAT = "Combat", VISUALS = "Visual", MOVEMENT = "Movement", MISC = "Misc", CONFIG = "Configs", SETTINGS = "UI Settings" }
-local tabWidths = { COMBAT = 42, VISUALS = 42, MOVEMENT = 60, MISC = 36, CONFIG = 48, SETTINGS = 62 }
-local sectionTitles = {
-	COMBAT = { "Silent Aim ", "Other" },
-	VISUALS = { "ESP ", "Other" },
-	MOVEMENT = { "Movement", "Other" },
-	MISC = { "Misc", "Crosshair " },
-	CONFIG = { "Configurations", "Saved Configs" },
-	SETTINGS = { "UI Settings", "Other" },
-}
-local function styleSection(column, headingText)
-	column.BackgroundColor3 = Theme.Panel
-	column.BackgroundTransparency = 0
-	column.BorderSizePixel = 0
-	local stroke = Instance.new("UIStroke", column)
-	stroke.Color = Theme.Stroke
-	stroke.Thickness = 1
-	local padding = Instance.new("UIPadding", column)
-	padding.PaddingTop = UDim.new(0, 0)
-	padding.PaddingBottom = UDim.new(0, 4)
-	padding.PaddingLeft = UDim.new(0, 4)
-	padding.PaddingRight = UDim.new(0, 4)
-	local accentLine = Instance.new("Frame", column)
-	accentLine.LayoutOrder = -1001
-	accentLine.Size = UDim2.new(1, 0, 0, 1)
-	accentLine.BorderSizePixel = 0
-	registerAccent(accentLine, "BackgroundColor3")
-	local heading = Instance.new("TextLabel", column)
-	heading.Name = "SectionTitle"
-	heading.LayoutOrder = -1000
-	heading.Size = UDim2.new(1, 0, 0, 15)
-	heading.BackgroundTransparency = 1
-	heading.Text = headingText
-	heading.Font = Enum.Font.Code
-	heading.TextSize = 9
-	heading.TextColor3 = Color3.fromRGB(135, 145, 170)
-	heading.TextXAlignment = Enum.TextXAlignment.Left
-end
-
 for _, tabName in ipairs(tabs) do
 	local tb = Instance.new("TextButton", tabsCont)
-	tb.Size = UDim2.new(0, tabWidths[tabName], 1, 0)
-	tb.BackgroundColor3 = Theme.Panel
-	tb.BackgroundTransparency = 0
-	tb.BorderSizePixel = 0
-	tb.Text = tabLabels[tabName]
-	tb.Font = Enum.Font.Code
-	tb.TextSize = 10
+	tb.Size = UDim2.new(1 / #tabs, -2, 1, 0)
+	tb.BackgroundTransparency = 1
+	tb.Text = tabName == "CONFIG" and "Settings" or (tabName == "VISUALS" and "Visuals" or (tabName == "COMBAT" and "Combat" or (tabName == "MOVEMENT" and "Movement" or "Misc")))
+	tb.Font = Enum.Font.GothamMedium
+	tb.TextSize = 11
 	tb.TextColor3 = Theme.Muted
 	tb.AutoButtonColor = false
-	local tabStroke = Instance.new("UIStroke", tb)
-	tabStroke.Color = Theme.Stroke
-	tabStroke.Thickness = 1
 	local ul = Instance.new("Frame", tb)
-	ul.Size = UDim2.new(1, 0, 0, 1)
+	ul.Size = UDim2.new(0.72, 0, 0, 2)
 	ul.Position = UDim2.new(0.5, 0, 1, -1)
 	ul.AnchorPoint = Vector2.new(0.5, 1)
 	ul.BorderSizePixel = 0
@@ -1442,7 +1475,7 @@ for _, tabName in ipairs(tabs) do
 	tf.BackgroundTransparency = 1
 	tf.BorderSizePixel = 0
 	tf.Visible = false
-	tf.ScrollBarThickness = 1
+	tf.ScrollBarThickness = 2
 	tf.ScrollBarImageColor3 = Theme.Accent
 	registerAccent(tf, "ScrollBarImageColor3")
 	tf.CanvasSize = UDim2.new(0, 0, 0, 0)
@@ -1450,20 +1483,20 @@ for _, tabName in ipairs(tabs) do
 	tf.ScrollingDirection = Enum.ScrollingDirection.Y
 
 	local lc = Instance.new("Frame", tf)
-	lc.Size = UDim2.new(0, 163, 0, 0)
-	lc.Position = UDim2.new(0, 0, 0, 0)
+	lc.Size = UDim2.new(0.5, -9, 0, 0)
+	lc.Position = UDim2.new(0, 5, 0, 6)
+	lc.BackgroundTransparency = 1
 	lc.AutomaticSize = Enum.AutomaticSize.Y
 	local rc = Instance.new("Frame", tf)
-	rc.Size = UDim2.new(0, 163, 0, 0)
-	rc.Position = UDim2.new(0, 171, 0, 0)
+	rc.Size = UDim2.new(0.5, -9, 0, 0)
+	rc.Position = UDim2.new(0.5, 4, 0, 6)
+	rc.BackgroundTransparency = 1
 	rc.AutomaticSize = Enum.AutomaticSize.Y
-	styleSection(lc, sectionTitles[tabName][1])
-	styleSection(rc, sectionTitles[tabName][2])
 	local lcLayout = Instance.new("UIListLayout", lc)
-	lcLayout.Padding = UDim.new(0, 0)
+	lcLayout.Padding = UDim.new(0, 7)
 	lcLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	local rcLayout = Instance.new("UIListLayout", rc)
-	rcLayout.Padding = UDim.new(0, 0)
+	rcLayout.Padding = UDim.new(0, 7)
 	rcLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
 	tabFrames[tabName] = { tf = tf, lc = lc, rc = rc, tb = tb, ul = ul }
@@ -1490,6 +1523,8 @@ local function smartCol(tabName)
 	local rh = t.rc.AbsoluteSize.Y + t.rc:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y
 	if lh >= rh then return t.rc else return t.lc end
 end
+
+
 
 
 
@@ -1545,8 +1580,8 @@ onCleanup(function() setupNoRecoil(false) end)
 
 local JumpStunSettings = { Enabled = false, Height = 100 }
 
-UIS.JumpRequest:Connect(function()
-	if not JumpStunSettings.Enabled then return end
+local jumpRequestConnection = UIS.JumpRequest:Connect(function()
+	if Runtime.Unloaded or not JumpStunSettings.Enabled then return end
 	local root = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 	if root then
 		root.AssemblyLinearVelocity = Vector3.new(
@@ -1555,6 +1590,10 @@ UIS.JumpRequest:Connect(function()
 			root.AssemblyLinearVelocity.Z
 		)
 	end
+end)
+onCleanup(function()
+	JumpStunSettings.Enabled = false
+	if jumpRequestConnection then jumpRequestConnection:Disconnect(); jumpRequestConnection = nil end
 end)
 
 S.MBTargetLine = false
@@ -1704,7 +1743,8 @@ local HitSoundSettings = {
 	Enabled = false,
 	SoundId = "rbxassetid://8935436941",
 	Volume  = 2,
-	OriginalSounds = {}
+	OriginalSounds = setmetatable({}, {__mode = "k"}),
+	PlayedConnections = setmetatable({}, {__mode = "k"}),
 }
 
 do
@@ -1732,7 +1772,7 @@ do
 		["byebye"] = "rbxassetid://70888261086432",
 	}
 
-	local _hsLastPlayTime = {}
+	local _hsLastPlayTime = setmetatable({}, {__mode = "k"})
 	local _HS_COOLDOWN = 0.5
 
 	local function applyHitSound(snd)
@@ -1747,10 +1787,13 @@ do
 		end
 		snd.Volume  = HitSoundSettings.Volume
 
-		-- Anti-spam: перехватываем воспроизведение через .Played
-		if not snd:GetAttribute("_burmalda_hs_hooked") then
+		-- Anti-spam: keep ownership of every Played connection. The old
+		-- attribute-only guard leaked callbacks and blocked clean reinitialization.
+		local playedConnection = HitSoundSettings.PlayedConnections[snd]
+		if not playedConnection or not playedConnection.Connected then
 			snd:SetAttribute("_burmalda_hs_hooked", true)
-			snd.Played:Connect(function()
+			HitSoundSettings.PlayedConnections[snd] = snd.Played:Connect(function()
+				if Runtime.Unloaded or not HitSoundSettings.Enabled then return end
 				local now = tick()
 				local last = _hsLastPlayTime[snd] or 0
 				if (now - last) < _HS_COOLDOWN then
@@ -1811,7 +1854,7 @@ do
 		hookContainer(backpack)
 	end
 
-	-- Лёгкое обновление: только меняет SoundId/Volume на уже захуканных звуках
+	-- Refresh existing sounds immediately; disabling must not wait for a spawned task.
 	local function refreshSounds()
 		local char    = LocalPlayer.Character
 		local backpack = LocalPlayer:FindFirstChild("Backpack")
@@ -1823,9 +1866,9 @@ do
 					if ba then
 						for _, sName in ipairs({"HitClient", "HeadShotClient", "HitCharacterClient"}) do
 							local s = ba:FindFirstChild(sName)
-							if s and s:IsA("Sound") and HitSoundSettings.Enabled then
-								applyHitSound(s)
-							end
+						if s and s:IsA("Sound") then
+							if HitSoundSettings.Enabled then applyHitSound(s) else restoreHitSound(s) end
+						end
 						end
 					end
 				end
@@ -1851,6 +1894,7 @@ do
 			refreshSounds()
 			task.defer(hookHSContainers)
 		else
+			refreshSounds()
 			hookHSContainers()
 		end
 	end)
@@ -1865,14 +1909,15 @@ do
 		if HitSoundSettings.Enabled then debouncedRefresh() end
 	end)
 
-	LocalPlayer.CharacterAdded:Connect(function()
+	local _hsLifecycleConns = {}
+	table.insert(_hsLifecycleConns, LocalPlayer.CharacterAdded:Connect(function()
 		task.delay(0.3, function() if not Runtime.Unloaded then hookHSContainers() end end)
-	end)
+	end))
 
-	LocalPlayer.CharacterRemoving:Connect(function()
+	table.insert(_hsLifecycleConns, LocalPlayer.CharacterRemoving:Connect(function()
 		for _, c in ipairs(_hsConns) do pcall(function() c:Disconnect() end) end
 		_hsConns = {}
-	end)
+	end))
 
 	if LocalPlayer.Character then
 		task.delay(0.3, function() if not Runtime.Unloaded then hookHSContainers() end end)
@@ -1889,8 +1934,24 @@ do
 	end)
 	onCleanup(function()
 		HitSoundSettings.Enabled = false
-		for snd in pairs(HitSoundSettings.OriginalSounds) do restoreHitSound(snd) end
-		for _, conn in ipairs(_hsConns) do conn:Disconnect() end
+		for snd in pairs(HitSoundSettings.OriginalSounds) do
+			pcall(restoreHitSound, snd)
+		end
+		for snd, conn in pairs(HitSoundSettings.PlayedConnections) do
+			pcall(function() conn:Disconnect() end)
+			pcall(function()
+				if snd:GetAttribute("_burmalda_hs_hooked") ~= nil then
+					snd:SetAttribute("_burmalda_hs_hooked", nil)
+				end
+			end)
+			_hsLastPlayTime[snd] = nil
+		end
+		table.clear(HitSoundSettings.PlayedConnections)
+		table.clear(HitSoundSettings.OriginalSounds)
+		for _, conn in ipairs(_hsConns) do pcall(function() conn:Disconnect() end) end
+		for _, conn in ipairs(_hsLifecycleConns) do pcall(function() conn:Disconnect() end) end
+		_hsConns = {}
+		_hsLifecycleConns = {}
 	end)
 end
 
@@ -2229,7 +2290,7 @@ do
 		cfg["CM_enabled"]      = customModelsEnabled
 		cfg["CM_color"]        = c2t(glassColor)
 		cfg["CM_transparency"] = glassTransparency
-		cfg["CM_material"]     = tostring(glassMaterial)
+		cfg["CM_material"]     = glassMaterial.Name or tostring(glassMaterial)
 
 		cfg["HB_enabled"] = HotbarSettings.enabled
 
@@ -2299,7 +2360,10 @@ do
 		if cfg.CM_material     ~= nil then
 			local mats = {Glass=Enum.Material.Glass, Neon=Enum.Material.Neon,
 				ForceField=Enum.Material.ForceField, SmoothPlastic=Enum.Material.SmoothPlastic}
-			glassMaterial = mats[cfg.CM_material] or Enum.Material.Glass
+			-- Current configs store EnumItem.Name. Accept the previous
+			-- tostring(Enum.Material.*) representation as well.
+			local materialName = tostring(cfg.CM_material):match("([^.]+)$")
+			glassMaterial = mats[materialName] or Enum.Material.Glass
 		end
 
 		if cfg.HB_enabled ~= nil then HotbarSettings.enabled = cfg.HB_enabled end
@@ -2617,17 +2681,27 @@ do
 	end
 
 	local _cmLastChar = nil
+	local _cmChildConnection = nil
 	local function connectCMChar(char)
 		if Runtime.Unloaded or not char then return end
+		if _cmLastChar == char and _cmChildConnection then return end
+		if _cmChildConnection then _cmChildConnection:Disconnect(); _cmChildConnection = nil end
+		_cmLastChar = char
 		pcall(scanForWeapons)
-		char.ChildAdded:Connect(function(child)
-			if customModelsEnabled and (child:IsA("Tool") or child:IsA("Model")) then
-				task.delay(0.05, function() pcall(scanForWeapons) end)
+		_cmChildConnection = char.ChildAdded:Connect(function(child)
+			if not Runtime.Unloaded and customModelsEnabled and (child:IsA("Tool") or child:IsA("Model")) then
+				task.delay(0.05, function() if not Runtime.Unloaded then pcall(scanForWeapons) end end)
 			end
 		end)
 	end
-	LocalPlayer.CharacterAdded:Connect(connectCMChar)
+	local _cmAddedConnection = LocalPlayer.CharacterAdded:Connect(connectCMChar)
 	if LocalPlayer.Character then connectCMChar(LocalPlayer.Character) end
+	onCleanup(function()
+		customModelsEnabled = false
+		if _cmChildConnection then _cmChildConnection:Disconnect(); _cmChildConnection = nil end
+		if _cmAddedConnection then _cmAddedConnection:Disconnect(); _cmAddedConnection = nil end
+		_cmLastChar = nil
+	end)
 
 	local cmSet = createFeature(lc, "Custom Models", false, function(v)
 		customModelsEnabled = v
@@ -2682,10 +2756,14 @@ do
 	end)
 
 	-- Доп. хук на изменение свойства
-	Camera:GetPropertyChangedSignal("FieldOfView"):Connect(function()
-		if fovLockEnabled and Camera.FieldOfView ~= targetFOV then
+	local fovChangedConnection = Camera:GetPropertyChangedSignal("FieldOfView"):Connect(function()
+		if not Runtime.Unloaded and fovLockEnabled and Camera.FieldOfView ~= targetFOV then
 			Camera.FieldOfView = targetFOV
 		end
+	end)
+	onCleanup(function()
+		fovLockEnabled = false
+		if fovChangedConnection then fovChangedConnection:Disconnect(); fovChangedConnection = nil end
 	end)
 
 	local fovLockSet = createFeature(rc, "Custom FOV", false, function(v)
@@ -2854,6 +2932,17 @@ do
 	local handPosConn = nil
 	local handPosLastVM = nil
 	local handPosApplied = CFrame.new()
+	local handPosHasApplied = false
+
+	local function restoreHandPosition()
+		if handPosHasApplied and handPosLastVM and handPosLastVM.Parent then
+			pcall(function()
+				handPosLastVM:PivotTo(handPosLastVM:GetPivot() * handPosApplied:Inverse())
+			end)
+		end
+		handPosHasApplied = false
+		handPosApplied = CFrame.new()
+	end
 
 	local function getViewmodel()
 		for _, obj in ipairs(Camera:GetChildren()) do
@@ -2875,27 +2964,31 @@ do
 			if Runtime.Unloaded then return end
 			local vm = getViewmodel()
 			if vm ~= handPosLastVM then
+				restoreHandPosition()
 				handPosLastVM = vm
-				handPosApplied = CFrame.new()
 			end
 			if handPosEnabled and vm then
 				local desired = CFrame.new(ViewmodelConfig.X, ViewmodelConfig.Y, ViewmodelConfig.Z)
 				vm:PivotTo(vm:GetPivot() * handPosApplied:Inverse() * desired)
 				handPosApplied = desired
-			else
-				handPosApplied = CFrame.new()
+				handPosHasApplied = true
+			elseif handPosHasApplied then
+				restoreHandPosition()
 			end
 		end)
 	end
 	startHandPos()
 	onCleanup(function()
 		handPosEnabled = false
+		restoreHandPosition()
 		if handPosConn then handPosConn:Disconnect(); handPosConn = nil end
+		handPosLastVM = nil
 	end)
 
 	local handSet = createFeature(lc, "Custom Hand Position", false, function(v)
 		handPosEnabled = v
 		if not v then
+			restoreHandPosition()
 			ViewmodelConfig.X = 0
 			ViewmodelConfig.Y = 0
 			ViewmodelConfig.Z = 0
@@ -3254,10 +3347,11 @@ local function getHealthColor(ratio)
 end
 
 for _, player in ipairs(Players:GetPlayers()) do createESP(player) end
-Players.PlayerAdded:Connect(function(player)
+local playerAddedConnection = Players.PlayerAdded:Connect(function(player)
 	if not Runtime.Unloaded then createESP(player) end
 end)
-Players.PlayerRemoving:Connect(function(player)
+local playerRemovingConnection = Players.PlayerRemoving:Connect(function(player)
+	if Runtime.Unloaded then return end
 	removeESP(player)
 	if player.Character then
 		local head = player.Character:FindFirstChild("Head")
@@ -3267,7 +3361,13 @@ Players.PlayerRemoving:Connect(function(player)
 		end
 	end
 end)
-onCleanup(destroyAllChams)
+onCleanup(function()
+	if playerAddedConnection then playerAddedConnection:Disconnect(); playerAddedConnection = nil end
+	if playerRemovingConnection then playerRemovingConnection:Disconnect(); playerRemovingConnection = nil end
+	destroyAllChams()
+	table.clear(_visCache)
+	table.clear(_visCacheTime)
+end)
 
 local function updateESPPlayer(player, box, context)
 	local screenSize = context.screenSize
@@ -3778,9 +3878,16 @@ local projectileInitOK, projectileInitError = pcall(function()
 	-- VOMAGLA uses this ModuleScript table assignment. It is easy to restore and does
 	-- not require hookfunction support from the executor.
 	local GunBase, originalFire, replacementFire = nil, nil, nil
+	local gunBaseWaitRunning = false
 	local function installGunBase(module)
 		if ProjectileSilent.Installed.GunBase then return true end
 		if not ProjectileCore.Running then return false end
+		-- Do not touch game ModuleScripts while the feature is opt-in/off.
+		-- This also avoids a startup require racing the game's own module context.
+		if not S.SilentAim then
+			ProjectileCore.Status.lastShotReason = "gunbase-standby"
+			return false
+		end
 		if not module then
 			local gun = ReplicatedStorage:FindFirstChild("Gun")
 			local scripts = gun and gun:FindFirstChild("Scripts")
@@ -3789,6 +3896,20 @@ local projectileInitOK, projectileInitError = pcall(function()
 		end
 		if not module then
 			ProjectileCore.Status.lastShotReason = "gunbase-waiting"
+			if not gunBaseWaitRunning then
+				gunBaseWaitRunning = true
+				task.spawn(function()
+					local ok, waitedModule = pcall(function()
+						local gun = ReplicatedStorage:WaitForChild("Gun", 20)
+						local scripts = gun and gun:WaitForChild("Scripts", 20)
+						return scripts and scripts:WaitForChild("GunBase", 20) or nil
+					end)
+					gunBaseWaitRunning = false
+					if ok and waitedModule and ProjectileCore.Running and S.SilentAim then
+						installGunBase(waitedModule)
+					end
+				end)
+			end
 			return false
 		end
 		local loaded, requireError = Runtime.RequireGameModule(module)
@@ -3876,18 +3997,6 @@ local projectileInitOK, projectileInitError = pcall(function()
 	end
 	ProjectileSilent.Refresh = installGunBase
 	refreshHeldTool()
-	installGunBase()
-	task.spawn(function()
-		if not ProjectileCore.Running or ProjectileSilent.Installed.GunBase then return end
-		local ok, module = pcall(function()
-			local gun = ReplicatedStorage:WaitForChild("Gun", 20)
-			local scripts = gun and gun:WaitForChild("Scripts", 20)
-			return scripts and scripts:WaitForChild("GunBase", 20) or nil
-		end)
-		if ok and module and ProjectileCore.Running then
-			installGunBase(module)
-		end
-	end)
 
 	onCleanup(function()
 		clearTarget()
@@ -4933,7 +5042,7 @@ do
 		M.Status.reloadHooked = false
 		destroyObject(reloadGui)
 	end
-	installReloadHook()
+	-- Install on the Reload Indicator toggle, not while the feature is off.
 end
 
 -- World bullet beams are fed by the existing Workspace Raycast namecall in main.lua.
