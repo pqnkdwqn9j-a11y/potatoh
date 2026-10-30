@@ -3224,14 +3224,18 @@ do
 
 		local function isDecorative(object)
 			local current = object
-			for _ = 1, 4 do
+			for _ = 1, 6 do
 				if not current then break end
-				-- Never hide a held weapon just because its name resembles foliage.
 				if current.ClassName == "Tool" then return false end
 				local name = string.lower(tostring(current.Name))
 				if string.find(name, "grass", 1, true)
-					or string.find(name, "leav", 1, true) -- leaf / leaves / tree-leaves
+					or string.find(name, "leav", 1, true)
 					or string.find(name, "foliage", 1, true)
+					or string.find(name, "bush", 1, true)
+					or string.find(name, "shrub", 1, true)
+					or string.find(name, "fern", 1, true)
+					or string.find(name, "flower", 1, true)
+					or string.find(name, "reed", 1, true)
 					or string.find(name, "cloud", 1, true) then
 					return true
 				end
@@ -3246,17 +3250,24 @@ do
 				or className == "Smoke" or className == "Fire" or className == "Sparkles"
 				or className == "Clouds"
 				or className == "BloomEffect" or className == "BlurEffect"
-				or className == "SunRaysEffect" or className == "DepthOfFieldEffect" then
+				or className == "SunRaysEffect" or className == "DepthOfFieldEffect"
+				or className == "ColorCorrectionEffect" then
 				setProperty(object, "Enabled", false)
+			end
+			if className == "Atmosphere" then
+				setProperty(object, "Density", 0)
+				setProperty(object, "Haze", 0)
+				setProperty(object, "Glare", 0)
 			end
 			if isDecorative(object) then
 				if object:IsA("BasePart") then
-					-- LocalTransparencyModifier hides geometry locally without deleting it
-					-- or changing collision/gameplay state. CastShadow removes its shadow pass.
 					setProperty(object, "LocalTransparencyModifier", 1)
+					setProperty(object, "Transparency", 1)
 					setProperty(object, "CastShadow", false)
 				elseif className == "Decal" or className == "Texture" then
 					setProperty(object, "Transparency", 1)
+				elseif className == "SpecialMesh" then
+					setProperty(object, "TextureId", "")
 				end
 			end
 		end
@@ -3927,7 +3938,8 @@ local _ESP_INTERVAL = 1 / 30
 espConnection = RunService.RenderStepped:Connect(function()
 	if Runtime.Unloaded then return end
 	local now = tick()
-	if now - _espLastUpdate < _ESP_INTERVAL then return end
+	local interval = S.LowPC and 0.1 or _ESP_INTERVAL
+	if now - _espLastUpdate < interval then return end
 	_espLastUpdate = now
 
 	local currentCamera = workspace.CurrentCamera
@@ -6224,7 +6236,7 @@ onCleanup(function()
 end)
 
 task.spawn(function()
-	while task.wait(0.05) do
+	while task.wait(S.LowPC and 0.1 or 0.05) do
 		if Runtime.Unloaded then break end
 		updateSharedTarget()
 	end
