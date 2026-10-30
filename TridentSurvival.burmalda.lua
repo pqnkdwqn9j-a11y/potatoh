@@ -1,17 +1,3 @@
--- Burmalda.hook | Trident Survival | private JNKIE payload gate
-local __burmaldaTridentEnv = getgenv and getgenv() or _G
-local __burmaldaTridentKey = tostring(__burmaldaTridentEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
-if tostring(__burmaldaTridentEnv.PHOOKGATE or "") ~= "1347571535"
-    or __burmaldaTridentKey == ""
-    or __burmaldaTridentKey:upper() == "BETA"
-then
-    __burmaldaTridentEnv.PHOOKGATE = nil
-    __burmaldaTridentEnv.SCRIPT_KEY = nil
-    return
-end
-__burmaldaTridentEnv.PHOOKGATE = nil
-__burmaldaTridentEnv.SCRIPT_KEY = nil
-
 -- Burmalda.hook | Trident Survival | standalone runtime
 -- Statically recovered from the supplied Trident sources. No external UI,
 -- ESP, analytics or gameplay payloads are loaded by this file.
@@ -1520,12 +1506,24 @@ tabFrames.VISUAL = tabFrames.VISUALS
 tabFrames.ESP = tabFrames.VISUALS
 tabFrames.HUD = tabFrames.MISC
 tabFrames.SETTINGS = tabFrames.CONFIG
+-- Keep feature-column aliases in sync with page aliases. Without these,
+-- getTab("ESP")/getTab("HUD") silently fell back to CONFIG.
+tabColumns.VISUAL = tabColumns.VISUALS
+tabColumns.ESP = tabColumns.VISUALS
+tabColumns.HUD = tabColumns.MISC
+tabColumns.SETTINGS = tabColumns.CONFIG
+
+local function canonicalTabName(name)
+	if name == "VISUAL" or name == "ESP" then return "VISUALS" end
+	if name == "HUD" then return "MISC" end
+	if name == "SETTINGS" then return "CONFIG" end
+	return name
+end
 
 local currentTab = "COMBAT"
 activeFrame = tabFrames.COMBAT
 function selectTab(name)
-	if name == "VISUAL" then name = "VISUALS" end
-	if name == "SETTINGS" then name = "CONFIG" end
+	name = canonicalTabName(name)
 	if not tabFrames[name] then return end
 	currentTab = name
 	activeFrame = tabFrames[name]
@@ -1548,9 +1546,7 @@ selectTab("COMBAT")
 
 function smartCol(left, right)
 	if type(left) == "string" then
-		local name = left
-		if name == "VISUAL" or name == "ESP" then name = "VISUALS" end
-		if name == "SETTINGS" then name = "CONFIG" end
+		local name = canonicalTabName(left)
 		local columns = tabColumns[name] or tabColumns.CONFIG
 		left, right = columns[1], columns[2]
 	end
@@ -1558,8 +1554,7 @@ function smartCol(left, right)
 	return right
 end
 function getTab(name)
-	if name == "VISUAL" then name = "VISUALS" end
-	if name == "SETTINGS" then name = "CONFIG" end
+	name = canonicalTabName(name)
 	local columns = tabColumns[name] or tabColumns.CONFIG
 	return columns[1], columns[2], smartCol
 end
