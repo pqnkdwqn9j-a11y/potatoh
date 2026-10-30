@@ -1,3 +1,9 @@
+-- Burmalda.hook | rost alpha | direct development build (not for public distribution)
+local __burmaldaDirectEnv = getgenv and getgenv() or _G
+__burmaldaDirectEnv.PHOOKGATE = "1347571535"
+__burmaldaDirectEnv.SCRIPT_KEY = "DEV-INTERNAL"
+__burmaldaDirectEnv.BURMALDA_GAME = "rost alpha"
+
 -- Burmalda.hook | rost alpha | cleaned NullWave-derived build
 -- Target: official rost alpha, PlaceId 13769775130; no PlaceId execution gate.
 -- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt and Volcano are live-untested. Xeno is unsupported.
@@ -1048,12 +1054,24 @@ tabFrames.VISUAL = tabFrames.VISUALS
 tabFrames.ESP = tabFrames.VISUALS
 tabFrames.HUD = tabFrames.MISC
 tabFrames.SETTINGS = tabFrames.CONFIG
+-- Keep feature-column aliases in sync with page aliases. Without these,
+-- getTab("ESP")/getTab("HUD") silently fell back to CONFIG.
+tabColumns.VISUAL = tabColumns.VISUALS
+tabColumns.ESP = tabColumns.VISUALS
+tabColumns.HUD = tabColumns.MISC
+tabColumns.SETTINGS = tabColumns.CONFIG
+
+local function canonicalTabName(name)
+	if name == "VISUAL" or name == "ESP" then return "VISUALS" end
+	if name == "HUD" then return "MISC" end
+	if name == "SETTINGS" then return "CONFIG" end
+	return name
+end
 
 local currentTab = "COMBAT"
 activeFrame = tabFrames.COMBAT
 function selectTab(name)
-	if name == "VISUAL" then name = "VISUALS" end
-	if name == "SETTINGS" then name = "CONFIG" end
+	name = canonicalTabName(name)
 	if not tabFrames[name] then return end
 	currentTab = name
 	activeFrame = tabFrames[name]
@@ -1076,9 +1094,7 @@ selectTab("COMBAT")
 
 function smartCol(left, right)
 	if type(left) == "string" then
-		local name = left
-		if name == "VISUAL" or name == "ESP" then name = "VISUALS" end
-		if name == "SETTINGS" then name = "CONFIG" end
+		local name = canonicalTabName(left)
 		local columns = tabColumns[name] or tabColumns.CONFIG
 		left, right = columns[1], columns[2]
 	end
@@ -1086,8 +1102,7 @@ function smartCol(left, right)
 	return right
 end
 function getTab(name)
-	if name == "VISUAL" then name = "VISUALS" end
-	if name == "SETTINGS" then name = "CONFIG" end
+	name = canonicalTabName(name)
 	local columns = tabColumns[name] or tabColumns.CONFIG
 	return columns[1], columns[2], smartCol
 end
@@ -3272,17 +3287,25 @@ do
 	handPosEnabled = false
 	local handPosConn = nil
 	local handPosLastVM = nil
-	local handPosApplied = CFrame.new()
+	local handPosLastWritten = nil
+	local handPosBase = nil
 	local handPosHasApplied = false
 
 	local function restoreHandPosition()
 		if handPosHasApplied and handPosLastVM and handPosLastVM.Parent then
 			pcall(function()
-				handPosLastVM:PivotTo(handPosLastVM:GetPivot() * handPosApplied:Inverse())
+				local current = handPosLastVM:GetPivot()
+				-- Remove our offset only while the model is still at the exact
+				-- pivot we wrote. If the game already supplied a fresh pivot,
+				-- applying the inverse would move the game's new baseline.
+				if handPosLastWritten and handPosBase and current == handPosLastWritten then
+					handPosLastVM:PivotTo(handPosBase)
+				end
 			end)
 		end
 		handPosHasApplied = false
-		handPosApplied = CFrame.new()
+		handPosLastWritten = nil
+		handPosBase = nil
 	end
 
 	local function getViewmodel()
@@ -3310,8 +3333,17 @@ do
 			end
 			if handPosEnabled and vm then
 				local desired = CFrame.new(ViewmodelConfig.X, ViewmodelConfig.Y, ViewmodelConfig.Z)
-				vm:PivotTo(vm:GetPivot() * handPosApplied:Inverse() * desired)
-				handPosApplied = desired
+				local current = vm:GetPivot()
+				local base = current
+				-- Persistent viewmodels need de-accumulation; game-reset
+				-- viewmodels are already a fresh base and must not be inverted.
+				if handPosHasApplied and handPosLastWritten and handPosBase and current == handPosLastWritten then
+					base = handPosBase
+				end
+				local written = base * desired
+				vm:PivotTo(written)
+				handPosLastWritten = written
+				handPosBase = base
 				handPosHasApplied = true
 			elseif handPosHasApplied then
 				restoreHandPosition()
@@ -5257,6 +5289,10 @@ local M = {
 		killSoundCalls = 0,
 		lastKillSound = "",
 		lastStretch = nil,
+		gunTables = 0,
+		meleeTables = 0,
+		weaponCacheError = nil,
+		lastWeaponCacheAt = 0,
 	},
 	KillSoundState = { Times = {}, LastDouble = -1000 },
 	ReloadState = { Start = 0, Duration = 0, Active = false },
@@ -5301,6 +5337,14 @@ do
 	local gunCache, meleeCache = {}, {}
 	local gunOriginals, meleeOriginals = {}, {}
 	local cachesBuilt = false
+	local nextCacheRefresh = 0
+	local CACHE_REFRESH_SECONDS = 1
+
+	local function updateCacheStatus()
+		M.Status.gunTables = #gunCache
+		M.Status.meleeTables = #meleeCache
+		M.Status.lastWeaponCacheAt = os.clock()
+	end
 
 	local function saveOriginal(originals, object, key)
 		local properties = originals[object]
@@ -5336,11 +5380,21 @@ do
 		table.clear(gunCache)
 		table.clear(meleeCache)
 		cachesBuilt = true
+		nextCacheRefresh = os.clock() + CACHE_REFRESH_SECONDS
 		M.Status.weaponScans += 1
+		M.Status.weaponCacheError = nil
 		M.Status.weaponCacheAvailable = type(getgc) == "function"
-		if not M.Status.weaponCacheAvailable then return end
+		if not M.Status.weaponCacheAvailable then
+			M.Status.weaponCacheError = "getgc unavailable"
+			updateCacheStatus()
+			return
+		end
 		local ok, objects = pcall(getgc, true)
-		if not ok or type(objects) ~= "table" then return end
+		if not ok or type(objects) ~= "table" then
+			M.Status.weaponCacheError = "getgc failed: " .. tostring(objects)
+			updateCacheStatus()
+			return
+		end
 		for _, object in pairs(objects) do
 			if type(object) == "table" then
 				if rawget(object, "FireDelay") ~= nil and rawget(object, "FiringOnCooldown") ~= nil and rawget(object, "OwnerPlayer") ~= nil then
@@ -5352,9 +5406,16 @@ do
 				end
 			end
 		end
+		updateCacheStatus()
 	end
-	local function applyWeaponMods()
-		if not cachesBuilt then rebuildCaches() end
+	local function applyWeaponMods(forceRefresh)
+		local enabled = S.RapidFire or S.FullAuto or S.MeleeMods
+		if forceRefresh or not cachesBuilt or (enabled and os.clock() >= nextCacheRefresh) then
+			-- Gun tables can be created after the initial script scan. Re-scan on
+			-- enable and periodically while a weapon mod is active, not just on
+			-- Character.ChildAdded (which may already have happened).
+			rebuildCaches()
+		end
 		if S.RapidFire or S.FullAuto then
 			for _, object in ipairs(gunCache) do
 				pcall(function()
@@ -5394,15 +5455,15 @@ do
 	M.ApplyWeaponMods = applyWeaponMods
 	M.SetRapidFire = function(enabled)
 		S.RapidFire = enabled
-		if enabled then applyWeaponMods() else restoreKeys(gunOriginals, rapidKeys) end
+		if enabled then applyWeaponMods(true) else restoreKeys(gunOriginals, rapidKeys) end
 	end
 	M.SetFullAuto = function(enabled)
 		S.FullAuto = enabled
-		if enabled then applyWeaponMods() else restoreKeys(gunOriginals, autoKeys) end
+		if enabled then applyWeaponMods(true) else restoreKeys(gunOriginals, autoKeys) end
 	end
 	M.SetMeleeMods = function(enabled)
 		S.MeleeMods = enabled
-		if enabled then applyWeaponMods() else restoreKeys(meleeOriginals, meleeKeys) end
+		if enabled then applyWeaponMods(true) else restoreKeys(meleeOriginals, meleeKeys) end
 	end
 	M.GetWeaponCaches = function() return gunCache, meleeCache end
 	M.RestoreWeaponMods = restoreAll
