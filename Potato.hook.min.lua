@@ -241,6 +241,7 @@ local BK      = Color3.fromRGB(0, 0, 0)
 
 local _visParams = RaycastParams.new()
 _visParams.FilterType = Enum.RaycastFilterType.Exclude
+_visParams.IgnoreWater = true
 local _visCache = {}
 local _visCacheTime = {}
 local _VIS_TTL = 0.08
@@ -251,12 +252,14 @@ local function isVisible(part, char)
 		return _visCache[part]
 	end
 	local myChar = LocalPlayer.Character
-	if _visFilterList[1] ~= char or _visFilterList[2] ~= myChar then
+	local currentCamera = workspace.CurrentCamera or Camera
+	if _visFilterList[1] ~= char or _visFilterList[2] ~= myChar or _visFilterList[3] ~= currentCamera then
 		_visFilterList[1] = char
 		_visFilterList[2] = myChar
+		_visFilterList[3] = currentCamera
 		_visParams.FilterDescendantsInstances = _visFilterList
 	end
-	local origin = Camera.CFrame.Position
+	local origin = currentCamera.CFrame.Position
 	local result = workspace:Raycast(origin, part.Position - origin, _visParams)
 	local vis = result == nil
 	_visCache[part] = vis
@@ -3846,7 +3849,12 @@ espConnection = RunService.RenderStepped:Connect(function()
 	end
 
 	if S.MBTargetLine and SA_CurrentTarget and SA_CurrentTarget.Parent then
-		local targetPosition = Camera:WorldToViewportPoint(SA_CurrentTarget.Position)
+		local worldPosition = SA_CurrentTarget.Position
+		if S.SilentAim and ProjectileSilent and ProjectileSilent.TargetPart == SA_CurrentTarget
+			and typeof(ProjectileSilent.TargetPosition) == "Vector3" then
+			worldPosition = ProjectileSilent.TargetPosition
+		end
+		local targetPosition = Camera:WorldToViewportPoint(worldPosition)
 		TargetLine.From = fovPosition
 		TargetLine.To = Vector2.new(targetPosition.X, targetPosition.Y)
 		TargetLine.Color = S.MBTargetLineColor
@@ -3924,6 +3932,9 @@ local projectileInitOK, projectileInitError = pcall(function()
 	ProjectileSilent = {
 		TargetPart = nil,
 		TargetPosition = nil,
+		-- World-space offset from TargetPart.Position to the sampled visible point.
+		-- Namecall fallbacks apply it to the current Position without nested Roblox calls.
+		TargetOffset = nil,
 		TargetPlayer = nil,
 		TargetCharacter = nil,
 		TargetHumanoid = nil,
@@ -3962,12 +3973,26 @@ local projectileInitOK, projectileInitError = pcall(function()
 	local function clearTarget()
 		ProjectileSilent.TargetPart = nil
 		ProjectileSilent.TargetPosition = nil
+		ProjectileSilent.TargetOffset = nil
 		ProjectileSilent.TargetPlayer = nil
 		ProjectileSilent.TargetCharacter = nil
 		ProjectileSilent.TargetHumanoid = nil
 		ProjectileSilent.TargetVisible = false
 	end
 
+	local function setTarget(part, player, humanoid, position)
+		ProjectileSilent.TargetPart = part
+		ProjectileSilent.TargetPosition = position
+		ProjectileSilent.TargetOffset = part and position and (position - part.Position) or nil
+		ProjectileSilent.TargetPlayer = player
+		ProjectileSilent.TargetCharacter = player and player.Character or nil
+		ProjectileSilent.TargetHumanoid = humanoid
+		ProjectileSilent.TargetVisible = part ~= nil and position ~= nil
+	end
+
+	-- Random chooses a stable part per character instead of rerolling every 50 ms.
+	-- Explicit Head/HeadHitbox/HRP choices remain exact and share one resolver with HUD.
+	local randomPartCache = setmetatable({}, {__mode = "k"})
 	local function targetPartFor(character)
 		if S.MBTargetPart == 2 then
 			return character:FindFirstChild("Head") or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("HumanoidRootPart")
@@ -3976,23 +4001,33 @@ local projectileInitOK, projectileInitError = pcall(function()
 			return character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head")
 		end
 		if S.MBTargetPart == 4 then
+			local cached = randomPartCache[character]
+			if cached and cached.Parent == character then return cached end
 			local candidates = {}
 			for _, name in ipairs({"HeadHitbox", "Head", "HumanoidRootPart"}) do
 				local part = character:FindFirstChild(name)
 				if part then table.insert(candidates, part) end
 			end
-			if #candidates > 0 then return candidates[math.random(1, #candidates)] end
+			if #candidates > 0 then
+				local selected = candidates[math.random(1, #candidates)]
+				randomPartCache[character] = selected
+				return selected
+			end
+			randomPartCache[character] = nil
 			return nil
 		end
 		return character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head") or character:FindFirstChild("HumanoidRootPart")
 	end
+	ProjectileSilent.ResolveTargetPart = targetPartFor
 
-	-- VOMAGLA Visible Check: sample the hitbox and aim at the average visible point,
-	-- rather than rejecting an otherwise visible target because its centre is covered.
+	-- Visible Check keeps a real visible point without averaging different sample
+	-- subsets between frames. Centre is preferred; a partial-cover offset is reused
+	-- while it remains visible, so walking and shot-time revalidation do not jitter.
 	local visibleParams = RaycastParams.new()
 	visibleParams.FilterType = Enum.RaycastFilterType.Exclude
 	visibleParams.IgnoreWater = true
 	local ignoreCache, lastIgnoreRefresh = {}, -1000
+	local ignoredCamera, ignoredLocalCharacter = nil, nil
 	local testOffsets = {Vector3.new(0, 0, 0)}
 	for x = -1, 1, 2 do
 		for y = -1, 1, 2 do
@@ -4006,9 +4041,11 @@ local projectileInitOK, projectileInitError = pcall(function()
 	}) do table.insert(testOffsets, offset) end
 	local function pointVisible(character, worldPoint, camera)
 		local now = os.clock()
-		if now - lastIgnoreRefresh >= 0.5 then
+		local localCharacter = LocalPlayer.Character
+		if now - lastIgnoreRefresh >= 0.5 or ignoredCamera ~= camera or ignoredLocalCharacter ~= localCharacter then
 			lastIgnoreRefresh = now
-			ignoreCache = {LocalPlayer.Character, camera}
+			ignoredCamera, ignoredLocalCharacter = camera, localCharacter
+			ignoreCache = {localCharacter, camera}
 			for _, player in ipairs(Players:GetPlayers()) do
 				if player.Character then table.insert(ignoreCache, player.Character) end
 			end
@@ -4024,22 +4061,34 @@ local projectileInitOK, projectileInitError = pcall(function()
 		-- queryable obstruction (house wall, non-collidable wall, prop) blocks it.
 		return false
 	end
+	local visibleOffsetCache = setmetatable({}, {__mode = "k"})
 	local function getVisiblePoint(part, character, camera)
 		if not part or not part:IsA("BasePart") then return nil end
 		ProjectileCore.Status.visiblePointChecks += 1
-		local sumX, sumY, sumZ, count = 0, 0, 0, 0
-		for _, offset in ipairs(testOffsets) do
-			local worldPoint = part.CFrame:PointToWorldSpace(offset * part.Size)
-			if pointVisible(character, worldPoint, camera) then
-				sumX += worldPoint.X
-				sumY += worldPoint.Y
-				sumZ += worldPoint.Z
-				count += 1
+		local centerOffset = testOffsets[1]
+		local centerPoint = part.CFrame:PointToWorldSpace(centerOffset * part.Size)
+		if pointVisible(character, centerPoint, camera) then
+			visibleOffsetCache[part] = centerOffset
+			return part.Position
+		end
+
+		local previousOffset = visibleOffsetCache[part]
+		if previousOffset and previousOffset ~= centerOffset then
+			local previousPoint = part.CFrame:PointToWorldSpace(previousOffset * part.Size)
+			if pointVisible(character, previousPoint, camera) then return previousPoint end
+		end
+		for index = 2, #testOffsets do
+			local offset = testOffsets[index]
+			if offset ~= previousOffset then
+				local worldPoint = part.CFrame:PointToWorldSpace(offset * part.Size)
+				if pointVisible(character, worldPoint, camera) then
+					visibleOffsetCache[part] = offset
+					return worldPoint
+				end
 			end
 		end
-		if count == 0 then return nil end
-		if count == #testOffsets then return part.Position end
-		return Vector3.new(sumX / count, sumY / count, sumZ / count)
+		visibleOffsetCache[part] = nil
+		return nil
 	end
 
 	local function updateTarget()
@@ -4100,13 +4149,13 @@ local projectileInitOK, projectileInitError = pcall(function()
 			end
 		end
 
-		ProjectileSilent.TargetPart = bestPart
-		ProjectileSilent.TargetPosition = bestPosition
-		ProjectileSilent.TargetPlayer = bestPlayer
-		ProjectileSilent.TargetCharacter = bestPlayer and bestPlayer.Character or nil
-		ProjectileSilent.TargetHumanoid = bestHumanoid
-		ProjectileSilent.TargetVisible = bestPart ~= nil
-		ProjectileCore.Status.target = bestPart and "ok" or "no-target"
+		if bestPart then
+			setTarget(bestPart, bestPlayer, bestHumanoid, bestPosition)
+			ProjectileCore.Status.target = "ok"
+		else
+			clearTarget()
+			ProjectileCore.Status.target = "no-target"
+		end
 	end
 	ProjectileSilent.Update = updateTarget
 
@@ -4146,7 +4195,6 @@ local projectileInitOK, projectileInitError = pcall(function()
 				return nil
 			end
 		end
-		ProjectileSilent.TargetPosition = targetPosition
 		local projected, onScreen = camera:WorldToViewportPoint(targetPosition)
 		local viewport = camera.ViewportSize
 		local center = S.MBFovMode == "pc" and UIS:GetMouseLocation()
@@ -4157,7 +4205,8 @@ local projectileInitOK, projectileInitError = pcall(function()
 			ProjectileCore.Status.target = "stale-fov"
 			return nil
 		end
-		ProjectileSilent.TargetVisible = true
+		setTarget(target, ProjectileSilent.TargetPlayer, humanoid, targetPosition)
+		ProjectileCore.Status.target = "ok"
 		return target, targetPosition
 	end
 	ProjectileSilent.GetTarget = getLiveTarget
@@ -4327,6 +4376,13 @@ local projectileInitOK, projectileInitError = pcall(function()
 			gunbaseOwnsShot = ProjectileCore.GunBaseRedirecting == true,
 			bufferWrites = status.bufferWrites,
 			target = status.target,
+			targetPart = ProjectileSilent.TargetPart and ProjectileSilent.TargetPart.Name or nil,
+			targetVisible = ProjectileSilent.TargetVisible == true,
+			targetPosition = ProjectileSilent.TargetPosition,
+			targetOffset = ProjectileSilent.TargetOffset,
+			visualTargetMatches = SA_CurrentTarget == ProjectileSilent.TargetPart,
+			targetError = Runtime.LastTargetError,
+			visiblePointChecks = status.visiblePointChecks,
 			lastShotReason = status.lastShotReason,
 		}
 	end
@@ -5851,67 +5907,101 @@ initializeVomaglaFeatures()
 end -- function-scoped locals keep the combined loader below Luau's register limit.
 
 
+-- One coordinator owns the target consumed by shots, FOV color, Target HUD,
+-- snapline and Auto Fire. The legacy scanner is used only for a Target Line
+-- while Silent is disabled; it can no longer override an empty Silent target.
+local function updateSharedTarget()
+	if ProjectileSilent then
+		local ok, err = pcall(ProjectileSilent.Update)
+		Runtime.LastTargetError = ok and nil or tostring(err)
+		if not ok then
+			SA_CurrentTarget = nil
+			return
+		end
+	end
+	if S.SilentAim and ProjectileSilent then
+		SA_CurrentTarget = ProjectileSilent.TargetVisible and ProjectileSilent.TargetPart or nil
+		return
+	end
+	if not S.MBTargetLine then
+		SA_CurrentTarget = nil
+		return
+	end
+
+	local target = nil
+	local shortestDistance = S.MBUseFOV and S.FOV or math.huge
+	local lowestHP = math.huge
+	local currentCamera = workspace.CurrentCamera or Camera
+	local camPos2 = currentCamera.CFrame.Position
+	local vp = currentCamera.ViewportSize
+	local center = S.MBFovMode == "pc"
+		and UIS:GetMouseLocation()
+		or Vector2.new(vp.X * 0.5, vp.Y * 0.5)
+	local priority = S.MBPriority
+	local candidates = {}
+	for _, player in ipairs(Players:GetPlayers()) do
+		if player == LocalPlayer then continue end
+		local character = player.Character
+		if not character then continue end
+		local root
+		if ProjectileSilent and ProjectileSilent.ResolveTargetPart then
+			root = ProjectileSilent.ResolveTargetPart(character)
+		elseif S.MBTargetPart == 2 then
+			root = character:FindFirstChild("Head") or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("HumanoidRootPart")
+		elseif S.MBTargetPart == 3 then
+			root = character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head")
+		elseif S.MBTargetPart == 4 then
+			local randomParts = {}
+			for _, name in ipairs({"HeadHitbox", "Head", "HumanoidRootPart"}) do
+				local part = character:FindFirstChild(name)
+				if part then table.insert(randomParts, part) end
+			end
+			root = #randomParts > 0 and randomParts[math.random(1, #randomParts)] or nil
+		else
+			root = character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head") or character:FindFirstChild("HumanoidRootPart")
+		end
+		local humanoid = character:FindFirstChildOfClass("Humanoid")
+		if not root or not humanoid or humanoid.Health <= 0 then continue end
+		if (root.Position - camPos2).Magnitude > S.MBMaxDist then continue end
+		if S.MBVisibleOnly and not isVisible(root, character) then continue end
+		local projected, onScreen = currentCamera:WorldToViewportPoint(root.Position)
+		if onScreen and projected.Z > 0 then
+			local distance = (Vector2.new(projected.X, projected.Y) - center).Magnitude
+			if not S.MBUseFOV or distance <= S.FOV then
+				table.insert(candidates, {root = root, hum = humanoid, dist = distance})
+			end
+		end
+	end
+
+	if priority == "hp" then
+		for _, candidate in ipairs(candidates) do
+			local hp = candidate.hum.Health
+			if hp < lowestHP or (hp == lowestHP and candidate.dist < shortestDistance) then
+				lowestHP = hp
+				shortestDistance = candidate.dist
+				target = candidate.root
+			end
+		end
+	else
+		for _, candidate in ipairs(candidates) do
+			if candidate.dist < shortestDistance then
+				shortestDistance = candidate.dist
+				target = candidate.root
+			end
+		end
+	end
+	SA_CurrentTarget = target
+end
+Runtime.UpdateSharedTarget = updateSharedTarget
+onCleanup(function()
+	Runtime.UpdateSharedTarget = nil
+	SA_CurrentTarget = nil
+end)
+
 task.spawn(function()
 	while task.wait(0.05) do
 		if Runtime.Unloaded then break end
-		if ProjectileSilent then pcall(function() ProjectileSilent.Update() end) end
-		if not S.SilentAim and not S.MBTargetLine then SA_CurrentTarget = nil; continue end
-		local target = nil
-		local shortestDistance = S.FOV
-		local lowestHP = math.huge
-		local camCF2 = Camera.CFrame
-		local camPos2 = camCF2.Position
-		local vp = Camera.ViewportSize
-		local center = S.MBFovMode == "pc"
-			and game:GetService("UserInputService"):GetMouseLocation()
-			or Vector2.new(vp.X * 0.5, vp.Y * 0.5)
-		local partName = S.MBTargetPart == 1 and "HeadHitbox" or S.MBTargetPart == 2 and "HumanoidRootPart" or nil
-		local priority = S.MBPriority
-
-		-- при приоритете HP сначала собираем всех в FOV, потом выбираем
-		local candidates = {}
-		for _, v in ipairs(Players:GetPlayers()) do
-			if v == LocalPlayer then continue end
-			local char = v.Character
-			if not char then continue end
-			local pn = partName or (math.random(2) == 1 and "HeadHitbox" or "HumanoidRootPart")
-			local root = char:FindFirstChild(pn) or char:FindFirstChild("HeadHitbox") or char:FindFirstChild("Head")
-			local hum = char:FindFirstChildOfClass("Humanoid")
-			if not root or not hum or hum.Health <= 0 then continue end
-			if (root.Position - camPos2).Magnitude > S.MBMaxDist then continue end
-			if S.MBVisibleOnly and not isVisible(root, char) then continue end
-			local pos, onScreen = Camera:WorldToViewportPoint(root.Position)
-			if onScreen then
-				local distance = (Vector2.new(pos.X, pos.Y) - center).Magnitude
-				if distance < S.FOV then
-					table.insert(candidates, {root = root, hum = hum, dist = distance})
-				end
-			end
-		end
-
-		if priority == "hp" and #candidates > 0 then
-			-- ищем с минимальным HP, при равном — ближайшего
-			for _, c in ipairs(candidates) do
-				local hp = c.hum.Health
-				if hp < lowestHP or (hp == lowestHP and c.dist < shortestDistance) then
-					lowestHP = hp
-					shortestDistance = c.dist
-					target = c.root
-				end
-			end
-		else
-			-- приоритет distance — ближайший в FOV
-			for _, c in ipairs(candidates) do
-				if c.dist < shortestDistance then
-					shortestDistance = c.dist
-					target = c.root
-				end
-			end
-		end
-		if ProjectileSilent and S.SilentAim and ProjectileSilent.TargetPart then
-			target = ProjectileSilent.TargetPart
-		end
-		SA_CurrentTarget = target
+		updateSharedTarget()
 	end
 end)
 
@@ -6028,8 +6118,17 @@ do
 		if not target or not target.Parent or (humanoid and humanoid.Health <= 0) then
 			return nil
 		end
-		local targetPosition = ProjectileSilent.TargetPosition
-		if typeof(targetPosition) ~= "Vector3" then targetPosition = target.Position end
+		-- Keep the sampled offset, but follow target translation between 50 ms scans.
+		-- This remains property/vector-only: no nested GetTarget or Camera projection.
+		local targetPosition = target.Position
+		local targetOffset = ProjectileSilent.TargetOffset
+		if typeof(targetOffset) == "Vector3" then
+			if targetOffset.X ~= 0 or targetOffset.Y ~= 0 or targetOffset.Z ~= 0 then
+				targetPosition = targetPosition + targetOffset
+			end
+		elseif typeof(ProjectileSilent.TargetPosition) == "Vector3" then
+			targetPosition = ProjectileSilent.TargetPosition
+		end
 		return target, targetPosition
 	end
 
