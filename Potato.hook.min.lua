@@ -1754,13 +1754,44 @@ local function checkCrafting()
 	end)
 end
 do
-	local ok, mainGui = pcall(function() return pGui:WaitForChild("Main", 10) end)
-	if ok and mainGui then
-		local okCrafting, crafting = pcall(function() return mainGui:WaitForChild("Crafting", 10) end)
-		if okCrafting and crafting then
-			connectUI(crafting:GetPropertyChangedSignal("Visible"), checkCrafting)
+	-- Never block the rest of the client on optional game UI. The old nested
+	-- WaitForChild(..., 10) calls made the already-visible menu appear ready
+	-- while every feature below this fragment was still waiting. Discover the
+	-- current hierarchy immediately and attach late Main/Crafting descendants
+	-- through events instead.
+	local mainChildConnection, craftingConnection
+	local function disconnectOwned(connection)
+		if connection then pcall(function() connection:Disconnect() end) end
+	end
+	local function bindCrafting(crafting)
+		disconnectOwned(craftingConnection)
+		craftingConnection = nil
+		if crafting then
+			craftingConnection = connectUI(crafting:GetPropertyChangedSignal("Visible"), checkCrafting)
+		end
+		checkCrafting()
+	end
+	local function bindMain(mainGui)
+		disconnectOwned(mainChildConnection)
+		mainChildConnection = nil
+		if mainGui then
+			mainChildConnection = connectUI(mainGui.ChildAdded, function(child)
+				if child.Name == "Crafting" then bindCrafting(child) end
+			end)
+			bindCrafting(mainGui:FindFirstChild("Crafting"))
+		else
+			bindCrafting(nil)
 		end
 	end
+	connectUI(pGui.ChildAdded, function(child)
+		if child.Name == "Main" then bindMain(child) end
+	end)
+	bindMain(pGui and pGui:FindFirstChild("Main"))
+	onCleanup(function()
+		disconnectOwned(mainChildConnection)
+		disconnectOwned(craftingConnection)
+		mainChildConnection, craftingConnection = nil, nil
+	end)
 	updateCrafting()
 end
 
@@ -5410,10 +5441,11 @@ do
 	end
 	local function applyWeaponMods(forceRefresh)
 		local enabled = S.RapidFire or S.FullAuto or S.MeleeMods
-		if forceRefresh or not cachesBuilt or (enabled and os.clock() >= nextCacheRefresh) then
+		if forceRefresh or (enabled and (not cachesBuilt or os.clock() >= nextCacheRefresh)) then
 			-- Gun tables can be created after the initial script scan. Re-scan on
 			-- enable and periodically while a weapon mod is active, not just on
-			-- Character.ChildAdded (which may already have happened).
+			-- Character.ChildAdded (which may already have happened). With every
+			-- weapon mod disabled, do not run an expensive getgc scan at startup.
 			rebuildCaches()
 		end
 		if S.RapidFire or S.FullAuto then
@@ -5486,7 +5518,9 @@ do
 			if child:IsA("Tool") then cachesBuilt = false end
 		end)
 	end
-	rebuildCaches()
+	-- Lazy startup: no getgc(true) until a weapon mod is enabled or the
+	-- diagnostics/explicit rebuild API is called. This keeps feature registration
+	-- independent of executor GC-scan latency.
 end
 
 -- Reload progress uses the same GunBase module table as Silent; only one reload method is wrapped.
