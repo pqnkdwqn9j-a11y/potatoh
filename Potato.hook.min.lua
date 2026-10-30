@@ -1,8 +1,8 @@
 -- Burmalda.hook | rost alpha | cleaned NullWave-derived build
 -- Target: official rost alpha, PlaceId 13769775130; no PlaceId execution gate.
--- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt and Volcano are live-untested.
+-- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt, Volcano and Xeno are live-untested.
 -- Access: private JNKIE keys; shared BETA and standalone Open Beta are removed.
--- Removed: Xeno support, anti-dump, heartbeat, anti-spy, remote loaders and Force Hit.
+-- Removed: anti-dump, heartbeat, anti-spy, remote loaders and Force Hit.
 -- Silent Aim: GunBase.fire + FireServer + long-range Workspace Raycast; live proof remains executor-specific.
 -- Short melee/resource rays always pass through so trees and stones remain farmable.
 
@@ -30,11 +30,6 @@ elseif type(getexecutorname) == "function" then
 	local ok, name = pcall(getexecutorname)
 	if ok and name ~= nil then executorName = tostring(name) end
 end
-if string.find(executorName:lower(), "xeno", 1, true) then
-	warn("[Burmalda.hook] Xeno is not supported. Use Real, Opiumware, Madium, Potassium, Synapse Z, Volt or Volcano.")
-	return
-end
-
 local Runtime = {
 	Unloaded = false,
 	Cleanup = {},
@@ -42,7 +37,7 @@ local Runtime = {
 	Guis = {},
 	CraftingMenuOpen = false,
 	SilentPath = "GunBase.fire + FireServer + Workspace Raycast",
-	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt", "Volcano" },
+	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt", "Volcano", "Xeno" },
 }
 _burmaldaEnv.BurmaldaRost = Runtime
 Runtime.ExecutorName = executorName
@@ -710,17 +705,18 @@ btnIco.Image = "rbxassetid://110686514699024"
 btnIco.ScaleType = Enum.ScaleType.Fit
 hudMakeDrag(openBtn)
 
--- UI v2: monochrome reference-style menu, themeable accent and motion.
+-- UI v2: video-matched 370x409 base geometry rendered at 2x (740x818).
+-- The independent Burmalda stats HUD remains visible while this window is open.
 local UIAnimations = true
 local Theme = {
-	Background = Color3.fromRGB(7, 7, 7),
-	Panel = Color3.fromRGB(13, 13, 13),
-	Panel2 = Color3.fromRGB(19, 19, 19),
-	Off = Color3.fromRGB(38, 38, 38),
-	Stroke = Color3.fromRGB(52, 52, 52),
-	Text = Color3.fromRGB(242, 242, 242),
+	Background = Color3.fromRGB(28, 28, 28),
+	Panel = Color3.fromRGB(20, 20, 20),
+	Panel2 = Color3.fromRGB(14, 14, 14),
+	Off = Color3.fromRGB(12, 12, 12),
+	Stroke = Color3.fromRGB(48, 48, 52),
+	Text = Color3.fromRGB(190, 190, 190),
 	Muted = Color3.fromRGB(135, 135, 135),
-	Accent = Color3.fromRGB(255, 255, 255),
+	Accent = Color3.fromRGB(0, 82, 255),
 }
 if typeof(_burmaldaEnv.BurmaldaAccent) == "Color3" then
 	Theme.Accent = _burmaldaEnv.BurmaldaAccent
@@ -755,67 +751,67 @@ end
 
 local main = Instance.new("Frame")
 main.Name = "MenuV2"
-main.Size = UDim2.new(0, 620, 0, 380)
+main.Size = UDim2.new(0, 370, 0, 409)
 main.Position = UDim2.new(0.5, 0, 0.5, 0)
 main.AnchorPoint = Vector2.new(0.5, 0.5)
 main.BackgroundColor3 = Theme.Background
-main.BackgroundTransparency = 0.02
+main.BackgroundTransparency = 0
 main.BorderSizePixel = 0
 main.Visible = false
 main.ClipsDescendants = true
 main.Parent = sg
-Instance.new("UICorner", main).CornerRadius = UDim.new(0, 4)
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 0)
 local mainStroke = Instance.new("UIStroke", main)
-mainStroke.Color = Theme.Stroke
+mainStroke.Color = Color3.fromRGB(48, 78, 116)
 mainStroke.Thickness = 1
 local mainScale = Instance.new("UIScale", main)
-local baseMenuScale = _isLargeScreen and 1 or 0.82
-mainScale.Scale = baseMenuScale * 0.94
+local baseMenuScale = 2
+mainScale.Scale = baseMenuScale
 
 local topAccent = Instance.new("Frame", main)
-topAccent.Size = UDim2.new(1, 0, 0, 2)
+topAccent.Size = UDim2.new(1, 0, 0, 1)
 topAccent.BorderSizePixel = 0
+topAccent.BackgroundTransparency = 1
 registerAccent(topAccent, "BackgroundColor3")
 
 local header = Instance.new("Frame", main)
-header.Size = UDim2.new(1, 0, 0, 42)
+header.Size = UDim2.new(1, 0, 0, 25)
 header.BackgroundTransparency = 1
 local title = Instance.new("TextLabel", header)
 title.Text = "Burmalda.hook"
-title.Font = Enum.Font.GothamBold
-title.TextSize = 14
+title.Font = Enum.Font.Code
+title.TextSize = 11
 title.TextColor3 = Theme.Text
-title.Position = UDim2.new(0, 18, 0, 8)
-title.Size = UDim2.new(0, 250, 0, 20)
+title.Position = UDim2.new(0, 7, 0, 4)
+title.Size = UDim2.new(0, 180, 0, 16)
 title.BackgroundTransparency = 1
 title.TextXAlignment = Enum.TextXAlignment.Left
 local subtitle = Instance.new("TextLabel", header)
-subtitle.Text = "rost alpha"
-subtitle.Font = Enum.Font.Gotham
-subtitle.TextSize = 10
+subtitle.Text = "ROST ALPHA"
+subtitle.Font = Enum.Font.Code
+subtitle.TextSize = 9
 subtitle.TextColor3 = Theme.Muted
-subtitle.Position = UDim2.new(0, 19, 0, 27)
-subtitle.Size = UDim2.new(0, 200, 0, 12)
+subtitle.Position = UDim2.new(1, -157, 0, 5)
+subtitle.Size = UDim2.new(0, 150, 0, 15)
 subtitle.BackgroundTransparency = 1
-subtitle.TextXAlignment = Enum.TextXAlignment.Left
+subtitle.TextXAlignment = Enum.TextXAlignment.Right
 local closeBtn = Instance.new("TextButton", header)
-closeBtn.Size = UDim2.new(0, 30, 0, 26)
-closeBtn.Position = UDim2.new(1, -38, 0, 8)
-closeBtn.BackgroundColor3 = Theme.Panel
+closeBtn.Size = UDim2.new(0, 12, 0, 12)
+closeBtn.Position = UDim2.new(1, -14, 0, 2)
+closeBtn.BackgroundTransparency = 1
 closeBtn.BorderSizePixel = 0
-closeBtn.Text = "X"
+closeBtn.Text = ""
 closeBtn.Font = Enum.Font.Code
-closeBtn.TextSize = 12
+closeBtn.TextSize = 9
 closeBtn.TextColor3 = Theme.Muted
 closeBtn.AutoButtonColor = false
-Instance.new("UICorner", closeBtn).CornerRadius = UDim.new(0, 3)
 closeBtn.MouseEnter:Connect(function() uiTween(closeBtn, TweenInfo.new(0.12), { TextColor3 = Theme.Accent }):Play() end)
 closeBtn.MouseLeave:Connect(function() uiTween(closeBtn, TweenInfo.new(0.12), { TextColor3 = Theme.Muted }):Play() end)
 
 local menuOpen = false
 local menuOpenedViaShift = false
 local tabFrames = {}
-local tabs = { "COMBAT", "VISUALS", "MOVEMENT", "MISC", "CONFIG" }
+local tabs = { "COMBAT", "VISUALS", "MOVEMENT", "MISC", "CONFIG", "SETTINGS" }
 local tabAliases = { ESP = "VISUALS", VISUAL = "VISUALS", HUD = "MISC" }
 local activeBtn, activeFrame, activeLine = nil, nil, nil
 local _fFS, _fDD = {}, {}
@@ -826,24 +822,17 @@ local function toggleMenu(viaSHIFT)
 		menuOpenedViaShift = viaSHIFT == true
 		main.Visible = true
 		openBtn.Visible = false
-		hudContainer.Visible = false
-		mainBar.Visible = false
-		lowerHolder.Visible = false
-		uiTween(mainScale, TweenInfo.new(0.22, Enum.EasingStyle.Back, Enum.EasingDirection.Out), { Scale = baseMenuScale }):Play()
-		uiTween(main, TweenInfo.new(0.16), { BackgroundTransparency = 0.02 }):Play()
+		-- Keep the second-screen stats HUD independent from menu visibility.
+		uiTween(mainScale, TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Scale = baseMenuScale }):Play()
+		uiTween(main, TweenInfo.new(0.14), { BackgroundTransparency = 0 }):Play()
 	else
-		uiTween(mainScale, TweenInfo.new(0.16, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Scale = baseMenuScale * 0.94 }):Play()
+		uiTween(mainScale, TweenInfo.new(0.14, Enum.EasingStyle.Quad, Enum.EasingDirection.In), { Scale = baseMenuScale * 0.97 }):Play()
 		uiTween(main, TweenInfo.new(0.16), { BackgroundTransparency = 1 }):Play()
 		local function finishClose()
 			if menuOpen then return end
 			main.Visible = false
 			openBtn.Visible = true
 			menuOpenedViaShift = false
-			if S.HUDEnabled then
-				hudContainer.Visible = true
-				mainBar.Visible = true
-				lowerHolder.Visible = true
-			end
 		end
 		if UIAnimations then task.delay(0.18, finishClose) else finishClose() end
 	end
@@ -933,20 +922,21 @@ UIS.InputBegan:Connect(function(input, gp)
 end)
 
 local tabsCont = Instance.new("Frame", main)
-tabsCont.Size = UDim2.new(1, -28, 0, 30)
-tabsCont.Position = UDim2.new(0, 14, 0, 42)
+tabsCont.Size = UDim2.new(0, 334, 0, 16)
+tabsCont.Position = UDim2.new(0, 18, 0, 27)
 tabsCont.BackgroundTransparency = 1
 local tabsLayout = Instance.new("UIListLayout", tabsCont)
 tabsLayout.FillDirection = Enum.FillDirection.Horizontal
 tabsLayout.Padding = UDim.new(0, 2)
 local tabRule = Instance.new("Frame", main)
-tabRule.Size = UDim2.new(1, -28, 0, 1)
-tabRule.Position = UDim2.new(0, 14, 0, 72)
+tabRule.Size = UDim2.new(1, -36, 0, 1)
+tabRule.Position = UDim2.new(0, 18, 0, 45)
 tabRule.BackgroundColor3 = Theme.Stroke
+tabRule.BackgroundTransparency = 1
 tabRule.BorderSizePixel = 0
 local content = Instance.new("Frame", main)
-content.Size = UDim2.new(1, -20, 1, -84)
-content.Position = UDim2.new(0, 10, 0, 80)
+content.Size = UDim2.new(1, -36, 1, -59)
+content.Position = UDim2.new(0, 18, 0, 48)
 content.BackgroundTransparency = 1
 content.ClipsDescendants = true
 
@@ -954,70 +944,65 @@ local function createFeature(parent, name, default, callback, hasSettings)
 	-- The legacy fifth argument remains API-compatible. Actual editor controls,
 	-- registered below, decide whether the arrow is shown.
 	local block = Instance.new("Frame", parent)
-	block.Size = UDim2.new(1, 0, 0, 34)
+	block.Size = UDim2.new(1, 0, 0, 15)
 	block.AutomaticSize = Enum.AutomaticSize.Y
 	block.BackgroundColor3 = Theme.Panel
-	block.BackgroundTransparency = 0.08
+	block.BackgroundTransparency = 1
 	block.BorderSizePixel = 0
 	block.ClipsDescendants = true
-	Instance.new("UICorner", block).CornerRadius = UDim.new(0, 3)
-	local stripe = Instance.new("Frame", block)
-	stripe.Size = UDim2.new(0, 2, 0, 18)
-	stripe.Position = UDim2.new(0, 0, 0, 8)
-	stripe.BorderSizePixel = 0
-	registerAccent(stripe, "BackgroundColor3")
 
 	local topBtn = Instance.new("TextButton", block)
-	topBtn.Size = UDim2.new(1, 0, 0, 34)
+	topBtn.Size = UDim2.new(1, 0, 0, 15)
 	topBtn.BackgroundTransparency = 1
 	topBtn.Text = ""
 	topBtn.AutoButtonColor = false
 	local lbl = Instance.new("TextLabel", topBtn)
 	lbl.Text = name
-	lbl.Font = Enum.Font.GothamMedium
-	lbl.TextSize = 11
+	lbl.Font = Enum.Font.Code
+	lbl.TextSize = 9
 	lbl.TextColor3 = Theme.Text
-	lbl.Size = UDim2.new(1, -92, 1, 0)
-	lbl.Position = UDim2.new(0, 13, 0, 0)
+	lbl.Size = UDim2.new(1, -42, 1, 0)
+	lbl.Position = UDim2.new(0, 18, 0, 0)
 	lbl.BackgroundTransparency = 1
 	lbl.TextXAlignment = Enum.TextXAlignment.Left
+	lbl.TextTruncate = Enum.TextTruncate.AtEnd
 	local expand = Instance.new("TextButton", topBtn)
 	expand.Name = "SettingsArrow"
 	expand.Text = "▼"
 	expand.Font = Enum.Font.Code
-	expand.TextSize = 11
+	expand.TextSize = 9
 	expand.TextColor3 = Theme.Muted
-	expand.Size = UDim2.new(0, 26, 1, 0)
-	expand.Position = UDim2.new(1, -73, 0, 0)
-	expand.BackgroundTransparency = 1
+	expand.Size = UDim2.new(0, 18, 0, 14)
+	expand.Position = UDim2.new(1, -19, 0, 0)
+	expand.BackgroundColor3 = Theme.Panel2
+	expand.BackgroundTransparency = 0
+	expand.BorderSizePixel = 0
 	expand.TextXAlignment = Enum.TextXAlignment.Center
 	expand.AutoButtonColor = false
 	expand.Visible = false
 	expand.ZIndex = 2
+	local expandStroke = Instance.new("UIStroke", expand)
+	expandStroke.Color = Theme.Stroke
+	expandStroke.Thickness = 1
 
 	local tbg = Instance.new("Frame", topBtn)
-	tbg.Size = UDim2.new(0, 27, 0, 14)
-	tbg.Position = UDim2.new(1, -13, 0.5, 0)
-	tbg.AnchorPoint = Vector2.new(1, 0.5)
+	tbg.Size = UDim2.new(0, 9, 0, 9)
+	tbg.Position = UDim2.new(0, 4, 0.5, 0)
+	tbg.AnchorPoint = Vector2.new(0, 0.5)
 	tbg.BorderSizePixel = 0
-	Instance.new("UICorner", tbg).CornerRadius = UDim.new(1, 0)
-	local dot = Instance.new("Frame", tbg)
-	dot.Size = UDim2.new(0, 8, 0, 8)
-	dot.BorderSizePixel = 0
-	Instance.new("UICorner", dot).CornerRadius = UDim.new(1, 0)
+	local toggleStroke = Instance.new("UIStroke", tbg)
+	toggleStroke.Color = Theme.Stroke
+	toggleStroke.Thickness = 1
 	local tClick = Instance.new("TextButton", tbg)
-	tClick.Size = UDim2.new(1, 0, 1, 0)
+	tClick.Size = UDim2.new(0, 14, 0, 14)
+	tClick.Position = UDim2.new(0.5, 0, 0.5, 0)
+	tClick.AnchorPoint = Vector2.new(0.5, 0.5)
 	tClick.BackgroundTransparency = 1
 	tClick.Text = ""
 
 	local state = default
 	local function updateToggle()
-		uiTween(tbg, TweenInfo.new(0.14), { BackgroundColor3 = state and Theme.Accent or Theme.Off }):Play()
-		uiTween(dot, TweenInfo.new(0.14), {
-			Position = state and UDim2.new(1, -10, 0.5, 0) or UDim2.new(0, 2, 0.5, 0),
-			BackgroundColor3 = state and Color3.fromRGB(0, 0, 0) or Color3.fromRGB(220, 220, 220),
-		}):Play()
-		dot.AnchorPoint = Vector2.new(0, 0.5)
+		uiTween(tbg, TweenInfo.new(0.12), { BackgroundColor3 = state and Theme.Accent or Theme.Off }):Play()
 	end
 	registerAccentUpdater(function() updateToggle() end)
 	updateToggle()
@@ -1033,20 +1018,20 @@ local function createFeature(parent, name, default, callback, hasSettings)
 	local setCont = Instance.new("Frame", block)
 	setCont.Name = "FeatureEditor"
 	setCont.Size = UDim2.new(1, 0, 0, 0)
-	setCont.Position = UDim2.new(0, 0, 0, 34)
+	setCont.Position = UDim2.new(0, 0, 0, 15)
 	setCont.BackgroundTransparency = 1
 	setCont.ClipsDescendants = true
 	setCont.Visible = false
 	local sLayout = Instance.new("UIListLayout", setCont)
-	sLayout.Padding = UDim.new(0, 5)
+	sLayout.Padding = UDim.new(0, 0)
 	sLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	local sPad = Instance.new("UIPadding", setCont)
-	sPad.PaddingTop = UDim.new(0, 3)
-	sPad.PaddingBottom = UDim.new(0, 7)
-	sPad.PaddingLeft = UDim.new(0, 12)
-	sPad.PaddingRight = UDim.new(0, 12)
+	sPad.PaddingTop = UDim.new(0, 0)
+	sPad.PaddingBottom = UDim.new(0, 4)
+	sPad.PaddingLeft = UDim.new(0, 4)
+	sPad.PaddingRight = UDim.new(0, 4)
 	local expanded = false
-	local editor = { Arrow = expand, HasControls = false }
+	local editor = { Arrow = expand, HasControls = false, DefaultOpen = name == "Silent Aim", Initialized = false }
 	local function setExpanded(value)
 		if value and not editor.HasControls then return end
 		expanded = value
@@ -1066,10 +1051,10 @@ local function createFeature(parent, name, default, callback, hasSettings)
 		uiTween(expand, TweenInfo.new(0.12), { TextColor3 = Theme.Muted }):Play()
 	end)
 	topBtn.MouseEnter:Connect(function()
-		uiTween(block, TweenInfo.new(0.12), { BackgroundColor3 = Theme.Panel2 }):Play()
+		uiTween(block, TweenInfo.new(0.12), { BackgroundColor3 = Theme.Panel2, BackgroundTransparency = 0.65 }):Play()
 	end)
 	topBtn.MouseLeave:Connect(function()
-		uiTween(block, TweenInfo.new(0.12), { BackgroundColor3 = Theme.Panel }):Play()
+		uiTween(block, TweenInfo.new(0.12), { BackgroundColor3 = Theme.Panel, BackgroundTransparency = 1 }):Play()
 	end)
 
 	_fFS[name] = function(value)
@@ -1087,6 +1072,10 @@ _fDD.RegisterEditor = function(p)
 	if editor then
 		editor.HasControls = true
 		editor.Arrow.Visible = true
+		if editor.DefaultOpen and not editor.Initialized then
+			editor.Initialized = true
+			editor.SetExpanded(true)
+		end
 	end
 end
 
@@ -1095,15 +1084,17 @@ local bindConnections = {}
 local function addBind(p, name, def, onPress)
 	_fDD.RegisterEditor(p)
 	local r = Instance.new("Frame", p)
-	r.Size = UDim2.new(1, 0, 0, 18)
+	r.Size = UDim2.new(1, 0, 0, 15)
 	r.BackgroundTransparency = 1
 	local l = Instance.new("TextLabel", r)
-	l.Text = name; l.TextColor3 = Color3.fromRGB(150,150,150); l.Font = Enum.Font.Gotham; l.TextSize = 10; l.Size = UDim2.new(0.5, 0, 1, 0); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
+	l.Text = name; l.TextColor3 = Theme.Text; l.Font = Enum.Font.Code; l.TextSize = 9; l.Size = UDim2.new(1, -32, 1, 0); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
 	local b = Instance.new("TextButton", r)
-	b.Size = UDim2.new(0, 55, 0, 18); b.Position = UDim2.new(1, 0, 0.5, 0); b.AnchorPoint = Vector2.new(1, 0.5)
-	b.BackgroundColor3 = Color3.fromRGB(30,30,30); b.BackgroundTransparency = 0
-	b.Text = "["..def.."]"; b.TextColor3 = Color3.new(1,1,1); b.Font = Enum.Font.Code; b.TextSize = 10
-	Instance.new("UICorner", b).CornerRadius = UDim.new(0, 3)
+	b.Size = UDim2.new(0, 28, 0, 14); b.Position = UDim2.new(1, 0, 0.5, 0); b.AnchorPoint = Vector2.new(1, 0.5)
+	b.BackgroundColor3 = Theme.Panel2; b.BackgroundTransparency = 0; b.BorderSizePixel = 0
+	b.Text = "["..def.."]"; b.TextColor3 = Theme.Text; b.Font = Enum.Font.Code; b.TextSize = 8
+	local bindStroke = Instance.new("UIStroke", b)
+	bindStroke.Color = Theme.Stroke
+	bindStroke.Thickness = 1
 
 	local listening = false
 	local boundKey = nil
@@ -1150,17 +1141,16 @@ local function addSlider(p, name, min, max, def, callback)
 	f.Size = UDim2.new(1, 0, 0, 24)
 	f.BackgroundTransparency = 1
 	local l = Instance.new("TextLabel", f)
-	l.Text = name; l.TextColor3 = Color3.fromRGB(150,150,150); l.Font = Enum.Font.Gotham; l.TextSize = 10; l.Size = UDim2.new(0.5, 0, 0, 12); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
+	l.Text = name; l.TextColor3 = Theme.Text; l.Font = Enum.Font.Code; l.TextSize = 9; l.Size = UDim2.new(1, 0, 0, 13); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
 	local v = Instance.new("TextLabel", f)
-	v.Text = tostring(def); v.TextColor3 = Color3.fromRGB(150,150,150); v.Font = Enum.Font.Gotham; v.TextSize = 10; v.Size = UDim2.new(0.5, 0, 0, 12); v.Position = UDim2.new(0.5, 0, 0, 0); v.BackgroundTransparency = 1; v.TextXAlignment = Enum.TextXAlignment.Right
+	v.Text = tostring(def) .. "/" .. tostring(max); v.TextColor3 = Theme.Text; v.Font = Enum.Font.Code; v.TextSize = 8; v.Size = UDim2.new(1, 0, 0, 9); v.Position = UDim2.new(0, 0, 0, 15); v.BackgroundTransparency = 1; v.TextXAlignment = Enum.TextXAlignment.Center
 
 	local bg = Instance.new("Frame", f)
-	bg.Size = UDim2.new(1, 0, 0, 2); bg.Position = UDim2.new(0, 0, 0, 20); bg.BackgroundColor3 = Color3.fromRGB(20,20,20); bg.BorderSizePixel = 0
+	bg.Size = UDim2.new(1, 0, 0, 9); bg.Position = UDim2.new(0, 0, 0, 15); bg.BackgroundColor3 = Theme.Off; bg.BorderSizePixel = 0
 	local fill = Instance.new("Frame", bg)
 	fill.Size = UDim2.new((def-min)/(max-min), 0, 1, 0); fill.BackgroundColor3 = Theme.Accent; registerAccent(fill, "BackgroundColor3"); fill.BorderSizePixel = 0
 
-	-- The visual track is only 2 px high and its fill used to intercept clicks.
-	-- A full-row button keeps both decreasing and increasing draggable/clickable.
+	-- The visual fill never owns input: the full-row button supports both directions.
 	local hit = Instance.new("TextButton", f)
 	hit.Name = "SliderInput"
 	hit.Size = UDim2.new(1, 0, 1, 0)
@@ -1181,7 +1171,7 @@ local function addSlider(p, name, min, max, def, callback)
 			local pos = math.clamp((inp.Position.X - bg.AbsolutePosition.X) / width, 0, 1)
 			fill.Size = UDim2.new(pos, 0, 1, 0)
 			local val = math.clamp(math.floor(min + (max - min) * pos), min, max)
-			v.Text = tostring(val)
+			v.Text = tostring(val) .. "/" .. tostring(max)
 			if callback then callback(val) end
 		end
 		local function stop(inp)
@@ -1201,15 +1191,17 @@ end
 local function addDropdown(p, name, options, defIdx, callback)
 	_fDD.RegisterEditor(p)
 	local r = Instance.new("Frame", p)
-	r.Size = UDim2.new(1, 0, 0, 18)
+	r.Size = UDim2.new(1, 0, 0, 31)
 	r.BackgroundTransparency = 1
 	local l = Instance.new("TextLabel", r)
-	l.Text = name; l.TextColor3 = Color3.fromRGB(150,150,150); l.Font = Enum.Font.Gotham; l.TextSize = 10; l.Size = UDim2.new(0.5, 0, 1, 0); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
+	l.Text = name; l.TextColor3 = Theme.Text; l.Font = Enum.Font.Code; l.TextSize = 9; l.Size = UDim2.new(1, 0, 0, 13); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left; l.TextTruncate = Enum.TextTruncate.AtEnd
 	local b = Instance.new("TextButton", r)
-	b.Size = UDim2.new(0, 50, 0, 18); b.Position = UDim2.new(1, 0, 0.5, 0); b.AnchorPoint = Vector2.new(1, 0.5)
-	b.BackgroundColor3 = Color3.fromRGB(30,30,30); b.BackgroundTransparency = 0
-	b.Text = options[defIdx]; b.TextColor3 = Color3.new(1,1,1); b.Font = Enum.Font.Gotham; b.TextSize = 9
-	Instance.new("UICorner", b).CornerRadius = UDim.new(0, 3)
+	b.Size = UDim2.new(1, 0, 0, 16); b.Position = UDim2.new(0, 0, 0, 15)
+	b.BackgroundColor3 = Theme.Panel2; b.BackgroundTransparency = 0
+	b.Text = options[defIdx]; b.TextColor3 = Theme.Text; b.Font = Enum.Font.Code; b.TextSize = 9; b.BorderSizePixel = 0
+	local dropdownStroke = Instance.new("UIStroke", b)
+	dropdownStroke.Color = Theme.Stroke
+	dropdownStroke.Thickness = 1
 
 	local lc = Instance.new("Frame", p)
 	lc.Size = UDim2.new(1, 0, 0, 0)
@@ -1231,15 +1223,14 @@ local function addDropdown(p, name, options, defIdx, callback)
 
 	for _, opt in ipairs(options) do
 		local ob = Instance.new("TextButton", lc)
-		ob.Size = UDim2.new(0, 50, 0, 16)
-		ob.BackgroundColor3 = Color3.fromRGB(25,25,25)
+		ob.Size = UDim2.new(1, 0, 0, 16)
+		ob.BackgroundColor3 = Theme.Panel2
 		ob.BorderSizePixel = 0
 		ob.Text = opt
-		ob.TextColor3 = Color3.fromRGB(150,150,150)
-		ob.Font = Enum.Font.Gotham
+		ob.TextColor3 = Theme.Muted
+		ob.Font = Enum.Font.Code
 		ob.TextSize = 9
 		ob.Visible = (opt ~= currentVal)
-		Instance.new("UICorner", ob).CornerRadius = UDim.new(0, 3)
 		table.insert(optBtns, ob)
 		ob.MouseButton1Click:Connect(function()
 			currentVal = opt
@@ -1272,14 +1263,13 @@ end
 local function addColor(p, name, callback)
 	_fDD.RegisterEditor(p)
 	local r = Instance.new("Frame", p)
-	r.Size = UDim2.new(1, 0, 0, 18)
+	r.Size = UDim2.new(1, 0, 0, 14)
 	r.BackgroundTransparency = 1
 	local l = Instance.new("TextLabel", r)
-	l.Text = name; l.TextColor3 = Color3.fromRGB(150,150,150); l.Font = Enum.Font.Gotham; l.TextSize = 10; l.Size = UDim2.new(0.5, 0, 1, 0); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
+	l.Text = name; l.TextColor3 = Theme.Text; l.Font = Enum.Font.Code; l.TextSize = 9; l.Size = UDim2.new(1, -22, 1, 0); l.BackgroundTransparency = 1; l.TextXAlignment = Enum.TextXAlignment.Left
 	local cBtn = Instance.new("TextButton", r)
-	cBtn.Size = UDim2.new(0, 18, 0, 18); cBtn.Position = UDim2.new(1, 0, 0.5, 0); cBtn.AnchorPoint = Vector2.new(1, 0.5)
-	cBtn.BackgroundColor3 = Color3.new(1,1,1); cBtn.Text = ""
-	Instance.new("UICorner", cBtn).CornerRadius = UDim.new(0, 4)
+	cBtn.Size = UDim2.new(0, 18, 0, 10); cBtn.Position = UDim2.new(1, 0, 0.5, 0); cBtn.AnchorPoint = Vector2.new(1, 0.5)
+	cBtn.BackgroundColor3 = Color3.new(1,1,1); cBtn.Text = ""; cBtn.BorderSizePixel = 0
 
 	local pal = Instance.new("Frame", p)
 	pal.Size = UDim2.new(1, 0, 0, 0)
@@ -1386,17 +1376,61 @@ local function selectTab(tabName, animate)
 	uiTween(data.tf, TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Position = UDim2.new(0, 0, 0, 0) }):Play()
 end
 
+local tabLabels = { COMBAT = "Combat", VISUALS = "Visual", MOVEMENT = "Movement", MISC = "Misc", CONFIG = "Configs", SETTINGS = "UI Settings" }
+local tabWidths = { COMBAT = 42, VISUALS = 42, MOVEMENT = 60, MISC = 36, CONFIG = 48, SETTINGS = 62 }
+local sectionTitles = {
+	COMBAT = { "Silent Aim ", "Other" },
+	VISUALS = { "ESP ", "Other" },
+	MOVEMENT = { "Movement", "Other" },
+	MISC = { "Misc", "Crosshair " },
+	CONFIG = { "Configurations", "Saved Configs" },
+	SETTINGS = { "UI Settings", "Other" },
+}
+local function styleSection(column, headingText)
+	column.BackgroundColor3 = Theme.Panel
+	column.BackgroundTransparency = 0
+	column.BorderSizePixel = 0
+	local stroke = Instance.new("UIStroke", column)
+	stroke.Color = Theme.Stroke
+	stroke.Thickness = 1
+	local padding = Instance.new("UIPadding", column)
+	padding.PaddingTop = UDim.new(0, 0)
+	padding.PaddingBottom = UDim.new(0, 4)
+	padding.PaddingLeft = UDim.new(0, 4)
+	padding.PaddingRight = UDim.new(0, 4)
+	local accentLine = Instance.new("Frame", column)
+	accentLine.LayoutOrder = -1001
+	accentLine.Size = UDim2.new(1, 0, 0, 1)
+	accentLine.BorderSizePixel = 0
+	registerAccent(accentLine, "BackgroundColor3")
+	local heading = Instance.new("TextLabel", column)
+	heading.Name = "SectionTitle"
+	heading.LayoutOrder = -1000
+	heading.Size = UDim2.new(1, 0, 0, 15)
+	heading.BackgroundTransparency = 1
+	heading.Text = headingText
+	heading.Font = Enum.Font.Code
+	heading.TextSize = 9
+	heading.TextColor3 = Color3.fromRGB(135, 145, 170)
+	heading.TextXAlignment = Enum.TextXAlignment.Left
+end
+
 for _, tabName in ipairs(tabs) do
 	local tb = Instance.new("TextButton", tabsCont)
-	tb.Size = UDim2.new(1 / #tabs, -2, 1, 0)
-	tb.BackgroundTransparency = 1
-	tb.Text = tabName == "CONFIG" and "Settings" or (tabName == "VISUALS" and "Visuals" or (tabName == "COMBAT" and "Combat" or (tabName == "MOVEMENT" and "Movement" or "Misc")))
-	tb.Font = Enum.Font.GothamMedium
-	tb.TextSize = 11
+	tb.Size = UDim2.new(0, tabWidths[tabName], 1, 0)
+	tb.BackgroundColor3 = Theme.Panel
+	tb.BackgroundTransparency = 0
+	tb.BorderSizePixel = 0
+	tb.Text = tabLabels[tabName]
+	tb.Font = Enum.Font.Code
+	tb.TextSize = 10
 	tb.TextColor3 = Theme.Muted
 	tb.AutoButtonColor = false
+	local tabStroke = Instance.new("UIStroke", tb)
+	tabStroke.Color = Theme.Stroke
+	tabStroke.Thickness = 1
 	local ul = Instance.new("Frame", tb)
-	ul.Size = UDim2.new(0.72, 0, 0, 2)
+	ul.Size = UDim2.new(1, 0, 0, 1)
 	ul.Position = UDim2.new(0.5, 0, 1, -1)
 	ul.AnchorPoint = Vector2.new(0.5, 1)
 	ul.BorderSizePixel = 0
@@ -1408,7 +1442,7 @@ for _, tabName in ipairs(tabs) do
 	tf.BackgroundTransparency = 1
 	tf.BorderSizePixel = 0
 	tf.Visible = false
-	tf.ScrollBarThickness = 2
+	tf.ScrollBarThickness = 1
 	tf.ScrollBarImageColor3 = Theme.Accent
 	registerAccent(tf, "ScrollBarImageColor3")
 	tf.CanvasSize = UDim2.new(0, 0, 0, 0)
@@ -1416,20 +1450,20 @@ for _, tabName in ipairs(tabs) do
 	tf.ScrollingDirection = Enum.ScrollingDirection.Y
 
 	local lc = Instance.new("Frame", tf)
-	lc.Size = UDim2.new(0.5, -9, 0, 0)
-	lc.Position = UDim2.new(0, 5, 0, 6)
-	lc.BackgroundTransparency = 1
+	lc.Size = UDim2.new(0, 163, 0, 0)
+	lc.Position = UDim2.new(0, 0, 0, 0)
 	lc.AutomaticSize = Enum.AutomaticSize.Y
 	local rc = Instance.new("Frame", tf)
-	rc.Size = UDim2.new(0.5, -9, 0, 0)
-	rc.Position = UDim2.new(0.5, 4, 0, 6)
-	rc.BackgroundTransparency = 1
+	rc.Size = UDim2.new(0, 163, 0, 0)
+	rc.Position = UDim2.new(0, 171, 0, 0)
 	rc.AutomaticSize = Enum.AutomaticSize.Y
+	styleSection(lc, sectionTitles[tabName][1])
+	styleSection(rc, sectionTitles[tabName][2])
 	local lcLayout = Instance.new("UIListLayout", lc)
-	lcLayout.Padding = UDim.new(0, 7)
+	lcLayout.Padding = UDim.new(0, 0)
 	lcLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	local rcLayout = Instance.new("UIListLayout", rc)
-	rcLayout.Padding = UDim.new(0, 7)
+	rcLayout.Padding = UDim.new(0, 0)
 	rcLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
 	tabFrames[tabName] = { tf = tf, lc = lc, rc = rc, tb = tb, ul = ul }
@@ -2130,16 +2164,17 @@ end
 onCleanup(function() fogEnabled = false; disableFog() end)
 
 do
-	local lc, rc = getTab("CONFIG")
+	local lc, rc = getTab("SETTINGS")
 	createFeature(lc, "Unload Burmalda.hook", false, function(v)
 		if v and Runtime.Unload then task.defer(Runtime.Unload) end
 	end, false)
 	local accentSet = createFeature(lc, "Menu Accent", true, function() end)
 	addColor(accentSet, "Accent Color", function(c) setMenuAccent(c) end)
-	addDropdown(accentSet, "Preset", {"White", "Silver", "Graphite"}, 1, function(v)
-		if v == "Silver" then setMenuAccent(Color3.fromRGB(190, 190, 190))
+	addDropdown(accentSet, "Preset", {"Blue", "White", "Silver", "Graphite"}, 1, function(v)
+		if v == "White" then setMenuAccent(Color3.fromRGB(255, 255, 255))
+		elseif v == "Silver" then setMenuAccent(Color3.fromRGB(190, 190, 190))
 		elseif v == "Graphite" then setMenuAccent(Color3.fromRGB(105, 105, 105))
-		else setMenuAccent(Color3.fromRGB(255, 255, 255)) end
+		else setMenuAccent(Color3.fromRGB(0, 82, 255)) end
 	end)
 	createFeature(lc, "UI Animations", true, function(v) UIAnimations = v end, false)
 	local HS     = game:GetService("HttpService")
@@ -2395,6 +2430,8 @@ do
 		return b
 	end
 
+	-- Configuration files have their own tab; interface controls stay in UI Settings.
+	lc, rc = getTab("CONFIG")
 	local inputF = Instance.new("Frame", lc)
 	inputF.Size = UDim2.new(1, 0, 0, 26)
 	inputF.BackgroundColor3 = HUD_BG
@@ -3490,6 +3527,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 			remoteRedirects = 0,
 			fallbackSkips = 0,
 			nonCombatSkips = 0,
+			explosiveSkips = 0,
 			bufferWrites = 0,
 			target = "inactive",
 			visiblePointChecks = 0,
@@ -3502,8 +3540,37 @@ local projectileInitOK, projectileInitError = pcall(function()
 		TargetPlayer = nil,
 		TargetCharacter = nil,
 		TargetHumanoid = nil,
+		TargetVisible = false,
+		HeldToolName = "",
+		ExplosiveTool = false,
 		Installed = { GunBase = false },
 	}
+
+	-- Explosives/throwables must keep the game's original trajectory. This cache is
+	-- refreshed outside __namecall; the hook itself only reads these plain fields.
+	local function hasExplosiveName(name)
+		if type(name) ~= "string" then return false end
+		local lower = string.lower(name)
+		for _, pattern in ipairs({
+			"c4", "c%-4", "rocket", "rpg", "launcher", "grenade", "bomb",
+			"dynamite", "satchel", "explosive", "molotov", "landmine", "tnt",
+			"detonator", "detonate", "^ied", "^mine",
+		}) do
+			if string.find(lower, pattern) then return true end
+		end
+		return false
+	end
+	local function refreshHeldTool()
+		local character = LocalPlayer.Character
+		local tool = character and character:FindFirstChildOfClass("Tool")
+		local name = tool and tostring(tool.Name or "") or ""
+		ProjectileSilent.HeldToolName = name
+		ProjectileSilent.ExplosiveTool = hasExplosiveName(name)
+	end
+	ProjectileSilent.RefreshHeldTool = refreshHeldTool
+	ProjectileSilent.IsExplosiveContext = function(remote)
+		return ProjectileSilent.ExplosiveTool == true or hasExplosiveName(remote and remote.Name)
+	end
 
 	local function clearTarget()
 		ProjectileSilent.TargetPart = nil
@@ -3511,6 +3578,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 		ProjectileSilent.TargetPlayer = nil
 		ProjectileSilent.TargetCharacter = nil
 		ProjectileSilent.TargetHumanoid = nil
+		ProjectileSilent.TargetVisible = false
 	end
 
 	local function targetPartFor(character)
@@ -3565,7 +3633,9 @@ local projectileInitOK, projectileInitError = pcall(function()
 		local instance = result.Instance
 		if not instance then return false end
 		if instance:IsDescendantOf(character) then return true end
-		return instance:IsA("BasePart") and not instance.CanCollide
+		-- CanCollide=false does not make a wall transparent to a ray. Any other
+		-- queryable obstruction (house wall, non-collidable wall, prop) blocks it.
+		return false
 	end
 	local function getVisiblePoint(part, character, camera)
 		if not part or not part:IsA("BasePart") then return nil end
@@ -3586,6 +3656,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 	end
 
 	local function updateTarget()
+		refreshHeldTool()
 		if not ProjectileCore.Running or not S.SilentAim then
 			clearTarget()
 			ProjectileCore.Status.target = S.SilentAim and "starting" or "inactive"
@@ -3647,6 +3718,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 		ProjectileSilent.TargetPlayer = bestPlayer
 		ProjectileSilent.TargetCharacter = bestPlayer and bestPlayer.Character or nil
 		ProjectileSilent.TargetHumanoid = bestHumanoid
+		ProjectileSilent.TargetVisible = bestPart ~= nil
 		ProjectileCore.Status.target = bestPart and "ok" or "no-target"
 	end
 	ProjectileSilent.Update = updateTarget
@@ -3676,7 +3748,18 @@ local projectileInitOK, projectileInitError = pcall(function()
 			ProjectileCore.Status.target = "stale-distance"
 			return nil
 		end
-		local targetPosition = ProjectileSilent.TargetPosition or target.Position
+		local targetPosition = target.Position
+		if S.MBVisibleOnly then
+			-- Target selection runs every 50 ms, but a player can step behind a house
+			-- wall before the next shot. Revalidate at GunBase.fire time as well.
+			targetPosition = getVisiblePoint(target, character, camera)
+			if not targetPosition then
+				clearTarget()
+				ProjectileCore.Status.target = "stale-not-visible"
+				return nil
+			end
+		end
+		ProjectileSilent.TargetPosition = targetPosition
 		local projected, onScreen = camera:WorldToViewportPoint(targetPosition)
 		local viewport = camera.ViewportSize
 		local center = S.MBFovMode == "pc" and UIS:GetMouseLocation()
@@ -3687,6 +3770,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 			ProjectileCore.Status.target = "stale-fov"
 			return nil
 		end
+		ProjectileSilent.TargetVisible = true
 		return target, targetPosition
 	end
 	ProjectileSilent.GetTarget = getLiveTarget
@@ -3725,9 +3809,16 @@ local projectileInitOK, projectileInitError = pcall(function()
 				ProjectileCore.Status.lastShotReason = Runtime.CraftingMenuOpen and "crafting-menu-original" or "silent-inactive-original"
 				return originalFire(self, ...)
 			end
+			refreshHeldTool()
+			if ProjectileSilent.ExplosiveTool then
+				ProjectileCore.Status.explosiveSkips += 1
+				ProjectileCore.Status.lastShotReason = "explosive-original"
+				return originalFire(self, ...)
+			end
 			local target, livePosition = getLiveTarget()
 			if not target then
-				ProjectileCore.Status.lastShotReason = "no-target-original"
+				ProjectileCore.Status.lastShotReason = ProjectileCore.Status.target == "stale-not-visible"
+					and "wall-original" or "no-target-original"
 				return originalFire(self, ...)
 			end
 			if math.random(1, 100) > S.MBHitChance then
@@ -3784,6 +3875,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 		return true
 	end
 	ProjectileSilent.Refresh = installGunBase
+	refreshHeldTool()
 	installGunBase()
 	task.spawn(function()
 		if not ProjectileCore.Running or ProjectileSilent.Installed.GunBase then return end
@@ -3834,6 +3926,8 @@ local projectileInitOK, projectileInitError = pcall(function()
 			remoteRedirects = status.remoteRedirects,
 			fallbackSkips = status.fallbackSkips,
 			nonCombatSkips = status.nonCombatSkips,
+			explosiveSkips = status.explosiveSkips,
+			heldTool = ProjectileSilent.HeldToolName,
 			gunbaseOwnsShot = ProjectileCore.GunBaseRedirecting == true,
 			bufferWrites = status.bufferWrites,
 			target = status.target,
@@ -4600,7 +4694,7 @@ local defaults = {
 	Fullbright = false, NoDecoration = false,
 	SkyColorEnabled = false, SkyboxEnabled = false, SkyboxChoice = "Default",
 	JumpCircles = false, DeleteSpikes = false, DeleteLeaves = false,
-	KillSound = false, KillSoundVolume = 1,
+	KillSound = false, KillSoundVolume = 1, KillSoundChoice = "Random",
 }
 for key, value in pairs(defaults) do
 	if S[key] == nil then S[key] = value end
@@ -5234,6 +5328,9 @@ do
 	local soundService = game:GetService("SoundService")
 	local sounds = {}
 	local killIds = {"6350854289", "132050044560917", "125662494668382", "130940311850179"}
+	local killNames = {"Random", "Sound 1", "Sound 2", "Sound 3", "Sound 4"}
+	M.KillSoundIds = killIds
+	M.KillSoundNames = killNames
 	local doubleId = "116907610084760"
 	local function clearSounds()
 		for _, sound in ipairs(sounds) do destroyObject(sound) end
@@ -5250,7 +5347,8 @@ do
 			id = doubleId
 			state.LastDouble = now
 		else
-			id = killIds[math.random(1, #killIds)]
+			local choice = table.find(killNames, S.KillSoundChoice)
+			id = choice and choice > 1 and killIds[choice - 1] or killIds[math.random(1, #killIds)]
 		end
 		local sound = Instance.new("Sound")
 		sound.Name = "BurmaldaHookKillSound"
@@ -5319,6 +5417,7 @@ addDropdown(skyboxSet, "Preset", M.SkyboxNames, 1, function(v) S.SkyboxChoice = 
 createFeature(column("VISUALS", false), "Delete Spikes", false, function(v) M.SetDeleteSpikes(v) end, false)
 createFeature(column("VISUALS", false), "Delete Leaves", false, function(v) M.SetDeleteLeaves(v) end, false)
 local killSoundSet = createFeature(column("MISC", true), "Kill Sound", false, function(v) M.SetKillSound(v) end)
+addDropdown(killSoundSet, "Sound", M.KillSoundNames, 1, function(v) S.KillSoundChoice = v end)
 addSlider(killSoundSet, "Kill Volume", 0, 50, 10, function(v) S.KillSoundVolume = v / 10 end)
 
 M.Heartbeat = function(dt)
@@ -5529,6 +5628,7 @@ do
 		end
 		local target = ProjectileSilent.TargetPart
 		local humanoid = ProjectileSilent.TargetHumanoid
+		if ProjectileSilent.TargetVisible ~= true then return nil end
 		if not target or not target.Parent or (humanoid and humanoid.Health <= 0) then
 			return nil
 		end
@@ -5558,6 +5658,15 @@ do
 		if method == "FireServer" then
 			if gunbaseOwnsShot then
 				if ProjectileCore then ProjectileCore.Status.fallbackSkips += 1 end
+				return oldNamecall(self, ...)
+			end
+			-- C4/rocket/grenade placement and flight remotes often use the same
+			-- Vector3/CFrame shape as guns. Never retarget an explosive context.
+			if ProjectileSilent and ProjectileSilent.IsExplosiveContext(self) then
+				if ProjectileCore then
+					ProjectileCore.Status.explosiveSkips += 1
+					ProjectileCore.Status.lastShotReason = "explosive-remote-original"
+				end
 				return oldNamecall(self, ...)
 			end
 			local target, targetPosition = getCachedTarget()
@@ -5599,6 +5708,13 @@ do
 		if gunbaseOwnsShot then
 			if ProjectileCore then ProjectileCore.Status.fallbackSkips += 1 end
 			if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
+			return oldNamecall(self, ...)
+		end
+		if ProjectileSilent and ProjectileSilent.IsExplosiveContext(self) then
+			if ProjectileCore then
+				ProjectileCore.Status.explosiveSkips += 1
+				ProjectileCore.Status.lastShotReason = "explosive-ray-original"
+			end
 			return oldNamecall(self, ...)
 		end
 
