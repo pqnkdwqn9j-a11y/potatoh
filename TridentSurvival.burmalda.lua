@@ -68,16 +68,21 @@ local cfg = {
   ESP = {
     Enabled = false, Players = true, NPCs = true, Resources = false,
     Box = true, Names = true, Distance = true, Weapon = false,
-    Tracers = false, TeamCheck = true, IgnoreSleepers = true,
+    Tracers = false, Skeleton = false, TeamCheck = true, IgnoreSleepers = true,
     MaxDistance = 1600,
+  },
+  Visuals = {
+    BigHead = false, HeadScale = 2, HeadTransparency = 0,
+    FOVChanger = false, CustomFOV = 90, Zoom = false, ZoomFOV = 30,
   },
   Movement = {
     Speed = false, SpeedValue = 30, Fly = false, FlySpeed = 55,
-    InfiniteJump = false,
+    InfiniteJump = false, Gravity = false, GravityPercent = 100,
   },
   World = {
     Fullbright = false, RemoveFog = false, RemoveGrass = false,
-    RemoveShadows = false,
+    RemoveShadows = false, TimeChanger = false,
+    ClockTime = lighting and lighting.ClockTime or 12,
   },
 }
 runtime.cfg = cfg
@@ -149,6 +154,15 @@ local BODY_PARTS = {
   LeftUpperArm = true, LeftLowerArm = true, LeftHand = true,
   RightUpperLeg = true, RightLowerLeg = true, RightFoot = true,
   LeftUpperLeg = true, LeftLowerLeg = true, LeftFoot = true,
+}
+local SKELETON = {
+  { "Head", "Torso" }, { "Torso", "LeftUpperArm" }, { "LeftUpperArm", "LeftLowerArm" },
+  { "Torso", "RightUpperArm" }, { "RightUpperArm", "RightLowerArm" },
+  { "LowerTorso", "LeftUpperLeg" }, { "LeftUpperLeg", "LeftLowerLeg" },
+  { "Torso", "LowerTorso" }, { "RightUpperLeg", "RightLowerLeg" },
+  { "LowerTorso", "RightUpperLeg" }, { "LeftLowerLeg", "LeftFoot" },
+  { "RightLowerLeg", "RightFoot" }, { "RightLowerArm", "RightHand" },
+  { "LeftLowerArm", "LeftHand" },
 }
 
 local function findChild(parent, name)
@@ -266,6 +280,13 @@ local function isTeammate(model)
   local tag = head and findChild(head, "Teamtag")
   return tag and tag.Enabled == true or false
 end
+local function isSleeper(entity, model)
+  if rawget(entity, "sleeping") == true then return true end
+  local lowerTorso = findChild(model, "LowerTorso")
+  local rootRig = lowerTorso and findChild(lowerTorso, "RootRig")
+  return rootRig and typeof(rootRig.CurrentAngle) == "number" and rootRig.CurrentAngle ~= 0 or false
+end
+runtime.IsSleeper = isSleeper
 local function entityName(entity, label)
   local player = rawget(entity, "player")
   if player then return tostring(player.DisplayName or player.Name or label) end
@@ -324,7 +345,7 @@ local function updateTarget()
     if kind == "resource" or isLocalEntity(entity, model) then return end
     if kind == "npc" and not cfg.Silent.TargetNPCs then return end
     if cfg.Silent.TeamCheck and isTeammate(model) then return end
-    if cfg.Silent.IgnoreSleepers and rawget(entity, "sleeping") == true then return end
+    if cfg.Silent.IgnoreSleepers and isSleeper(entity, model) then return end
     local part = aimPart(model)
     if not part or not part.Parent then return end
     local worldDistance = (part.Position - origin).Magnitude
@@ -688,10 +709,27 @@ local function espEntry(model)
   espPool[model] = entry
   return entry
 end
+local function hideSkeleton(entry)
+  for _, item in ipairs(entry.skeleton or {}) do
+    if item.line then item.line.Visible = false end
+  end
+end
+local function ensureSkeleton(entry)
+  if entry.skeleton then return entry.skeleton end
+  entry.skeleton = {}
+  for _, pair in ipairs(SKELETON) do
+    entry.skeleton[#entry.skeleton + 1] = {
+      line = newDrawing("Line", { Visible = false, Thickness = 1, ZIndex = 3 }),
+      a = pair[1], b = pair[2],
+    }
+  end
+  return entry.skeleton
+end
 local function hideEntry(entry)
   for _, key in ipairs({ "boxOutline", "box", "name", "distance", "weapon", "tracer" }) do
     if entry[key] then entry[key].Visible = false end
   end
+  hideSkeleton(entry)
 end
 local function renderEntity(entity, model, kind, label)
   local entry = espEntry(model)
@@ -700,7 +738,7 @@ local function renderEntity(entity, model, kind, label)
   if kind == "npc" then enabled = enabled and cfg.ESP.NPCs end
   if kind == "resource" then enabled = enabled and cfg.ESP.Resources end
   if not enabled or (kind ~= "resource" and cfg.ESP.TeamCheck and isTeammate(model))
-    or (kind ~= "resource" and cfg.ESP.IgnoreSleepers and rawget(entity, "sleeping") == true) then
+    or (kind ~= "resource" and cfg.ESP.IgnoreSleepers and isSleeper(entity, model)) then
     hideEntry(entry) return
   end
   local root = findChild(model, "HumanoidRootPart") or findChild(model, "Torso") or model.PrimaryPart or findChild(model, "Head")
@@ -751,6 +789,24 @@ local function renderEntity(entity, model, kind, label)
     entry.tracer.To = Vector2.new(centerX, topY + height / 2)
     entry.tracer.Color = color
   end
+  if cfg.ESP.Skeleton and (kind == "player" or kind == "npc") then
+    for _, item in ipairs(ensureSkeleton(entry)) do
+      local first, second = findChild(model, item.a), findChild(model, item.b)
+      if item.line and first and second then
+        local from, fromVisible, fromDepth = screenPoint(first.Position)
+        local to, toVisible, toDepth = screenPoint(second.Position)
+        item.line.Visible = fromVisible and toVisible and fromDepth > 0 and toDepth > 0
+        if item.line.Visible then
+          item.line.From, item.line.To = from, to
+          item.line.Color = color
+        end
+      elseif item.line then
+        item.line.Visible = false
+      end
+    end
+  else
+    hideSkeleton(entry)
+  end
 end
 local function renderEsp()
   eachEntity(renderEntity)
@@ -760,19 +816,88 @@ local function renderEsp()
 end
 runtime.RenderESP = renderEsp
 
+local savedHeads = {}
+runtime.savedHeads = savedHeads
+local function restoreHead(head)
+  local original = savedHeads[head]
+  if not original then return end
+  savedHeads[head] = nil
+  pcall(function()
+    head.Size = original.Size
+    head.Transparency = original.Transparency
+  end)
+end
+local function restoreAllHeads()
+  for head in pairs(savedHeads) do restoreHead(head) end
+end
+local function updateBigHead()
+  if not (runtime.Active and cfg.Visuals.BigHead) then restoreAllHeads() return end
+  local seen = {}
+  eachEntity(function(entity, model, kind)
+    if kind ~= "player" and kind ~= "npc" or isLocalEntity(entity, model) then return end
+    local head = findChild(model, "Head")
+    if not head then return end
+    seen[head] = true
+    if not savedHeads[head] then
+      savedHeads[head] = { Size = head.Size, Transparency = head.Transparency }
+    end
+    pcall(function()
+      head.Size = Vector3.new(cfg.Visuals.HeadScale, cfg.Visuals.HeadScale, cfg.Visuals.HeadScale)
+      head.Transparency = cfg.Visuals.HeadTransparency
+    end)
+  end)
+  for head in pairs(savedHeads) do
+    if not seen[head] then restoreHead(head) end
+  end
+end
+runtime.UpdateBigHead = updateBigHead
+addRestore(restoreAllHeads)
+
+local originalFOV = camera and camera.FieldOfView or 70
+runtime.originalFOV = originalFOV
+local function updateCamera()
+  if not camera then return end
+  if not cfg.Visuals.Zoom then runtime.zoomHeld = false end
+  local custom = cfg.Visuals.FOVChanger
+  local zooming = cfg.Visuals.Zoom and runtime.zoomHeld == true
+  if custom or zooming then
+    local base = custom and cfg.Visuals.CustomFOV or originalFOV
+    local target = zooming and math.min(base, cfg.Visuals.ZoomFOV) or base
+    local ok = pcall(function() camera.FieldOfView = target end)
+    runtime.cameraControlled = runtime.cameraControlled or ok
+  elseif runtime.cameraControlled then
+    pcall(function() camera.FieldOfView = originalFOV end)
+    runtime.cameraControlled = false
+  end
+end
+runtime.UpdateCamera = updateCamera
+addRestore(function()
+  runtime.zoomHeld = false
+  if camera and runtime.cameraControlled then pcall(function() camera.FieldOfView = originalFOV end) end
+end)
+
 local worldOriginals = lighting and {
   Ambient = lighting.Ambient, OutdoorAmbient = lighting.OutdoorAmbient,
   Brightness = lighting.Brightness, FogStart = lighting.FogStart,
   FogEnd = lighting.FogEnd, GlobalShadows = lighting.GlobalShadows,
+  ClockTime = lighting.ClockTime,
 } or {}
+local originalGravity = workspaceService and workspaceService.Gravity or 196.2
+runtime.originalGravity = originalGravity
 local function applyWorld()
-  if not lighting then return end
-  lighting.Brightness = cfg.World.Fullbright and 2 or worldOriginals.Brightness
-  lighting.Ambient = cfg.World.Fullbright and Color3.new(1, 1, 1) or worldOriginals.Ambient
-  lighting.OutdoorAmbient = cfg.World.Fullbright and Color3.new(1, 1, 1) or worldOriginals.OutdoorAmbient
-  lighting.FogStart = cfg.World.RemoveFog and 1000000 or worldOriginals.FogStart
-  lighting.FogEnd = cfg.World.RemoveFog and 10000000 or worldOriginals.FogEnd
-  lighting.GlobalShadows = not cfg.World.RemoveShadows and worldOriginals.GlobalShadows or false
+  if lighting then
+    lighting.Brightness = cfg.World.Fullbright and 2 or worldOriginals.Brightness
+    lighting.Ambient = cfg.World.Fullbright and Color3.new(1, 1, 1) or worldOriginals.Ambient
+    lighting.OutdoorAmbient = cfg.World.Fullbright and Color3.new(1, 1, 1) or worldOriginals.OutdoorAmbient
+    lighting.FogStart = cfg.World.RemoveFog and 1000000 or worldOriginals.FogStart
+    lighting.FogEnd = cfg.World.RemoveFog and 10000000 or worldOriginals.FogEnd
+    lighting.GlobalShadows = not cfg.World.RemoveShadows and worldOriginals.GlobalShadows or false
+    lighting.ClockTime = cfg.World.TimeChanger and cfg.World.ClockTime or worldOriginals.ClockTime
+  end
+  if workspaceService then
+    local gravity = cfg.Movement.Gravity and cfg.Movement.GravityPercent * 1.962 or originalGravity
+    pcall(function() workspaceService.Gravity = gravity end)
+  end
 end
 runtime.ApplyWorld = applyWorld
 local function applyGrass()
@@ -783,6 +908,7 @@ end
 runtime.ApplyGrass = applyGrass
 addRestore(function()
   for key, value in pairs(worldOriginals) do pcall(function() lighting[key] = value end) end
+  if workspaceService then pcall(function() workspaceService.Gravity = originalGravity end) end
   if setfflag then
     pcall(setfflag, "FRMMinGrassDistance", "100")
     pcall(setfflag, "FRMMaxGrassDistance", "290")
@@ -2134,6 +2260,8 @@ end
     function() return cfg.ESP.Resources end)
   feature(visualsLeft, "Boxes", cfg.ESP.Box, function(value) cfg.ESP.Box = value end,
     function() return cfg.ESP.Box end)
+  feature(visualsLeft, "Skeleton", cfg.ESP.Skeleton, function(value) cfg.ESP.Skeleton = value end,
+    function() return cfg.ESP.Skeleton end)
   feature(visualsRight, "Names", cfg.ESP.Names, function(value) cfg.ESP.Names = value end,
     function() return cfg.ESP.Names end)
   feature(visualsRight, "Distance", cfg.ESP.Distance, function(value) cfg.ESP.Distance = value end,
@@ -2146,6 +2274,14 @@ end
     function() return cfg.ESP.TeamCheck end)
   feature(visualsRight, "Ignore Sleepers ESP", cfg.ESP.IgnoreSleepers, function(value) cfg.ESP.IgnoreSleepers = value end,
     function() return cfg.ESP.IgnoreSleepers end)
+  local bigHead = feature(visualsRight, "Big Head", cfg.Visuals.BigHead, function(value)
+    cfg.Visuals.BigHead = value updateBigHead()
+  end, function() return cfg.Visuals.BigHead end)
+  slider(bigHead, "Big Head", "Scale", 1, 5, cfg.Visuals.HeadScale,
+    function(value) cfg.Visuals.HeadScale = value updateBigHead() end, function() return cfg.Visuals.HeadScale end)
+  slider(bigHead, "Big Head", "Transparency %", 0, 100, cfg.Visuals.HeadTransparency * 100,
+    function(value) cfg.Visuals.HeadTransparency = value / 100 updateBigHead() end,
+    function() return cfg.Visuals.HeadTransparency * 100 end)
 
   local movementLeft, movementRight = getTab("MOVEMENT")
   local speed = feature(movementLeft, "Speed", cfg.Movement.Speed, function(value) cfg.Movement.Speed = value end,
@@ -2159,6 +2295,12 @@ end
     function(value) cfg.Movement.FlySpeed = value end, function() return cfg.Movement.FlySpeed end)
   feature(movementRight, "Infinite Jump", cfg.Movement.InfiniteJump, function(value) cfg.Movement.InfiniteJump = value end,
     function() return cfg.Movement.InfiniteJump end)
+  local gravity = feature(movementRight, "Gravity", cfg.Movement.Gravity, function(value)
+    cfg.Movement.Gravity = value applyWorld()
+  end, function() return cfg.Movement.Gravity end)
+  slider(gravity, "Gravity", "Percent", 0, 200, cfg.Movement.GravityPercent,
+    function(value) cfg.Movement.GravityPercent = value applyWorld() end,
+    function() return cfg.Movement.GravityPercent end)
 
   local worldLeft, worldRight = getTab("WORLD")
   feature(worldLeft, "Fullbright", cfg.World.Fullbright, function(value) cfg.World.Fullbright = value applyWorld() end,
@@ -2169,6 +2311,23 @@ end
     function() return cfg.World.RemoveGrass end)
   feature(worldRight, "Remove Shadows", cfg.World.RemoveShadows, function(value) cfg.World.RemoveShadows = value applyWorld() end,
     function() return cfg.World.RemoveShadows end)
+  local timeChanger = feature(worldLeft, "Time Changer", cfg.World.TimeChanger, function(value)
+    cfg.World.TimeChanger = value applyWorld()
+  end, function() return cfg.World.TimeChanger end)
+  slider(timeChanger, "Time Changer", "Clock Time", 0, 24, cfg.World.ClockTime,
+    function(value) cfg.World.ClockTime = value applyWorld() end, function() return cfg.World.ClockTime end)
+  local fovChanger = feature(worldLeft, "FOV Changer", cfg.Visuals.FOVChanger, function(value)
+    cfg.Visuals.FOVChanger = value updateCamera()
+  end, function() return cfg.Visuals.FOVChanger end)
+  slider(fovChanger, "FOV Changer", "Value", 30, 120, cfg.Visuals.CustomFOV,
+    function(value) cfg.Visuals.CustomFOV = value updateCamera() end, function() return cfg.Visuals.CustomFOV end)
+  local zoom = feature(worldRight, "Zoom", cfg.Visuals.Zoom, function(value)
+    cfg.Visuals.Zoom = value
+    if not value then runtime.zoomHeld = false end
+    updateCamera()
+  end, function() return cfg.Visuals.Zoom end)
+  slider(zoom, "Zoom", "FOV", 5, 70, cfg.Visuals.ZoomFOV,
+    function(value) cfg.Visuals.ZoomFOV = value updateCamera() end, function() return cfg.Visuals.ZoomFOV end)
 
   local configLeftColumn, configRightColumn = getTab("CONFIG")
   local configLeft = getSection(configLeftColumn, "Configs").Content
@@ -2251,7 +2410,7 @@ end
     merge(cfg, decoded.Cfg)
     for _, binding in pairs(featureBindings) do binding.Set(binding.Get()) end
     for _, binding in pairs(optionBindings) do binding.Set(binding.Get()) end
-    applyWorld() applyGrass() updateModuleClones()
+    applyWorld() applyGrass() updateModuleClones() updateCamera() updateBigHead()
     return true
   end
   function configApi.Delete(name)
@@ -2283,7 +2442,7 @@ end
   local savedTitle = sourceText(configRight, "Saved configs are listed through the local filesystem API.",
     UDim2.new(1, 0, 0, 30), Theme.SubText)
   savedTitle.TextWrapped = true
-  local hotkeys = sourceText(configRight, "INSERT / RIGHTSHIFT  MENU\nF1  ESP     F2  SILENT",
+  local hotkeys = sourceText(configRight, "INSERT / RIGHTSHIFT  MENU\nF1  ESP     F2  SILENT     X  ZOOM",
     UDim2.new(1, 0, 0, 30), Theme.SubText)
   hotkeys.TextWrapped = true
   local unloadButton = actionButton(configRight, "Unload Burmalda.hook", function() runtime.Unload() end)
@@ -2343,6 +2502,11 @@ trackConnection(runService.RenderStepped:Connect(function(deltaTime)
     if not ok then runtime.targetError = tostring(err) runtime.currentTarget = nil end
   end
   pcall(updateVisuals)
+  pcall(updateCamera)
+  if now >= (runtime.nextHeadUpdate or 0) then
+    runtime.nextHeadUpdate = now + 0.2
+    pcall(updateBigHead)
+  end
   if cfg.ESP.Enabled then pcall(renderEsp) else
     for _, entry in pairs(espPool) do hideEntry(entry) end
   end
@@ -2361,6 +2525,13 @@ if localPlayer then
     stopFly()
   end))
 end
+trackConnection(userInputService.InputBegan:Connect(function(input, gameProcessed)
+  if gameProcessed or not runtime.Active or not cfg.Visuals.Zoom then return end
+  if input.KeyCode == Enum.KeyCode.X then runtime.zoomHeld = true end
+end))
+trackConnection(userInputService.InputEnded:Connect(function(input)
+  if input.KeyCode == Enum.KeyCode.X then runtime.zoomHeld = false end
+end))
 trackConnection(userInputService.JumpRequest:Connect(function()
   if not (runtime.Active and cfg.Movement.InfiniteJump) then return end
   local _, _, humanoid = getLocalParts()
