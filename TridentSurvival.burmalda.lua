@@ -550,7 +550,9 @@ local function installCharacterModuleClones()
   local functionsToPatch = {
     rawget(character, "SetVehicle"), rawget(fps, "EquipItem"),
   }
-  for _, name in ipairs({ "BowClient", "RangedWeaponClient", "MeleeClient", "FlameThrowerClient", "MiningDrillClient", "DebugWandClient" }) do
+  -- These are gun modifiers. Do not clone/patch MeleeClient or MiningDrillClient:
+  -- their ordinary swing/hit path must remain the game's original path.
+  for _, name in ipairs({ "BowClient", "RangedWeaponClient", "FlameThrowerClient", "DebugWandClient" }) do
     local module = rawget(classes, name)
     functionsToPatch[#functionsToPatch + 1] = module and rawget(module, "Update")
   end
@@ -589,6 +591,21 @@ local function isGameRemote(instance)
   if instance == findChild(localPlayer, "TCP") or instance == findChild(localPlayer, "UDP") then return true end
   return instance.Parent == localPlayer and (tostring(instance) == "TCP" or tostring(instance) == "UDP")
 end
+local function getRangedWeaponInfo()
+  -- Re-read equipped item at the packet boundary. The periodic cache may still
+  -- contain a rifle for a few frames after switching to a melee/tool item.
+  refreshEquipped()
+  local item, info = runtime.equippedItem, runtime.equippedInfo
+  local speed = info and rawget(info, "ProjectileSpeed")
+  if speed == nil and type(item) == "table" then
+    speed = rawget(item, "ProjectileSpeed")
+    info = item
+  end
+  if type(speed) == "number" and speed > 0 then return info end
+  return nil
+end
+runtime.GetRangedWeaponInfo = getRangedWeaponInfo
+
 local function processRemote(args)
   local code = args[1]
   if code == remoteCode("INV_EQUIP_ITEM") or code == remoteCode("INV_UNEQUIP_ITEM") then
@@ -598,7 +615,8 @@ local function processRemote(args)
   local useItem = remoteCode("INV_USE_ITEM") or 10
   if code ~= useItem and code ~= 10 then return end
   local action = args[2]
-  if action == "Fire" and typeof(args[4]) == "CFrame" and runtime.Active and cfg.Silent.Enabled then
+  if action == "Fire" and typeof(args[4]) == "CFrame" and runtime.Active and cfg.Silent.Enabled
+    and getRangedWeaponInfo() then
     local pending = runtime.pendingShot
     runtime.pendingShot = nil
     if pending and os.clock() - pending.at <= 0.75 then
@@ -612,7 +630,7 @@ local function processRemote(args)
         runtime.silentMode = "Remote"
       end
     end
-  elseif action == "Hit" and runtime.Active and cfg.Weapon.ForceHeadshots then
+  elseif action == "Hit" and runtime.Active and cfg.Weapon.ForceHeadshots and getRangedWeaponInfo() then
     local argumentCount = args.n - 1
     local partIndex = argumentCount == 7 and 6 or 5
     if BODY_PARTS[args[partIndex]] then args[partIndex] = "Head" end
