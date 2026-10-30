@@ -4597,6 +4597,9 @@ end
 
       local function computeMouseRedirect(...)
         state.silentShots = state.silentShots + 1
+        -- The marker belongs only to this MouseRaycast call. A previous shot
+        -- must never suppress the recovered Projectile fallback for this one.
+        state.silentRedirectAt = 0
         if not (state.Active and cfg.Silent.Enabled) then return nil end
         local ignoreList = select(3, ...)
         if type(ignoreList) ~= "table" or rawlen(ignoreList) ~= 2 then return nil end
@@ -4614,19 +4617,38 @@ end
         local hitChance = cfg.Silent.HitChance or 100
         if math.random(0, 99) >= hitChance then return nil end
 
-        local stack = debug.getstack(2)
-        if type(stack) ~= "table" then return nil end
         local cameraCFrame = camera.CFrame
         local originalTorso = root.CFrame * CFrame.new(0, 1.5, 0)
+        -- The reference used level 2 from inside its own MouseRaycast replacement.
+        -- Our clone/helper/pcall adds frames, so a fixed level can inspect a wrapper
+        -- instead of mouseButton1Down. Find the actual frame containing both values.
+        local stack, stackLevel
         local cameraIndexes, torsoIndexes = {}, {}
-        for index, value in pairs(stack) do
-          if value == cameraCFrame then
-            cameraIndexes[#cameraIndexes + 1] = index
-          elseif value == originalTorso then
-            torsoIndexes[#torsoIndexes + 1] = index
+        for level = 2, 8 do
+          local ok, candidate = pcall(debug.getstack, level)
+          if ok and type(candidate) == "table" then
+            local candidateCameras, candidateTorsos = {}, {}
+            for index, value in pairs(candidate) do
+              if type(index) == "number" then
+                if value == cameraCFrame then
+                  candidateCameras[#candidateCameras + 1] = index
+                elseif value == originalTorso then
+                  candidateTorsos[#candidateTorsos + 1] = index
+                end
+              end
+            end
+            if #candidateCameras > 0 and #candidateTorsos > 0 then
+              stack, stackLevel = candidate, level
+              cameraIndexes, torsoIndexes = candidateCameras, candidateTorsos
+              break
+            end
           end
         end
-        if #cameraIndexes == 0 or #torsoIndexes == 0 then return nil end
+        if not stack then
+          state.silentStackLevel = nil
+          state.silentError = "ViewmodelController shooting stack frame not found"
+          return nil
+        end
 
         local origin = cameraCFrame.Position
         local realPosition = target.part.Position
@@ -4639,28 +4661,49 @@ end
         local _, targetYaw = CFrame.new(originalTorso.Position, position):ToOrientation()
         local fakeTorso = CFrame.new(originalTorso.Position)
           * CFrame.fromOrientation(torsoX, targetYaw, torsoZ)
-        if not spoofTorsoNamecall(fakeTorso, originalTorso, fakeCamera, origin) then return nil end
+        if not spoofTorsoNamecall(fakeTorso, originalTorso, fakeCamera, origin) then
+          state.silentError = "fake torso PointToObjectSpace hook failed"
+          return nil
+        end
 
         local changed = {}
+        local function rollbackStack()
+          for index = #changed, 1, -1 do
+            local entry = changed[index]
+            pcall(debug.setstack, stackLevel, entry.index, entry.value)
+          end
+        end
+        local function writeStack(index, value)
+          local ok = pcall(debug.setstack, stackLevel, index, value)
+          if not ok then return false end
+          -- Some executors return successfully from setstack without applying the
+          -- value. Require readback before claiming a redirect and suppressing the
+          -- Projectile fallback; otherwise restore and use the original shot path.
+          local readOk, current = pcall(debug.getstack, stackLevel, index)
+          if readOk and current == value then return true end
+          local tableOk, refreshed = pcall(debug.getstack, stackLevel)
+          return tableOk and type(refreshed) == "table" and rawget(refreshed, index) == value
+        end
         for _, index in ipairs(cameraIndexes) do
-          local ok = pcall(debug.setstack, 2, index, fakeCamera)
-          if not ok then
-            for _, entry in ipairs(changed) do pcall(debug.setstack, 2, entry.index, entry.value) end
+          changed[#changed + 1] = {index = index, value = stack[index]}
+          if not writeStack(index, fakeCamera) then
+            rollbackStack()
+            state.silentError = "Camera stack write/readback failed at level " .. tostring(stackLevel)
             return nil
           end
-          changed[#changed + 1] = {index = index, value = stack[index]}
         end
         for _, index in ipairs(torsoIndexes) do
-          local ok = pcall(debug.setstack, 2, index, fakeTorso)
-          if not ok then
-            for _, entry in ipairs(changed) do pcall(debug.setstack, 2, entry.index, entry.value) end
+          changed[#changed + 1] = {index = index, value = stack[index]}
+          if not writeStack(index, fakeTorso) then
+            rollbackStack()
+            state.silentError = "Torso stack write/readback failed at level " .. tostring(stackLevel)
             return nil
           end
-          changed[#changed + 1] = {index = index, value = stack[index]}
         end
 
         state.silentRedirects = state.silentRedirects + 1
         state.silentRedirectAt = os.clock()
+        state.silentStackLevel = stackLevel
         state.silentLastPosition = position
         state.silentError = nil
         return position
@@ -5344,6 +5387,14 @@ end
           tostring(lastAim.reason), tostring(lastAim.chosen), tostring(lastAim.nearest),
           tostring(lastAim.nearestAng), tostring(lastAim.nearestDist), tostring(lastAim.type),
           tostring(lastAim.model)))
+        local silentState = mainGame.amogus
+        if silentState then
+          print(string.format(
+            "[MainGame] MouseSilent: installed=%s shots=%d redirected=%d fallback=%d stack=%s error=%s",
+            tostring(silentState.silentInstalled), silentState.silentShots or 0,
+            silentState.silentRedirects or 0, silentState.silentFallbacks or 0,
+            tostring(silentState.silentStackLevel), tostring(silentState.silentError)))
+        end
         if currentStats.espError then
           print("[MainGame] ESP error: " .. tostring(currentStats.espError))
         end
@@ -5359,6 +5410,15 @@ end
           targets = 0,
           localShots = 0,
         }
+        local silentState = mainGame.amogus
+        if silentState then
+          silentState.silentShots = 0
+          silentState.silentRedirects = 0
+          silentState.silentFallbacks = 0
+          silentState.silentRedirectAt = 0
+          silentState.silentStackLevel = nil
+          silentState.silentError = nil
+        end
         print("[MainGame] stats reset")
       end)
       addLabel(rc, "Insert / RightShift: menu   |   F1: ESP   |   F2: Silent Aim")
