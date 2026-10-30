@@ -622,6 +622,16 @@ if integrityOk then
           end
 
           mainGame.stats.localShots = (mainGame.stats.localShots or 0) + 1
+          local amogusState = mainGame.amogus
+          if amogusState and amogusState.Active
+            and amogusState.silentRedirectAt and amogusState.silentRedirectAt > 0
+            and os.clock() - amogusState.silentRedirectAt < 0.25
+            and type(p18.Stats) == "table"
+            and cfg.Silent.ForceTypes[tostring(p18.Stats.Type)] == true
+          then
+            mainGame.stats.lastAim = { reason = "amogus mouse raycast" }
+            return
+          end
           local v118, gravity
 
           if not cfg.Silent.Enabled then
@@ -1251,18 +1261,15 @@ if integrityOk then
 
     if cfg.Silent.Enabled and cfg.Silent.ShowFOV then
       local viewportSize = p62.ViewportSize
-      local v173 = math.rad(p62.FieldOfView)
+      local cameraFov = math.clamp(tonumber(p62.FieldOfView) or 70, 1, 175)
+      local pixelFov = math.max(0, tonumber(cfg.Silent.FOV) or 120)
 
-      local v174 = viewportSize.Y * 0.5
-          * math.tan(math.rad(math.min(cfg.Silent.FOV, 175) * 0.5))
-        / math.tan(v173 * 0.5)
-
-      local v175 = math.sqrt(viewportSize.X * viewportSize.X + viewportSize.Y * viewportSize.Y)
-        * 0.5
-
-      if v174 > v175 then
-        v174 = v175
-      end
+      -- Target selection compares screen-space distance with cfg.Silent.FOV.
+      -- Keep the circle in the same pixel unit at the reference 70-degree
+      -- camera instead of interpreting the slider as an angle and moving the
+      -- stroke outside the viewport. Dynamic FOV still scales with camera zoom.
+      local v174 = pixelFov * math.tan(math.rad(35))
+        / math.tan(math.rad(cameraFov * 0.5))
 
       if mainGame._fovR ~= v174 then
         mainGame._fovR = v174
@@ -3550,7 +3557,7 @@ end
       end
 
       cfg.Remote = cfg.Remote or {}
-      local remoteDefaults = { BlockChecks = true, BlockProjectile = true, BlockRecoil = true }
+      local remoteDefaults = { BlockChecks = true, BlockProjectile = false, BlockRecoil = true }
       for key, value in pairs(remoteDefaults) do
         if cfg.Remote[key] == nil then cfg.Remote[key] = value end
       end
@@ -4047,7 +4054,354 @@ end
         end
       end
 
+      -- Amogus-compatible MouseRaycast silent path. This is deliberately
+      -- separate from the recovered Lone Projectile.New fallback: the clone is
+      -- swapped only into ViewmodelController's mouseButton1Down upvalue and
+      -- every changed upvalue is restored on character teardown/reinit/Unload.
+      local silentUpvalues = {}
+      state.silentShots = 0
+      state.silentRedirects = 0
+      state.silentFallbacks = 0
+      state.silentRedirectAt = 0
+      state.silentError = nil
+
+      local function shallowCopy(source)
+        if table.clone then
+          local ok, result = pcall(table.clone, source)
+          if ok then return result end
+        end
+        local result = {}
+        for key, value in pairs(source) do result[key] = value end
+        return result
+      end
+
+      local function containsValue(container, expected)
+        if type(container) ~= "table" then return false end
+        for _, value in pairs(container) do
+          if value == expected then return true end
+        end
+        return false
+      end
+
+      local function functionSource(fn)
+        if not (debug and debug.info) then return "" end
+        local ok, source = pcall(debug.info, fn, "s")
+        return ok and tostring(source) or ""
+      end
+
+      local function functionConstants(fn)
+        if not (debug and debug.getconstants) then return {} end
+        local ok, constants = pcall(debug.getconstants, fn)
+        return ok and type(constants) == "table" and constants or {}
+      end
+
+      local function functionScript(fn)
+        if not getfenv then return nil end
+        local ok, environment = pcall(getfenv, fn)
+        if ok and type(environment) == "table" then return rawget(environment, "script") end
+        return nil
+      end
+
+      local function findMouseButton1Down(viewmodelController)
+        if not (getgc and debug and debug.getupvalues and debug.setupvalue) then return nil end
+        local ok, garbage = pcall(getgc, false)
+        if not ok or type(garbage) ~= "table" then return nil end
+        for _, outer in pairs(garbage) do
+          if type(outer) == "function"
+            and string.find(functionSource(outer), "ViewmodelController", 1, true)
+            and containsValue(functionConstants(outer), "DebugEnableVMMovement") then
+            for _, inner in debug.getupvalues(outer) do
+              if type(inner) == "function"
+                and string.find(functionSource(inner), "ViewmodelController", 1, true)
+                and containsValue(functionConstants(inner), "cancel")
+                and functionScript(inner) == viewmodelController then
+                return inner
+              end
+            end
+          end
+        end
+        return nil
+      end
+
+      local function getSharedGameModule(name)
+        local modules = replicatedStorage:FindFirstChild("Modules")
+        return modules and modules:FindFirstChild(name)
+      end
+
+      local function updateSilentToolInfo()
+        state.silentToolInfo = nil
+        local character = localPlayer.Character
+        local viewmodel = character and character:FindFirstChild("ViewmodelController")
+        local inventory = character and character:FindFirstChild("InventoryController")
+        local fetch = inventory and inventory:FindFirstChild("Fetch")
+        if not (viewmodel and fetch) then return end
+        local equipped = viewmodel:GetAttribute("Equipped")
+        if not equipped then return end
+        local ok, fetched = pcall(function() return fetch:Invoke() end)
+        if not ok or type(fetched) ~= "table" or type(fetched.Toolbar) ~= "table" then return end
+        local entry = fetched.Toolbar[equipped]
+        if type(entry) ~= "table" then return end
+        if state.silentItems == nil then state.silentItems = safeRequire(getSharedGameModule("Items")) or false end
+        if state.silentToolInfoModule == nil then
+          state.silentToolInfoModule = safeRequire(getSharedGameModule("ToolInfo")) or false
+        end
+        if not state.silentItems or not state.silentToolInfoModule then return end
+        local item = state.silentItems[entry.ID]
+        local itemName = type(item) == "table" and rawget(item, "Name")
+        local info = itemName and state.silentToolInfoModule[itemName]
+        state.silentToolInfo = type(info) == "table" and info or nil
+      end
+
+      local function predictSilentPosition(origin, position, target)
+        if not cfg.Silent.Prediction then return position end
+        local info = state.silentToolInfo
+        local bullet = info and rawget(info, "Bullet")
+        local speed = bullet and rawget(bullet, "Speed")
+        local gravity = bullet and rawget(bullet, "Gravity") or 0
+        if type(speed) ~= "number" or type(gravity) ~= "number" or speed <= 0 then return position end
+        local root = target.target and target.target.hrp
+        local velocity = root and root.AssemblyLinearVelocity
+          or target.part.AssemblyLinearVelocity or Vector3.zero
+        local direction = solveBallisticDirection(origin, position, velocity, speed, gravity)
+        return direction and origin + direction * 9999 or position
+      end
+
+      local function applySpreadCompensation(stack, origin, position)
+        local spread
+        for _, value in pairs(stack) do
+          local first = type(value) == "table" and rawget(value, 1)
+          if type(first) == "table" and type(rawget(first, "Radius")) == "number" then
+            spread = value
+            break
+          end
+        end
+        if not spread or #spread == 0 then return position end
+        local pattern = Vector3.zero
+        for index = 1, #spread do
+          local entry = rawget(spread, index)
+          local radius = rawget(entry, "Radius") or 0
+          local degree = rawget(entry, "Degree") or 0
+          pattern = pattern + CFrame.Angles(math.sin(degree) * radius,
+            math.cos(degree) * radius, 0).LookVector
+        end
+        return origin + (CFrame.new(origin, position)
+          * CFrame.new(Vector3.zero, pattern):Inverse()).LookVector * (position - origin).Magnitude
+      end
+
+      local function spoofTorsoNamecall(fakeTorso, originalTorso, fakeCamera, origin)
+        if not (getrawmetatable and setrawmetatable and getnamecallmethod) then return false end
+        local ok, result = pcall(function()
+          local metatable = shallowCopy(getrawmetatable(fakeTorso))
+          if setreadonly then setreadonly(metatable, false) end
+          local originalNamecall = rawget(metatable, "__namecall")
+          local pointToObjectSpace = fakeCamera.PointToObjectSpace
+          local handler = function(...)
+            local _, point = ...
+            if getnamecallmethod() == "PointToObjectSpace" then
+              local relative = originalTorso:PointToObjectSpace(point)
+              return pointToObjectSpace(fakeTorso, origin + fakeCamera.LookVector * relative.Magnitude)
+            end
+            if originalNamecall then return originalNamecall(...) end
+            return nil
+          end
+          rawset(metatable, "__namecall", newcclosure and newcclosure(handler) or handler)
+          if table.freeze then table.freeze(metatable) end
+          setrawmetatable(fakeTorso, metatable)
+          return true
+        end)
+        return ok and result == true
+      end
+
+      local function computeMouseRedirect(...)
+        state.silentShots = state.silentShots + 1
+        if not (state.Active and cfg.Silent.Enabled) then return nil end
+        local ignoreList = select(3, ...)
+        if type(ignoreList) ~= "table" or rawlen(ignoreList) ~= 2 then return nil end
+        if not (debug and debug.getstack and debug.setstack) then return nil end
+        local camera = workspace.CurrentCamera
+        local character = localPlayer.Character
+        local root = character and character:FindFirstChild("HumanoidRootPart")
+        if not (camera and root) then return nil end
+        local target = state.currentTarget
+        if not target then
+          pcall(selectTarget, cfg.Silent.MaxDistance)
+          target = state.currentTarget
+        end
+        if not target or not target.part or not target.part.Parent then return nil end
+        local hitChance = cfg.Silent.HitChance or 100
+        if math.random(0, 99) >= hitChance then return nil end
+
+        local stack = debug.getstack(2)
+        if type(stack) ~= "table" then return nil end
+        local cameraCFrame = camera.CFrame
+        local originalTorso = root.CFrame * CFrame.new(0, 1.5, 0)
+        local cameraIndexes, torsoIndexes = {}, {}
+        for index, value in pairs(stack) do
+          if value == cameraCFrame then
+            cameraIndexes[#cameraIndexes + 1] = index
+          elseif value == originalTorso then
+            torsoIndexes[#torsoIndexes + 1] = index
+          end
+        end
+        if #cameraIndexes == 0 or #torsoIndexes == 0 then return nil end
+
+        local origin = cameraCFrame.Position
+        local realPosition = target.part.Position
+        local hitscanPosition = target.target and target.target.hitscanPosition
+        local position = hitscanPosition or realPosition
+        position = predictSilentPosition(origin, position, target)
+        position = applySpreadCompensation(stack, origin, position)
+        local fakeCamera = CFrame.new(origin, position)
+        local torsoX, _, torsoZ = originalTorso:ToOrientation()
+        local _, targetYaw = CFrame.new(originalTorso.Position, position):ToOrientation()
+        local fakeTorso = CFrame.new(originalTorso.Position)
+          * CFrame.fromOrientation(torsoX, targetYaw, torsoZ)
+        if not spoofTorsoNamecall(fakeTorso, originalTorso, fakeCamera, origin) then return nil end
+
+        local changed = {}
+        for _, index in ipairs(cameraIndexes) do
+          local ok = pcall(debug.setstack, 2, index, fakeCamera)
+          if not ok then
+            for _, entry in ipairs(changed) do pcall(debug.setstack, 2, entry.index, entry.value) end
+            return nil
+          end
+          changed[#changed + 1] = {index = index, value = stack[index]}
+        end
+        for _, index in ipairs(torsoIndexes) do
+          local ok = pcall(debug.setstack, 2, index, fakeTorso)
+          if not ok then
+            for _, entry in ipairs(changed) do pcall(debug.setstack, 2, entry.index, entry.value) end
+            return nil
+          end
+          changed[#changed + 1] = {index = index, value = stack[index]}
+        end
+
+        state.silentRedirects = state.silentRedirects + 1
+        state.silentRedirectAt = os.clock()
+        state.silentLastPosition = position
+        state.silentError = nil
+        return position
+      end
+
+      local function callMouseRaycast(original, ...)
+        local args = table.pack(...)
+        local ok, position = pcall(function()
+          return computeMouseRedirect(table.unpack(args, 1, args.n))
+        end)
+        if ok and position ~= nil then return position end
+        if not ok then state.silentError = tostring(position) end
+        state.silentFallbacks = state.silentFallbacks + 1
+        return original(...)
+      end
+
+      local function restoreAmogusSilent()
+        local fn = state.silentMouseFunction
+        if fn and debug and debug.setupvalue then
+          for _, entry in ipairs(silentUpvalues) do
+            pcall(debug.setupvalue, fn, entry.key, entry.value)
+          end
+        end
+        silentUpvalues = {}
+        state.silentInstalled = false
+        state.silentMouseFunction = nil
+        state.silentClone = nil
+      end
+      addRestore(restoreAmogusSilent)
+
+      local function installAmogusSilent()
+        if state.silentInstalled then return true end
+        if not (debug and debug.getupvalues and debug.setupvalue
+          and debug.getstack and debug.setstack and getgc and getfenv) then
+          state.silentError = "missing Amogus silent debug APIs"
+          return false
+        end
+        local character = localPlayer.Character
+        local viewmodel = character and character:FindFirstChild("ViewmodelController")
+        if not viewmodel then return false end
+        local mouseButton1Down = findMouseButton1Down(viewmodel)
+        if not mouseButton1Down then
+          state.silentError = "ViewmodelController mouseButton1Down not found"
+          return false
+        end
+        local raycastUtil = safeRequire(getSharedGameModule("RaycastUtil"))
+        local originalMouseRaycast = type(raycastUtil) == "table" and rawget(raycastUtil, "MouseRaycast")
+        if type(originalMouseRaycast) ~= "function" then
+          state.silentError = "RaycastUtil.MouseRaycast not found"
+          return false
+        end
+        local clone = shallowCopy(raycastUtil)
+        clone.MouseRaycast = function(...)
+          if not state.Active then return originalMouseRaycast(...) end
+          return callMouseRaycast(originalMouseRaycast, ...)
+        end
+        local patched = {}
+        for key, value in debug.getupvalues(mouseButton1Down) do
+          if value == raycastUtil then
+            local ok = pcall(debug.setupvalue, mouseButton1Down, key, clone)
+            if ok then patched[#patched + 1] = {key = key, value = value} end
+          end
+        end
+        if #patched == 0 then
+          state.silentError = "RaycastUtil upvalue not found"
+          return false
+        end
+        silentUpvalues = patched
+        state.silentMouseFunction = mouseButton1Down
+        state.silentClone = clone
+        state.silentInstalled = true
+        state.silentError = nil
+        updateSilentToolInfo()
+        return true
+      end
+      state.InstallSilent = installAmogusSilent
+      state.RestoreSilent = restoreAmogusSilent
+
+      trackConnection(localPlayer.CharacterRemoving:Connect(function()
+        restoreAmogusSilent()
+        state.currentTarget = nil
+        state.silentToolInfo = nil
+        state.silentRedirectAt = 0
+        state.nextSilentInstallAttempt = 0
+      end))
+      trackConnection(localPlayer.CharacterAdded:Connect(function()
+        restoreAmogusSilent()
+        state.silentToolInfo = nil
+        state.silentItems = nil
+        state.silentToolInfoModule = nil
+        state.silentRedirectAt = 0
+        state.nextSilentTargetUpdate = 0
+        state.nextSilentEquipUpdate = 0
+        state.nextSilentInstallAttempt = 0
+      end))
+
+      trackConnection(runService.RenderStepped:Connect(function()
+        if not state.Active or not cfg.Silent.Enabled then return end
+        local now = os.clock()
+        if not state.silentInstalled then
+          if now >= (state.nextSilentInstallAttempt or 0) then
+            state.nextSilentInstallAttempt = now + 0.5
+            local ok, err = pcall(installAmogusSilent)
+            if not ok then state.silentError = tostring(err) end
+          end
+          return
+        end
+        if now >= (state.nextSilentTargetUpdate or 0) then
+          state.nextSilentTargetUpdate = now + 1 / 30
+          local ok, err = pcall(selectTarget, cfg.Silent.MaxDistance)
+          if not ok then
+            state.currentTarget = nil
+            state.targetError = tostring(err)
+          end
+        end
+        if now >= (state.nextSilentEquipUpdate or 0) then
+          state.nextSilentEquipUpdate = now + 0.25
+          pcall(updateSilentToolInfo)
+        end
+      end))
+
+
       local function installAll()
+        installAmogusSilent()
         installForceHitHook()
         installRemoteHook()
         installWeaponModules()
