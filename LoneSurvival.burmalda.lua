@@ -840,17 +840,10 @@ if integrityOk then
       maxDistance = cfg.Silent.MaxDistance
     end
 
-    local v144 = math.huge
+    local v144 = cfg.Silent.FOV + 1
     local v145 = nil
-    local v146 = math.huge
+    local v146 = cfg.Silent.FOV + 1
     local v147 = nil
-    local cameraFov = math.clamp(tonumber(currentCamera.FieldOfView) or 70, 1, 175)
-    local pixelFov = math.max(0, tonumber(cfg.Silent.FOV) or 120)
-    if cfg.Silent.DynamicFOV ~= false then
-      pixelFov = pixelFov * math.tan(math.rad(35)) / math.tan(math.rad(cameraFov * 0.5))
-    end
-    local viewportSize = currentCamera.ViewportSize
-    local screenCenter = Vector2.new(viewportSize.X * 0.5, viewportSize.Y * 0.5)
 
     local v148 = {
       total = 0,
@@ -884,9 +877,7 @@ if integrityOk then
               v148.nearestDist = math.floor(magnitude2)
             end
 
-            local projected, onScreen = currentCamera:WorldToViewportPoint(v150.Position)
-            local screenDistance = (Vector2.new(projected.X, projected.Y) - screenCenter).Magnitude
-            if onScreen and projected.Z > 0 and screenDistance <= pixelFov then
+            if v152 <= cfg.Silent.FOV then
               local v153 = true
 
               if cfg.Silent.VisibleOnly then
@@ -1290,15 +1281,18 @@ if integrityOk then
 
     if cfg.Silent.Enabled and cfg.Silent.ShowFOV then
       local viewportSize = p62.ViewportSize
-      local cameraFov = math.clamp(tonumber(p62.FieldOfView) or 70, 1, 175)
-      local pixelFov = math.max(0, tonumber(cfg.Silent.FOV) or 120)
+      local v173 = math.rad(p62.FieldOfView)
 
-      -- Target selection compares screen-space distance with cfg.Silent.FOV.
-      -- Keep the circle in the same pixel unit at the reference 70-degree
-      -- camera instead of interpreting the slider as an angle and moving the
-      -- stroke outside the viewport. Dynamic FOV still scales with camera zoom.
-      local v174 = pixelFov * math.tan(math.rad(35))
-        / math.tan(math.rad(cameraFov * 0.5))
+      local v174 = viewportSize.Y * 0.5
+          * math.tan(math.rad(math.min(cfg.Silent.FOV, 175) * 0.5))
+        / math.tan(v173 * 0.5)
+
+      local v175 = math.sqrt(viewportSize.X * viewportSize.X + viewportSize.Y * viewportSize.Y)
+        * 0.5
+
+      if v174 > v175 then
+        v174 = v175
+      end
 
       if mainGame._fovR ~= v174 then
         mainGame._fovR = v174
@@ -4739,6 +4733,7 @@ end
           state.currentTarget = nil
           return nil
         end
+        state.targetError = nil
         if not chosen or not chosen.part then
           state.currentTarget = nil
           return nil
@@ -5065,6 +5060,12 @@ end
           mainGame.stats.shots = mainGame.stats.shots + 1
           if type(data) == "table" and not data.FromServer then
             mainGame.stats.localShots = (mainGame.stats.localShots or 0) + 1
+            local shotStats = rawget(data, "Stats")
+            if type(shotStats) == "table" then
+              local kind = tostring(rawget(shotStats, "Type"))
+              mainGame.stats.types = mainGame.stats.types or {}
+              mainGame.stats.types[kind] = (mainGame.stats.types[kind] or 0) + 1
+            end
             local okRedirect, err = pcall(redirectProjectile, data)
             if not okRedirect then mainGame.stats.lastAim = {reason = "error", error = tostring(err)} end
           end
@@ -5722,18 +5723,19 @@ end
           (#shotTypes > 0 and table.concat(shotTypes, ", ") or "none"))
         local lastAim = currentStats.lastAim or {}
         print(string.format(
-          "[MainGame] lastAim: reason=%s chosen=%s nearest=%s ang=%s dist=%s type=%s model=%s",
+          "[MainGame] lastAim: reason=%s chosen=%s nearest=%s ang=%s dist=%s type=%s model=%s error=%s",
           tostring(lastAim.reason), tostring(lastAim.chosen), tostring(lastAim.nearest),
           tostring(lastAim.nearestAng), tostring(lastAim.nearestDist), tostring(lastAim.type),
-          tostring(lastAim.model)))
+          tostring(lastAim.model), tostring(lastAim.error)))
         local silentState = mainGame.amogus
         if silentState then
           print(string.format(
-            "[MainGame] RaycastSilent: installed=%s raycast=%s projectile=%s shots=%d redirected=%d fallback=%d error=%s",
+            "[MainGame] RaycastSilent: installed=%s raycast=%s projectile=%s shots=%d redirected=%d fallback=%d error=%s mode=%s targetError=%s",
             tostring(silentState.silentInstalled), tostring(silentState.raycastInstalled),
             tostring(mainGame.projectileDirect), silentState.silentShots or 0,
             silentState.silentRedirects or 0, silentState.silentFallbacks or 0,
-            tostring(silentState.silentError)))
+            tostring(silentState.silentError), tostring(silentState.silentMode),
+            tostring(silentState.targetError)))
         end
         if currentStats.espError then
           print("[MainGame] ESP error: " .. tostring(currentStats.espError))
@@ -5758,6 +5760,7 @@ end
           silentState.silentRedirectAt = 0
           silentState.silentStackLevel = nil
           silentState.silentError = nil
+          silentState.targetError = nil
         end
         print("[MainGame] stats reset")
       end)
