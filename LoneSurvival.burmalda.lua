@@ -1164,6 +1164,24 @@ if integrityOk then
   function getFovCircle()
     local uiStroke2
 
+    if not mainGame.fovCircle and Drawing ~= nil and type(Drawing.new) == "function" then
+      local drawingOk, drawingCircle = pcall(function()
+        local circle = Drawing.new("Circle")
+        circle.Visible = false
+        circle.Transparency = 1
+        circle.Filled = false
+        circle.NumSides = 32
+        circle.ZIndex = 2
+        circle.Color = cfg.Silent.FOVColor or Color3.new(1, 1, 1)
+        circle.Thickness = cfg.Silent.FOVThickness or 1
+        return circle
+      end)
+      if drawingOk and drawingCircle then
+        mainGame.draws[#mainGame.draws + 1] = drawingCircle
+        mainGame.fovCircle = drawingCircle
+      end
+    end
+
     if not mainGame.fovCircle then
       local frame2 = Instance.new("Frame")
       frame2.BorderSizePixel = 0
@@ -1287,8 +1305,7 @@ if integrityOk then
           * math.tan(math.rad(math.min(cfg.Silent.FOV, 175) * 0.5))
         / math.tan(v173 * 0.5)
 
-      local v175 = math.sqrt(viewportSize.X * viewportSize.X + viewportSize.Y * viewportSize.Y)
-        * 0.5
+      local v175 = math.min(viewportSize.X, viewportSize.Y) * 0.45
 
       if v174 > v175 then
         v174 = v175
@@ -3699,7 +3716,7 @@ end
         local camera = workspace.CurrentCamera
         if not camera then return end
         local cameraPosition = camera.CFrame.Position
-        local targets = getCachedTargets()
+        local targets = cfg.ESP.Enabled and getCachedTargets() or {}
         local visibleTargets = {}
 
         if cfg.ESP.Enabled then
@@ -4097,7 +4114,6 @@ end
         patchedWeaponModules = {},
         patchedFunctions = {},
         nextInstall = 0,
-        nextTargetUpdate = 0,
         currentTarget = nil,
         detectionUntil = 0,
       }
@@ -4516,22 +4532,44 @@ end
 
       local function eachUpvalue(fn, callback)
         if not (debug and debug.getupvalues and debug.setupvalue) then return end
-        for key, value in debug.getupvalues(fn) do callback(key, value) end
+        local ok, values, iteratorState, control = pcall(debug.getupvalues, fn)
+        if not ok then error(values, 0) end
+        if type(values) == "table" then
+          for key, value in pairs(values) do callback(key, value) end
+        elseif type(values) == "function" then
+          for key, value in values, iteratorState, control do callback(key, value) end
+        end
+      end
+
+      local function getWeaponFunctionInfo(fn)
+        local source, name = "", ""
+        if type(debug.info) == "function" then
+          local sourceOk, sourceValue = pcall(debug.info, fn, "s")
+          local nameOk, nameValue = pcall(debug.info, fn, "n")
+          if sourceOk and type(sourceValue) == "string" then source = sourceValue end
+          if nameOk and type(nameValue) == "string" then name = nameValue end
+        end
+        if (source == "" or name == "") and type(debug.getinfo) == "function" then
+          local ok, info = pcall(debug.getinfo, fn, "sn")
+          if ok and type(info) == "table" then
+            if source == "" then source = info.source or info.short_src or "" end
+            if name == "" then name = info.name or "" end
+          end
+        end
+        return source, name
       end
 
       local function patchWeaponModule(module, recoilModule)
         if type(module) ~= "table" or state.patchedWeaponModules[module] then return end
-        state.patchedWeaponModules[module] = true
         patchDelay(rawget(module, "Setup"), function() return cfg.WeaponMods.InstantEquip end)
         patchRandom(rawget(module, "TryFire"), function() return cfg.WeaponMods.InstantEoka end, true)
 
         local fire = rawget(module, "Fire")
         if type(fire) == "function" then
           eachUpvalue(fire, function(key, value)
-            if type(value) == "function" and debug.info then
-              local source = debug.info(value, "s") or ""
-              local name = debug.info(value, "n") or ""
-              if string.find(source, "Recoil", 1, true) and recoilModule then
+            if type(value) == "function" then
+              local source, name = getWeaponFunctionInfo(value)
+              if (string.find(source, "Recoil", 1, true) or name == "Recoil") and recoilModule then
                 local originalRecoil = value
                 local function recoilWrapper(a, b, c, d)
                   local originalFourth = d
@@ -4540,6 +4578,7 @@ end
                   return first, second, originalFourth
                 end
                 debug.setupvalue(fire, key, recoilWrapper)
+                state.recoilPatches = (state.recoilPatches or 0) + 1
                 addRestore(function() debug.setupvalue(fire, key, originalRecoil) end)
               elseif name == "GetSpreadDirection" then
                 patchRandom(value, function() return cfg.WeaponMods.Spread ~= 100 end, false)
@@ -4615,6 +4654,7 @@ end
           rawset(module, "Reload", reloadWrapper)
           addRestore(function() rawset(module, "Reload", reload) end)
         end
+        state.patchedWeaponModules[module] = true
       end
 
       local function installWeaponModules()
@@ -4629,10 +4669,21 @@ end
         local cameraModule = cameraFolder and cameraFolder:FindFirstChild("Camera")
         local recoilScript = cameraModule and cameraModule:FindFirstChild("Recoil")
         local recoilModule = safeRequire(recoilScript)
+        if not recoilModule then return end
+        local foundModules = false
+        local complete = true
         for _, child in ipairs(viewmodel:GetChildren()) do
-          if child:IsA("ModuleScript") then patchWeaponModule(safeRequire(child), recoilModule) end
+          if child:IsA("ModuleScript") then
+            foundModules = true
+            local module = safeRequire(child)
+            if type(module) == "table" then
+              patchWeaponModule(module, recoilModule)
+            else
+              complete = false
+            end
+          end
         end
-        state.weaponInstalled = true
+        if foundModules and complete then state.weaponInstalled = true end
       end
 
       local function installQuickLoot()
@@ -5154,8 +5205,10 @@ end
           local ok, err = pcall(installAmogusSilent)
           if not ok then state.silentError = tostring(err) end
         end
-        if now >= (state.nextSilentTargetUpdate or 0) then
-          state.nextSilentTargetUpdate = now + 1 / 30
+        local overlayTargetNeeded = cfg.Silent.Snapline
+          or cfg.Silent.Hitscan and cfg.Silent.HitscanIndicator
+        if overlayTargetNeeded and now >= (state.nextSilentTargetUpdate or 0) then
+          state.nextSilentTargetUpdate = now + 1 / 15
           local ok, err = pcall(selectTarget, cfg.Silent.MaxDistance)
           if not ok then
             state.currentTarget = nil
@@ -5299,14 +5352,7 @@ end
 
         local camera = workspace.CurrentCamera
         if not camera then return end
-        local needsTarget = cfg.Silent.Enabled
-        if needsTarget and now >= state.nextTargetUpdate then
-          state.nextTargetUpdate = now + 1 / 30
-          local ok, err = pcall(selectTarget, cfg.Silent.MaxDistance)
-          if not ok then state.currentTarget = nil; state.targetError = tostring(err) end
-        elseif not cfg.Silent.Enabled then
-          state.currentTarget = nil
-        end
+        if not cfg.Silent.Enabled then state.currentTarget = nil end
 
         local target = state.currentTarget
         if cfg.Silent.Snapline and cfg.Silent.Enabled and target then
@@ -5736,6 +5782,10 @@ end
             silentState.silentRedirects or 0, silentState.silentFallbacks or 0,
             tostring(silentState.silentError), tostring(silentState.silentMode),
             tostring(silentState.targetError)))
+          print(string.format(
+            "[MainGame] WeaponModules: installed=%s recoil=%s recoilPatches=%d error=%s",
+            tostring(silentState.weaponInstalled), tostring(cfg.WeaponMods.Recoil),
+            silentState.recoilPatches or 0, tostring(silentState.installErrors["Weapon Modules"])))
         end
         if currentStats.espError then
           print("[MainGame] ESP error: " .. tostring(currentStats.espError))
