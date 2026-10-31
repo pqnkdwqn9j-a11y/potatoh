@@ -3182,6 +3182,90 @@ end
       local hpLow = Color3.fromRGB(255, 60, 60)
       local hpMedium = Color3.fromRGB(255, 193, 0)
       local hpHigh = Color3.fromRGB(80, 220, 100)
+      local drawingEsp = Drawing ~= nil and type(Drawing.new) == "function"
+      if drawingEsp then
+        mainGame.espRenderer = "BurmaldaDrawing"
+        local legacyCreateBoxDrawing = createBoxDrawing
+        local legacyCreateTextDrawing = createTextDrawing
+        local function ownDrawing(className)
+          local ok, object = pcall(Drawing.new, className)
+          if not ok or not object then return nil end
+          mainGame.draws[#mainGame.draws + 1] = object
+          return object
+        end
+        createBoxDrawing = function(filled, thickness, color, transparency)
+          local object = ownDrawing("Square")
+          if not object then
+            return legacyCreateBoxDrawing(filled, thickness, color, transparency)
+          end
+          object.Visible = false
+          object.Filled = filled == true
+          object.Thickness = thickness or 1
+          object.Color = color or Color3.new(1, 1, 1)
+          object.Transparency = transparency == nil and 1 or transparency
+          object.Position = Vector2.new(0, 0)
+          object.Size = Vector2.new(0, 0)
+          return object
+        end
+        createTextDrawing = function(size, centered)
+          local object = ownDrawing("Text")
+          if not object then return legacyCreateTextDrawing(size, centered) end
+          object.Visible = false
+          object.Size = size or 13
+          object.Center = centered ~= false
+          object.Outline = true
+          object.Color = Color3.new(1, 1, 1)
+          object.Transparency = 1
+          object.Position = Vector2.new(0, 0)
+          object.Text = ""
+          return object
+        end
+        createEspEntry = function()
+          return {
+            box = createBoxDrawing(false, 1, Color3.new(1, 1, 1), 1),
+            outline = createBoxDrawing(false, 3, Color3.new(0, 0, 0), 1),
+            fill = createBoxDrawing(true, 1, Color3.new(1, 1, 1), 0.15),
+            name = createTextDrawing(13, true),
+            hpBg = createBoxDrawing(true, 1, Color3.new(0, 0, 0), 0.6),
+            hpFill = createBoxDrawing(true, 1, Color3.new(0, 1, 0), 1),
+            dist = createTextDrawing(12, true),
+            s = {},
+          }
+        end
+        updateBoxDrawing = function(entry, key, object, visible, x, y, width, height, color)
+          local state = entry.s[key]
+          if not state then state = {}; entry.s[key] = state end
+          if not object then return end
+          if state.v ~= visible then state.v = visible; object.Visible = visible end
+          if not visible then return end
+          if state.bx ~= x or state.by ~= y or state.w ~= width or state.h ~= height then
+            state.bx, state.by, state.w, state.h = x, y, width, height
+            object.Position = Vector2.new(x, y)
+            object.Size = Vector2.new(width, height)
+          end
+          if color ~= nil and state.col ~= color then state.col = color; object.Color = color end
+        end
+        updateTextDrawing = function(entry, key, object, visible, x, y, text, color)
+          local state = entry.s[key]
+          if not state then state = {}; entry.s[key] = state end
+          if not object then return end
+          if state.v ~= visible then state.v = visible; object.Visible = visible end
+          if not visible then return end
+          if state.bx ~= x or state.by ~= y then
+            state.bx, state.by = x, y
+            object.Position = Vector2.new(x, y)
+          end
+          if state.t ~= text then state.t = text; object.Text = text end
+          if color ~= nil and state.col ~= color then state.col = color; object.Color = color end
+        end
+        hideEspEntry = function(entry)
+          for _, key in ipairs({"box", "outline", "fill", "hpBg", "hpFill"}) do
+            updateBoxDrawing(entry, key, entry[key], false)
+          end
+          updateTextDrawing(entry, "name", entry.name, false)
+          updateTextDrawing(entry, "dist", entry.dist, false)
+        end
+      end
 
       local function classifyResourceName(value)
         if type(value) ~= "string" then return nil end
@@ -3365,6 +3449,19 @@ end
       end
 
       local function createLine(color, thickness)
+        if drawingEsp then
+          local ok, line = pcall(Drawing.new, "Line")
+          if ok and line then
+            line.Visible = false
+            line.Color = color
+            line.Thickness = thickness or 1
+            line.Transparency = 1
+            line.From = Vector2.new(0, 0)
+            line.To = Vector2.new(0, 0)
+            mainGame.draws[#mainGame.draws + 1] = line
+            return line
+          end
+        end
         local line = Instance.new("Frame")
         line.Name = "BurmaldaESPLine"
         line.BorderSizePixel = 0
@@ -3380,15 +3477,24 @@ end
 
       local function updateLine(entry, key, line, visible, from, to, color, thickness)
         local state = entry.s[key]
-        if not state then
-          state = {}
-          entry.s[key] = state
-        end
-        if state.visible ~= visible then
-          state.visible = visible
-          line.Visible = visible
-        end
+        if not state then state = {}; entry.s[key] = state end
+        if state.visible ~= visible then state.visible = visible; line.Visible = visible end
         if not visible then return end
+        local drawingLine = false
+        if drawingEsp then
+          local ok, value = pcall(function() return line.From end)
+          drawingLine = ok and value ~= nil
+        end
+        if drawingLine then
+          if state.from ~= from or state.to ~= to then
+            state.from, state.to = from, to
+            line.From = from
+            line.To = to
+          end
+          if state.color ~= color then state.color = color; line.Color = color end
+          if state.thickness ~= thickness then state.thickness = thickness; line.Thickness = thickness end
+          return
+        end
         local dx, dy = to.X - from.X, to.Y - from.Y
         local length = math.sqrt(dx * dx + dy * dy)
         local mx, my = (from.X + to.X) * 0.5, (from.Y + to.Y) * 0.5
@@ -3401,10 +3507,7 @@ end
           line.Size = UDim2.fromOffset(math.max(length, 0.1), thickness)
           line.Rotation = rotation
         end
-        if state.color ~= color then
-          state.color = color
-          line.BackgroundColor3 = color
-        end
+        if state.color ~= color then state.color = color; line.BackgroundColor3 = color end
       end
 
       local function createCharacterEspEntry()
@@ -4092,6 +4195,45 @@ end
       local baseSelectTarget = selectTarget
       local baseCollectTargets = collectTargets
       local baseUpdateFovCircle = updateFovCircle
+      local rawCollectTargets = baseCollectTargets
+
+      local function collectLoneTargets()
+        local result = rawCollectTargets()
+        local seen = {}
+        for _, target in ipairs(result) do seen[target.model] = true end
+        local function addModel(model, isPlayer)
+          if seen[model] or not model or not model:IsA("Model") or isLocalCharacter(model) then return end
+          local humanoid = model:FindFirstChildOfClass("Humanoid")
+          local head = model:FindFirstChild("Head", true)
+          local root = model:FindFirstChild("HumanoidRootPart", true)
+            or humanoid and humanoid.RootPart
+          if not humanoid or humanoid.Health <= 0 or not head then return end
+          seen[model] = true
+          result[#result + 1] = {
+            model = model,
+            name = model.Name,
+            hum = humanoid,
+            head = head,
+            hrp = root,
+            player = isPlayer == true,
+          }
+        end
+        for _, player in ipairs(players:GetPlayers()) do
+          if player ~= localPlayer then addModel(player.Character, true) end
+        end
+        for _, name in ipairs({"NPCs", "Bots", "Characters"}) do
+          local folder = workspace:FindFirstChild(name)
+          if folder then
+            for _, model in ipairs(folder:GetChildren()) do
+              local owner = players.GetPlayerFromCharacter and players:GetPlayerFromCharacter(model)
+              addModel(model, owner ~= nil)
+            end
+          end
+        end
+        return result
+      end
+      collectTargets = collectLoneTargets
+      baseCollectTargets = collectLoneTargets
 
       local function closestBodyPart(model)
         local camera = workspace.CurrentCamera
@@ -4124,7 +4266,7 @@ end
         end
         if not part then return baseGetAimPart(target) end
         target.hitscanPosition = nil
-        if cfg.Silent.Hitscan and cfg.Silent.VisibleOnly then
+        if cfg.Silent.Hitscan then
           local origin = workspace.CurrentCamera.CFrame.Position
           if not isTargetVisible(origin, part) then
             local override = findHitscanPosition(origin, part.Position, target.model)
@@ -4233,7 +4375,7 @@ end
       end
 
       local function installForceHitHook()
-        if state.forceHitInstalled then return end
+        if state.forceHitInstalled then return true end
         state.forceHitInstalled = hookMetatable(workspace, "__namecall", function(old, self, ...)
           if self ~= workspace or getnamecallmethod() ~= "Raycast" or checkcaller() then
             return old(self, ...)
@@ -4497,11 +4639,6 @@ end
         end
       end
 
-      -- Amogus-compatible MouseRaycast silent path. This is deliberately
-      -- separate from the recovered Lone Projectile.New fallback: the clone is
-      -- swapped only into ViewmodelController's mouseButton1Down upvalue and
-      -- every changed upvalue is restored on character teardown/reinit/Unload.
-      local silentUpvalues = {}
       state.silentShots = 0
       state.silentRedirects = 0
       state.silentFallbacks = 0
@@ -4509,292 +4646,398 @@ end
       state.forceHitShotAt = nil
       state.forceHitShotOrigin = nil
       state.silentError = nil
+      state.silentStackLevel = nil
+      state.raycastInstalled = false
+      local raycastHooks = {}
+      local raycastHookedFunctions = {}
+      local workspaceRaycastHook = nil
 
-      local function shallowCopy(source)
-        if table.clone then
-          local ok, result = pcall(table.clone, source)
-          if ok then return result end
+      local function vectorPair(args)
+        for index = 1, args.n - 1 do
+          if typeof(args[index]) == "Vector3" and typeof(args[index + 1]) == "Vector3" then
+            return index, index + 1
+          end
         end
-        local result = {}
-        for key, value in pairs(source) do result[key] = value end
-        return result
+        return nil, nil
       end
 
-      local function containsValue(container, expected)
-        if type(container) ~= "table" then return false end
-        for _, value in pairs(container) do
-          if value == expected then return true end
+      local function callerName()
+        if type(getcallingscript) ~= "function" then return "" end
+        local ok, script = pcall(getcallingscript)
+        if not ok or not script then return "" end
+        local okName, name = pcall(function() return script.Name end)
+        return okName and string.lower(tostring(name)) or ""
+      end
+
+      local function shootingCaller(name)
+        return string.find(name, "viewmodel", 1, true) ~= nil
+          or string.find(name, "projectile", 1, true) ~= nil
+          or string.find(name, "weapon", 1, true) ~= nil
+          or string.find(name, "ballistic", 1, true) ~= nil
+          or string.find(name, "crossbow", 1, true) ~= nil
+          or string.find(name, "gun", 1, true) ~= nil
+          or string.find(name, "tool", 1, true) ~= nil
+      end
+
+      local function nearLocalOrigin(origin)
+        local camera = workspace.CurrentCamera
+        if camera and (origin - camera.CFrame.Position).Magnitude <= 35 then return true end
+        local character = localPlayer.Character
+        local root = character and character:FindFirstChild("HumanoidRootPart")
+        return root ~= nil and (origin - root.Position).Magnitude <= 35
+      end
+
+      local function shotContext(origin, direction, modulePath)
+        if direction.Magnitude < 20 then return false end
+        local name = callerName()
+        if shootingCaller(name) then return true end
+        if name ~= "" and not modulePath then return false end
+        return direction.Magnitude >= 50 and nearLocalOrigin(origin)
+      end
+
+      local function executorCall()
+        if type(checkcaller) ~= "function" then return false end
+        local ok, value = pcall(checkcaller)
+        return ok and value == true
+      end
+
+      local function validVector(value)
+        if typeof(value) ~= "Vector3" then return false end
+        local magnitude = value.Magnitude
+        return magnitude == magnitude and magnitude > 0.0001 and magnitude < math.huge
+      end
+
+      local function resolveShotTarget(origin)
+        if not state.Active or not cfg.Silent.Enabled then return nil end
+        local ok, chosen, selection = pcall(selectTarget, cfg.Silent.MaxDistance)
+        if not ok then
+          state.targetError = tostring(chosen)
+          state.currentTarget = nil
+          return nil
+        end
+        if not chosen or not chosen.part then
+          state.currentTarget = nil
+          return nil
+        end
+        local realPart = chosen.part._realPart or chosen.part
+        if not realPart or not realPart.Parent then
+          state.currentTarget = nil
+          return nil
+        end
+        local position = chosen.t and chosen.t.hitscanPosition or chosen.part.Position
+        if typeof(position) ~= "Vector3" then
+          state.currentTarget = nil
+          return nil
+        end
+        local target = {
+          part = realPart,
+          position = position,
+          velocity = chosen.vel,
+          target = chosen.t,
+          selection = selection,
+          hitscan = chosen.t and chosen.t.hitscanPosition ~= nil or false,
+        }
+        state.currentTarget = target
+        return target
+      end
+
+      local function resultHitsTarget(result, target)
+        if result == nil then return false end
+        local ok, instance = pcall(function() return result.Instance end)
+        if not ok or not instance then return false end
+        if instance == target.part then return true end
+        if target.target and target.target.model then
+          local descendantOk, descendant = pcall(function() return instance:IsDescendantOf(target.target.model) end)
+          return descendantOk and descendant
         end
         return false
       end
 
-      local function functionSource(fn)
-        if not (debug and debug.info) then return "" end
-        local ok, source = pcall(debug.info, fn, "s")
-        return ok and tostring(source) or ""
-      end
-
-      local function functionConstants(fn)
-        if not (debug and debug.getconstants) then return {} end
-        local ok, constants = pcall(debug.getconstants, fn)
-        return ok and type(constants) == "table" and constants or {}
-      end
-
-      local function functionScript(fn)
-        if not getfenv then return nil end
-        local ok, environment = pcall(getfenv, fn)
-        if ok and type(environment) == "table" then return rawget(environment, "script") end
-        return nil
-      end
-
-      local function findMouseButton1Down(viewmodelController)
-        if not (getgc and debug and debug.getupvalues and debug.setupvalue) then return nil end
-        local ok, garbage = pcall(getgc, false)
-        if not ok or type(garbage) ~= "table" then return nil end
-        for _, outer in pairs(garbage) do
-          if type(outer) == "function"
-            and string.find(functionSource(outer), "ViewmodelController", 1, true)
-            and containsValue(functionConstants(outer), "DebugEnableVMMovement") then
-            for _, inner in debug.getupvalues(outer) do
-              if type(inner) == "function"
-                and string.find(functionSource(inner), "ViewmodelController", 1, true)
-                and containsValue(functionConstants(inner), "cancel")
-                and functionScript(inner) == viewmodelController then
-                return inner
-              end
-            end
-          end
+      local function forcedRayResult(original, target, origin)
+        local result = type(original) == "table" and original or {}
+        if type(original) == "table" then
+          result = {}
+          for key, value in pairs(original) do result[key] = value end
         end
-        return nil
-      end
-
-      local function getSharedGameModule(name)
-        local modules = replicatedStorage:FindFirstChild("Modules")
-        return modules and modules:FindFirstChild(name)
-      end
-
-      local function updateSilentToolInfo()
-        state.silentToolInfo = nil
-        local character = localPlayer.Character
-        local viewmodel = character and character:FindFirstChild("ViewmodelController")
-        local inventory = character and character:FindFirstChild("InventoryController")
-        local fetch = inventory and inventory:FindFirstChild("Fetch")
-        if not (viewmodel and fetch) then return end
-        local equipped = viewmodel:GetAttribute("Equipped")
-        if not equipped then return end
-        local ok, fetched = pcall(function() return fetch:Invoke() end)
-        if not ok or type(fetched) ~= "table" or type(fetched.Toolbar) ~= "table" then return end
-        local entry = fetched.Toolbar[equipped]
-        if type(entry) ~= "table" then return end
-        if state.silentItems == nil then state.silentItems = safeRequire(getSharedGameModule("Items")) or false end
-        if state.silentToolInfoModule == nil then
-          state.silentToolInfoModule = safeRequire(getSharedGameModule("ToolInfo")) or false
+        result.Instance = target.part
+        result.Position = target.position
+        result.Distance = (target.position - origin).Magnitude
+        if result.Normal == nil then result.Normal = Vector3.new(0, 1, 0) end
+        if result.Material == nil then
+          result.Material = target.part.Material or Enum.Material.Plastic
         end
-        if not state.silentItems or not state.silentToolInfoModule then return end
-        local item = state.silentItems[entry.ID]
-        local itemName = type(item) == "table" and rawget(item, "Name")
-        local info = itemName and state.silentToolInfoModule[itemName]
-        state.silentToolInfo = type(info) == "table" and info or nil
+        return result
       end
 
-      local function predictSilentPosition(origin, position, target)
-        if not cfg.Silent.Prediction then return position end
-        local info = state.silentToolInfo
-        local bullet = info and rawget(info, "Bullet")
-        local speed = bullet and rawget(bullet, "Speed")
-        local gravity = bullet and rawget(bullet, "Gravity") or 0
-        if type(speed) ~= "number" or type(gravity) ~= "number" or speed <= 0 then return position end
-        local root = target.target and target.target.hrp
-        local velocity = root and root.AssemblyLinearVelocity
-          or target.part.AssemblyLinearVelocity or Vector3.zero
-        local direction = solveBallisticDirection(origin, position, velocity, speed, gravity)
-        return direction and origin + direction * 9999 or position
-      end
-
-      local function applySpreadCompensation(stack, origin, position)
-        local spread
-        for _, value in pairs(stack) do
-          local first = type(value) == "table" and rawget(value, 1)
-          if type(first) == "table" and type(rawget(first, "Radius")) == "number" then
-            spread = value
-            break
-          end
+      local function callRedirectedRaycast(original, args, originIndex, directionIndex, target)
+        local origin = args[originIndex]
+        local direction = args[directionIndex]
+        local delta = target.position - origin
+        if not validVector(delta) or not validVector(direction) then
+          return original(table.unpack(args, 1, args.n))
         end
-        if not spread or #spread == 0 then return position end
-        local pattern = Vector3.zero
-        for index = 1, #spread do
-          local entry = rawget(spread, index)
-          local radius = rawget(entry, "Radius") or 0
-          local degree = rawget(entry, "Degree") or 0
-          pattern = pattern + CFrame.Angles(math.sin(degree) * radius,
-            math.cos(degree) * radius, 0).LookVector
-        end
-        return origin + (CFrame.new(origin, position)
-          * CFrame.new(Vector3.zero, pattern):Inverse()).LookVector * (position - origin).Magnitude
-      end
-
-      local function spoofTorsoNamecall(fakeTorso, originalTorso, fakeCamera, origin)
-        if not (getrawmetatable and setrawmetatable and getnamecallmethod) then return false end
-        local ok, result = pcall(function()
-          local metatable = shallowCopy(getrawmetatable(fakeTorso))
-          if setreadonly then setreadonly(metatable, false) end
-          local originalNamecall = rawget(metatable, "__namecall")
-          local pointToObjectSpace = fakeCamera.PointToObjectSpace
-          local handler = function(...)
-            local _, point = ...
-            if getnamecallmethod() == "PointToObjectSpace" then
-              local relative = originalTorso:PointToObjectSpace(point)
-              return pointToObjectSpace(fakeTorso, origin + fakeCamera.LookVector * relative.Magnitude)
-            end
-            if originalNamecall then return originalNamecall(...) end
-            return nil
-          end
-          rawset(metatable, "__namecall", newcclosure and newcclosure(handler) or handler)
-          if table.freeze then table.freeze(metatable) end
-          setrawmetatable(fakeTorso, metatable)
-          return true
-        end)
-        return ok and result == true
-      end
-
-      local function computeMouseRedirect(...)
-        state.silentShots = state.silentShots + 1
-        -- This clone is called only by ViewmodelController's actual shooting
-        -- path. Force Hit may use this short window, but never arbitrary rays.
+        local magnitude = direction.Magnitude
+        args[directionIndex] = delta.Unit * magnitude
         state.forceHitShotAt = os.clock()
-        local shotCamera = workspace.CurrentCamera
-        state.forceHitShotOrigin = shotCamera and shotCamera.CFrame.Position or nil
-        -- The marker belongs only to this MouseRaycast call. A previous shot
-        -- must never suppress the recovered Projectile fallback for this one.
-        state.silentRedirectAt = 0
-        if not (state.Active and cfg.Silent.Enabled) then return nil end
-        local ignoreList = select(3, ...)
-        if type(ignoreList) ~= "table" or rawlen(ignoreList) ~= 2 then return nil end
-        if not (debug and debug.getstack and debug.setstack) then return nil end
-        local camera = workspace.CurrentCamera
-        local character = localPlayer.Character
-        local root = character and character:FindFirstChild("HumanoidRootPart")
-        if not (camera and root) then return nil end
-        local target = state.currentTarget
+        state.forceHitShotOrigin = origin
+        local results = table.pack(pcall(original, table.unpack(args, 1, args.n)))
+        if not results[1] then error(results[2], 0) end
+        if cfg.Silent.ForceHit or target.hitscan then
+          if not resultHitsTarget(results[2], target) then
+            results[2] = forcedRayResult(results[2], target, origin)
+          elseif target.hitscan then
+            local positionOk = pcall(function() results[2].Position = target.position end)
+            if not positionOk then results[2] = forcedRayResult(results[2], target, origin) end
+          end
+        end
+        return table.unpack(results, 2, results.n)
+      end
+
+      local function handleRaycast(original, modulePath, ...)
+        local args = table.pack(...)
+        local originIndex, directionIndex = vectorPair(args)
+        if not originIndex then return original(...) end
+        local origin, direction = args[originIndex], args[directionIndex]
+        if not state.Active or not cfg.Silent.Enabled or executorCall()
+          or not shotContext(origin, direction, modulePath) then
+          return original(...)
+        end
+        state.silentShots = state.silentShots + 1
+        state.forceHitShotAt = os.clock()
+        state.forceHitShotOrigin = origin
+        local target = resolveShotTarget(origin)
         if not target then
-          pcall(selectTarget, cfg.Silent.MaxDistance)
-          target = state.currentTarget
+          state.silentFallbacks = state.silentFallbacks + 1
+          mainGame.stats.lastAim = {reason = "no target", model = "raycast"}
+          return original(...)
         end
-        if not target or not target.part or not target.part.Parent then return nil end
-        local hitChance = cfg.Silent.HitChance or 100
-        if math.random(0, 99) >= hitChance then return nil end
-
-        local cameraCFrame = camera.CFrame
-        local originalTorso = root.CFrame * CFrame.new(0, 1.5, 0)
-        -- The reference used level 2 from inside its own MouseRaycast replacement.
-        -- Our clone/helper/pcall adds frames, so a fixed level can inspect a wrapper
-        -- instead of mouseButton1Down. Find the actual frame containing both values.
-        local stack, stackLevel
-        local cameraIndexes, torsoIndexes = {}, {}
-        for level = 2, 8 do
-          local ok, candidate = pcall(debug.getstack, level)
-          if ok and type(candidate) == "table" then
-            local candidateCameras, candidateTorsos = {}, {}
-            for index, value in pairs(candidate) do
-              if type(index) == "number" then
-                if value == cameraCFrame then
-                  candidateCameras[#candidateCameras + 1] = index
-                elseif value == originalTorso then
-                  candidateTorsos[#candidateTorsos + 1] = index
-                end
-              end
-            end
-            if #candidateCameras > 0 and #candidateTorsos > 0 then
-              stack, stackLevel = candidate, level
-              cameraIndexes, torsoIndexes = candidateCameras, candidateTorsos
-              break
-            end
-          end
-        end
-        if not stack then
-          state.silentStackLevel = nil
-          state.silentError = "ViewmodelController shooting stack frame not found"
-          return nil
-        end
-
-        local origin = cameraCFrame.Position
-        local realPosition = target.part.Position
-        local hitscanPosition = target.target and target.target.hitscanPosition
-        local position = hitscanPosition or realPosition
-        position = predictSilentPosition(origin, position, target)
-        position = applySpreadCompensation(stack, origin, position)
-        local fakeCamera = CFrame.new(origin, position)
-        local torsoX, _, torsoZ = originalTorso:ToOrientation()
-        local _, targetYaw = CFrame.new(originalTorso.Position, position):ToOrientation()
-        local fakeTorso = CFrame.new(originalTorso.Position)
-          * CFrame.fromOrientation(torsoX, targetYaw, torsoZ)
-        if not spoofTorsoNamecall(fakeTorso, originalTorso, fakeCamera, origin) then
-          state.silentError = "fake torso PointToObjectSpace hook failed"
-          return nil
-        end
-
-        local changed = {}
-        local function rollbackStack()
-          for index = #changed, 1, -1 do
-            local entry = changed[index]
-            pcall(debug.setstack, stackLevel, entry.index, entry.value)
-          end
-        end
-        local function writeStack(index, value)
-          local ok = pcall(debug.setstack, stackLevel, index, value)
-          if not ok then return false end
-          -- Some executors return successfully from setstack without applying the
-          -- value. Require readback before claiming a redirect and suppressing the
-          -- Projectile fallback; otherwise restore and use the original shot path.
-          local readOk, current = pcall(debug.getstack, stackLevel, index)
-          if readOk and current == value then return true end
-          local tableOk, refreshed = pcall(debug.getstack, stackLevel)
-          return tableOk and type(refreshed) == "table" and rawget(refreshed, index) == value
-        end
-        for _, index in ipairs(cameraIndexes) do
-          changed[#changed + 1] = {index = index, value = stack[index]}
-          if not writeStack(index, fakeCamera) then
-            rollbackStack()
-            state.silentError = "Camera stack write/readback failed at level " .. tostring(stackLevel)
-            return nil
-          end
-        end
-        for _, index in ipairs(torsoIndexes) do
-          changed[#changed + 1] = {index = index, value = stack[index]}
-          if not writeStack(index, fakeTorso) then
-            rollbackStack()
-            state.silentError = "Torso stack write/readback failed at level " .. tostring(stackLevel)
-            return nil
-          end
-        end
-
         state.silentRedirects = state.silentRedirects + 1
         state.silentRedirectAt = os.clock()
-        state.silentStackLevel = stackLevel
-        state.silentLastPosition = position
+        state.silentLastPosition = target.position
         state.silentError = nil
-        return position
+        mainGame.stats.redirected = mainGame.stats.redirected + 1
+        mainGame.stats.lastAim = {
+          reason = "redirect",
+          chosen = target.target and target.target.name or "none",
+          model = "raycast",
+          dist = math.floor((target.position - origin).Magnitude),
+          position = target.position,
+        }
+        return callRedirectedRaycast(original, args, originIndex, directionIndex, target)
       end
 
-      local function callMouseRaycast(original, ...)
-        local args = table.pack(...)
-        local ok, position = pcall(function()
-          return computeMouseRedirect(table.unpack(args, 1, args.n))
+      local function restoreRaycastHooks()
+        for index = #raycastHooks, 1, -1 do
+          local entry = raycastHooks[index]
+          pcall(entry.restore)
+        end
+        raycastHooks = {}
+        raycastHookedFunctions = {}
+        if workspaceRaycastHook then
+          pcall(workspaceRaycastHook)
+          workspaceRaycastHook = nil
+        end
+        state.raycastInstalled = false
+      end
+
+      local function hookRaycastModule(module)
+        if type(module) ~= "table" then return false end
+        local original = rawget(module, "Raycast")
+        if type(original) ~= "function" or raycastHookedFunctions[original] then return false end
+        raycastHookedFunctions[original] = true
+        local oldFunction = original
+        local wrapper = function(...)
+          return handleRaycast(oldFunction, true, ...)
+        end
+        if type(hookfunction) == "function" then
+          local ok, previous = pcall(hookfunction, original, wrapper)
+          if ok then
+            oldFunction = type(previous) == "function" and previous or original
+            raycastHooks[#raycastHooks + 1] = {
+              restore = function() pcall(hookfunction, wrapper, oldFunction) end,
+            }
+            return true
+          end
+        end
+        local ok = pcall(function() module.Raycast = wrapper end)
+        if not ok or rawget(module, "Raycast") ~= wrapper then
+          raycastHookedFunctions[original] = nil
+          return false
+        end
+        raycastHooks[#raycastHooks + 1] = {
+          restore = function()
+            if rawget(module, "Raycast") == wrapper then module.Raycast = original end
+          end,
+        }
+        return true
+      end
+
+      local function installWorkspaceRaycast()
+        if workspaceRaycastHook or type(hookmetamethod) ~= "function" then return false end
+        local old
+        local wrapper = function(self, ...)
+          if self == workspace and type(getnamecallmethod) == "function"
+            and getnamecallmethod() == "Raycast" and not executorCall() then
+            return handleRaycast(old, false, self, ...)
+          end
+          return old(self, ...)
+        end
+        local ok, previous = pcall(hookmetamethod, game, "__namecall", newcclosure and newcclosure(wrapper) or wrapper)
+        if not ok or type(previous) ~= "function" then return false end
+        old = previous
+        workspaceRaycastHook = function()
+          pcall(hookmetamethod, game, "__namecall", previous)
+        end
+        return true
+      end
+
+      local function moduleCandidate(module)
+        local value = safeRequire(module)
+        return type(value) == "table" and rawget(value, "Raycast") and value or nil
+      end
+
+      local function installRaycastHooks()
+        local installed = false
+        local modules = replicatedStorage:FindFirstChild("Modules")
+        local client = modules and modules:FindFirstChild("Client")
+        local shared = modules and modules:FindFirstChild("Shared")
+        local physics = client and client:FindFirstChild("Physics")
+        local candidates = {
+            modules and modules:FindFirstChild("RaycastUtil"),
+            modules and modules:FindFirstChild("Raycast"),
+            physics and physics:FindFirstChild("Raycast"),
+            shared and shared:FindFirstChild("Raycast"),
+            shared and shared:FindFirstChild("RaycastUtil"),
+        }
+        for _, module in ipairs(candidates) do
+          if hookRaycastModule(moduleCandidate(module)) then installed = true end
+        end
+        if type(getgc) == "function" then
+          local ok, garbage = pcall(getgc, true)
+          if ok and type(garbage) == "table" then
+            for _, value in pairs(garbage) do
+              if type(value) == "table" and rawget(value, "Raycast") then
+                if hookRaycastModule(value) then installed = true end
+              end
+            end
+          end
+        end
+        if not installed and installWorkspaceRaycast() then installed = true end
+        state.raycastInstalled = installed
+        return installed
+      end
+
+      local function projectileAllowed(kind, stats)
+        local lower = string.lower(kind)
+        local function enabled(group)
+          if group[kind] == true or group[lower] == true then return true end
+          for key, value in pairs(group) do
+            if value == true and string.lower(tostring(key)) == lower then return true end
+          end
+          return false
+        end
+        local force = enabled(cfg.Silent.ForceTypes) and stats.Velocity ~= nil
+        local crosshair = enabled(cfg.Silent.CrosshairTypes) and stats.Velocity ~= nil
+        local lob = enabled(cfg.Silent.LobTypes) and stats.Speed ~= nil
+        local all = not force and not crosshair and not lob and stats.Velocity ~= nil and cfg.Silent.AimAll
+        return force or crosshair or lob or all, force, crosshair, lob
+      end
+
+      local function redirectVector(container, key, direction)
+        if type(container) ~= "table" then return false end
+        local value = rawget(container, key)
+        if typeof(value) ~= "Vector3" or value.Magnitude < 0.001 then return false end
+        container[key] = direction.Unit * value.Magnitude
+        return true
+      end
+
+      local function redirectProjectile(data)
+        if type(data) ~= "table" or data.FromServer or not cfg.Silent.Enabled then return end
+        local stats = rawget(data, "Stats")
+        if type(stats) ~= "table" or data.ForceDown then return end
+        local kind = tostring(rawget(stats, "Type"))
+        local allowed, force, crosshair, lob = projectileAllowed(kind, stats)
+        if not allowed then return end
+        local camera = workspace.CurrentCamera
+        local origin = rawget(data, "Origin") or camera and camera.CFrame.Position
+        if typeof(origin) ~= "Vector3" then return end
+        local target = resolveShotTarget(origin)
+        mainGame.stats.lastAim = {
+          reason = target and "redirect" or "no target",
+          chosen = target and target.target and target.target.name or "none",
+          type = kind,
+          model = force and "force" or crosshair and "crosshair" or lob and "lob" or "lookvector",
+        }
+        if not target then return end
+        local speed = lob and (tonumber(rawget(stats, "Speed")) or 0) * 0.5
+          or tonumber(rawget(stats, "Velocity")) or 0
+        local gravity = lob and workspace.Gravity or tonumber(rawget(stats, "Drop")) or 0
+        local delta = target.position - origin
+        if not validVector(delta) then return end
+        local direction
+        if speed > 0 then
+          direction = solveBallisticDirection(origin, target.position, target.velocity, speed, gravity)
+        end
+        if not validVector(direction) then direction = delta.Unit end
+        direction = direction.Unit
+        local changed = false
+        if redirectVector(data, "Direction", direction) then changed = true end
+        if redirectVector(data, "Velocity", direction) then changed = true end
+        if redirectVector(data, "LookVector", direction) then changed = true end
+        if redirectVector(stats, "Direction", direction) then changed = true end
+        if redirectVector(stats, "VelocityVector", direction) then changed = true end
+        if force or crosshair or lob or cfg.Silent.AimAll then
+          local distance = (target.position - origin).Magnitude
+          data.ForceHitVector = origin + direction * math.max(distance + 200, 1000)
+          changed = true
+        end
+        if not changed then return end
+        state.forceHitShotAt = os.clock()
+        state.forceHitShotOrigin = origin
+        state.silentRedirects = state.silentRedirects + 1
+        state.silentRedirectAt = os.clock()
+        state.silentLastPosition = target.position
+        mainGame.stats.redirected = mainGame.stats.redirected + 1
+        mainGame.stats.lastAim.dist = math.floor((target.position - origin).Magnitude)
+        mainGame.stats.lastAim.position = target.position
+      end
+
+      installProjectileHook = function()
+        local generation = mainGame.hookGeneration
+        local ok, module = pcall(function()
+          return require(replicatedStorage.Modules.Client.Physics.Projectile)
         end)
-        if ok and position ~= nil then return position end
-        if not ok then state.silentError = tostring(position) end
-        state.silentFallbacks = state.silentFallbacks + 1
-        return original(...)
+        if not ok or type(module) ~= "table" or type(module.New) ~= "function" then
+          return false, tostring(module)
+        end
+        if mainGame.hooked and mainGame.projectileDirect and mainGame.projectileWrapper == module.New then
+          return true
+        end
+        if mainGame.unloaded or mainGame.hookGeneration ~= generation then return false, "cancelled" end
+        local original = mainGame.hooked and mainGame.projModule == module
+          and mainGame.origNew or module.New
+        mainGame.projModule = module
+        mainGame.origNew = original
+        mainGame.hooked = false
+        mainGame.projectileDirect = false
+        local wrapper = function(self, data, ...)
+          mainGame.stats.shots = mainGame.stats.shots + 1
+          if type(data) == "table" and not data.FromServer then
+            mainGame.stats.localShots = (mainGame.stats.localShots or 0) + 1
+            local okRedirect, err = pcall(redirectProjectile, data)
+            if not okRedirect then mainGame.stats.lastAim = {reason = "error", error = tostring(err)} end
+          end
+          return original(self, data, ...)
+        end
+        module.New = wrapper
+        mainGame.projectileWrapper = wrapper
+        mainGame.projectileDirect = true
+        mainGame.hooked = true
+        return true
       end
 
       local function restoreAmogusSilent()
-        local fn = state.silentMouseFunction
-        if fn and debug and debug.setupvalue then
-          for _, entry in ipairs(silentUpvalues) do
-            pcall(debug.setupvalue, fn, entry.key, entry.value)
-          end
-        end
-        silentUpvalues = {}
+        restoreRaycastHooks()
         state.silentInstalled = false
         state.silentMouseFunction = nil
         state.silentClone = nil
@@ -4802,49 +5045,16 @@ end
       addRestore(restoreAmogusSilent)
 
       local function installAmogusSilent()
-        if state.silentInstalled then return true end
-        if not (debug and debug.getupvalues and debug.setupvalue
-          and debug.getstack and debug.setstack and getgc and getfenv) then
-          state.silentError = "missing Amogus silent debug APIs"
-          return false
+        if state.silentInstalled and state.raycastInstalled then return true end
+        local raycastOk = installRaycastHooks()
+        local projectileOk, projectileError = installProjectileHook()
+        state.silentInstalled = raycastOk or projectileOk == true
+        if state.silentInstalled then
+          state.silentError = nil
+        else
+          state.silentError = tostring(projectileError or "Raycast and Projectile paths unavailable")
         end
-        local character = localPlayer.Character
-        local viewmodel = character and character:FindFirstChild("ViewmodelController")
-        if not viewmodel then return false end
-        local mouseButton1Down = findMouseButton1Down(viewmodel)
-        if not mouseButton1Down then
-          state.silentError = "ViewmodelController mouseButton1Down not found"
-          return false
-        end
-        local raycastUtil = safeRequire(getSharedGameModule("RaycastUtil"))
-        local originalMouseRaycast = type(raycastUtil) == "table" and rawget(raycastUtil, "MouseRaycast")
-        if type(originalMouseRaycast) ~= "function" then
-          state.silentError = "RaycastUtil.MouseRaycast not found"
-          return false
-        end
-        local clone = shallowCopy(raycastUtil)
-        clone.MouseRaycast = function(...)
-          if not state.Active then return originalMouseRaycast(...) end
-          return callMouseRaycast(originalMouseRaycast, ...)
-        end
-        local patched = {}
-        for key, value in debug.getupvalues(mouseButton1Down) do
-          if value == raycastUtil then
-            local ok = pcall(debug.setupvalue, mouseButton1Down, key, clone)
-            if ok then patched[#patched + 1] = {key = key, value = value} end
-          end
-        end
-        if #patched == 0 then
-          state.silentError = "RaycastUtil upvalue not found"
-          return false
-        end
-        silentUpvalues = patched
-        state.silentMouseFunction = mouseButton1Down
-        state.silentClone = clone
-        state.silentInstalled = true
-        state.silentError = nil
-        updateSilentToolInfo()
-        return true
+        return state.silentInstalled
       end
       state.InstallSilent = installAmogusSilent
       state.RestoreSilent = restoreAmogusSilent
@@ -4852,31 +5062,23 @@ end
       trackConnection(localPlayer.CharacterRemoving:Connect(function()
         restoreAmogusSilent()
         state.currentTarget = nil
-        state.silentToolInfo = nil
         state.silentRedirectAt = 0
         state.nextSilentInstallAttempt = 0
       end))
       trackConnection(localPlayer.CharacterAdded:Connect(function()
         restoreAmogusSilent()
-        state.silentToolInfo = nil
-        state.silentItems = nil
-        state.silentToolInfoModule = nil
         state.silentRedirectAt = 0
         state.nextSilentTargetUpdate = 0
-        state.nextSilentEquipUpdate = 0
         state.nextSilentInstallAttempt = 0
       end))
 
       trackConnection(runService.RenderStepped:Connect(function()
         if not state.Active or not cfg.Silent.Enabled then return end
         local now = os.clock()
-        if not state.silentInstalled then
-          if now >= (state.nextSilentInstallAttempt or 0) then
-            state.nextSilentInstallAttempt = now + 0.5
-            local ok, err = pcall(installAmogusSilent)
-            if not ok then state.silentError = tostring(err) end
-          end
-          return
+        if not state.silentInstalled and now >= (state.nextSilentInstallAttempt or 0) then
+          state.nextSilentInstallAttempt = now + 0.5
+          local ok, err = pcall(installAmogusSilent)
+          if not ok then state.silentError = tostring(err) end
         end
         if now >= (state.nextSilentTargetUpdate or 0) then
           state.nextSilentTargetUpdate = now + 1 / 30
@@ -4885,10 +5087,6 @@ end
             state.currentTarget = nil
             state.targetError = tostring(err)
           end
-        end
-        if now >= (state.nextSilentEquipUpdate or 0) then
-          state.nextSilentEquipUpdate = now + 0.25
-          pcall(updateSilentToolInfo)
         end
       end))
 
@@ -5027,8 +5225,7 @@ end
 
         local camera = workspace.CurrentCamera
         if not camera then return end
-        local needsTarget = cfg.Silent.Enabled and (cfg.Silent.ForceHit or cfg.Silent.Snapline
-          or cfg.Silent.Hitscan and cfg.Silent.HitscanIndicator)
+        local needsTarget = cfg.Silent.Enabled
         if needsTarget and now >= state.nextTargetUpdate then
           state.nextTargetUpdate = now + 1 / 30
           local ok, err = pcall(selectTarget, cfg.Silent.MaxDistance)
@@ -5459,10 +5656,11 @@ end
         local silentState = mainGame.amogus
         if silentState then
           print(string.format(
-            "[MainGame] MouseSilent: installed=%s shots=%d redirected=%d fallback=%d stack=%s error=%s",
-            tostring(silentState.silentInstalled), silentState.silentShots or 0,
+            "[MainGame] RaycastSilent: installed=%s raycast=%s projectile=%s shots=%d redirected=%d fallback=%d error=%s",
+            tostring(silentState.silentInstalled), tostring(silentState.raycastInstalled),
+            tostring(mainGame.projectileDirect), silentState.silentShots or 0,
             silentState.silentRedirects or 0, silentState.silentFallbacks or 0,
-            tostring(silentState.silentStackLevel), tostring(silentState.silentError)))
+            tostring(silentState.silentError)))
         end
         if currentStats.espError then
           print("[MainGame] ESP error: " .. tostring(currentStats.espError))
@@ -5713,6 +5911,7 @@ end
     end
   end))
 
+  buildUi()
   local v221
   v221, hookError = installProjectileHook()
 
@@ -5743,7 +5942,6 @@ end
     end)
   end
 
-  buildUi()
   setFullbright(cfg.Misc.Fullbright)
 
   local v224 = print
