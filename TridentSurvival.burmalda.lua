@@ -37,6 +37,7 @@ local runtime = {
   connections = {},
   restores = {},
   drawings = {},
+  shotBullets = {},
   stats = { shots = 0, redirects = 0, remoteRedirects = 0, fallbacks = 0 },
   nextDiscovery = 0,
   nextTargetUpdate = 0,
@@ -105,8 +106,13 @@ local function shallowCopy(source)
 end
 local function getUpvalues(fn)
   if not (debug and debug.getupvalues and type(fn) == "function") then return {} end
-  local ok, values = pcall(debug.getupvalues, fn)
-  return ok and type(values) == "table" and values or {}
+  local ok, values, state, control = pcall(debug.getupvalues, fn)
+  if not ok then return {} end
+  if type(values) == "table" then return values end
+  if type(values) ~= "function" then return {} end
+  local result = {}
+  for key, value in values, state, control do result[key] = value end
+  return result
 end
 local function getUpvalue(fn, index)
   if debug and debug.getupvalue and type(fn) == "function" then
@@ -117,7 +123,7 @@ local function getUpvalue(fn, index)
 end
 local function patchUpvalue(fn, key, replacement)
   if not (debug and debug.setupvalue) then return false end
-  local original = getUpvalues(fn)[key]
+  local original = getUpvalue(fn, key)
   local ok = pcall(debug.setupvalue, fn, key, replacement)
   if ok then
     addRestore(function() pcall(debug.setupvalue, fn, key, original) end)
@@ -212,6 +218,36 @@ local function selectCache(functions, fallback)
   return best or fallback
 end
 
+local function functionInfo(fn)
+  local source, name = "", ""
+  if debug and type(debug.info) == "function" then
+    local okSource, value = pcall(debug.info, fn, "s")
+    if okSource then source = tostring(value or "") end
+    local okName, value = pcall(debug.info, fn, "n")
+    if okName then name = tostring(value or "") end
+  end
+  if debug and type(debug.getinfo) == "function" then
+    local ok, info = pcall(debug.getinfo, fn)
+    if ok and type(info) == "table" then
+      if source == "" then source = tostring(info.source or info.short_src or "") end
+      if name == "" then name = tostring(info.name or "") end
+    end
+  end
+  return source, name
+end
+local function hasFirstConstant(fn, expected)
+  if not debug or type(fn) ~= "function" then return false end
+  if type(debug.getconstants) == "function" then
+    local ok, constants = pcall(debug.getconstants, fn)
+    return ok and type(constants) == "table" and constants[1] == expected or false
+  end
+  if type(debug.getconstant) == "function" then
+    local ok, value = pcall(debug.getconstant, fn, 1)
+    return ok and value == expected or false
+  end
+  return false
+end
+
 local function discoverModules()
   if runtime.classes and runtime.cacheValidated then return true end
   if not getgc then runtime.discoveryError = "getgc unavailable" return false end
@@ -222,8 +258,16 @@ local function discoverModules()
   end
   local classes = runtime.classes
   local weaponTables = {}
+  local playerUpdate = nil
   for _, value in pairs(garbage) do
-    if type(value) == "table" then
+    if type(value) == "function" then
+      local source, name = functionInfo(value)
+      if source:find("RangedWeaponClient", 1, true) and hasFirstConstant(value, "ProjectileSpeed") then
+        runtime.discoveredCreateProjectile = value
+      elseif source:find("PlayerClient", 1, true) and name == "updatePlayers" then
+        playerUpdate = value
+      end
+    elseif type(value) == "table" then
       if rawget(value, "Damage") ~= nil or rawget(value, "recoilOffset") ~= nil
         or type(rawget(value, "AimRecoil")) == "table" or type(rawget(value, "HipRecoil")) == "table"
         or type(rawget(value, "RecoilData")) == "table" then
@@ -257,7 +301,8 @@ local function discoverModules()
   local npcClient = rawget(classes, "NPCClient")
   local onDestroy = playerClient and rawget(playerClient, "OnDestroy")
   local onCreate = npcClient and rawget(npcClient, "OnCreate")
-  runtime.playerCache = selectCache({ onDestroy }, getUpvalue(onDestroy, 1))
+  runtime.playerCache = selectCache({ onDestroy, playerUpdate },
+    getUpvalue(onDestroy, 1) or getUpvalue(playerUpdate, 1))
   runtime.npcCache = selectCache({ onCreate }, getUpvalue(onCreate, 1))
   runtime.validTypes = { Player = true }
   for name in pairs(NPC_TYPES) do runtime.validTypes[name] = true end
@@ -267,7 +312,8 @@ local function discoverModules()
   if npcFolder then
     for _, child in ipairs(npcFolder:GetChildren()) do runtime.validTypes[child.Name] = true end
   end
-  runtime.cacheValidated = runtime.entityCache ~= nil or runtime.playerCache ~= nil or runtime.npcCache ~= nil
+  runtime.cacheValidated = cacheScore(runtime.entityCache) > 0
+    and type(runtime.playerCache) == "table" and type(runtime.npcCache) == "table"
   runtime.discoveryError = runtime.cacheValidated and nil or "Trident entity cache not found"
   return true
 end
@@ -309,7 +355,7 @@ local function scanWorldResources()
   runtime.worldResources = result
   return result
 end
-local function eachEntity(callback)
+local function eachEntity(callback, includeResources)
   local seen = {}
   local function visit(entity)
     local kind, label = classifyEntity(entity)
@@ -322,7 +368,9 @@ local function eachEntity(callback)
   for _, cache in ipairs({ runtime.entityCache, runtime.playerCache, runtime.npcCache }) do
     if type(cache) == "table" then for _, entity in pairs(cache) do visit(entity) end end
   end
-  for _, entity in ipairs(scanWorldResources()) do visit(entity) end
+  if includeResources ~= false then
+    for _, entity in ipairs(scanWorldResources()) do visit(entity) end
+  end
   if players and players.GetPlayers then
     for _, player in ipairs(players:GetPlayers()) do
       if player ~= localPlayer and player.Character and not seen[player.Character] then
@@ -390,7 +438,7 @@ local function currentFovRadius()
 end
 local function visibleFrom(origin, position, model)
   local params = RaycastParams.new()
-  params.FilterDescendantsInstances = { model, getIgnoreFolder() }
+  params.FilterDescendantsInstances = { model, getLocalCharacter(), camera, getIgnoreFolder() }
   params.FilterType = Enum.RaycastFilterType.Blacklist
   params.CollisionGroup = "WeaponRaycast"
   params.IgnoreWater = true
@@ -461,15 +509,21 @@ local function predictedPosition(origin, target, info)
   local drop = info and rawget(info, "ProjectileDrop") or 0
   if type(speed) ~= "number" or speed <= 0 or type(drop) ~= "number" then return position end
   local entity = target.entity
-  local velocity = rawget(entity, "velocityVector")
+  local velocity = nil
   local goal, start = rawget(entity, "goalPosition"), rawget(entity, "startPosition")
-  if goal and start then
+  if typeof(goal) == "Vector3" and typeof(start) == "Vector3" then
     velocity = (goal - start) / 0.15 * Vector3.new(1, 0, 1)
+  elseif typeof(rawget(entity, "velocityVector")) == "Vector3" then
+    velocity = rawget(entity, "velocityVector") * 7.4
+  elseif typeof(target.part.AssemblyLinearVelocity) == "Vector3" then
+    velocity = target.part.AssemblyLinearVelocity
+  else
+    velocity = Vector3.zero
   end
-  velocity = velocity or target.part.AssemblyLinearVelocity or Vector3.zero
   local time = (position - origin).Magnitude / speed
   local predicted = position + velocity * time
-  time = time + (predicted - position).Magnitude / speed
+  time = (predicted - origin).Magnitude / speed
+  predicted = position + velocity * time
   local exponent = time * drop
   local offset = drop ^ exponent - 1
   if offset ~= offset or offset == math.huge or offset == -math.huge then return predicted end
@@ -477,41 +531,45 @@ local function predictedPosition(origin, target, info)
 end
 local function computeSilentCFrame(origin, weaponData)
   if not (runtime.Active and cfg.Silent.Enabled) then return nil end
+  updateTarget()
   local target = runtime.currentTarget
   if not target or not target.part or not target.part.Parent then return nil end
   if math.random(0, 99) >= (cfg.Silent.HitChance or 100) then return nil end
   local info = weaponInfo(weaponData)
   local position = predictedPosition(origin, target, info)
   if not position then return nil end
-  return CFrame.lookAt(origin, position)
+  return CFrame.lookAt(origin, position), position
 end
 runtime.ComputeSilentCFrame = computeSilentCFrame
 
-local function setPendingShot(cframe)
-  runtime.pendingShot = { cframe = cframe, at = os.clock() }
+local function setPendingShot(cframe, hitPosition)
+  runtime.pendingShot = { cframe = cframe, hitPosition = hitPosition, at = os.clock() }
   runtime.stats.redirects = runtime.stats.redirects + 1
 end
 
 local function installCreateProjectileHook()
   local classes = runtime.classes
   local ranged = classes and rawget(classes, "RangedWeaponClient")
-  local createProjectile = ranged and rawget(ranged, "CreateProjectile")
-  if type(createProjectile) ~= "function" or runtime.createProjectileInstalled then return false end
-  local original = createProjectile
+  local fieldFunction = ranged and rawget(ranged, "CreateProjectile")
+  local targetFunction = runtime.discoveredCreateProjectile or fieldFunction
+  if type(targetFunction) ~= "function" or runtime.createProjectileInstalled then return false end
+  local original = targetFunction
   local wrapper = function(startCFrame, weaponData, isLocal, ...)
     runtime.stats.shots = runtime.stats.shots + 1
-    -- Pending state belongs to one local attempt only. A no-target, disabled or
-    -- failed-chance shot must never leave the previous CFrame for the next Fire.
-    if runtime.Active and isLocal then runtime.pendingShot = nil end
+    if runtime.Active and isLocal then
+      runtime.createProjectileObserved = true
+      runtime.lastLocalProjectileAt = os.clock()
+      runtime.pendingShot = nil
+    end
     if not runtime.Active or not isLocal or not cfg.Silent.Enabled then
       return original(startCFrame, weaponData, isLocal, ...)
     end
     local origin = typeof(startCFrame) == "CFrame" and startCFrame.Position
       or (camera and camera.CFrame.Position) or Vector3.zero
-    local ok, silentCFrame = pcall(computeSilentCFrame, origin, weaponData)
+    local ok, silentCFrame, hitPosition = pcall(computeSilentCFrame, origin, weaponData)
     if ok and silentCFrame then
       startCFrame = silentCFrame
-      setPendingShot(silentCFrame)
+      setPendingShot(silentCFrame, hitPosition)
       runtime.silentMode = "CreateProjectile"
     elseif not ok then
       runtime.silentError = tostring(silentCFrame)
@@ -519,11 +577,34 @@ local function installCreateProjectileHook()
     end
     return original(startCFrame, weaponData, isLocal, ...)
   end
-  if patchField(ranged, "CreateProjectile", wrapper) then
-    runtime.createProjectileInstalled = true
-    runtime.originalCreateProjectile = original
-    runtime.silentMode = "CreateProjectile"
-    return true
+  if type(hookfunction) == "function" then
+    local ok, previous = pcall(hookfunction, targetFunction, wrapper)
+    if ok and type(previous) == "function" then
+      original = previous
+      runtime.createProjectileInstalled = true
+      runtime.createProjectileMode = "function"
+      runtime.originalCreateProjectile = original
+      runtime.silentMode = "CreateProjectile"
+      addRestore(function()
+        if type(restorefunction) == "function" then
+          pcall(restorefunction, targetFunction)
+        elseif type(hookfunction) == "function" then
+          pcall(hookfunction, targetFunction, previous)
+        end
+      end)
+      return true
+    end
+    if ok and type(restorefunction) == "function" then pcall(restorefunction, targetFunction) end
+  end
+  if type(fieldFunction) == "function" then
+    original = fieldFunction
+    if patchField(ranged, "CreateProjectile", wrapper) then
+      runtime.createProjectileInstalled = true
+      runtime.createProjectileMode = "field"
+      runtime.originalCreateProjectile = original
+      runtime.silentMode = "CreateProjectile"
+      return true
+    end
   end
   return false
 end
@@ -543,7 +624,7 @@ local function installSkewedOriginHooks()
           if value == CFrame.fromOrientation then
             local originalOrientation = value
             local replacement = function(...)
-              if runtime.Active and cfg.Silent.Enabled and not runtime.createProjectileInstalled then
+              if runtime.Active and cfg.Silent.Enabled and not runtime.createProjectileObserved then
                 local callerMatches = true
                 if debug.info then
                   local infoOk, caller = pcall(debug.info, 3, "f")
@@ -552,11 +633,12 @@ local function installSkewedOriginHooks()
                 if callerMatches and debug.getstack and debug.setstack then
                   local stackOk, stack = pcall(debug.getstack, 2)
                   if stackOk and type(stack) == "table" and typeof(stack[1]) == "CFrame" then
-                    local cfOk, silentCFrame = pcall(computeSilentCFrame, stack[1].Position, nil)
+                    local cfOk, silentCFrame, hitPosition = pcall(computeSilentCFrame, stack[1].Position, nil)
                     if cfOk and silentCFrame then
                       local setOk = pcall(debug.setstack, 2, 1, silentCFrame)
                       if setOk then
-                        setPendingShot(silentCFrame)
+                        runtime.skewedObserved = true
+                        setPendingShot(silentCFrame, hitPosition)
                         runtime.silentMode = "getSkewedOrigin"
                       end
                     end
@@ -739,15 +821,27 @@ local function applyWeaponDataMods()
   refreshWeaponModTables()
   if cfg.Weapon.NoRecoil then
     for _, info in ipairs(runtime.weaponTables or {}) do
-      if rawget(info, "recoilOffset") ~= nil then
+      local recoilOffset = rawget(info, "recoilOffset")
+      if typeof(recoilOffset) == "CFrame" then
         writeWeaponValue("Recoil", info, "recoilOffset", CFrame.new())
-        writeWeaponValue("Recoil", info, "recoilLerpSpeed", 0)
-        writeWeaponValue("Recoil", info, "recoilReturnSpeed", 0)
+      elseif type(recoilOffset) == "number" then
+        writeWeaponValue("Recoil", info, "recoilOffset", 0)
+      end
+      for _, key in ipairs({ "recoilLerpSpeed", "recoilReturnSpeed" }) do
+        if type(rawget(info, key)) == "number" then writeWeaponValue("Recoil", info, key, 0) end
       end
       for _, key in ipairs({ "AimRecoil", "HipRecoil", "RecoilData" }) do
         local nested = rawget(info, key)
         if type(nested) == "table" then
-          for nestedKey in pairs(nested) do writeWeaponValue("Recoil", nested, nestedKey, 0) end
+          for nestedKey, value in pairs(nested) do
+            if type(value) == "number" then
+              writeWeaponValue("Recoil", nested, nestedKey, 0)
+            elseif typeof(value) == "CFrame" then
+              writeWeaponValue("Recoil", nested, nestedKey, CFrame.new())
+            elseif typeof(value) == "Vector3" then
+              writeWeaponValue("Recoil", nested, nestedKey, Vector3.zero)
+            end
+          end
         end
       end
     end
@@ -826,31 +920,41 @@ local function processRemote(args)
     if not getRangedWeaponInfo() then return end
     local pending = runtime.pendingShot
     runtime.pendingShot = nil
+    local hitPosition = nil
     if pending and os.clock() - pending.at <= 0.75 then
       args[4] = pending.cframe
+      hitPosition = pending.hitPosition
       runtime.stats.remoteRedirects = runtime.stats.remoteRedirects + 1
-    elseif not runtime.createProjectileInstalled and not runtime.skewedInstalled then
-      local silentCFrame = computeSilentCFrame(camera.CFrame.Position, nil)
+    elseif not runtime.createProjectileObserved and not runtime.skewedObserved then
+      local silentCFrame, predictedHit = computeSilentCFrame(camera.CFrame.Position, nil)
       if silentCFrame then
         args[4] = silentCFrame
+        hitPosition = predictedHit
         runtime.stats.remoteRedirects = runtime.stats.remoteRedirects + 1
         runtime.silentMode = "Remote"
       end
     end
+    if hitPosition and args[3] ~= nil then runtime.shotBullets[args[3]] = hitPosition end
   elseif action == "Hit" then
-    if not runtime.Active or not cfg.Weapon.ForceHeadshots or not getRangedWeaponInfo() then return end
-    local partIndex, entityIndex
+    if not runtime.Active or not cfg.Weapon.ForceHeadshots then return end
+    local partIndex, entityIndex, positionIndex
     if count == 8 then
       if type(args[5]) ~= "number" or type(args[6]) ~= "string" or typeof(args[7]) ~= "Vector3" then return end
-      partIndex, entityIndex = 6, 5
+      partIndex, entityIndex, positionIndex = 6, 5, 7
     elseif count == 7 then
       if type(args[4]) ~= "number" or type(args[5]) ~= "string" or typeof(args[6]) ~= "Vector3" then return end
-      partIndex, entityIndex = 5, 4
+      partIndex, entityIndex, positionIndex = 5, 4, 6
     else return end
+    local trackedPosition = count == 8 and runtime.shotBullets[args[3]] or nil
+    if not trackedPosition and not getRangedWeaponInfo() then return end
     local entity = combatEntity(args[entityIndex])
     local model = entity and rawget(entity, "model")
     if not model or not findChild(model, "Head") then return end
-    if BODY_PARTS[args[partIndex]] then args[partIndex] = "Head" end
+    if count == 8 then runtime.shotBullets[args[3]] = nil end
+    if BODY_PARTS[args[partIndex]] then
+      args[partIndex] = "Head"
+      args[positionIndex] = trackedPosition or Vector3.zero
+    end
   end
 end
 runtime.ProcessRemote = processRemote
@@ -984,23 +1088,24 @@ runtime.fovRenderer = "BurmaldaDrawing"
 local espPool = {}
 runtime.espPool = espPool
 runtime.espRenderer = "BurmaldaDrawing"
+local ESP_OBJECTS = { "boxOutline", "box", "name", "distance", "weapon", "tracer" }
 local function espEntry(model)
   local entry = espPool[model]
   if entry then return entry end
   entry = {
-    boxOutline = newDrawing("Square", { Visible = false, Filled = false, Thickness = 3, Color = Color3.new(0, 0, 0), ZIndex = 2 }),
-    box = newDrawing("Square", { Visible = false, Filled = false, Thickness = 1, ZIndex = 3 }),
-    name = newDrawing("Text", { Visible = false, Size = 13, Center = true, Outline = true, ZIndex = 4 }),
-    distance = newDrawing("Text", { Visible = false, Size = 12, Center = true, Outline = true, ZIndex = 4 }),
-    weapon = newDrawing("Text", { Visible = false, Size = 12, Center = true, Outline = true, ZIndex = 4 }),
-    tracer = newDrawing("Line", { Visible = false, Thickness = 1, ZIndex = 2 }),
+    boxOutline = newDrawing("Square", { Visible = false, Filled = false, Thickness = 3, Transparency = 1, Color = Color3.new(0, 0, 0), ZIndex = 2 }),
+    box = newDrawing("Square", { Visible = false, Filled = false, Thickness = 1, Transparency = 1, ZIndex = 3 }),
+    name = newDrawing("Text", { Visible = false, Size = 13, Center = true, Outline = true, Transparency = 1, ZIndex = 4 }),
+    distance = newDrawing("Text", { Visible = false, Size = 12, Center = true, Outline = true, Transparency = 1, ZIndex = 4 }),
+    weapon = newDrawing("Text", { Visible = false, Size = 12, Center = true, Outline = true, Transparency = 1, ZIndex = 4 }),
+    tracer = newDrawing("Line", { Visible = false, Thickness = 1, Transparency = 1, ZIndex = 2 }),
   }
   espPool[model] = entry
   return entry
 end
 local function hideSkeleton(entry)
   for _, item in ipairs(entry.skeleton or {}) do
-    if item.line then item.line.Visible = false end
+    if item.line and item.line.Visible then item.line.Visible = false end
   end
 end
 local function ensureSkeleton(entry)
@@ -1008,17 +1113,42 @@ local function ensureSkeleton(entry)
   entry.skeleton = {}
   for _, pair in ipairs(SKELETON) do
     entry.skeleton[#entry.skeleton + 1] = {
-      line = newDrawing("Line", { Visible = false, Thickness = 1, ZIndex = 3 }),
+      line = newDrawing("Line", { Visible = false, Thickness = 1, Transparency = 1, ZIndex = 3 }),
       a = pair[1], b = pair[2],
     }
   end
   return entry.skeleton
 end
 local function hideEntry(entry)
-  for _, key in ipairs({ "boxOutline", "box", "name", "distance", "weapon", "tracer" }) do
-    if entry[key] then entry[key].Visible = false end
+  for _, key in ipairs(ESP_OBJECTS) do
+    local object = entry[key]
+    if object and object.Visible then object.Visible = false end
   end
   hideSkeleton(entry)
+end
+local function hideModelEntry(model)
+  local entry = espPool[model]
+  if entry then hideEntry(entry) end
+end
+local function removeEspEntries(models)
+  if #models == 0 then return end
+  local removed = {}
+  for _, model in ipairs(models) do
+    local entry = espPool[model]
+    if entry then
+      for _, key in ipairs(ESP_OBJECTS) do
+        local object = entry[key]
+        if object then removed[object] = true; object:Remove() end
+      end
+      for _, item in ipairs(entry.skeleton or {}) do
+        if item.line then removed[item.line] = true; item.line:Remove() end
+      end
+      espPool[model] = nil
+    end
+  end
+  for index = #runtime.drawings, 1, -1 do
+    if removed[runtime.drawings[index]] then table.remove(runtime.drawings, index) end
+  end
 end
 local function entityRoot(model)
   local root = findChild(model, "HumanoidRootPart") or findChild(model, "Torso") or model.PrimaryPart or findChild(model, "Head")
@@ -1027,26 +1157,26 @@ local function entityRoot(model)
   return ok and part or nil
 end
 local function renderEntity(entity, model, kind, label)
-  local entry = espEntry(model)
   local enabled = runtime.Active and cfg.ESP.Enabled and model.Parent ~= nil and not isLocalEntity(entity, model)
   if kind == "player" then enabled = enabled and cfg.ESP.Players end
   if kind == "npc" then enabled = enabled and cfg.ESP.NPCs end
   if kind == "resource" then enabled = enabled and cfg.ESP.Resources end
   if not enabled or (kind ~= "resource" and cfg.ESP.TeamCheck and isTeammate(model))
     or (kind ~= "resource" and cfg.ESP.IgnoreSleepers and isSleeper(entity, model)) then
-    hideEntry(entry) return
+    hideModelEntry(model) return
   end
   local root = entityRoot(model)
-  if not root or not camera then hideEntry(entry) return end
+  if not root or not camera then hideModelEntry(model) return end
   local origin = camera.CFrame.Position
   local distance = (root.Position - origin).Magnitude
-  if distance > cfg.ESP.MaxDistance then hideEntry(entry) return end
+  if distance > cfg.ESP.MaxDistance then hideModelEntry(model) return end
   local head = findChild(model, "Head")
   local topPosition = (head and head.Position or root.Position) + Vector3.new(0, kind == "resource" and 1 or 0.75, 0)
   local bottomPosition = root.Position - Vector3.new(0, kind == "resource" and 1 or 2, 0)
   local top, topVisible, topDepth = screenPoint(topPosition)
   local bottom, bottomVisible, bottomDepth = screenPoint(bottomPosition)
-  if topDepth <= 0 and bottomDepth <= 0 or not (topVisible or bottomVisible) then hideEntry(entry) return end
+  if topDepth <= 0 and bottomDepth <= 0 or not (topVisible or bottomVisible) then hideModelEntry(model) return end
+  local entry = espEntry(model)
   local height = math.max(8, math.abs(bottom.Y - top.Y))
   local width = math.max(6, height * (kind == "resource" and 0.8 or 0.62))
   local centerX = (top.X + bottom.X) / 2
@@ -1056,33 +1186,44 @@ local function renderEntity(entity, model, kind, label)
   if entry.box and entry.boxOutline then
     entry.box.Visible = cfg.ESP.Box
     entry.boxOutline.Visible = cfg.ESP.Box
-    entry.box.Position, entry.boxOutline.Position = Vector2.new(centerX - width / 2, topY), Vector2.new(centerX - width / 2, topY)
-    entry.box.Size, entry.boxOutline.Size = Vector2.new(width, height), Vector2.new(width, height)
-    entry.box.Color = color
+    if cfg.ESP.Box then
+      entry.box.Position, entry.boxOutline.Position = Vector2.new(centerX - width / 2, topY), Vector2.new(centerX - width / 2, topY)
+      entry.box.Size, entry.boxOutline.Size = Vector2.new(width, height), Vector2.new(width, height)
+      entry.box.Color = color
+    end
   end
   if entry.name then
     entry.name.Visible = cfg.ESP.Names
-    entry.name.Text = kind == "resource" and label or entityName(entity, label)
-    entry.name.Position = Vector2.new(centerX, topY - 16)
-    entry.name.Color = color
+    if cfg.ESP.Names then
+      entry.name.Text = kind == "resource" and label or entityName(entity, label)
+      entry.name.Position = Vector2.new(centerX, topY - 16)
+      entry.name.Color = color
+    end
   end
   if entry.distance then
     entry.distance.Visible = cfg.ESP.Distance
-    entry.distance.Text = tostring(math.floor(distance + 0.5)) .. "m"
-    entry.distance.Position = Vector2.new(centerX, topY + height + 3)
-    entry.distance.Color = color
+    if cfg.ESP.Distance then
+      entry.distance.Text = tostring(math.floor(distance + 0.5)) .. "m"
+      entry.distance.Position = Vector2.new(centerX, topY + height + 3)
+      entry.distance.Color = color
+    end
   end
   if entry.weapon then
-    entry.weapon.Visible = cfg.ESP.Weapon and kind ~= "resource"
-    entry.weapon.Text = entityWeapon(entity, model)
-    entry.weapon.Position = Vector2.new(centerX, topY + height + (cfg.ESP.Distance and 18 or 3))
-    entry.weapon.Color = color
+    local showWeapon = cfg.ESP.Weapon and kind ~= "resource"
+    entry.weapon.Visible = showWeapon
+    if showWeapon then
+      entry.weapon.Text = entityWeapon(entity, model)
+      entry.weapon.Position = Vector2.new(centerX, topY + height + (cfg.ESP.Distance and 18 or 3))
+      entry.weapon.Color = color
+    end
   end
   if entry.tracer then
     entry.tracer.Visible = cfg.ESP.Tracers
-    entry.tracer.From = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y)
-    entry.tracer.To = Vector2.new(centerX, topY + height / 2)
-    entry.tracer.Color = color
+    if cfg.ESP.Tracers then
+      entry.tracer.From = Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y)
+      entry.tracer.To = Vector2.new(centerX, topY + height / 2)
+      entry.tracer.Color = color
+    end
   end
   if cfg.ESP.Skeleton and (kind == "player" or kind == "npc") then
     for _, item in ipairs(ensureSkeleton(entry)) do
@@ -1104,14 +1245,23 @@ local function renderEntity(entity, model, kind, label)
   end
 end
 local function renderEsp()
-  local seen = {}
-  eachEntity(function(entity, model, kind, label)
-    seen[model] = true
-    renderEntity(entity, model, kind, label)
-  end)
-  for model, entry in pairs(espPool) do
-    if not seen[model] or not model or not model.Parent then hideEntry(entry) end
+  if not (runtime.Active and cfg.ESP.Enabled) then
+    for _, entry in pairs(espPool) do hideEntry(entry) end
+    runtime.espRendered = false
+    return
   end
+  runtime.espRendered = true
+  local seen, stale = {}, {}
+  eachEntity(function(entity, model, kind, label)
+    local categoryEnabled = kind == "player" and cfg.ESP.Players
+      or kind == "npc" and cfg.ESP.NPCs or kind == "resource" and cfg.ESP.Resources
+    if categoryEnabled then seen[model] = true end
+    renderEntity(entity, model, kind, label)
+  end, cfg.ESP.Resources)
+  for model in pairs(espPool) do
+    if not seen[model] or not model or not model.Parent then stale[#stale + 1] = model end
+  end
+  removeEspEntries(stale)
 end
 runtime.RenderESP = renderEsp
 
@@ -1144,7 +1294,7 @@ local function updateBigHead()
       head.Size = Vector3.new(cfg.Visuals.HeadScale, cfg.Visuals.HeadScale, cfg.Visuals.HeadScale)
       head.Transparency = cfg.Visuals.HeadTransparency
     end)
-  end)
+  end, false)
   for head in pairs(savedHeads) do
     if not seen[head] then restoreHead(head) end
   end
@@ -2973,8 +3123,11 @@ trackConnection(runService.RenderStepped:Connect(function(deltaTime)
     runtime.nextHeadUpdate = now + 0.2
     pcall(updateBigHead)
   end
-  if cfg.ESP.Enabled then pcall(renderEsp) else
-    for _, entry in pairs(espPool) do hideEntry(entry) end
+  if cfg.ESP.Enabled and now >= (runtime.nextEspUpdate or 0) then
+    runtime.nextEspUpdate = now + 1 / 30
+    pcall(renderEsp)
+  elseif not cfg.ESP.Enabled and runtime.espRendered then
+    pcall(renderEsp)
   end
   if cfg.Weapon.NoSlowdown then pcall(updateSprintBlock) end
   pcall(updateMovement)
