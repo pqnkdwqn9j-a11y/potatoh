@@ -22,9 +22,15 @@ local runService = ref("RunService")
 local userInputService = ref("UserInputService")
 local lighting = ref("Lighting")
 local httpService = ref("HttpService")
+local guiService = ref("GuiService")
 local workspaceService = ref("Workspace") or workspace
 local localPlayer = players and players.LocalPlayer
 local camera = workspaceService and workspaceService.CurrentCamera
+local guiInset = Vector2.new()
+if guiService and guiService.GetGuiInset then
+  local ok, inset = pcall(function() return guiService:GetGuiInset() end)
+  if ok and typeof(inset) == "Vector2" then guiInset = inset end
+end
 
 local runtime = {
   Active = true,
@@ -168,9 +174,46 @@ local function getIgnoreFolder()
   local const = workspaceService and findChild(workspaceService, "Const")
   return const and findChild(const, "Ignore")
 end
+local function getTridentRig()
+  local ignore = getIgnoreFolder()
+  local model = ignore and findChild(ignore, "LocalCharacter")
+  if not model then return nil, nil end
+  local parts = {}
+  for _, name in ipairs({ "Middle", "Bottom", "Top" }) do
+    local part = findChild(model, name)
+    if part then parts[#parts + 1] = part end
+  end
+  if #parts == 0 then return nil, nil end
+  return model, parts
+end
+runtime.GetTridentRig = getTridentRig
+
+local function cacheScore(cache)
+  if type(cache) ~= "table" then return 0 end
+  local score = 0
+  for _, entity in pairs(cache) do
+    if type(entity) == "table" and rawget(entity, "model") and rawget(entity, "type") then
+      score = score + 1
+      if score >= 8 then break end
+    end
+  end
+  return score
+end
+local function selectCache(functions, fallback)
+  local best, bestScore = nil, 0
+  for _, fn in pairs(functions) do
+    for _, value in pairs(getUpvalues(fn)) do
+      if type(value) == "table" then
+        local score = cacheScore(value)
+        if score > bestScore then best, bestScore = value, score end
+      end
+    end
+  end
+  return best or fallback
+end
 
 local function discoverModules()
-  if runtime.classes and runtime.entityCache then return true end
+  if runtime.classes and runtime.cacheValidated then return true end
   if not getgc then runtime.discoveryError = "getgc unavailable" return false end
   local ok, garbage = pcall(getgc, true)
   if not ok or type(garbage) ~= "table" then
@@ -178,12 +221,20 @@ local function discoverModules()
     return false
   end
   local classes = runtime.classes
+  local weaponTables = {}
   for _, value in pairs(garbage) do
     if type(value) == "table" then
+      if rawget(value, "Damage") ~= nil or rawget(value, "recoilOffset") ~= nil
+        or type(rawget(value, "AimRecoil")) == "table" or type(rawget(value, "HipRecoil")) == "table"
+        or type(rawget(value, "RecoilData")) == "table" then
+        weaponTables[#weaponTables + 1] = value
+      end
+      if type(rawget(value, "updateCharacter")) == "function" then
+        runtime.sprintCharacter = value
+      end
       local entityClient = rawget(value, "EntityClient")
       if type(entityClient) == "table" and type(rawget(entityClient, "GetEntityFromPart")) == "function" then
         classes = value
-        break
       end
       if not classes then
         local cameraClass = rawget(value, "Camera")
@@ -194,19 +245,20 @@ local function discoverModules()
     end
   end
   if not classes then runtime.discoveryError = "Trident classes not found" return false end
+  runtime.weaponTables = weaponTables
   runtime.classes = classes
   local entityClient = rawget(classes, "EntityClient")
   local getEntity = entityClient and rawget(entityClient, "GetEntityFromPart")
-  local cache = getUpvalue(getEntity, 1)
-  if type(cache) == "table" then runtime.entityCache = cache end
+  local createEntity = entityClient and rawget(entityClient, "Create")
+  local fallbackCache = getUpvalue(getEntity, 1)
+  if type(fallbackCache) ~= "table" then fallbackCache = getUpvalue(createEntity, 2) end
+  runtime.entityCache = selectCache({ getEntity, createEntity }, fallbackCache)
   local playerClient = rawget(classes, "PlayerClient")
   local npcClient = rawget(classes, "NPCClient")
   local onDestroy = playerClient and rawget(playerClient, "OnDestroy")
   local onCreate = npcClient and rawget(npcClient, "OnCreate")
-  local createEntity = entityClient and rawget(entityClient, "Create")
-  runtime.playerCache = getUpvalue(onDestroy, 1)
-  runtime.npcCache = getUpvalue(onCreate, 1)
-  if not runtime.entityCache then runtime.entityCache = getUpvalue(createEntity, 2) end
+  runtime.playerCache = selectCache({ onDestroy }, getUpvalue(onDestroy, 1))
+  runtime.npcCache = selectCache({ onCreate }, getUpvalue(onCreate, 1))
   runtime.validTypes = { Player = true }
   for name in pairs(NPC_TYPES) do runtime.validTypes[name] = true end
   local shared = findChild(replicatedStorage, "Shared")
@@ -215,8 +267,9 @@ local function discoverModules()
   if npcFolder then
     for _, child in ipairs(npcFolder:GetChildren()) do runtime.validTypes[child.Name] = true end
   end
-  runtime.discoveryError = nil
-  return runtime.entityCache ~= nil or runtime.playerCache ~= nil
+  runtime.cacheValidated = runtime.entityCache ~= nil or runtime.playerCache ~= nil or runtime.npcCache ~= nil
+  runtime.discoveryError = runtime.cacheValidated and nil or "Trident entity cache not found"
+  return true
 end
 runtime.DiscoverModules = discoverModules
 
@@ -232,6 +285,30 @@ local function classifyEntity(entity)
   return nil
 end
 
+local WORLD_RESOURCE_TYPES = {
+  IronOre = "IronOre", Iron = "IronOre", StoneOre = "StoneOre", Stone = "StoneOre",
+  NitrateOre = "NitrateOre", Nitrate = "NitrateOre", Backpack = "Backpack",
+  ClaimTotem = "ClaimTotem", MetalCrate = "MetalCrate",
+}
+local function scanWorldResources()
+  local now = os.clock()
+  if runtime.worldResources and now < (runtime.nextEntityScan or 0) then return runtime.worldResources end
+  runtime.nextEntityScan = now + 1
+  local result, seen = {}, {}
+  local function visit(model)
+    if not model or seen[model] or not model.Parent then return end
+    local entityType = WORLD_RESOURCE_TYPES[tostring(model.Name)]
+    if not entityType then return end
+    seen[model] = true
+    result[#result + 1] = { model = model, type = entityType, name = RESOURCE_NAMES[entityType] }
+  end
+  if workspaceService and workspaceService.GetChildren then
+    local ok, children = pcall(function() return workspaceService:GetChildren() end)
+    if ok then for _, child in ipairs(children) do visit(child) end end
+  end
+  runtime.worldResources = result
+  return result
+end
 local function eachEntity(callback)
   local seen = {}
   local function visit(entity)
@@ -245,6 +322,7 @@ local function eachEntity(callback)
   for _, cache in ipairs({ runtime.entityCache, runtime.playerCache, runtime.npcCache }) do
     if type(cache) == "table" then for _, entity in pairs(cache) do visit(entity) end end
   end
+  for _, entity in ipairs(scanWorldResources()) do visit(entity) end
   if players and players.GetPlayers then
     for _, player in ipairs(players:GetPlayers()) do
       if player ~= localPlayer and player.Character and not seen[player.Character] then
@@ -301,7 +379,7 @@ end
 local function mousePosition()
   if userInputService and userInputService.GetMouseLocation then
     local ok, position = pcall(function() return userInputService:GetMouseLocation() end)
-    if ok then return position end
+    if ok then return position + guiInset end
   end
   return camera and Vector2.new(camera.ViewportSize.X / 2, camera.ViewportSize.Y / 2) or Vector2.new()
 end
@@ -428,8 +506,9 @@ local function installCreateProjectileHook()
     if not runtime.Active or not isLocal or not cfg.Silent.Enabled then
       return original(startCFrame, weaponData, isLocal, ...)
     end
-    local ok, silentCFrame = pcall(computeSilentCFrame,
-      startCFrame and startCFrame.Position or camera.CFrame.Position, weaponData)
+    local origin = typeof(startCFrame) == "CFrame" and startCFrame.Position
+      or (camera and camera.CFrame.Position) or Vector3.zero
+    local ok, silentCFrame = pcall(computeSilentCFrame, origin, weaponData)
     if ok and silentCFrame then
       startCFrame = silentCFrame
       setPendingShot(silentCFrame)
@@ -464,11 +543,6 @@ local function installSkewedOriginHooks()
           if value == CFrame.fromOrientation then
             local originalOrientation = value
             local replacement = function(...)
-              local pitch, yaw, roll = ...
-              if type(pitch) == "number" and type(yaw) == "number" and type(roll) == "number" then
-                local scale = cfg.Weapon.NoSpread and 0 or 1
-                pitch, yaw, roll = pitch * scale, yaw * scale, roll * scale
-              end
               if runtime.Active and cfg.Silent.Enabled and not runtime.createProjectileInstalled then
                 local callerMatches = true
                 if debug.info then
@@ -489,7 +563,7 @@ local function installSkewedOriginHooks()
                   end
                 end
               end
-              return originalOrientation(pitch, yaw, roll)
+              return originalOrientation(...)
             end
             if patchUpvalue(skewed, key, replacement) then
               installed = true
@@ -503,28 +577,6 @@ local function installSkewedOriginHooks()
     end
   end
   return installed
-end
-
-local function installRecoilHook()
-  if runtime.recoilInstalled then return true end
-  local classes = runtime.classes
-  local cameraModule = classes and rawget(classes, "Camera")
-  local recoil = cameraModule and rawget(cameraModule, "Recoil")
-  if type(recoil) ~= "function" then return false end
-  for key, value in pairs(getUpvalues(recoil)) do
-    if value == math.abs then
-      local originalAbs = value
-      local replacement = function(number)
-        if type(number) == "number" and cfg.Weapon.NoRecoil then return originalAbs(number) * 0 end
-        return originalAbs(number)
-      end
-      if patchUpvalue(recoil, key, replacement) then
-        runtime.recoilInstalled = true
-        return true
-      end
-    end
-  end
-  return false
 end
 
 local function installCharacterModuleClones()
@@ -558,8 +610,39 @@ local function installCharacterModuleClones()
   return patched > 0
 end
 
+local sprintBlockStates = {}
+local function restoreSprintBlock()
+  for environment, state in pairs(sprintBlockStates) do
+    pcall(rawset, environment, "sprintBlocked", state.value)
+    sprintBlockStates[environment] = nil
+  end
+  runtime.sprintBlockState = nil
+end
+addRestore(restoreSprintBlock)
+local function resetSprintBlock(environment, allowMissing)
+  if type(environment) ~= "table" then return end
+  if not allowMissing and type(rawget(environment, "sprintBlocked")) ~= "boolean" then return end
+  local state = sprintBlockStates[environment]
+  if not state then
+    state = { environment = environment, value = rawget(environment, "sprintBlocked") }
+    sprintBlockStates[environment] = state
+  end
+  runtime.sprintBlockState = state
+  pcall(rawset, environment, "sprintBlocked", false)
+end
+local function updateSprintBlock()
+  if not cfg.Weapon.NoSlowdown then restoreSprintBlock() return end
+  resetSprintBlock(runtime.sprintCharacter, true)
+  local classes = runtime.classes
+  local character = classes and rawget(classes, "Character")
+  local setter = character and rawget(character, "SetSprintBlocked")
+  if type(setter) ~= "function" or type(getfenv) ~= "function" then return end
+  local ok, environment = pcall(getfenv, setter)
+  if ok then resetSprintBlock(environment) end
+end
 local function updateModuleClones()
   local classes, clones = runtime.classes, runtime.moduleClones
+  updateSprintBlock()
   if not (classes and clones) then return end
   local character, fps = rawget(classes, "Character"), rawget(classes, "FPS")
   clones.Character.IsGrounded = cfg.Weapon.AlwaysShoot and function() return true end or rawget(character, "IsGrounded")
@@ -580,32 +663,167 @@ local function isGameRemote(instance)
   if instance == findChild(localPlayer, "TCP") or instance == findChild(localPlayer, "UDP") then return true end
   return instance.Parent == localPlayer and (tostring(instance) == "TCP" or tostring(instance) == "UDP")
 end
+local NON_RANGED_TYPES = {
+  melee = true, miningdrill = true, drill = true, hatchet = true, pickaxe = true,
+  crowbar = true, hammer = true, kabar = true, tool = true,
+}
+local function validRangedInfo(item, info)
+  if type(item) ~= "table" or type(info) ~= "table" then return nil end
+  local itemType = string.lower(tostring(rawget(item, "type") or ""))
+  if itemType == "" or NON_RANGED_TYPES[itemType] then return nil end
+  local speed = rawget(info, "ProjectileSpeed")
+  local drop = rawget(info, "ProjectileDrop")
+  if type(speed) ~= "number" or speed <= 0 or type(drop) ~= "number" then return nil end
+  return info
+end
 local function getRangedWeaponInfo()
-  -- Re-read equipped item at the packet boundary. The periodic cache may still
-  -- contain a rifle for a few frames after switching to a melee/tool item.
   refreshEquipped()
   local item, info = runtime.equippedItem, runtime.equippedInfo
-  local speed = info and rawget(info, "ProjectileSpeed")
-  if speed == nil and type(item) == "table" then
-    speed = rawget(item, "ProjectileSpeed")
-    info = item
-  end
-  if type(speed) == "number" and speed > 0 then return info end
-  return nil
+  return validRangedInfo(item, info)
 end
 runtime.GetRangedWeaponInfo = getRangedWeaponInfo
 
+local weaponModOriginals = { Recoil = {}, Spread = {}, AutoShoot = {} }
+local function restoreWeaponModGroup(group)
+  for container, values in pairs(weaponModOriginals[group]) do
+    for key, state in pairs(values) do pcall(rawset, container, key, state.value) end
+  end
+  weaponModOriginals[group] = {}
+  if group == "Recoil" then runtime.recoilInstalled = false end
+  if group == "Spread" then runtime.spreadInstalled = false end
+  if group == "AutoShoot" then runtime.autoShootInstalled = false end
+end
+local function restoreWeaponDataMods()
+  restoreWeaponModGroup("Recoil")
+  restoreWeaponModGroup("Spread")
+  restoreWeaponModGroup("AutoShoot")
+end
+addRestore(restoreWeaponDataMods)
+local function writeWeaponValue(group, container, key, value)
+  local values = weaponModOriginals[group][container]
+  if not values then
+    values = {}
+    weaponModOriginals[group][container] = values
+  end
+  if not values[key] then values[key] = { value = rawget(container, key) } end
+  pcall(rawset, container, key, value)
+end
+local function refreshWeaponModTables()
+  if not runtime.weaponModsNeedScan or not getgc then return end
+  local ok, garbage = pcall(getgc, true)
+  if not ok or type(garbage) ~= "table" then return end
+  local tables, seen = {}, {}
+  for _, value in pairs(garbage) do
+    if type(value) == "table" and not seen[value] then
+      seen[value] = true
+      if rawget(value, "Damage") ~= nil or rawget(value, "recoilOffset") ~= nil
+        or type(rawget(value, "AimRecoil")) == "table" or type(rawget(value, "HipRecoil")) == "table"
+        or type(rawget(value, "RecoilData")) == "table" then
+        tables[#tables + 1] = value
+      end
+      if type(rawget(value, "updateCharacter")) == "function" then
+        runtime.sprintCharacter = value
+      end
+    end
+  end
+  runtime.weaponTables = tables
+  runtime.weaponModsNeedScan = false
+end
+local function rangedWeaponTable(info)
+  if type(info) ~= "table" or rawget(info, "Damage") == nil then return false end
+  local speed = rawget(info, "ProjectileSpeed")
+  if type(speed) ~= "number" or speed <= 0 then return false end
+  return not NON_RANGED_TYPES[string.lower(tostring(rawget(info, "type") or ""))]
+end
+local function applyWeaponDataMods()
+  refreshWeaponModTables()
+  if cfg.Weapon.NoRecoil then
+    for _, info in ipairs(runtime.weaponTables or {}) do
+      if rawget(info, "recoilOffset") ~= nil then
+        writeWeaponValue("Recoil", info, "recoilOffset", CFrame.new())
+        writeWeaponValue("Recoil", info, "recoilLerpSpeed", 0)
+        writeWeaponValue("Recoil", info, "recoilReturnSpeed", 0)
+      end
+      for _, key in ipairs({ "AimRecoil", "HipRecoil", "RecoilData" }) do
+        local nested = rawget(info, key)
+        if type(nested) == "table" then
+          for nestedKey in pairs(nested) do writeWeaponValue("Recoil", nested, nestedKey, 0) end
+        end
+      end
+    end
+  else
+    restoreWeaponModGroup("Recoil")
+  end
+  runtime.recoilInstalled = next(weaponModOriginals.Recoil) ~= nil
+  if cfg.Weapon.NoSpread then
+    for _, info in ipairs(runtime.weaponTables or {}) do
+      if rangedWeaponTable(info) then
+        local accuracyKey
+        for key in pairs(info) do
+          if string.find(string.lower(tostring(key)), "accuracy", 1, true) then accuracyKey = key end
+        end
+        if accuracyKey then writeWeaponValue("Spread", info, accuracyKey, math.huge) end
+      end
+    end
+  else
+    restoreWeaponModGroup("Spread")
+  end
+  runtime.spreadInstalled = next(weaponModOriginals.Spread) ~= nil
+  if cfg.Weapon.AlwaysShoot then
+    for _, info in ipairs(runtime.weaponTables or {}) do
+      if rangedWeaponTable(info) then
+        local fireActionKey
+        for key in pairs(info) do
+          local name = string.lower(tostring(key))
+          if string.find(name, "fire", 1, true)
+            and (string.find(name, "action", 1, true) or string.find(name, "mode", 1, true)) then
+            fireActionKey = key
+          end
+        end
+        if fireActionKey then writeWeaponValue("AutoShoot", info, fireActionKey, "auto") end
+      end
+    end
+  else
+    restoreWeaponModGroup("AutoShoot")
+  end
+  runtime.autoShootInstalled = next(weaponModOriginals.AutoShoot) ~= nil
+end
+runtime.ApplyWeaponDataMods = applyWeaponDataMods
+
+local function combatEntity(entityId)
+  if type(entityId) == "table" then
+    local kind = classifyEntity(entityId)
+    if kind == "player" or kind == "npc" then return entityId end
+    return nil
+  end
+  for _, cache in ipairs({ runtime.entityCache, runtime.playerCache, runtime.npcCache }) do
+    if type(cache) == "table" then
+      local entity = cache[entityId]
+      if not entity and type(entityId) == "number" then entity = cache[tostring(entityId)] end
+      if not entity and type(entityId) == "string" then entity = cache[tonumber(entityId)] end
+      if entity then
+        local kind = classifyEntity(entity)
+        if kind == "player" or kind == "npc" then return entity end
+        return nil
+      end
+    end
+  end
+  return false
+end
 local function processRemote(args)
   local code = args[1]
   if code == remoteCode("INV_EQUIP_ITEM") or code == remoteCode("INV_UNEQUIP_ITEM") then
     runtime.nextEquipUpdate = 0
+    runtime.pendingShot = nil
     return
   end
-  local useItem = remoteCode("INV_USE_ITEM") or 10
+  local useItem = remoteCode("INV_USE_ITEM")
   if code ~= useItem and code ~= 10 then return end
   local action = args[2]
-  if action == "Fire" and typeof(args[4]) == "CFrame" and runtime.Active and cfg.Silent.Enabled
-    and getRangedWeaponInfo() then
+  local count = args.n or #args
+  if action == "Fire" then
+    if not runtime.Active or not cfg.Silent.Enabled or typeof(args[4]) ~= "CFrame" then return end
+    if not getRangedWeaponInfo() then return end
     local pending = runtime.pendingShot
     runtime.pendingShot = nil
     if pending and os.clock() - pending.at <= 0.75 then
@@ -619,9 +837,19 @@ local function processRemote(args)
         runtime.silentMode = "Remote"
       end
     end
-  elseif action == "Hit" and runtime.Active and cfg.Weapon.ForceHeadshots and getRangedWeaponInfo() then
-    local argumentCount = args.n - 1
-    local partIndex = argumentCount == 7 and 6 or 5
+  elseif action == "Hit" then
+    if not runtime.Active or not cfg.Weapon.ForceHeadshots or not getRangedWeaponInfo() then return end
+    local partIndex, entityIndex
+    if count == 8 then
+      if type(args[5]) ~= "number" or type(args[6]) ~= "string" or typeof(args[7]) ~= "Vector3" then return end
+      partIndex, entityIndex = 6, 5
+    elseif count == 7 then
+      if type(args[4]) ~= "number" or type(args[5]) ~= "string" or typeof(args[6]) ~= "Vector3" then return end
+      partIndex, entityIndex = 5, 4
+    else return end
+    local entity = combatEntity(args[entityIndex])
+    local model = entity and rawget(entity, "model")
+    if not model or not findChild(model, "Head") then return end
     if BODY_PARTS[args[partIndex]] then args[partIndex] = "Head" end
   end
 end
@@ -631,9 +859,28 @@ local function installRemoteHook()
   if runtime.remoteInstalled then return true end
   local handler
   local original
+  local metatable
+  if getrawmetatable then
+    local ok, value = pcall(getrawmetatable, game)
+    if ok and value then
+      metatable = value
+      local old = rawget(value, "__namecall")
+      if type(old) == "function" then original = old end
+    end
+  end
+  local function executorCall()
+    if type(checkcaller) ~= "function" then return false end
+    local ok, value = pcall(checkcaller)
+    return ok and value == true
+  end
   handler = function(self, ...)
-    if checkcaller and checkcaller() then return original(self, ...) end
-    if getnamecallmethod and getnamecallmethod() == "FireServer" and isGameRemote(self) then
+    if executorCall() then return original(self, ...) end
+    local method
+    if getnamecallmethod then
+      local ok, value = pcall(getnamecallmethod)
+      if ok then method = value end
+    end
+    if method == "FireServer" and isGameRemote(self) then
       local args = table.pack(...)
       local ok, err = pcall(processRemote, args)
       if not ok then runtime.remoteError = tostring(err) end
@@ -644,64 +891,99 @@ local function installRemoteHook()
   if newcclosure then handler = newcclosure(handler) end
   if hookmetamethod then
     local ok, result = pcall(hookmetamethod, game, "__namecall", handler)
-    if ok and type(result) == "function" then
-      original = result
-      runtime.remoteInstalled = true
-      addRestore(function() pcall(hookmetamethod, game, "__namecall", original) end)
-      return true
-    end
-  end
-  if getrawmetatable and setreadonly then
-    local ok, metatable = pcall(getrawmetatable, game)
-    if ok and metatable and type(rawget(metatable, "__namecall")) == "function" then
-      original = rawget(metatable, "__namecall")
-      local readonlyState = nil
-      if isreadonly then
-        local readOk, value = pcall(isreadonly, metatable)
-        if readOk then readonlyState = value end
-      end
-      local function restoreReadonly()
-        local targetState = readonlyState
-        if targetState == nil then targetState = true end
-        pcall(setreadonly, metatable, targetState)
-      end
-      pcall(setreadonly, metatable, false)
-      local setOk = pcall(rawset, metatable, "__namecall", handler)
-      restoreReadonly()
-      if setOk then
+    if ok then
+      if type(result) == "function" then original = result end
+      if type(original) == "function" then
         runtime.remoteInstalled = true
-        addRestore(function()
-          pcall(setreadonly, metatable, false)
-          pcall(rawset, metatable, "__namecall", original)
-          restoreReadonly()
-        end)
+        addRestore(function() pcall(hookmetamethod, game, "__namecall", original) end)
         return true
       end
+    end
+  end
+  if metatable and setreadonly and type(rawget(metatable, "__namecall")) == "function" then
+    original = rawget(metatable, "__namecall")
+    local readonlyState = nil
+    if isreadonly then
+      local readOk, value = pcall(isreadonly, metatable)
+      if readOk then readonlyState = value end
+    end
+    local function restoreReadonly()
+      local targetState = readonlyState
+      if targetState == nil then targetState = true end
+      pcall(setreadonly, metatable, targetState)
+    end
+    pcall(setreadonly, metatable, false)
+    local setOk = pcall(rawset, metatable, "__namecall", handler)
+    restoreReadonly()
+    if setOk then
+      runtime.remoteInstalled = true
+      addRestore(function()
+        pcall(setreadonly, metatable, false)
+        pcall(rawset, metatable, "__namecall", original)
+        restoreReadonly()
+      end)
+      return true
     end
   end
   return false
 end
 
+local function combatHookRequested()
+  return cfg.Silent.Enabled or cfg.Weapon.ForceHeadshots or cfg.Weapon.NoRecoil
+    or cfg.Weapon.NoSpread or cfg.Weapon.AlwaysShoot or cfg.Weapon.NoSlowdown
+end
+local function hookSignature()
+  return table.concat({
+    tostring(cfg.Silent.Enabled), tostring(cfg.Weapon.ForceHeadshots), tostring(cfg.Weapon.NoRecoil),
+    tostring(cfg.Weapon.NoSpread), tostring(cfg.Weapon.AlwaysShoot), tostring(cfg.Weapon.NoSlowdown),
+  }, ":")
+end
+runtime.hookSignature = hookSignature()
+runtime.hooksDirty = true
 local function installGameHooks()
-  if not discoverModules() then return false end
+  if not discoverModules() then runtime.hooksDirty = combatHookRequested() return false end
   refreshEquipped()
-  installCreateProjectileHook()
-  installSkewedOriginHooks()
-  installRecoilHook()
-  installCharacterModuleClones()
+  if not cfg.Silent.Enabled then runtime.pendingShot = nil end
+  if cfg.Silent.Enabled then
+    installCreateProjectileHook()
+    installSkewedOriginHooks()
+    installRemoteHook()
+  elseif cfg.Weapon.ForceHeadshots then
+    installRemoteHook()
+  end
+  applyWeaponDataMods()
+  if cfg.Weapon.AlwaysShoot or cfg.Weapon.NoSlowdown then installCharacterModuleClones() end
   updateModuleClones()
-  installRemoteHook()
+  local retry = false
+  if cfg.Silent.Enabled and not (runtime.createProjectileInstalled or runtime.skewedInstalled) then retry = true end
+  if (cfg.Silent.Enabled or cfg.Weapon.ForceHeadshots) and not runtime.remoteInstalled then retry = true end
+  if cfg.Weapon.AlwaysShoot and not runtime.characterClonesInstalled then retry = true end
+  if cfg.Weapon.NoSlowdown and not runtime.characterClonesInstalled and not runtime.sprintBlockState then retry = true end
+  runtime.hooksDirty = retry
   return true
 end
 runtime.InstallGameHooks = installGameHooks
+local function requestGameHooks()
+  runtime.hooksDirty = true
+  runtime.weaponModsNeedScan = true
+  if not runtime.Active then return end
+  local ok, err = pcall(installGameHooks)
+  if not ok then runtime.hookError = tostring(err) end
+end
+runtime.RequestGameHooks = requestGameHooks
 
-local fovCircle = newDrawing("Circle", { Visible = false, Filled = false, Thickness = 1, ZIndex = 30, Color = Color3.new(1, 1, 1) })
-local snapline = newDrawing("Line", { Visible = false, Thickness = 1, ZIndex = 30, Color = Color3.new(1, 1, 1) })
-local targetText = newDrawing("Text", { Visible = false, Size = 15, Center = true, Outline = true, ZIndex = 30, Color = Color3.fromRGB(255, 220, 100) })
+local fovCircle = newDrawing("Circle", {
+  Visible = false, Filled = false, Thickness = 1, NumSides = 64, Transparency = 1,
+  ZIndex = 30, Color = Color3.new(1, 1, 1),
+})
+local snapline = newDrawing("Line", { Visible = false, Thickness = 1, Transparency = 1, ZIndex = 30, Color = Color3.new(1, 1, 1) })
+local targetText = newDrawing("Text", { Visible = false, Size = 15, Center = true, Outline = true, Transparency = 1, ZIndex = 30, Color = Color3.fromRGB(255, 220, 100) })
 runtime.fovCircle, runtime.snapline, runtime.targetText = fovCircle, snapline, targetText
+runtime.fovRenderer = "BurmaldaDrawing"
 
 local espPool = {}
 runtime.espPool = espPool
+runtime.espRenderer = "BurmaldaDrawing"
 local function espEntry(model)
   local entry = espPool[model]
   if entry then return entry end
@@ -738,6 +1020,12 @@ local function hideEntry(entry)
   end
   hideSkeleton(entry)
 end
+local function entityRoot(model)
+  local root = findChild(model, "HumanoidRootPart") or findChild(model, "Torso") or model.PrimaryPart or findChild(model, "Head")
+  if root then return root end
+  local ok, part = pcall(function() return model:FindFirstChildWhichIsA("BasePart") end)
+  return ok and part or nil
+end
 local function renderEntity(entity, model, kind, label)
   local entry = espEntry(model)
   local enabled = runtime.Active and cfg.ESP.Enabled and model.Parent ~= nil and not isLocalEntity(entity, model)
@@ -748,7 +1036,7 @@ local function renderEntity(entity, model, kind, label)
     or (kind ~= "resource" and cfg.ESP.IgnoreSleepers and isSleeper(entity, model)) then
     hideEntry(entry) return
   end
-  local root = findChild(model, "HumanoidRootPart") or findChild(model, "Torso") or model.PrimaryPart or findChild(model, "Head")
+  local root = entityRoot(model)
   if not root or not camera then hideEntry(entry) return end
   local origin = camera.CFrame.Position
   local distance = (root.Position - origin).Magnitude
@@ -987,12 +1275,102 @@ addRestore(function()
 end)
 
 local flyObject
+local rigBaselines = {}
+local rigSpeedWritten, rigFlyWritten = false, false
 local function stopFly()
   if flyObject then pcall(function() flyObject:Destroy() end) flyObject = nil end
 end
 runtime.StopFly = stopFly
 addRestore(stopFly)
+local function readVelocity(part)
+  local ok, value = pcall(function() return part.AssemblyLinearVelocity end)
+  if ok and typeof(value) == "Vector3" then return value end
+  local oldOk, oldValue = pcall(function() return part.Velocity end)
+  return oldOk and typeof(oldValue) == "Vector3" and oldValue or Vector3.zero
+end
+local function writeVelocity(part, value)
+  local ok = pcall(function() part.AssemblyLinearVelocity = value end)
+  if not ok then pcall(function() part.Velocity = value end) end
+end
+local function rememberRigParts(parts)
+  for _, part in ipairs(parts) do
+    if rigBaselines[part] == nil then rigBaselines[part] = readVelocity(part) end
+  end
+end
+local function restoreRigMovement()
+  for part, velocity in pairs(rigBaselines) do writeVelocity(part, velocity) end
+  rigBaselines = {}
+  rigSpeedWritten, rigFlyWritten = false, false
+end
+runtime.RestoreRigMovement = restoreRigMovement
+addRestore(restoreRigMovement)
+local function keyDown(key)
+  if not userInputService or not userInputService.IsKeyDown then return false end
+  local ok, value = pcall(function() return userInputService:IsKeyDown(key) end)
+  return ok and value == true
+end
+local function inputDirection(flat)
+  local look = camera and camera.CFrame.LookVector or Vector3.new(0, 0, -1)
+  local right = camera and camera.CFrame.RightVector or Vector3.new(1, 0, 0)
+  if flat then
+    look = Vector3.new(look.X, 0, look.Z)
+    right = Vector3.new(right.X, 0, right.Z)
+  end
+  local direction = Vector3.zero
+  if keyDown(Enum.KeyCode.W) then direction = direction + look end
+  if keyDown(Enum.KeyCode.S) then direction = direction - look end
+  if keyDown(Enum.KeyCode.D) then direction = direction + right end
+  if keyDown(Enum.KeyCode.A) then direction = direction - right end
+  if not flat then
+    if keyDown(Enum.KeyCode.Space) then direction = direction + Vector3.yAxis end
+    if keyDown(Enum.KeyCode.LeftControl) then direction = direction - Vector3.yAxis end
+  end
+  if direction.Magnitude > 0.05 then return direction.Unit end
+  return Vector3.zero
+end
+local function updateRigMovement()
+  local model, parts = getTridentRig()
+  if not model or not parts then return false end
+  local hadRigMovement = rigSpeedWritten or rigFlyWritten
+  local _, _, humanoid = getLocalParts()
+  local direction = humanoid and humanoid.MoveDirection or Vector3.zero
+  if typeof(direction) == "Vector3" then direction = Vector3.new(direction.X, 0, direction.Z) end
+  if direction.Magnitude <= 0.05 then direction = inputDirection(true) else direction = direction.Unit end
+  if cfg.Movement.Fly then
+    rememberRigParts(parts)
+    local flyDirection = inputDirection(false)
+    local velocity = flyDirection.Magnitude > 0.05 and flyDirection * cfg.Movement.FlySpeed or Vector3.zero
+    for _, part in ipairs(parts) do writeVelocity(part, velocity) end
+    rigFlyWritten, rigSpeedWritten = true, false
+  else
+    if rigFlyWritten then
+      for part, baseline in pairs(rigBaselines) do
+        local current = readVelocity(part)
+        writeVelocity(part, Vector3.new(current.X, baseline.Y, current.Z))
+      end
+      rigFlyWritten = false
+    end
+    if cfg.Movement.Speed and direction.Magnitude > 0.05 then
+      rememberRigParts(parts)
+      for _, part in ipairs(parts) do
+        local current = readVelocity(part)
+        local horizontal = direction * cfg.Movement.SpeedValue
+        writeVelocity(part, Vector3.new(horizontal.X, current.Y, horizontal.Z))
+      end
+      rigSpeedWritten = true
+    elseif rigSpeedWritten then
+      for _, part in ipairs(parts) do
+        local current = readVelocity(part)
+        writeVelocity(part, Vector3.new(0, current.Y, 0))
+      end
+      rigSpeedWritten = false
+    end
+  end
+  if not cfg.Movement.Speed and not cfg.Movement.Fly and hadRigMovement then restoreRigMovement() end
+  return true
+end
 local function updateMovement()
+  if updateRigMovement() then return end
   local character, root, humanoid = getLocalParts()
   if not (character and root and humanoid) then stopFly() return end
   if cfg.Movement.Speed then
@@ -1012,17 +1390,8 @@ local function updateMovement()
       flyObject.MaxForce = Vector3.new(100000, 100000, 100000)
       flyObject.Parent = root
     end
-    local direction = Vector3.zero
-    if userInputService then
-      local look, right = camera.CFrame.LookVector, camera.CFrame.RightVector
-      if userInputService:IsKeyDown(Enum.KeyCode.W) then direction = direction + look end
-      if userInputService:IsKeyDown(Enum.KeyCode.S) then direction = direction - look end
-      if userInputService:IsKeyDown(Enum.KeyCode.D) then direction = direction + right end
-      if userInputService:IsKeyDown(Enum.KeyCode.A) then direction = direction - right end
-      if userInputService:IsKeyDown(Enum.KeyCode.Space) then direction = direction + Vector3.yAxis end
-      if userInputService:IsKeyDown(Enum.KeyCode.LeftControl) then direction = direction - Vector3.yAxis end
-    end
-    flyObject.Velocity = direction.Magnitude > 0.05 and direction.Unit * cfg.Movement.FlySpeed or Vector3.zero
+    local direction = inputDirection(false)
+    flyObject.Velocity = direction.Magnitude > 0.05 and direction * cfg.Movement.FlySpeed or Vector3.zero
   else
     stopFly()
   end
@@ -2231,12 +2600,17 @@ end
   runtime.SetAccent = setMenuAccent
   local featureBindings, optionBindings = {}, {}
   runtime.featureBindings, runtime.optionBindings = featureBindings, optionBindings
+  local hookFeatures = {
+    ["Silent Aim"] = true, ["No Recoil"] = true, ["No Spread"] = true,
+    ["Always Shoot"] = true, ["No Slowdown"] = true, ["Force Headshots"] = true,
+  }
 
   local function feature(parent, name, default, onChanged, getter)
     local state = default == true
     local panel = createFeature(parent, name, default, function(value)
       state = value
       if onChanged then onChanged(value) end
+      if hookFeatures[name] then runtime.RequestGameHooks() end
     end)
     featureBindings[name] = {
       Set = function(value) _fFS[name](value == true) end,
@@ -2494,6 +2868,7 @@ end
     for _, binding in pairs(featureBindings) do binding.Set(binding.Get()) end
     for _, binding in pairs(optionBindings) do binding.Set(binding.Get()) end
     applyWorld() applyGrass() updateModuleClones() updateCamera() updateBigHead()
+    runtime.RequestGameHooks()
     return true
   end
   function configApi.Delete(name)
@@ -2571,7 +2946,15 @@ end
 trackConnection(runService.RenderStepped:Connect(function(deltaTime)
   if not runtime.Active then return end
   local now = os.clock()
-  if now >= runtime.nextDiscovery and (not runtime.classes or not runtime.remoteInstalled) then
+  camera = workspaceService and workspaceService.CurrentCamera or camera
+  local signature = hookSignature()
+  if signature ~= runtime.hookSignature then
+    runtime.hookSignature = signature
+    runtime.hooksDirty = true
+  end
+  local discoveryNeeded = cfg.ESP.Enabled or combatHookRequested()
+  if now >= runtime.nextDiscovery and (runtime.hooksDirty
+    or (discoveryNeeded and (not runtime.classes or not runtime.cacheValidated))) then
     runtime.nextDiscovery = now + 1
     pcall(installGameHooks)
   end
@@ -2593,6 +2976,7 @@ trackConnection(runService.RenderStepped:Connect(function(deltaTime)
   if cfg.ESP.Enabled then pcall(renderEsp) else
     for _, entry in pairs(espPool) do hideEntry(entry) end
   end
+  if cfg.Weapon.NoSlowdown then pcall(updateSprintBlock) end
   pcall(updateMovement)
 end))
 
@@ -2600,11 +2984,13 @@ if localPlayer then
   trackConnection(localPlayer.CharacterAdded:Connect(function()
     runtime.currentTarget = nil
     runtime.pendingShot = nil
+    restoreRigMovement()
     stopFly()
   end))
   trackConnection(localPlayer.CharacterRemoving:Connect(function()
     runtime.currentTarget = nil
     runtime.pendingShot = nil
+    restoreRigMovement()
     stopFly()
   end))
 end
@@ -2618,7 +3004,15 @@ end))
 trackConnection(userInputService.JumpRequest:Connect(function()
   if not (runtime.Active and cfg.Movement.InfiniteJump) then return end
   local _, _, humanoid = getLocalParts()
-  if humanoid then humanoid:ChangeState(Enum.HumanoidStateType.Jumping) end
+  local _, rigParts = getTridentRig()
+  if rigParts then
+    for _, part in ipairs(rigParts) do
+      local velocity = readVelocity(part)
+      writeVelocity(part, Vector3.new(velocity.X, 50, velocity.Z))
+    end
+  elseif humanoid then
+    humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+  end
 end))
 
 function runtime.Unload()
