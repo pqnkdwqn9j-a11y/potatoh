@@ -1,3 +1,17 @@
+-- Burmalda.hook | Lone Survival | private JNKIE payload gate
+local __burmaldaLoneEnv = getgenv and getgenv() or _G
+local __burmaldaLoneKey = tostring(__burmaldaLoneEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
+if tostring(__burmaldaLoneEnv.PHOOKGATE or "") ~= "1347571535"
+    or __burmaldaLoneKey == ""
+    or __burmaldaLoneKey:upper() == "BETA"
+then
+    __burmaldaLoneEnv.PHOOKGATE = nil
+    __burmaldaLoneEnv.SCRIPT_KEY = nil
+    return
+end
+__burmaldaLoneEnv.PHOOKGATE = nil
+__burmaldaLoneEnv.SCRIPT_KEY = nil
+
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local userInputService = game:GetService("UserInputService")
@@ -4687,9 +4701,19 @@ end
         return root ~= nil and (origin - root.Position).Magnitude <= 35
       end
 
+      local function worldInteractionCaller(name)
+        return string.find(name, "melee", 1, true) ~= nil
+          or string.find(name, "resource", 1, true) ~= nil
+          or string.find(name, "tree", 1, true) ~= nil
+          or string.find(name, "node", 1, true) ~= nil
+          or string.find(name, "pickaxe", 1, true) ~= nil
+          or string.find(name, "hatchet", 1, true) ~= nil
+      end
+
       local function shotContext(origin, direction, modulePath)
         if direction.Magnitude < 20 then return false end
         local name = callerName()
+        if worldInteractionCaller(name) then return false end
         if shootingCaller(name) then return true end
         if name ~= "" and not modulePath then return false end
         return direction.Magnitude >= 50 and nearLocalOrigin(origin)
@@ -4707,9 +4731,9 @@ end
         return magnitude == magnitude and magnitude > 0.0001 and magnitude < math.huge
       end
 
-      local function resolveShotTarget(origin)
+      local function resolveShotTarget(origin, maxDistance)
         if not state.Active or not cfg.Silent.Enabled then return nil end
-        local ok, chosen, selection = pcall(selectTarget, cfg.Silent.MaxDistance)
+        local ok, chosen, selection = pcall(selectTarget, maxDistance or cfg.Silent.MaxDistance)
         if not ok then
           state.targetError = tostring(chosen)
           state.currentTarget = nil
@@ -4798,6 +4822,7 @@ end
         local originIndex, directionIndex = vectorPair(args)
         if not originIndex then return original(...) end
         local origin, direction = args[originIndex], args[directionIndex]
+        if state.projectileOwner then return original(...) end
         if not state.Active or not cfg.Silent.Enabled or executorCall()
           or not shotContext(origin, direction, modulePath) then
           return original(...)
@@ -4940,7 +4965,7 @@ end
         local crosshair = enabled(cfg.Silent.CrosshairTypes) and stats.Velocity ~= nil
         local lob = enabled(cfg.Silent.LobTypes) and stats.Speed ~= nil
         local all = not force and not crosshair and not lob and stats.Velocity ~= nil and cfg.Silent.AimAll
-        return force or crosshair or lob or all, force, crosshair, lob
+        return force or crosshair or lob or all, force, crosshair, lob, all
       end
 
       local function redirectVector(container, key, direction)
@@ -4956,12 +4981,30 @@ end
         local stats = rawget(data, "Stats")
         if type(stats) ~= "table" or data.ForceDown then return end
         local kind = tostring(rawget(stats, "Type"))
-        local allowed, force, crosshair, lob = projectileAllowed(kind, stats)
+        local allowed, force, crosshair, lob, aimAll = projectileAllowed(kind, stats)
         if not allowed then return end
+        local drop = tonumber(rawget(stats, "Drop"))
+        if cfg.Silent.ExtendThrows and aimAll and drop and drop > 0 then
+          local extended = {}
+          for key, value in pairs(stats) do extended[key] = value end
+          extended.Drop = 0
+          local metatable = getmetatable(stats)
+          if metatable then setmetatable(extended, metatable) end
+          data.Stats = extended
+          stats = extended
+        end
         local camera = workspace.CurrentCamera
         local origin = rawget(data, "Origin") or camera and camera.CFrame.Position
         if typeof(origin) ~= "Vector3" then return end
-        local target = resolveShotTarget(origin)
+        local speed = lob and (tonumber(rawget(stats, "Speed")) or 0) * 0.5
+          or tonumber(rawget(stats, "Velocity")) or 0
+        local gravity = lob and workspace.Gravity or tonumber(rawget(stats, "Drop")) or 0
+        local maxDistance = cfg.Silent.MaxDistance
+        if gravity > 0 and speed > 0 then
+          local doubledSpeed = speed * 2
+          maxDistance = math.min(maxDistance, doubledSpeed * doubledSpeed / gravity * 0.95)
+        end
+        local target = resolveShotTarget(origin, maxDistance)
         mainGame.stats.lastAim = {
           reason = target and "redirect" or "no target",
           chosen = target and target.target and target.target.name or "none",
@@ -4969,9 +5012,6 @@ end
           model = force and "force" or crosshair and "crosshair" or lob and "lob" or "lookvector",
         }
         if not target then return end
-        local speed = lob and (tonumber(rawget(stats, "Speed")) or 0) * 0.5
-          or tonumber(rawget(stats, "Velocity")) or 0
-        local gravity = lob and workspace.Gravity or tonumber(rawget(stats, "Drop")) or 0
         local delta = target.position - origin
         if not validVector(delta) then return end
         local direction
@@ -4981,14 +5021,16 @@ end
         if not validVector(direction) then direction = delta.Unit end
         direction = direction.Unit
         local changed = false
-        if redirectVector(data, "Direction", direction) then changed = true end
-        if redirectVector(data, "Velocity", direction) then changed = true end
-        if redirectVector(data, "LookVector", direction) then changed = true end
-        if redirectVector(stats, "Direction", direction) then changed = true end
-        if redirectVector(stats, "VelocityVector", direction) then changed = true end
-        if force or crosshair or lob or cfg.Silent.AimAll then
+        if not force then
+          if redirectVector(data, "Direction", direction) then changed = true end
+          if redirectVector(data, "Velocity", direction) then changed = true end
+          if redirectVector(data, "LookVector", direction) then changed = true end
+          if redirectVector(stats, "Direction", direction) then changed = true end
+          if redirectVector(stats, "VelocityVector", direction) then changed = true end
+        end
+        if force or crosshair or lob or aimAll then
           local distance = (target.position - origin).Magnitude
-          data.ForceHitVector = origin + direction * math.max(distance + 200, 1000)
+          data.ForceHitVector = origin + direction * (distance + 200)
           changed = true
         end
         if not changed then return end
@@ -5014,8 +5056,7 @@ end
           return true
         end
         if mainGame.unloaded or mainGame.hookGeneration ~= generation then return false, "cancelled" end
-        local original = mainGame.hooked and mainGame.projModule == module
-          and mainGame.origNew or module.New
+        local original = mainGame.projModule == module and mainGame.origNew or module.New
         mainGame.projModule = module
         mainGame.origNew = original
         mainGame.hooked = false
@@ -5027,9 +5068,25 @@ end
             local okRedirect, err = pcall(redirectProjectile, data)
             if not okRedirect then mainGame.stats.lastAim = {reason = "error", error = tostring(err)} end
           end
-          return original(self, data, ...)
+          local previousOwner = state.projectileOwner
+          state.projectileOwner = true
+          local results = table.pack(pcall(original, self, data, ...))
+          state.projectileOwner = previousOwner
+          if not results[1] then error(results[2], 0) end
+          return table.unpack(results, 2, results.n)
         end
-        module.New = wrapper
+        local written = pcall(function() module.New = wrapper end)
+        if not written or module.New ~= wrapper then
+          if type(make_writeable) == "function" then pcall(make_writeable, module) end
+          if type(setreadonly) == "function" then pcall(setreadonly, module, false) end
+          written = pcall(function() module.New = wrapper end)
+        end
+        if not written or module.New ~= wrapper then
+          mainGame.hooked = false
+          mainGame.projectileDirect = false
+          mainGame.projectileWrapper = nil
+          return false, "cannot write Projectile.New"
+        end
         mainGame.projectileWrapper = wrapper
         mainGame.projectileDirect = true
         mainGame.hooked = true
@@ -5038,17 +5095,33 @@ end
 
       local function restoreAmogusSilent()
         restoreRaycastHooks()
+        if mainGame.hooked and mainGame.projModule and mainGame.origNew then
+          pcall(function() mainGame.projModule.New = mainGame.origNew end)
+        end
+        mainGame.hooked = false
+        mainGame.projectileDirect = false
+        mainGame.projectileWrapper = nil
+        state.projectileOwner = false
         state.silentInstalled = false
+        state.silentMode = nil
         state.silentMouseFunction = nil
         state.silentClone = nil
       end
       addRestore(restoreAmogusSilent)
 
       local function installAmogusSilent()
-        if state.silentInstalled and state.raycastInstalled then return true end
-        local raycastOk = installRaycastHooks()
+        if state.silentInstalled and state.silentMode then return true end
         local projectileOk, projectileError = installProjectileHook()
-        state.silentInstalled = raycastOk or projectileOk == true
+        if projectileOk == true then
+          restoreRaycastHooks()
+          state.silentMode = "projectile"
+          state.silentInstalled = true
+          state.silentError = nil
+          return true
+        end
+        local raycastOk = state.raycastInstalled or installRaycastHooks()
+        state.silentInstalled = raycastOk == true
+        state.silentMode = state.silentInstalled and "raycast" or nil
         if state.silentInstalled then
           state.silentError = nil
         else
