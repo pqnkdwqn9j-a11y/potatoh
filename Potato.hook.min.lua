@@ -3272,6 +3272,7 @@ do
 			end
 		end
 
+		local scanId = 0
 		local function applyLowPC()
 			setProperty(_Lighting, "GlobalShadows", false)
 			local terrain = workspace:FindFirstChildOfClass("Terrain")
@@ -3282,11 +3283,38 @@ do
 			end
 			local ok, rendering = pcall(function() return settings().Rendering end)
 			if ok and rendering then setProperty(rendering, "QualityLevel", Enum.QualityLevel.Level01) end
-			for _, object in ipairs(workspace:GetDescendants()) do applyObject(object) end
-			for _, object in ipairs(_Lighting:GetDescendants()) do applyObject(object) end
+			scanId += 1
+			local currentScan = scanId
+			local stack = {}
+			local function push(root)
+				local children = root:GetChildren()
+				if #children > 0 then stack[#stack + 1] = {children = children, index = 1} end
+			end
+			push(workspace)
+			push(_Lighting)
+			local function step()
+				if currentScan ~= scanId or not S.LowPC or Runtime.Unloaded then return end
+				local processed = 0
+				while #stack > 0 and processed < 250 do
+					local frame = stack[#stack]
+					local object = frame.children[frame.index]
+					frame.index += 1
+					if object then
+						applyObject(object)
+						processed += 1
+						local children = object:GetChildren()
+						if #children > 0 then stack[#stack + 1] = {children = children, index = 1} end
+					else
+						table.remove(stack)
+					end
+				end
+				if #stack > 0 then task.delay(0.01, step) end
+			end
+			step()
 		end
 
 		local function disconnectLowPC()
+			scanId += 1
 			for _, connection in ipairs(state.Connections) do pcall(function() connection:Disconnect() end) end
 			table.clear(state.Connections)
 		end
@@ -4185,18 +4213,23 @@ local projectileInitOK, projectileInitError = pcall(function()
 	-- Explicit Head/HeadHitbox/HRP choices remain exact and share one resolver with HUD.
 	local randomPartCache = setmetatable({}, {__mode = "k"})
 	local function targetPartFor(character)
+		local function getPart(name)
+			local object = character:FindFirstChild(name)
+			if object and object:IsA("BasePart") then return object end
+			return nil
+		end
 		if S.MBTargetPart == 2 then
-			return character:FindFirstChild("Head") or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("HumanoidRootPart")
+			return getPart("Head") or getPart("HeadHitbox") or getPart("HumanoidRootPart")
 		end
 		if S.MBTargetPart == 3 then
-			return character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head")
+			return getPart("HumanoidRootPart") or getPart("HeadHitbox") or getPart("Head")
 		end
 		if S.MBTargetPart == 4 then
 			local cached = randomPartCache[character]
-			if cached and cached.Parent == character then return cached end
+			if cached and cached.Parent == character and cached:IsA("BasePart") then return cached end
 			local candidates = {}
 			for _, name in ipairs({"HeadHitbox", "Head", "HumanoidRootPart"}) do
-				local part = character:FindFirstChild(name)
+				local part = getPart(name)
 				if part then table.insert(candidates, part) end
 			end
 			if #candidates > 0 then
@@ -4207,7 +4240,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 			randomPartCache[character] = nil
 			return nil
 		end
-		return character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head") or character:FindFirstChild("HumanoidRootPart")
+		return getPart("HeadHitbox") or getPart("Head") or getPart("HumanoidRootPart")
 	end
 	ProjectileSilent.ResolveTargetPart = targetPartFor
 
@@ -4230,6 +4263,29 @@ local projectileInitOK, projectileInitError = pcall(function()
 		Vector3.new(0, 0.5, 0), Vector3.new(0, -0.5, 0),
 		Vector3.new(0, 0, 0.5), Vector3.new(0, 0, -0.5),
 	}) do table.insert(testOffsets, offset) end
+	local function isIgnoredDecoration(instance)
+		if instance.CanQuery == false then return true end
+		if not instance:IsA("BasePart") or instance.CanCollide ~= false then return false end
+		local current = instance
+		for _ = 1, 6 do
+			if not current then break end
+			if current.ClassName == "Tool" then return false end
+			local name = string.lower(tostring(current.Name))
+			if string.find(name, "grass", 1, true)
+				or string.find(name, "leav", 1, true)
+				or string.find(name, "foliage", 1, true)
+				or string.find(name, "bush", 1, true)
+				or string.find(name, "shrub", 1, true)
+				or string.find(name, "fern", 1, true)
+				or string.find(name, "flower", 1, true)
+				or string.find(name, "reed", 1, true)
+				or string.find(name, "cloud", 1, true) then
+				return true
+			end
+			current = current.Parent
+		end
+		return false
+	end
 	local function pointVisible(character, worldPoint, camera)
 		local now = os.clock()
 		local localCharacter = LocalPlayer.Character
@@ -4241,15 +4297,33 @@ local projectileInitOK, projectileInitError = pcall(function()
 				if player.Character then table.insert(ignoreCache, player.Character) end
 			end
 		end
-		visibleParams.FilterDescendantsInstances = ignoreCache
 		local origin = camera.CFrame.Position
-		local result = workspace:Raycast(origin, worldPoint - origin, visibleParams)
-		if not result then return true end
-		local instance = result.Instance
-		if not instance then return false end
-		if instance:IsDescendantOf(character) then return true end
-		-- CanCollide=false does not make a wall transparent to a ray. Any other
-		-- queryable obstruction (house wall, non-collidable wall, prop) blocks it.
+		local direction = worldPoint - origin
+		local added = 0
+		for _ = 1, 16 do
+			visibleParams.FilterDescendantsInstances = ignoreCache
+			local result = workspace:Raycast(origin, direction, visibleParams)
+			if not result then
+				for _ = 1, added do table.remove(ignoreCache) end
+				return true
+			end
+			local instance = result.Instance
+			if not instance then
+				for _ = 1, added do table.remove(ignoreCache) end
+				return false
+			end
+			if instance:IsDescendantOf(character) then
+				for _ = 1, added do table.remove(ignoreCache) end
+				return true
+			end
+			if not isIgnoredDecoration(instance) then
+				for _ = 1, added do table.remove(ignoreCache) end
+				return false
+			end
+			ignoreCache[#ignoreCache + 1] = instance
+			added += 1
+		end
+		for _ = 1, added do table.remove(ignoreCache) end
 		return false
 	end
 	local visibleOffsetCache = setmetatable({}, {__mode = "k"})
@@ -4310,6 +4384,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 				if character and humanoid and humanoid.Health > 0 then
 					local part = targetPartFor(character)
 					if part then
+						if (part.Position - worldOrigin).Magnitude > S.MBMaxDist then continue end
 						local targetPosition = part.Position
 						if S.MBVisibleOnly then
 							targetPosition = getVisiblePoint(part, character, camera)
@@ -5381,7 +5456,7 @@ do
 	local gunOriginals, meleeOriginals = {}, {}
 	local cachesBuilt = false
 	local nextCacheRefresh = 0
-	local CACHE_REFRESH_SECONDS = 1
+	local CACHE_REFRESH_SECONDS = 5
 
 	local function updateCacheStatus()
 		M.Status.gunTables = #gunCache
@@ -5725,6 +5800,11 @@ do
 		for part in pairs(enlarged) do restore(part) end
 	end
 	local function updateHitboxes(dt)
+		if not S.HitboxExpander then
+			elapsed = 0
+			if next(enlarged) ~= nil then restoreAll() end
+			return
+		end
 		elapsed += dt or 0
 		if elapsed < 0.08 then return end
 		elapsed = 0
@@ -6445,7 +6525,29 @@ do
 			if typeof(args[1]) ~= "Ray" then return oldNamecall(self, ...) end
 			originalOrigin = args[1].Origin
 		end
+		local castDistance = method == "Raycast" and args[2].Magnitude or args[1].Direction.Magnitude
 		if gunbaseOwnsShot then
+			if castDistance > 50 then
+				local target, targetPosition = getCachedTarget()
+				if target then
+					local origin = method == "Raycast" and args[1] or args[1].Origin
+					local direction = method == "Raycast" and args[2] or args[1].Direction
+					local delta = targetPosition - origin
+					local distance = delta.Magnitude
+					if distance > castDistance then
+						local alignment = (direction.X * delta.X + direction.Y * delta.Y + direction.Z * delta.Z) / (castDistance * distance)
+						if alignment >= 0.98 then
+							local extended = direction.Unit * distance
+							if method == "Raycast" then
+								args[2] = extended
+							else
+								args[1] = Ray.new(origin, extended)
+							end
+							return Runtime.CallWorldRay(self, originalOrigin, unpack(args))
+						end
+					end
+				end
+			end
 			if ProjectileCore then ProjectileCore.Status.fallbackSkips += 1 end
 			if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
 			return oldNamecall(self, ...)
@@ -6461,7 +6563,6 @@ do
 		-- VOMAGLA's distance guard is required here: ViewmodelController also uses
 		-- Workspace rays for short melee/resource checks (TreeX, NodeSpark, stones).
 		-- Never pull those interactions toward a selected player or draw gun tracers.
-		local castDistance = method == "Raycast" and args[2].Magnitude or args[1].Direction.Magnitude
 		if castDistance <= 50 then
 			if ProjectileCore then
 				ProjectileCore.Status.nonCombatSkips += 1
@@ -6493,7 +6594,7 @@ do
 				return oldNamecall(self, ...)
 			end
 			args[1] = newOrigin
-			args[2] = delta.Unit * castDistance
+			args[2] = delta.Unit * math.max(castDistance, delta.Magnitude)
 			ProjectileSilent.NoteShot(target)
 			return Runtime.CallWorldRay(self, newOrigin, unpack(args))
 		end
@@ -6504,7 +6605,7 @@ do
 			if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
 			return oldNamecall(self, ...)
 		end
-		args[1] = Ray.new(ray.Origin, delta.Unit * castDistance)
+		args[1] = Ray.new(ray.Origin, delta.Unit * math.max(castDistance, delta.Magnitude))
 		ProjectileSilent.NoteShot(target)
 		return Runtime.CallWorldRay(self, ray.Origin, unpack(args))
 	end
