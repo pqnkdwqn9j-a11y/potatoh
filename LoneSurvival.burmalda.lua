@@ -1,17 +1,3 @@
--- Burmalda.hook | Lone Survival | private JNKIE payload gate
-local __burmaldaLoneEnv = getgenv and getgenv() or _G
-local __burmaldaLoneKey = tostring(__burmaldaLoneEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
-if tostring(__burmaldaLoneEnv.PHOOKGATE or "") ~= "1347571535"
-    or __burmaldaLoneKey == ""
-    or __burmaldaLoneKey:upper() == "BETA"
-then
-    __burmaldaLoneEnv.PHOOKGATE = nil
-    __burmaldaLoneEnv.SCRIPT_KEY = nil
-    return
-end
-__burmaldaLoneEnv.PHOOKGATE = nil
-__burmaldaLoneEnv.SCRIPT_KEY = nil
-
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local userInputService = game:GetService("UserInputService")
@@ -3473,6 +3459,7 @@ end
         return "Unarmed"
       end
 
+      local drawingLines = setmetatable({}, { __mode = "k" })
       local function createLine(color, thickness)
         if drawingEsp then
           local ok, line = pcall(Drawing.new, "Line")
@@ -3484,6 +3471,7 @@ end
             line.From = Vector2.new(0, 0)
             line.To = Vector2.new(0, 0)
             mainGame.draws[#mainGame.draws + 1] = line
+            drawingLines[line] = true
             return line
           end
         end
@@ -3505,12 +3493,7 @@ end
         if not state then state = {}; entry.s[key] = state end
         if state.visible ~= visible then state.visible = visible; line.Visible = visible end
         if not visible then return end
-        local drawingLine = false
-        if drawingEsp then
-          local ok, value = pcall(function() return line.From end)
-          drawingLine = ok and value ~= nil
-        end
-        if drawingLine then
+        if drawingLines[line] then
           if state.from ~= from or state.to ~= to then
             state.from, state.to = from, to
             line.From = from
@@ -3658,6 +3641,11 @@ end
       end
 
       local function renderResourceEntries(camera, cameraPosition)
+        if not cfg.ResourceESP.Enabled and not mainGame.resourceEspRendered then
+          mainGame.stats.espResources = 0
+          return
+        end
+        mainGame.resourceEspRendered = cfg.ResourceESP.Enabled
         local visibleResources = {}
         if cfg.ResourceESP.Enabled then
           local resources = getCachedResources()
@@ -3784,12 +3772,12 @@ end
               updateTextDrawing(entry, "name", entry.name, cfg.ESP.Name, centerX,
                 yTop - (topHealth and 25 or 16), target.name, cfg.ESP.NameColor)
 
-              local distanceText = string.format("%d m", math.floor(
-                (head.Position - cameraPosition).Magnitude + 0.5))
+              local distanceText = cfg.ESP.Distance and string.format("%d m", math.floor(
+                (head.Position - cameraPosition).Magnitude + 0.5)) or ""
               updateTextDrawing(entry, "dist", entry.dist, cfg.ESP.Distance, centerX,
                 yTop + height + 3, distanceText, cfg.ESP.DistanceColor)
 
-              local weaponName = resolveWeaponName(target.model)
+              local weaponName = cfg.ESP.Weapon and resolveWeaponName(target.model) or ""
               updateTextDrawing(entry, "weapon", entry.weapon, cfg.ESP.Weapon, centerX,
                 yTop + height + (cfg.ESP.Distance and 18 or 3), weaponName, cfg.ESP.WeaponColor)
 
@@ -4113,6 +4101,11 @@ end
         restores = {},
         patchedWeaponModules = {},
         patchedFunctions = {},
+        weaponOriginalFire = {},
+        weaponRecoilPatches = {},
+        weaponSpreadPatches = {},
+        recoilPatches = 0,
+        spreadPatches = 0,
         nextInstall = 0,
         currentTarget = nil,
         detectionUntil = 0,
@@ -4310,6 +4303,17 @@ end
         return part
       end
 
+      local function effectiveSilentFov(camera)
+        local configured = math.clamp(tonumber(cfg.Silent.FOV) or 120, 0, 175)
+        if not camera or typeof(camera.ViewportSize) ~= "Vector2" then return configured end
+        local viewport = camera.ViewportSize
+        local fieldOfView = math.clamp(tonumber(camera.FieldOfView) or 70, 1, 175)
+        if viewport.X <= 0 or viewport.Y <= 0 then return configured end
+        local radius = math.min(viewport.X, viewport.Y) * 0.45
+        local maximum = math.deg(2 * math.atan((radius / (viewport.Y * 0.5)) * math.tan(math.rad(fieldOfView) * 0.5)))
+        return math.min(configured, maximum)
+      end
+
       selectTarget = function(maxDistance)
         local previousCollect = collectTargets
         collectTargets = function()
@@ -4319,7 +4323,14 @@ end
           end
           return result
         end
+        local fovCamera = workspace.CurrentCamera
+        if not cfg.Silent.DynamicFOV and fovCamera then
+          fovCamera = { ViewportSize = fovCamera.ViewportSize, FieldOfView = 70 }
+        end
+        local previousFov = cfg.Silent.FOV
+        cfg.Silent.FOV = effectiveSilentFov(fovCamera)
         local results = table.pack(pcall(baseSelectTarget, maxDistance))
+        cfg.Silent.FOV = previousFov
         collectTargets = previousCollect
         if not results[1] then error(results[2], 0) end
         local chosen, stats = results[2], results[3]
@@ -4335,8 +4346,16 @@ end
       end
 
       updateFovCircle = function(camera)
-        if cfg.Silent.DynamicFOV then return baseUpdateFovCircle(camera) end
-        return baseUpdateFovCircle({ ViewportSize = camera.ViewportSize, FieldOfView = 70 })
+        local fovCamera = camera
+        if not cfg.Silent.DynamicFOV then
+          fovCamera = { ViewportSize = camera.ViewportSize, FieldOfView = 70 }
+        end
+        local previousFov = cfg.Silent.FOV
+        cfg.Silent.FOV = effectiveSilentFov(fovCamera)
+        local results = table.pack(pcall(baseUpdateFovCircle, fovCamera))
+        cfg.Silent.FOV = previousFov
+        if not results[1] then error(results[2], 0) end
+        return table.unpack(results, 2, results.n)
       end
 
       addRestore(function()
@@ -4507,9 +4526,10 @@ end
       end
 
       local function patchRandom(fn, enabled, eoka)
-        if type(fn) ~= "function" or state.patchedFunctions[fn] or not (getfenv and setfenv) then return end
+        if type(fn) ~= "function" or not (getfenv and setfenv) then return false end
+        if state.patchedFunctions[fn] then return true end
         local ok, originalEnvironment = pcall(getfenv, fn)
-        if not ok then return end
+        if not ok then return false end
         local originalMath = originalEnvironment.math
         local originalRandom = originalMath and originalMath.random or math.random
         local newMath = setmetatable({
@@ -4528,6 +4548,7 @@ end
           state.patchedFunctions[fn] = true
           addRestore(function() pcall(setfenv, fn, originalEnvironment) end)
         end
+        return setOk
       end
 
       local function eachUpvalue(fn, callback)
@@ -4559,33 +4580,44 @@ end
         return source, name
       end
 
+      local function patchWeaponBallistics(fire, recoilModule)
+        if type(fire) ~= "function" then return end
+        eachUpvalue(fire, function(key, value)
+          if type(value) ~= "function" then return end
+          local source, name = getWeaponFunctionInfo(value)
+          if (string.find(source, "Recoil", 1, true) or name == "Recoil") and recoilModule
+            and not state.weaponRecoilPatches[fire] then
+            local originalRecoil = value
+            local function recoilWrapper(a, b, c, d)
+              local originalFourth = d
+              if type(d) == "number" then d = d * cfg.WeaponMods.Recoil / 100 end
+              local first, second = recoilModule(a, b, c, d)
+              return first, second, originalFourth
+            end
+            local ok, err = pcall(debug.setupvalue, fire, key, recoilWrapper)
+            if not ok then error(err, 0) end
+            state.weaponRecoilPatches[fire] = true
+            state.recoilPatches = state.recoilPatches + 1
+            addRestore(function() pcall(debug.setupvalue, fire, key, originalRecoil) end)
+          elseif name == "GetSpreadDirection" and not state.weaponSpreadPatches[fire] then
+            if patchRandom(value, function() return cfg.WeaponMods.Spread ~= 100 end, false) then
+              state.weaponSpreadPatches[fire] = true
+              state.spreadPatches = state.spreadPatches + 1
+            end
+          end
+        end)
+      end
+
       local function patchWeaponModule(module, recoilModule)
-        if type(module) ~= "table" or state.patchedWeaponModules[module] then return end
+        if type(module) ~= "table" then return end
+        local fire = state.weaponOriginalFire[module] or rawget(module, "Fire")
+        if not state.patchedWeaponModules[module] then state.weaponOriginalFire[module] = fire end
+        patchWeaponBallistics(fire, recoilModule)
+        if state.patchedWeaponModules[module] then return end
         patchDelay(rawget(module, "Setup"), function() return cfg.WeaponMods.InstantEquip end)
         patchRandom(rawget(module, "TryFire"), function() return cfg.WeaponMods.InstantEoka end, true)
 
-        local fire = rawget(module, "Fire")
         if type(fire) == "function" then
-          eachUpvalue(fire, function(key, value)
-            if type(value) == "function" then
-              local source, name = getWeaponFunctionInfo(value)
-              if (string.find(source, "Recoil", 1, true) or name == "Recoil") and recoilModule then
-                local originalRecoil = value
-                local function recoilWrapper(a, b, c, d)
-                  local originalFourth = d
-                  if type(d) == "number" then d = d * cfg.WeaponMods.Recoil / 100 end
-                  local first, second = recoilModule(a, b, c, d)
-                  return first, second, originalFourth
-                end
-                debug.setupvalue(fire, key, recoilWrapper)
-                state.recoilPatches = (state.recoilPatches or 0) + 1
-                addRestore(function() debug.setupvalue(fire, key, originalRecoil) end)
-              elseif name == "GetSpreadDirection" then
-                patchRandom(value, function() return cfg.WeaponMods.Spread ~= 100 end, false)
-              end
-            end
-          end)
-
           local function fireWrapper(tool, ...)
             local originalTool = tool
             local proxy = setmetatable({}, {
@@ -4658,7 +4690,7 @@ end
       end
 
       local function installWeaponModules()
-        if state.weaponInstalled then return end
+        if state.weaponInstalled and state.recoilPatches > 0 and state.spreadPatches > 0 then return end
         local client = getClientPath()
         if not client then return end
         local tools = client:FindFirstChild("Tools")
@@ -4669,7 +4701,6 @@ end
         local cameraModule = cameraFolder and cameraFolder:FindFirstChild("Camera")
         local recoilScript = cameraModule and cameraModule:FindFirstChild("Recoil")
         local recoilModule = safeRequire(recoilScript)
-        if not recoilModule then return end
         local foundModules = false
         local complete = true
         for _, child in ipairs(viewmodel:GetChildren()) do
@@ -4922,13 +4953,20 @@ end
         end
         if type(hookfunction) == "function" then
           local ok, previous = pcall(hookfunction, original, wrapper)
-          if ok then
-            oldFunction = type(previous) == "function" and previous or original
+          if ok and type(previous) == "function" then
+            oldFunction = previous
             raycastHooks[#raycastHooks + 1] = {
-              restore = function() pcall(hookfunction, wrapper, oldFunction) end,
+              restore = function()
+                if type(restorefunction) == "function" then
+                  pcall(restorefunction, original)
+                else
+                  pcall(hookfunction, original, previous)
+                end
+              end,
             }
             return true
           end
+          if ok and type(restorefunction) == "function" then pcall(restorefunction, original) end
         end
         local ok = pcall(function() module.Raycast = wrapper end)
         if not ok or rawget(module, "Raycast") ~= wrapper then
