@@ -1,1 +1,6825 @@
-return(function(...)local wM={"Z8;?B^&5$>:7p!.6pgZE";"ZR@=U2PQ#SE*ORd=1!cNR","ZRK]","ZR0ljXt0g;KPQ$K\".Xq";"ZELa&nEA!tjPN","ZR@rn+&KN1?P1moZ1!4";"ZR@3qt.EJl*P;]:sP\"\"U0PQ<","Z8;t";"ZR@c7URd6mpB\\";"ZRGX!>1c,NK)Y=4^1F","Z5P;";"Z)j6841-@$Epq#E9#2o1p%.A)3Bto";"ZR0r:Z)Y#,Y";"ZI+","Z5QgWW.3fg2.EZ<t*Vdd","ZA<^","Z5,L-C7P0I4P#nEI)j/tO)[^","ZEKVTJpgC^","ZRGX!>1c#?%";"ZAkG^@&5=]^P\"\"?:";"Z5,Jga&5I","ZlOdGJP,\\","ZA7#Qn.DLjS)[Y";"Z5,rfQP:(#4","ZR0r:Z)/R9n.F[f";"Z.h$BZ)K","Z7*$P41]<&d1AI\"opg,.o";"ZRfrn/.Mc8UPQu";"ZRbXpgPQ2Z","Z5,l\\=*=WAC1Pg46pgE;","ZRKEA\\At4";"ZlOk0Jp=Rs3.t","ZFD\\3V1&#YHP;!\'q";"Zl:C];ELJOdA<GYI)j/3h.mNm","ZlOdGG.XQ:-.h$a`";"Z8q.pGl:Cp>","ZRG+jt1*>:9P2j)_.mNL_";"ZRorr>","Z5QgI:1*,N31F";"Z(@u]6.mkWiPQ<";"ZEWTEIFmWh3.UBb;&2";"ZdcNuYP:-";"ZR0=>f7&#af";"Z5;p[S1b`Wj","ZA7$N>.#dJn)[G2l7.R8q","Z5QbQ]&W.meP3.sY*O!";"Z5Qb;W.UBTe";"ZlV?+[.D*dLpM@6`FE[MI1P7Tn*Vdd","Z8+7bH.Xgr!p+&Gh.8#&","ZFF%2","ZRoW]j.F<r$7*JFR","Z(@U1S&5L?j1)WZR";"ZFE[Mb1cQ3R7)Ono1Y@n";"ZEWTEIFmWh3.UBb;&FOF:P,VC","ZFD\\Rjp6q:gtda^#1P<J7&lL=\\&l14j","Z.EJ&j)S";"ZpMGB]P;],","Z5Qb;>.<";"ZRfrB37)^B?P2)a?.D;N\\)ks.c)jj##7PIa8pR4+rP).@G.C)237Po;i.EJ9T&KtM?*OEai*6b";"Z5,a<Z","ZR0r:Z)/bjr*O(C+.Xu";"ZRGR:\'&Ao4m.Ef","ZR9jO*)jZ";"ZR@raJ*:OLB7&2mb7Podr*V6o(PQsZo.L\\l","Z(@U1S&5L?>pg>N@*O(@u*Vdd";"Z5e`$Q1/=N?","ZpMG#rPQ#SA&5aB\"";"Z(@U*J1/c/cP;-lmI+";"ZE5+U;&5a##8gI\\VpgEu";"Z5,r-k";"Z5[t9$","Z5e`GY&l^G.pgs>Q.m0p","Z8u4:9ES%%,","ZA<GPa*O(WL1)PIdRGE]Y.D&";"Z71Il";"ZES%#>dc+-fp+U";"Z7pC";"ZFF_aH.D*d+&5=4]RGR>G)S","ZRoW]Y.EJ[","ZELa&n5eUO";"Z7oiJ";"ZAYGo01)YfP*;ZW/P33tB","Z5;p[S1b`Wjl\'akWpgE;";"Z8US]jA7#Qn.DX","ZR9kc;p(Y:88u;+V8US%k1/n","ZlBF]\'5Qh4N*=h";"ZFD\\Rjp6q:gtda^#)j/Gh)K";"Z&Kt*]1c8R-)s-";"Z5,8tZpg&gQ.D_MT&Ab1\"ESHrm.t","ZEK%!+&5e\\D5[iD9.DST\"P;7i","ZRNh%k.F[n#A7L5K","ZRor`QPQ0","Z1F";"ZR0*c1.mNm";"Zl;B";"Z5eUVZ&AR\'npg4h\\)/&d?.t","ZR9jO*)jYhO&^Dej1F","ZP,Q","Z8q.#n)>E";"Z5e`GY&l9cVpBbJIpBTDXPQu";"ZRi1H5.#oVs&5a##*On`M.mNci2Omj";"Z(@U:nP\"\'","ZR@c7URd6mpBp","ZR0=*X&53N","ZRNh%k.F[n#8u;+V8US%k1/n","Z)j6841-@$Epq#E9#2(\"5_!]+UB[n(";"Z53T0ZP:MK$&l9cVpBe-f";"ZlVaF,&AsS8p+4:-1]<BEpgC\\@*OZ%<.#*";"ZdcuQGPQsngP,!C","Z8H.Q#pgE391/YIRPeV","ZA7DgS)<D[d5,8NhpqcJ";"ZRfLX\'*ORK";"ZlVcF,pgEN/P\"\"?:";"Z&KscT.t";"ZRf3CIpMS_@P,*_7&AN;","ZA<NuJ)K","ZA7L5KA<NPk1-f+\".mNi?","Z7)H9e.8\"";"Z)[(g51*Q3\\pu*`g.mNu";"Z8gI_>P\"XL<","Z5QNmn.DHr-1Yqgo7)H781/Fe?Ft","Z5,J[X";"ZEWTEIFmWh3.UBb;&E7`XPehO","Zl,M.98BWVH8)";"ZR9jqiP,`Rc.Ef";"ZF8;[9P;`Ri53T;Wl:Cp>","Z5QT2f.D*aY&l950";"ZEFh0=P,7<n&l`S";"Z5Qgma*/g0:.t","ZFE[Mb1cQ3R7)HePPe/";"ZR9j;A.u[QSp)";"ZRGX!>1c,NK)Yc7k.EJ[";"Z&KtRr&A5","ZRidP8P3I","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)Pc,BK1c3It(dCE7#,@1&Bk:ap","Z5>6VZ";"ZdTJYGFu^[l7&pXD7*,V\\1ct;\"P3Jt-pq_F","ZEm>\\^P;9T-.U*p^PehO","ZR0r:Z)aUkJPQu";"Z#/","Z8q,Gf7p!(Q&Wo","Z8+7bH","Z5,a\\GP3I","ZlBZSo&5DX*PQD/<)S";"Z5e`J/I4P,!P>h#VP;\\";"ZRGR6mpq=E\'1Pc","Z1c3tE1*.Gr";"Z5;pSmA7L5K","ZRbX!Z.DLa:pqHs@","Zo\\mdKEm>4";"ZlV?+[.D*MAlJ","ZEWTEI7.t[k.DPMTPQu","ZE^+nZ.D*EYPen>\\PQ<";"ZP;`+M&5I";"ZFD\\Dq&5a##puP+_)k2g@1!-I_1P(G_7)-sb1P<(\"&lU5ipgn[W7)^4MpMG#s&l6Lh)G,@\")kD)c";"ZRoW]j.F<r$7*JFR7)^h;.t","Z)j6841-@$Epq#E9#2(\"d%p\\St_-e]e%.A8e";"ZRNgan8u;pL";"ZES%AS.3f)c1Pg0-1P(M","ZES%AS.Uap1*O!","ZRT4!fP\"Ed<8u;pL&A<*n*VAQ@1)h";"Zl_jGm8u;+V.mNci","Z5QgWW.39Q/&K0=@.t","ZRGX!>1c,NK)Y=4^1&L&n.F<Lh1F","ZES_>G14:=C1F","Z8(2%f7&Bs6&B05p1*QA\"1P(S!7)^\')puP+=78","ZRbXpgPQ2!j*O\"!@";"ZEm>\\s5,l\\hpgEX-";"ZFr7NV","ZRi@B1PQ>75.L7","ZA<Ga";"ZFD\\Rjp6q:gtda^#1P<R\\.t";"Z53GqL.DP`\"&Wo";"Z5e`$Q*6?.LpgsnkpgFi","ZAarB[P,7]<.t","ZEm>\\upgnai.U*p^PehO";"ZA*riW.ED*gp-";"Z5,Dg[1.RB[.DP3C*J","ZRorr>Rf3C11\\XB7*O%";"Z5,a\\GP3eip1*Q*","Z7pWJ[&53fit]\'tX","Z53T;Wl:Cp>","ZR0a>GIN;:!P,V$fP,!P","ZRbXpgPQ2Rc";"Z5e`DJpg%","Zl,!$3","ZRfrBu1\\T\"Z.t","Z5,?Ru.D;NE&l9cr1]7W01c;g-PQsnk&5DXK&%.TFAS","ZES%Aq&A<h^pqH7T","Z(@ULJpM@6`FE[MI1P7Tn*Vdd";"ZRi1CmP;/`\\1)E","Z5QgWW.39$6.XDD","ZE^+K";"ZES_r<P,`bM","ZdcNuYP:sE","ZRorr>8+7VkR0=dU.t","Z5Qt5G.%q#X*Ontq";"ZlV?+[.D*cSP29IO&AbcTp6qQ","Z#B#fW.Ckg";"ZRfrn/.Mc8f.D&","ZRf=BH.(GNLP:0J\\","ZA7L-6&5#D";"ZdcuQGPQ<";"ZR0r:Z)/+h[I&k>","ZR@3W3RGRrO";"ZRf3CIpM9ItPQ$m9P:0JM","ZFE[MIpgE++*::`PP,`bM";"Z5e`.Jl_7bm1F";"Z8+7bHRbXpgPQ<","Z5,?Ru.+%W$.t","ZAkG^@&53N";"ZFD\\SJ)j/eipg&hB";"ZR@=eU&KN[E.h$e>7)_4l&WGN(*VdRspgE+71/8])P:sc;";"ZRKEA\\5;p[S1F","Zp+mbF10q`s)jj2)p(-eT1aQ3E.DPl]P33ts1dW?.PcQ6;P;\'><)I>>U2Xa&:IWS]M1*p8#2CQ#.*I#ao.$Q^d.XD76#(fs%PPs?;&53jgPQ#f=1)Oh";"ZRfreL1T`mZ&WpU:&5aB\"";"ZEu9","Zl:C];ELJOdA<Ga";"ZRbXpgPQ\"V";"ZR9jO*)jYnZ.Ef";"ZRd1CDpqcXa.t","ZRd1Ztpg,pB&$bgt&Wf";"Z71]";"ZRf3CIpMf4^P\"\'","Z5QgI:RGE!k1F","Z2Omj","ZA7#Qn.DD4JPQJN_)K","Z8q,Gf","ZlBE6+7&:+g","Z5,r-k14=MSpM^";"ZlV*Ij1P6Vqp(n","Z8q.)D*:DWL.Ef";"ZFm5rG)ks.41)*KTpuOAN1)E","Zd-SiClV?+91)8Vj1!cV\"&Wo";"Zl\'akWpgE3J)j/6<)7![NPenW";"ZRGhtgPQT^2pq5!q7)c6EI4q\'%","Zd-SiC8u;+V.mNci";"ZEWt>Bpg,p-PenRe)[(,a.mNLT)S","Z53n\\\\";"Z.EJX[Ig","ZA7#Qn.DLM#";"Z8u;pL";"ZEFh0apg\")gRG+LS.De";"Z8u;pL&A-","ZAkR-[&W:4B";"ZA<T_Z.McpI1*QHQpg>[UP,`bM","Z5tT4j";"ZE`2\'.&^Dej1F","ZRbXpgPQ2t\"","ZFD\\Dq&5a#X1Yqg!1F";"Z1/-2<&WN";"Zb^<sm1/a5q1!cN_";"Z)j6841-@$Epq#E9#2oE.%.V/HBIQ";"Z8u;pLF$;)J8g1+X";"Z86WjX";"ZRGR6mpqHX2&AbM4PpHZYP\"\'";"ZFmWh3.+%ZfP3p[!)k#<NIg";"ZR@raj&5JX>5Qh4N*=h","ZA<NZJP;![`7&a#[PQ+`V)j/QK","ZA*h","ZlVa;,.DHC","ZRoW!bP;9T-.+!ZqP,VC","ZELJ,AR9jO*)jZ";"Z5>6[6)jj?cPQ<","ZA[5,`P\"\'";"Z8q,Gf5Qt2D.t","ZRf3C3&lU*6)GQe5)k2GV";"ZES%),.EJ[";"ZE5[U**OM/B*H&G2&WJl:pMG-";"ZRfrdp)/bLr1.t>PP,]r_","ZlV?+[.D*&G&l`s";"Z5QbQ]&W.meP3o","ZAs/1$7)P4?pq5e].%?","Zl,M.98BH8eE#";"ZFFVD[.L2oWpUu1VI(";"Z5,L-CE5[nXINmQh&WpZ4";"Z5eU\'f.#dbL)k<";"Z8+7bH.Xg$uP33DEI`[*^1-Kt$*VA[q*/hu\"&SIh@IW3";"ZAt4";"ZFD\\Tm1Y0\\9pg>k","ZES%#>5,auO","ZlH7%n&K[sgP1\\5/P:-","ZR0r:Z)S","Z5,r-k)K";"ZE5+Uu.mNL_","ZEWTb","ZRfrBu1c$7";"Zdc<$J7&apnP\"\'";"Zdcs_a)[0R!*30dWP,VC","Z&Ks?C*p";"ZA7#Qn.DX";"Z&AR=T1&:]","ZR9k495,DDHP:-";"ZRTE8QP\"\"U0&$e-Q.t";"ZlV?+[.D*ce.EJ8";"ZlV?+[R0=*X&AbM4Pb";"ZE^+nDRGR>G)S","Z5#b59","ZESVDf1P(G_)K","Zoi\'Lp.Li";"ZdcuQGPQ28Q.8\"";"ZA7L5K5Qh4N*=re[&5a\"!&A<r`&`;","Z5,L-Q1AIiMPQ$K\"7)cYB1)_HR1P(G_)K","ZRGR6/1Y@uK*OMY@)[0/F";"Z8u\\!m1Pc";"ZEFh09P,!10";"ZlV*Ij1Pq<h1Pu=","Z)j6841-@$E%Z\'sNPQ#GA#MC9#pg43r1ia441P<!i5[&\'[*%7A_";"ZP,KKHP;AW";"Zo+","ZP,KKURV";"ZF8.Kh5,8NhpqcJ";"Z8+<7@dc<$J";"Z5e`/^.D&","Z86WrX)s(N!1P(G_","Z8gI2W.ubGPI4*";"ZR0=*X&AbM4Pb","Z)<D>","ZA7#R<&5JLg.DP<","Z8g1+X)jj?\")[f2h&l950","ZRf3C11\\slL*V`8i.Mc8UPQu";"Z5,?RXl:CpLP3I","ZAIgof)kp)_1/cYQ.DH>7I4In";"ZR9jO*)jYdXP33$5*V]n?";"ZlVa;,)k#A(5QgIZ.t","ZAYG2s.m6,+*Vdd","ZPeh`M)j/k","Zd.VX+l:Cp>)K","ZlH7%n&K[sgPI@EW.t","Z*%dpM)K";"ZES%#>ELJ,A","ZRbX#/tiY<F","ZlBZDn)k$GF.t";"Z8US%k1/a)i.EJ[","ZRi1H5.#o[\".EGhipg,psPehV&2OX";"ZRNh%k.F[n#RbXpgPQ<","ZpMGBs)soG71Y<L","ZFFVD[.L2o:P\"\"?:","ZFFVD[.L2ojPQD/<)S";"ZFE[MI1P<<g)a1m\'&KTi!1F";"ZlV?+[.D*d+&5=4]","ZRG+jt1*>>DPQ8\"";"ZR9jO*)jYjL.$OU!","Z%A";"ZA<GZq&L98";"Z5QsIq1P73,&ARU-&Q";"ZRGE!k1F","ZFD\\SJP3p\'RIg";"Z5,rfQP:MGQ";"Z2$0tIPb";"ZlH7%n&K[sgPI6CXphie","ZlV?+[.D*Xf.$Oe\\.m0jS&l9cr)K";"Z8g1+d&5J9h","Z8q,GfFmWh3.t";"Zda[H3P,!+$pq55","Z8u;pLRGE!k1F","ZFF_aH*On\'W1.hsV.Xq","ZRNh%k.F[n#ELJOdA<GYI)j/3h.mNm","ZlBZ]eA<fGI1)H^.","Z8=P[+";"Z5,rfQP:M/C","Z8US?J&WZF3I.n","Z8M/.";"ZlH7%n&K[sgP1CZXpMG<";"ZEWTEIFmWh3.H1";"Zdcs_a)[0R!*;FfGPG";"ZRT\"%S&K09K)K";"ZA<NZJ*/gI6.EJ>V1PgB";"Z8M/p9P>>G`";"ZELacP5QgmVESVDf";"Z1/E";"ZEm>\\^P;9T-.t";"ZA7#RE.D_?N&Ab1\"FFVAD.D&","Z5e`J/I41+Y&Kt?@","ZAkG^O&^QD";"ZP\"\"?rpgC3\".t","Z.r\\]T1P(G_","ZR9kitl:h6=&l`\"1pg,psPehO","Z5,?V>*ON1t)YB7^pMf4Y&5a\"!&A<r`&`;";"ZRNh%k.F[n#FF_LI)S";"ZRd1ZdPenR:7)BCM2Lc[E)<D^l1!Po8ps5FE.m0pr&5JDN&Ktl4.F[n#";"Z7pWR;1!cV\"&W.W<78","Z5eUtXPQ0";"ZA<NPS.DPO";"ZRbX!Z.DD\\!)[(Co&KtM?.mN+@1P(G_2:!V7I&k,5pgq;%.Q@Z$)GQ1lPQ:4**:O%g7*mY@I4P,ApUKA\"&As]g1F";"Z5eU8H8u;+V.mNci";"ZA<T_Z";"ZlH7%n&K[sgPp\'.\")[R\"))j/3h1/X","ZAkG^@&5=]sFEb*t*OE^","Z#MTl","ZRbX]f.F<r$";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Ql`tB[X%3Bp","Z.$PaT&l\'`","ZRor*n7&8==";"ZlV?+[.D*UmP\"\'";"ZRi@B1PQ>!Q&KN1\"&AbM4Pb";"ZEFh0jPQ8I:*:OM?)K","ZRT\"%S&WJa6P33W";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9qB<laP_)A+X_0";"Z5,8tZpg&hB";"Z5,?VG.m@iZp/";"ZFD4dt1F","ZFD\\Tm1Y0\\=1)*KTpuOAN1F";"ZlVaF:)kDS&","Z(@u]:P:7//&5=4]FmB.]P\"\"?:.<";"Z1!-ZP.t","ZRoLcb*\'ib5","ZlOk0JpHKPYP,`D\")S";"ZlBZbJ","Z)j6841-@$E%Z\'\"\".L\\Ao)k#511-s4m1-s4f#Q]!;1dWGtI+","Zb9eZGP\"X%[*O`","ZR0r:b.m<jV&KNs`&Wo","ZA7L5KRoW]j.8\"","ZE^g=IpMfLu1*.[C";"ZlV*I,P33DT*/g^jpq2oA78";"Z5:)E6A<ft3&KiIH*Vdd","Z5e`J/I4*";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3I9pq#&JBIrr._/Ap;";"ZES\'?U.h$=g","ZR@ra\'&^QDN1)H^).D^@";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Qlnb_PhR1BJ";"Z5,?V>*ON1t)YB7^pM9I3*VdoH","Z5QT0^)7U\\/pg,psPehO","Zdcs_a)[0R!*p";"ZAkG^O&^39h1)$]dpU@nO";"ZES%Aq&A<hu.ms0","ZEK%!,.U*puPQu";"ZEAV[[)>l^N1Pu=";"ZRGX!>1c,NK)GQXb*O@(_P:0ZE1PVlP&As]g","ZR0*UYP3I";"Z7A^,4PQ#7";"Z5,rfQP:(VE";"Zd.VX+A<NPk1-f+\".mNi?";"ZE^hoh*=Wk","ZEK%!QpgE+=)j$";"Z8+7bH.Xg$WP,KKW)[SV[";"ZR@raJ*:OLB7)_\"!tiP057Podr*V6o(PQsZo.L\\l";"ZFE[MIpgE+7.$ch:7*Qo7PQu","ZEWtX=)j/[<P29D2P\"XL<","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9qB<:r.BkrhI_G","Z8gI2W.Ul\'J1Pg4URfret*p","ZFD\\S\'&5=?@";"Z5>63[&l`\"a7&29GB6\\","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)Pc,BK1c3It(dCE7Bka9p_P>);#/";"ZFD\\Dq&5a#ZPQ8a";"Z8+7bH.Xg$\'PQ#tcPen>\\PQ#^3","Zl:C];ELJOdA<GYI)j/3h.mND)","ZV:sq","ZEAV[V1!_HERGR:Z.mN+@1P(G_";"Zd.VX+7)^9MP3p[!)k#<NIg";"Z5#bm61F","Z#B#fW.CkC]","ZRGE]Y.DPO";"ZR0=>fRi@#","ZRf=BH.%6jl.Xq","ZES\'?U8+7VkpgEu","Z5,8[^&KN8h7P<1NpR7";"ZFDXnt.mW","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)Pc,BK1c3It(dCE7#,@1&Bt&)U","Z78";"ZR0l&LI(";"Z8u4:9At-C:)adYY";"ZEASRn1)E","Z)j6841-@$Epq#E9#2(et_!]SD%.L";"Z8US]jRf3C11\\tXJ)k#A!","Z86K85.XD*`p)","Z5e@\\hpghrs7)^l\"7)-*)p(Y=4ps5F2PQ>7&&lUcj1AInPI&o\'\\7)^l\"7)^4MpMG2","Z)j6841-@$Epq#E9#2q9._/%3u_-n_";"ZRd1.o1-fu@.t","ZRorn\'","ZR@=1kPeGXL1-ugA.D&";"ZP2]q";"ZA7DgS)<D[d";"ZRbXpgPQ<","ZR@=B^&2";"Z5;p[S1&*iDP:-","Z1-+_.&Wo","ZEWt>bPQ8a";"ZRf3C11\\h]Kp6@hVRGR>G)S";"ZRi1OtP1mkk*:W1]pMN.";"Z5QgmVESVDf1P(G_","Z86WrX)?,;XIN\"rV1)E";"ZRGR>G)[o/\\*=WH","ZA7#Qn.DLhY&5D6V1*Q=";"Z5eU8H)K","Z5QgWW.39)>1*Q3B&5e\\Q&53/";"ZEWt>2P:(_rtdn","Z)j6841-@$Epq#E9#2k=A%\\A)t_/*";"ZlV?+[.D*aG)kD3E)K","ZdD";"ZRGRhG.F[n#Ror>/1F","ZRGR:\'&A5";"Z5;p[S1&ci^&K09@";"Z51f;_p-";"ZAtPYgFD\\3V1p]U-.t";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Q*re#,kdA#/";"ZA<GYmpqB>P*OEtrP33W,PQD/<)S","Z)j6841-@$Epq#E9#2(1I_YnT1%p\\[X","Zd8","ZFm5rG)k2R:1P(U";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Qlnb_PhRP_b","ZA7#Qn.DLl9*Vdd","ZE5[nXINmQh&Wpn;P,`bM","Z8M/p8P,!P","ZFD\\Tf.mg]K1F","ZR9kitl:h6=&l`\"h","ZlBZ^";"Z(@U>GI9+E,1*p\\`.t";"ZlVa;,)k#A(lOdGS.mNm";"Zb9eHk.EJN";"ZR%","Z8+7bH.Xg$K*VA[q*VaYFp6N!q)>E";"Zl_/LB*O`","Z8+7)^";"ZRf3CIpMS_@P,*_!*:ObW";"Z8q.su.De","ZRf3C11]<UIt0\"T","Z#B:iOpMG<","Z#)","Z8u;s+1&:&a*V`A<&Wo","ZFD\\3V1&*c9.Xq";"Z5QgWW.t","ZR0rt","ZRGX!Q&Wf","Z8+7+a","Z5b","ZFF_LI1]<jt1/;LEpUurV&KNl\\7)YXM.D.$FpUKA\".DP:ipg(\\5puP8$7)^l\"7*,O`.DP%41!cV81]7C0P:0ZEpR4r(Pe/";"ZRorr>l=>h\'1Y0\\$RGR>G)S","ZRGR6n.XQ:KPQ#L","Z)j6841-@$Epq#E9#2k=A%\\AA3B<\\","ZR@3OHps8+HP\"X/K7&#=Gph!r<pg&q";"ZA<TI6.t";"ZlV*Ij1PV>1PQ8PRtgK";"ZpgkP(PQ8)!P;c-01AI6e1D","Z)j6841-@$Epq#E9#2(l&_-hA=B<aQ","ZR0r:Z)YD@j.DP3C*J","Z5e`t^.XQ:6PenR0P#8Glpgeh\\.D&","ZEWTEI7p_$C1*Qe";"ZlOk0JpHKPYP,`D\".<";"ZEWTEI1c3RB.t";"Z5[0:","ZlO9[:)7Vn4.X._\'.Ef","ZR@3@d1Yg\"";"ZRf3CIpMS%spg\"P";"ZRGR6mpgZ4";"ZRor*nRd1H;","Z8US]jR0r:Z)a9o9&2","ZlO9[:)7Vn4.3fg2.EZ<lPI@M,I(","Z)j6841-@$E%Z\'sNPQ#GA#MC9#pg43r1ia1#&Ss&<8g1$Q2$0tIPb","ZES_r#*:ObW","Z<g";"ZA&WsY&5$>:7p!.6pgZE";"ZE]SGfP2]3\\5eU!H1/X","ZE5[U**OM/Mpg,)!*VJ";"Z5;p[S1F","Z5QgIV1/LHK1Pu=","ZlV*Ij1PVlAP>>#6P;c-(1*p%%.XhPI2>Y";"ZRbXpgPQ\"g","ZR@3OHpBT!).DP_";"ZRd1.opR4r(Pe[a,&5a\"!&A<r`&`;","ZEm>\\upgnai.+!ZqP,VC","Z8gI2W.Ul\'J1Pg4U","Z8q,s3*O%";"ZRorj+7p%F@*J","Zdc<$Zdcs_a)S","Z5>6qhRd1`";"Z51!NL","Z8+<<>)Y?kH*V6o9P,`bM","ZRKt@";"Z5IacmPQ8Jd";"ZlO9[:)7Vn4.3f3T*Vdd","ZFm5rG)k\"Uf1*.GhP\"XL<)K";"Z8u4:9l:hh1pgEu";"ZRfre;P3;Qqp(^s$)K";"ZELacPRGE]Y.D*7LI+";"ZEA%),)GQlB&`-:?.B,N";"Z)j6841-@$Epq#E9#2qae_-Thp_Y>2";"ZEAV[[)>l06)[<t2";"Z)j6841-@$E%Z\'sNPQ#GA#MC9#pg43r1iaU\\1/-5P2$0tIPb";"Z5QT0^I4*","ZAkG<OP2SKK*/V";"ZR0=*X&AbM4PI@=[.Xq","Z5QgIn.Q@^W1*,`c.XgK<oR","ZR0=BIPQD)i","ZEWTEIR@=eU&KN8h5QgIV1/X","ZA<GPa*ORU,)[(/-","ZR9jq#1Y<Dd";"ZA<T_Z.#dRn&Abc4";"Z5QNN].DX","ZRfre;P3ei*)j/tO)G,qB*Vdd","ZlVaF:)kDS#tdJSJ1Pft<*=WUs";"ZR9jO*)jacG.CILj1)E";"ZFF%#F1/cJ_pg&q","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9qB<:r.Bkrr*_b";"Z8q,3^&K[]V1dWGS.[";"ZA7$N>.#dJn)[G2l7&#=Gph!r<pg&q","ZR0W]jI(","Z.EJEO.Ef","Z5>63[&l`\"a7&29S_G";"ZAarBfPQ#G5P,`RT)S";"Z%K","ZlH`!&)k2:i";"ZRd1Wt";"Z1!cVM1/mn+78","Z5,8tZpg&g:pgC#\\8u;pL","ZFD\\Dq&5a#XP,`=","ZR@rn+&KN1?Ptc4X*O%";"ZR@=BI1*k","Zd-SiQ.mK^SP:7DV&A^";"ZRbE%>PaDD38Q<s6","Z53T0ZP:M[rp/","Z&K<X6PN";"ZA<T_Z.McpI1*Q=";"ZFD\\Tm1Y0\\SP,]u";"ZlVaF:)kDS#tdZMMpgC%0)kQR<7)Oebp6@>hpgC^";"Z7;5F++U=-I($k%+&+:bkF\"2E3!eH\'\\ml-,]cYR";"Z86WrX)s(N!1P(G_7.R8q";"ZFmWh3.3G0-)tuVR1AI9bpg;T\\.%cO","Z8u4:9ES%%,l\'akWpgE;";"ZFE[MI","Z8u4:9RGR6j)[(j","ZAIgof)kp)_1/cYM.EJY4p)";"ZFD\\Rjp6q:gtda^#)7!Rg.DD\\_&Ag1-","ZA7#Qn.DLd31*o";"Z5>63[&l`\"a7&=s6&^QDNRd1CD.mY","Z8+7+a5Qt2D.t","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9qB<laP_)ADU#)";"Z5QgIn.Q@J4&lrJhP,`bM","ZR0r:Z)/bjr*O%","ZlVa;,)k#A(Rd1h";"ZAtPYgl_k([","ZRD+d","Z5e`J/I4P,2)jjTB","ZFF%#l.XD!";"ZA7#Qn.DD4ZFt";"ZRf3CIpMS_@P,*_?.mNX?1)h";"ZAkG^O&^QLu&AsI","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Q*re#,kld_G","ZA<T(gRGR>G)S","ZES_rs.mNX?1)h","ZA<GYmpqB>P*OEtrP33W";"ZAIgof)kp)_1/cY:.DX","ZRoW]j.F<r$RoW-";"ZEWt>Bpg,p-Pen(","Zdcg5V.m[c41F";"ZRor*nRd1H;8q,GfRGR>G)S";"ZA<G,NPjmIZ1)_58*OE^";"ZEWt>\"1)Pu5&S[>c";"Z8HZm[1)_5F.t","Z&K<ak)S";"ZRGX!>1c#?%l6Tm6","ZPb","ZFE[Mb","ZlV?+[5Qb,K.<","ZFD\\Rjp6q:gtda^#)jjR?&ARH";"Z)j6841-@$Epq#E9#2(Mo_-T6&B[&-","ZRGR>G)>-_\".mY","ZFDZ\'Z";"Z8+7)=*QiW^tiP]";"ZA<NZJP;![`7&a8gPe>#@pg&q";"Z5e`J/I4IY5&Ssc-7*QZ<*OM/i.mk,0";"Z53T;W";"Z5,L-qpR.-EAsA(4.DX","Z)7!Rg.DL?","ZR9kc;p(Y:8FFVAD.D*e+t0eOe";"Z5,?Va)s7V/P\"\'";"ZESHrm.t";"ZFD\\JYP33Q5I`[=Q1)_58*OE^";"ZA7#RsP\"\"?:";"ZRTE8Q";"Z5eUtL.ue5/1F","Z86WrX)cMfu1ck";"Z8+7VkR0=dU.t","ZR9jO*)jYn^Pta``P7\\-G1*p\\`.t";"Z5Qt5G.#b\\c*V`l";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9qB<laP_)AD;Bp","Z8u4:95,DgS1F";"ZlV?+[.D*Xf.$Oe\\.m0j9phUd";"ZEFh0J)7!RQ","Z8+7)^)K";"Z5,JJSpgEu","ZRbX!Z.DL6h&Abu","ZR0r:Z)YB7^pM^","Zl:C];At4";"Z8+7)^lHKj..F<Ua1PgB";"Z5,Dg[1.[na*OE!N&5JX>","Z(e6>DnMFPn\"\'INQUKTP45MHKXl,m]a&:X83)sH";"ZR@=1kPe9,,.DH>7I4In";"ZFDXE5P33ATPehO";"ZlV?+[.D*&G&l`\"dPQD/<)S","Z5;p[S1&*iDP:<]i1PuG2.t","Z1$";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3I9pq#&JBIrr._/)+H";"ZP2S`s*OEG\'";"ZRoL>L7.+S/p+U";"ZRf3C3&lU*6)GQ*&1*p8!PQsZd)7\'Dq7P<uM7)^l\"7p!(CPpUM(I8*&?1cI";"ZE^+nZ.DPO","Z86WnupgC3\".t","Z)j/VKPQ0","ZRGR:ZPQ#sc1)E","Zl:C];ELJOdRor`QPQ0","ZEAV[[)>l\\J1*k","ZRNh%k)K";"ZAk([YPQXD";"Z#,@>P#)","Z8u49*1]<dAI4qV<7)^4MpMGB72:-O6MSCGD.O(\\G7baVfInf!c7)OdMP,]=?IrT`M1*m@";"Z)j6841-@$Epq#E9#2(M&%\\!p=%\\VG3","Z&L9dO_Pk","Z5Iaca1Yg\"";"ZRoLcb*Hna71F","ZR0r:l&AbcTp6qQ";"ZRGR>G)>-_\".mjWD&l`s","Zl:C];";"Z5,8tZpg&gQ.D_MT&Ab1\"FFVAD.D&","ZpgF]?)[Y";"Zd-SiQ","ZR@3OHpBT!).DP%9)7\'Dq","ZR0=>fRi@B4P;![`","Z5QT2f.D*:[1!B$sphUb_","ZRorhf)K","Z5,DDHP:7[V&l`s";"ZRnA3aPe>d]FEb*t*O(C*PQD/M.mNm";"ZESV\'/&St#Wp+U";"Z5e`$Q*6?.6.m[8rpgC^";"ZR9kitl:h6=&l`\"h8q,GfRGR>G)S","Zb9tp1pV.ZG.mkh+8-","ZEK%!,.U*soP#0","Z86K8ZP#8ZA.Fs7<&5JX>";"Z8M/p9pgEtZpgC#\\";"Z(@U6a&Ks8N.XC2t*Vdd";"ZES_>G1c;q";"ZA<T2n5,auO","ZFF_LI1]<1A&Ag1-7&DM!7*Z$sPQ#-\"1P<p#7*$_s1*p\\`.t","Z8u4:98u;+V8US%k1/n";"ZA<NuJd8";"Z8HZmZ&Ag>R1F";"ZA<GPa*O(WL1)PId";"ZEm>\\/)7!RQ","ZRNh%k.F[n#ELJOdA<GYI)j/3h.mND)";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9qB<:r.Bkr6.#)","Z)j6841-@$E%Z\'\"\".L\\Ao)k#511-s4m1-s4f#Q]!f)4GRPI+";"ZlO9[:)7Vn4.3fg2.EZ<t*Vdd";"Zo\\mdK7Pk^M.mY","ZFDZ\'Z1T`Y/1*p\\`.t","ZFDXal)[koK1c$!i.t";"ZFD\\DZ)[Y","ZE^+hm5e`J/1*k";"ZlO9[:)7Vn4.3fg2.Ef";"Zd-SiC7.[gYP3I","ZRiu7GpUNli&6i\'ZpMN.";"ZRorr>.De";"ZdcN_,p)","ZPeepC","ZRf3CIpMS_W*Vdt<7*$\\T1c$/.","Z8=_bU";"ZFm5rG)k\"aZpq5#h)K";"Z5,8tZpg&g9*OEtrP33WCpg,.V&Ag>R1F";"Z)j6841-@$Epq#E9##c:3%\\))e_-\"?1%p2Z";"Z5Qgma*J","Z5,$KZ.D^6\"","Z8+7)^E^+hj1.+UO1-ur";"Z5>6VZ.(e_[pgC?sPb","ZAPS","ZEK%!+&5I";"Z5eU8H14Bcj.EJ[";"ZFD\\SJPe>AO","Z5,l\\=*=WAC1Pg\\AFD\\J[1c$!i.t","Z)j6841-@$E%Z\'\"s*U4Xm1/\\:t)7J","ZFEb:L","Z_N";"ZA<G,NPG";"ZFD\\Rjp6q:gtda^#)<$g%.XQ:K*OEGb";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)Pc,BK1c3It(dCE7Bka9p_P>)u#)","Z1-fK#1F";"ZpgF!\\*On)\\&Asi?P\"XL<7AKDg7bS((1!cV\"&W&Ot.L\\#!&KN8h2#;mP1F","Zb^1h=1&aU[","Z8:LS","ZlBZSo&5DXm1)_5F.t";"ZEuq";"ZP,KKal,a","Z5Pm";"Z5e`tZ.DH\'m&AR\'npg4h\\)S";"Z5>63[&l`\"a7.[[q.39gk.$-0";"Zl\'akWpgE3-RGR>G)S";"ZlV*Ij1PV>1PQ8PR1@qL?7P<u\"ph7?\"","ZlV?+[.D*d+&5=4]&L98","Z)j6841-@$Epq#E9#2oE.%.V3)%.l";"ZFF%2:I\\H_oP\"\'";"ZF8;[9P;`Ri","ZRr`[";"ZA7L5KRbXpgPQ<","ZFE[Mb1\\>2";"ZR0r:/","Zl=Z?H&KW";"ZEAVAf1Y04";"Z8q,)91*p%F7p5bl";"ZlOdGG.XQ:U&As_";"Z)j6841-@$Epq#E9#2(\"5_!]+UBt4_";"ZE^g>Up+U","Z5,8$G)jj?\")ZX","Z&`-8`";"ZA<GYmpqB>\'1/YIRPeV";"ZR9jq*Ir0eYPeV","ZEu+X";"ZR0ljXt0q!&)[R-A.EJ8";"ZlOk0Jp)";"Z8u4:9E5+1UIo)&?*On[N","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9qB<laP_)A+X#)";"ZRGR>G)[o/\\*=W\'+1/YYPPb","ZRNX8,";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9qB<:r.BkrrI_b","ZRf3C3&lU*6)S";"ZRTE8Q53Tf[1*k","Z5QNZjph8";"ZR9j;A.XC.m.mO";"ZR0ljXt0g[]A<Ga";"ZRGhtgPQ4`oAS","ZlVaF,&AsSV&AsI";"Z5QgWW.3f3T*Vdd","Z*p";"ZAkG^O&^QL*pU@nO","Z8+7bH.Xgr0&Ab#!*On&]&AsSI";"Z5e`b^pgTE+P;d#!","ZRorr>5,$KZ.D^6\"";"Z5Q<KG*/gI/.FoCT","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)Pc,BK1c3It(dCE7Bka9p_P>pUB\\","ZRNh%k.F[n#FDZ\'Z)K","ZE^h]J)/+jJ1PgB","ZA7r5/1cQ3\".<";"ZEFh0m1*QAB";"Z8g1+X)jj?\")[9D>)[<t2","ZFEbd\'P:<[cPpHqQtT]Y_","Z5Qgma*/gu:&K0=@.t";"ZEK%!+&5e\\k.DST\"P;7i";"Z1!-uF)K","Z(@Uj:P,O9^p(P<","Z8+7)^lH`s1)k#A!P,KW","ZR@raJ*:OLB7)^4MpMGB77*D5sPQu","Z)j6841-@$Epq#E9#2qLp#;q>)%\\K[+_-hI","ZAIgof)kp)_1/cY9.D_j-";"ZAIgHh","Zo\\mdK7PfuR";"ZFF%#Y&Assr)/RnN.t","ZRf3CH";"Z)j6841-@$Epq#E9#2(db_/ADH_P@","ZR@3OHp_/CZ)[kg?","ZlV?+[.D*eYP,O9^p(P<","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Ql`tB[X%3_b";"Zl:hh1pgE+HPQ:-oP0";"ZEK_Lm.t";"ZR9kc;p(Y:8)K","Zl_k(:.Ckj/1P(G_8u;+V","ZRoLXfP0","Z5QN@S.L\\Ao)k\":+";"Z7)H9e.82g4I&ok=";"Z(@U*JIG2a#*O%","ZFD\\Dq&5a##.D56<PN";"Z)j/;","Zp+mbF10q`s)jj2)p(-eT1aQ3E.DPl]P33ts1dW?.PcQ6;P;\'><)I>>U2Xa&:IWS]M1*p8#2CQ#.*I#ao.$Q^d.XD76#(fs%PPs?+&Ab9(2r-on";"ZRf3CpP3pRB","Z5,?Ru.t","Z8u4:95,J[XE^X!dECNV9E#","ZFFVD[.L2d";"Zo4HYh";"ZFD;\'bPj;.f1F";"Z5Qb,K.(>\\nI4qI@","Z5eU8H14r&V&hk#\'PQu";"Zor!T/*O(9H","ZEuU","ZFD\\Tm1Y0\\YPQ81","Zd-S7r1-fu@.t";"ZlV?+H.uTP";"Z8q,)91*p%F7.ka!";"Z)j6841-@$Epq#E9#2oE.%.VGX#QJ","Z1-fJ4.<","ZRG+jt1*>h[)<8tRpg&q","ZEWt>dPQJSEpg&q";"ZlVaF:)kDS#tdY\"bpuP+@P:(VE7*Z[0.Xgr4PpU7l1c$-@*OZ]l","Z8u;s+1PkQBp-";"Z)j6841-@$Epq#E9#2(l*_Pb`)_-&!H","Zd.VX+7&#=Gph!r<pg&q";"ZRoW!bP;9T-.t","Zt]@h";"Z)j6841-@$Epq#E9##cr\'_/\'QS%.)Re_-Xo","Z5e`J/I41TSPQQG<P;\\";"Zb9eP/I0K*iPehhB";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)Pc,BK1c3It(dCE7#,@1&Bk:>&";"ZA<GPa*ORiDPQp[_&l950RGR6j&5#L6)S";"ZRGh)V.mNDOI&kb?","Z8US?J&WZ,Y)[(/-","ZFD\\SJPe>AOES%I","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Ql`tB[X%=Bp","Zd.VX+7.R8q","ZRKEA\\RNX8,";"ZRNh%k.F[n#FDZ\'Z1\\XBTP,VC";"ZA<NPk1-f+\".mNi?FD\\?+&r`e@)S","Zd-S7W.(h;;pq5=sPQDWKP,9!_","ZFD;\'bPkUq9p+X#gPQ8M";"ZES%AS.u[KL.D^`T1P(G_","ZE+c","ZR0=*X&AbM4P1C&";"ZRorr>Rf3C11\\h]Kp6@hVRGR>G)S","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Ql`tB[X%=_G";"Zl:hh1pgE+S.ms0","Z)j6841-@$Epq#E9#2o1p%.Apu#3p","ZELa&nFF%2","Zl:C];)K","ZA7#RSFFVAD.D&";"ZdcNuYP:7Kr1P(bT&r`eCPQ#L","Z5e`tU)k#<N.+%.Z.t","ZFDXl_&lD","ZRGR>G)[o/\\*=W\'L)j/QK","ZlV?+[.D*B+1!cV\"&Wo","ZRNX]jI&oj";"Z8gI_>R@rn+&KN1?Pb","Z.EJp","ZR9j;A.XC-31*.GhP\"XL<)K";"Z8+7bH.Xgr<pg,)!*VaYFp6N!q)>8F","ZFmWh3.Ul\'J1PgT";"ZFF%#)&r`R";"ZlVa;O.XQ:Z*=WAC1Pg46pgE;","Z5IlIRpgE391/YIRPeV","ZFD\\Tm1Y0\\\'PQ#SdP\"shV.UB#HPj.PZPQu";"Z5QT2f.D&";"Zl_k0J","ZRor*nRd1H0pg,psPehO","ZRNh%k.F[n#FmWh3.t";"Z8M/p9pgEtuP,KKW)S","ZFD\\Dq&5a##&S[=?.DX";"ZlV?+J1P(M";"Z5,r9";"Z9b?b!4QKj*%)r\\K0RIQT\\KM<e9[`[3caPpSGUt";"ZFF%#Y&Assr)YB7^pM^";"ZE5>%J1)$]i&5JLg.D&";"ZAt-C:)/b`@1-H";"ZRorr>5,L-CFE[MI1P7R9R@?W&pMfD","ZE^+nDR@rn+&KN1?Pb";"Z5;p[S1.sL`.D*cSP0","ZAYG4@*ONeS*Vdd";"ZlBF]\'A7#P","Z&KtP","ZlOk0JptL_j1-ugA.D&","ZR0*c1.mN]O","ZRG+jt1*k";"Z50","Z&rKqZ.XCkU&5mYS.EJXN";"ZE^g=I","Z5[t4uE+H9";"ZFF_aH*On\'W1F";"ZlVa;,)k#A(lOdGS.mND:1)_5F.t","Z1!-IlP;\\","ZFF%#Y&Assr)/bjV.t","Z5,L-CFE[MI1P7R9R@?W&pMfD","ZRbXpgPQ2f","ZFFVb^";"ZEm>\\Z1/YIRPeV","ZRf3CIpM9u\'pBsA31c$/.","Z8US]jAt-;S1*k","ZRGX!>1c,NK)/G`[1Pc";"ZRoLXfP<f\"r.t","ZFEb*t*O%","Z5QgIn.qTD1pBTDXPQu","Zl:C];FF_LI)S";"ZE^+hm7.NSV.39A9PQai","ZRT\"%S&WJa6P3I";"ZRi1H5.#oN\"P\"XR0&K[ii.3fQ?1!cN_.Dp*L2[";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Q*re#,kdl_b","ZAYR7S*::`PP,`bM";"Z8US?J&Wf";"Z5;p[S1.s*V1.s7:PQr\"","Z53TZW.(h;dPenJNP\"XL<";"Z53Tf[1P(G_","Z8u4:9At-C:)Y=4S","ZR0r:Z)G,*`.DWa7","Z8hcF$p/","ZlV?+[.D*7LIG2a#*O%","ZR0l&LI8P]&.3fPWP\"E1!7*D\"N7PfZs*:Oe<&%pGB7)^4MpMG#st0eOI7*QMKPpU4M&5D6V1*Q=","ZRfLX\'*ORlmPehq","ZR0=BIPQu","ZR0r:Z)aUk[PehO";"ZFDTWl&l$","ZFFV\'Yto>Z*&5I";"ZEWt>(.XD*`p)","ZRf3C3&lU*6)ad(t.Xq","Z(@U=PlJ";"Z2[";"Z8+7Vk";"ZR@3qt)jj?cPQ<","Z8R6dIe+K:3ikYi&a?hPul%HXaB_D]7P)8\\UDRL","ZR@?W&pM9C;)[[&","ZFFVD[.L2oW1)_5F.t","Z8u;Dn";"Z5>63[&l`\"a7.1Xe";"ZES%!X.D&","Zdc<$Z5Qt5G.<","Z8M/pp&l),j";"ZsTcX","Z#B8.Z1Yl";"ZES%),.E8X$PQ<","ZR&]\'f1-Ke8*On\'W1AILF1!-Il&KN1?Pb";"ZRNh%k8hcF$pgeh\\.D&";"Z5>6VZRbXpgPQ<","ZRd1.o1-(87p)","ZoR","Z5,?V>*V]:?pBb$HP\"+*D1!c-jt0eOe","ZA7$N>.#oV\\)[G2l","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Q*re#,kl.B\\";"Z5Qgma*/gfVP:0J\"","Z8+7bHpgE+a&K[sgPb","Z)j6841-@$Epq#E9#2k:;Bt&t\'_)AI","ZR9kit7.[3^*==6,7p-N,Peeo","ZR0*c1.mNDM&KtB4)S","ZFm5rG)k#5E&5#XQPQ>75.L<Pd.D56<)k#!]P3I";"ZRGX!>1c,NK)a1Z>1Pgi>)j/3h.mNm";"ZFD\\Dq&5JX>";"ZFDi","Z)7!>2";"ZRfrBu1\\n1c.t","ZFD\\Tm1Y04","Zl\'*2apgEbWRGR>G)S";"ZA*$JT&l9c/P3I";"Z8M/pV";"Z5QtI:";"ZRf3C11]<=E.$Yecpt^oc1*k","ZFE[MIpgEu","ZRbE%61/X";"ZlBF]\'8U^*.*J","ZRbR>+p+ms?1-`$6.F<Ua1PgB","Z&l18","Zl:CpLP3I","Zl\':5V)kD\\W1]<nF*Oq2E)7\'Dq";"ZAkG^O&^QL*P,`bM","ZRi1H5.#oK#.m0:g)GQBM1!cN_.Dp*L2[","Z5;p[S1.sL`.D*eLp-","Z5,l\\hpgE+71-s\\BP:M5[";"ZA7#RS";"Z5eU\'f.M*8X.t","Z)7!Rg";"ZEu+L","Z5QbQ]&W.meP3./QP2]t@*O!","ZFFVD[.L2oY&KN1\".t";"ZRoLXfP7m^,.mNX?1)h","ZRbXpgPQ2t2";"Z8+7bH.Xg$/F3YO/&SIh@IW3","Zdc<$J&L9\",lVcFW";"ZR0r:Z)Y=B:1F","ZE]SGfP2]3=l3&","Z5eUtXPQT^BpgCA\\)[Y","ZES%AS.39\'91F";"Z8g1+X)jj?\")[f2h&l950FFVAD.D&";"ZELa&n.D.CGRKU","ZRGR6mpqHX2&AbM4P3o";"Z8(2%fRTE%^","ZE5>%f)S","Z_Y+`&#2o)","ZE^h]J)G>Og&5D+","ZlV*\\[1*Qe","ZA7L5K5,auO","Zdcs_a)[0R!*37qV1F","ZRi1H5.#o.6)ks.M&lUcJpMS%4pg,psPehV&2OX";"ZFDXa)&AgX-p-";"ZRGX!>1c,NK)a1Z>1Pg]","ZRGX!>1c,NK)/sLjp+U";"ZpgF!\\*On)\\&Asi?P\"XL<7AKSjMP.Zm1*p\\`.\'O(;IJE(c1*,NF7&3rm71\"h;7PIYc.L0o%P3p$_&lL=].Q@NiP\"X%[*ONA";"ZRNh%k5,DDHP:7/6*O\"!@","ZRNh%k.F[n#FEb*t*OES$";"Z(rB<k1*Qb%p6q:0)j/Gh7Po_-7)H9()[kg?7)YjoP;c?";"ZRGX!>1c,NK)a`uS";"ZlV?+[pgEu","ZAYR7B.$ch:7*Qo7PQu";"ZA7DgS)<D[d7&#=Gph!r<pg&q";"Z5Q<KG*OEn#lOk2[*[5","Z5;p[S1&=B,1.e4T*On[N","Z86WjXl\'akWpgE;";"ZR9jq_p+\\c","ZEA5`e)73","ZRfrB37P<1NpslJ\\*Vdd","Z5eUVZ&AR\',&A<>C)K";"ZBB^H.&KtRsP,l<!.mkhiI&k%4PQ<";"ZRT\"%S&K09K14Bcj.EJ[","Z5>68=to>ZM7P<1NpslJ\\*Vdd","Z5Qt5G.Mlp)&^QL>";"Z5,r-kRf3CIpMG-";"ZFm5rG)ks.!)kD!\\.8\"";"ZRf3CIpM9u\'pBTDXPQu","Z86K!k.D&";"Zp+mbF10q`s)jj2)p(-eT1aQ3E.DPl]P33ts1dW?.PcQ6;P;\'><)I>>U2Xa&:IWS]M1*p8#2CQ#.*I#ao.$Q^d.XD76#(fs%PP7aNPehAN&l6LR1)Oh","ZRGh)V.mNDS&5DXK&2","Z5:_WCp#:)=P<f*k.Xq","Z)j6841-@$Epq#E9#2o1p%.A)u%\\L";"ZE^+hm5,8Nh.D&";"ZRfrB3";"ZRoL>L)<$GB1F";"Z)j6841-@$Epq#E9#2(M&%\\V$X_/\'\'e";"Zl\'#gY";"ZRf3CIpMS_W*Vdt<7*Qo(.D&","ZA7L5K5,8NhpqcJ","Z8u4:95,J[XE5+Uu.mNL_","Z8q.su.uNKmpM9P;PQai";"ZI&k3Tp+U";"ZlV?+[.D*6/&5r\"\\","Z5e`J/I41T=P\"X/KRordppgEu";"ZFD\\3V1&?uU&5G";"ZRorr>R@raj&5JX>","ZFD\\Rjp6q:gtda^#1)_-c*/hm(.#oJ\\1!4";"Z5QT2f.D*\"u)jK$`","Z8q.)D*/h^R.Ef","Z5,L-Q1.t>XlJ";"ZFD\\smP;d%cE^ho";"Z5:)E67)^\')*VA:]7*Qo7PQu";"Z8q.su.t";"ZRorna","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Qlnb_Ph%=#/";"ZE5>%J1P(As";"Z&WJX>*=WpW)kD-W";"Zl\'akWpgE3=P,`bM";"ZEFh0J*OE#`.DPO";"ZEAV[[)>lD!)[(/-";"Zd$","Z8u;!H1P(D?";"ZAkG<O)<D[d5,auO","Zd-SiQ.mK^O)7\'tN";"ZE^+j\'E^+hj1b`,m.DH`%)Y:lE*:O*7";"Z5#bQ].t","Z5Qb;Ypq55";"Zdc<$J&L9\",\"ql","Z)j6841-@$Epq#E9#2k=A%\\AbH_Pu";"Z8u;s+1P(S!","ZAIgH$.DP60*J","ZEWTEIR@=eU&KN8h5QgIV1/L3?)[(/-";"Z5,L-C7p_$ZP2)a?.De";"Z5e`J/I4P,l.XQ9h*J","ZEFhi";"ZFE[Mb1cQ3R5Qb,K.<";"ZELaie.Xgr!PJVqE&lL36PQ##Tps&D";"ZA<GPa*ORiDPQp[_&l950","ZRf3CIpMS_@P,*_?.XQ\"$";"Z5eUVZ&AR\'61P(U";"Z5;p[S1p!l].D*eLp-","ZFFVAD.D&";"ZA7L5K8U^*.*J","ZA7#RBPQr<M8u49L.Xo","ZEK%!,.t";"ZA<NZJP;![`7&a#[PQu";"Zb^<sm1/a\\V.EJ8";"Zl\'akWpgE;";"Z)j6841-@$Epq#E9#2@hI_)%G\'#,q+";"Zdcs_a)[0R!*eA0ZPehO";"Z5,rfQP:(8T";"ZRGR6mpq=B=P\"\'";"ZA7#R!&lSW8PQ:-oP0","ZFm5rG)k2]mP\"Xk","Z8;+";"ZlBF]\'";"ZA7#RS5,?V>*V]:?pBb$HP\"\'","Zdcs_a)[0R!*3iCD.F[GYP,KKW)S","ZRf3C11\\tXJ)k#A!5eUGf","Z8US]jEK\'A^","ZES%AS.39QZPehrB&AbM4Pb","Z1*.Sr.t";"Z5;p[S1.g6,.$C","ZEuk","ZR0W]jIoVLcP,VC";"Zd-SiQ.mK^GIJnH5Peebcdc<$J";"ZRbXpgPQ2R?","ZRW?1pEgOkn8H4G;ATMU$8H&g*7&pTh5ks";"Z86K8Epg,p-Pen(","Z8+7bH.D*XO1PuG2.t";"Z8g1+X)jj?\")[9$:1!4","Z1*Q\'F";"ZFD\\JV*=r1L)[N0E";"ZlV?+[.D*cSP29Ih.m<jV&KNs`&Wo";"Z5,8tZpg&q";"ZRd1.oI&o\'\\8u4:9","Z5QtI:5Qt5G.<";"ZRW?[";"Z71I5#P,KNI78";"Z8q,)91*p%F7&:t/Pee?,","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)Pc,BK1c3It(dCE7Bka9p_P>p+#/","ZRGX!>1c,NK)Y=4apRE,","ZRoW!o&5JLg.U#61)[</!P3I","ZlV?+[.D*eYI&k,[.XD*`p=bJmPQu","Z53GqrpgEu";"ZEWTEIFmWh3.U*p^PehO";"ZE`2Z","Z)j6841-@$Epq#E9#2kL)#QYs;BkrQ","Z5QtI:7.N[gP,`D\")S","ZR9kc;p(Y:-.De","ZlV?+[.D*Xf.$Oe\\.m0/","Z5eUVZ&ARH","Zl\'akWpgE3ZpUu1VId[9npM^";"ZRGRhG.F[n#","ZA<NPS.D*\"^*Vdd";"ZRf3C1)K";"Z8+7bH.D*>p5Qh4N*=h","ZEWTEIFmWh3.+!ZqP,VC";"ZE^hohRioi\'I403<PQ<";"Z8+7bH.D*jj1PuHj1/YIRPeV";"Z5QT29.t";"ZFuSB";"ZR@c7U","ZFE[=;p+U","ZFD\\Rjp6q:gto\"F#7)^4T*OEf";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#QcL&%.\'Du_/)S=%pFW";"ZR9kit7.[3^*==6,)K";"ZR9kc;p(Y:8RbXpgPQ<","ZRfrB3A7#P","ZR0ljXt0q!H&As]g1F";"ZRGR6mpqHX2&AbM4Pp\'uipg4bq7)^\')*VA/hTlZ/I.=CK","ZRi1Hipg,psPehO";"ZA7L5KRGR>G)Z>","ZAar#";"ZRorhD.D*\"^*VdoH","ZA7#RE.D_?N&Ab1\"8u;pL";"ZR9kc;p(Y:8A<TI6.t","ZE^ho","ZES%#>";"Z8US]j5eUk","ZR0r:Z)/bjr*O(@u)[<t2";"ZEFh0a.L\\5h1/YIRPeV";"ZE`2\').DP`\"&Wo";"ZRGR6n.XQ:KPQ<";"ZRGR:\'&Aoc9&l`s","ZFDZ\'Z8u;+V";"Zo\\mdK7&#=Gph!r<pg&q";"Z)j6841-@$E%Z\'\"\".L\\Ao)k#511-s4m1-s4f#Q]!1*I?abI+";"ZR@?W&pM9C;)[Y";"Z5Q<KG*OEn#lOk2[*J","Z8:LD","ZR@3OHps8+HP\"X/K7.R8q";"ZEm>\\Z1/YIRPegBX)[<t2";"Z&AorWB\\","Z5;p[S1&=B,1F","Z5QgIn.Q@^W1*,`c.XgK<","ZE^h]J)S","ZdcuQGPQ2s/&l`\"h";"Zl\'=f4";"ZEu@";"ZFD\\Tm1Y0\\X1/4";"ZAIgmVP:sc","Zl\'rZQ)S","ZA7#Qn.DLjk&Ag1-";"ZdcN_,p;8";"ZRorr>Rf3C11\\slL*V`8i.Mc8UPQu","ZRorr>AkG^O&^QL*P,`bM","Z.F[n#";"ZR@=e3pg]";"Zog","Zl\'*2apgEbW86KsD)kmKN","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9qB<:r._/)33Bp","Z5QbZNl\'pNS)S","Z5QT2f.D*:[1!B$sphUb_E^+nD","Z5>6+m&Ss3R&AsM?)GQM5.EJXN","Zl_k(:.Ck:@71\"h;7)W=BPp\'&B)j/Gh7)H9()[[&","Z_b";"Z8q.)D*/h^R.EZ<lPI@M,I(";"ZRorr>RoW!e1)WZR","ZA*r<_)[(/-","ZA7#Qn.DLES1-W";"Z8+<<>)GQ4<&5=4]7*Qo7PQu","ZFU\'","ZRoW!e1)WZR";"Z)j6841-@$E%Z\'\"s*U4XHPQ8HI*_>,";"ZA<GZqFD\\sf","ZRfrB3RGR6j)[([B.D&","Z8+7bH.D*jj1PuHm)k2f";"ZRK>4";"Z5,Dg[1&#@YPQu";"ZRNh%k.F[n#RbXpgPQ\"rZ)[<t2","ZR0=BIPQmGhpgFi","ZR9kc;p(Y:8l:C3Q.t","ZRATO";"ZRbR>+p+ms?1-@2g&K09K","Z8(2%f7&Bs6&%&s)5:_WCp(-RK7)W*!)<D^lsV";"ZEK%!,.+]-U*OE!N&5JX>";"Z8u4:9RbR=)*=Wm";"Z)j6841-@$Epq#E9#2(EdB<Bj1%\\AAP";"ZFFVD[.L2oC&5J9h","Z.$Y:<F(VU";"ZA7L5K";"Z5,8tZpg&g:pgC#\\";"ZRi1CmPeh.";"ZR@=1=.mNT,P3;#D.EJ8","Z86K8)&5JaO";"ZFFVD[.L2oKpgC#\\R0rU1";"ZR0reSpq4";"Z5,rfQP:MKQ","ZBp","ZRd6,PPIM@S.F<r$","ZRi@BHP;-1D&lWKI*Vdd","ZFF%Tjl\'akWpgE;","ZES%AS.UBtZPG","Z2s","ZR@=1kPenR:lV*PO1P(G_)K";"ZRoLXfP72\\3.XQQ","ZRGE][.XQO?7P<4@.HF7PPQ8R].#b\\<*VAQ@1)$]&PQ+@o)k2[W&KN1?Pb","ZA7L5K1/H4,.mN\"\\p)";"ZFDZ\'Z1T6qaPQu","ZA*$uK)[<t2","Z5eU!H1/X","ZA<GYmpqB>P*OEtrP33WOph8";"Z5>63[&l`\"a7.NT7","Z5QgIVpq4";"ZRi@BHP;c-c*::`]&KtB4)S";"ZT%","Z8g1+X)jj?\")[f_$1Pu=","Z8g1+X)jj?\")[f#T)[(/-","ZFD\\Rjp6q:gtda^#8ue`^&AsS81*.Sr.De";"Z5eUtL.t";"ZA<GZq";"ZRGR>G)S";"ZA7L5KdnbqAp(^+@P3I","ZR@3OHps8+HP\"X/K","Z8+7VkAk([YPQu";"ZAjQQ,.t","ZE^h]J)YD@j.DP3C*J","Z5P.","Z8US]jR0r:Z)aUHU&WN";"Z)j6841-@$Epq#E9#2(db_/ADHBk,";"ZFF%2:5,?RX";"Z5QgY/*3<MU&As]g1F";"Z8+7+(pg4b(1)Oh";"Z_G";"ZR@3qlI`[=>PQu","ZRf3CIpM9ItPQ$m9P,`bM";"Z8\'B","Zl:Cp>";"Z86KFO.Fs7<&5JX>";"Z(@U1S&5L?J&W#d@.EJldP,`bM";"ZEFb,";"Zdc<$J";"ZAsHCkPI@7,I4qI@","Z#Xse","Z5QgI:7*QoMP3I","Z)j6841-@$Epq#E9#2oE.%.VD=#QJ","ZAkG^O&^QDN&KtB4)S","ZR0r:Z)/R9n.F[GYP,KKW)S";"Z.$Y:<lH7%n.DX";"ZE5[92.L7","Z1c$=","ZRbXpgPQ23W)[(/-","ZlVa;k1a$\'E8US%k1/n";"ZRoLXJ1-uCAR@c&SpqH7T","ZA7#R!&lSW3PQo";"ZRfrnYpt^FB&5aB\"";"Z8q,3GP;ccn)kDb7","Z8(2%f7*DP(&2","ZRGR6/1Y@uK*OEf","ZR@raj&5JX>";"Z86KsD)kmKN";"Z)j6841-@$Epq#E9#2(\"5_!]+U_Pho";"Z8u4:98+<<>)Y=4S";"ZA*$uK)[<t2#/";"ZRTE8Q7pA.C)j/3VTA$Vopg4A$P;!R878";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Qlnb_Ph%=_G";"ZR@=BI1*>>J1)PId";"Z8:L+";"ZEK%!Q","ZRT\"%S&WJa6P3eD","Z)j6841-@$E%Z\'\"\".L\\Ao)k#511-s4m1-s4f#Q]!tPPTTpI+";"Z)j6841-@$Epq#E9#2IUP%\\/[m%./^","ZlVa;O.XQ:K*OEGB)7!:27)^l5PQ$J77)Wj)*O7GT.D-)`1)_9";"ZRV";"ZRd1Wtl:Cp>";"ZAZj","ZFF%#Y&Assr)aUkJPQu","Z.$Pa<&A5","ZRbX]f.F<r$lBZ\'qPQD^VP,9!_.D&";"ZR@ra\'&^QLP&5D1[.u[QL1)E";"Z2#1","Zp+4:-.Xq";"ZEm>\\Y&l9cr)K","ZFF%2:)7!>2","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)Pc,BK1c3It(dCE7Bka9p_P>)H_b","ZR@c7URidP8P3I","Z8+7bH.Xg$@P\"\"?:1]7C2.#o3\\P33W";"ZRiMCX*V`V_5,auO";"Z5,r-k8U^*.*J","ZE^hoh1-fJ4.<";"Z#B8Ki)<N","Z8g1+X)jj?\")YB7^pM^","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Q*re#,kdlBJ","ZRbX]f.Mc8+1)_58*OE^","Z8g1+X)jj?\")[f_$1PuHm)k2f","ZRf3C11]<9b1c$!i.3f3T*Vdd","Z5,L-g*O\"!@)K";"Z)j6841-@$Epq#E9#2k=A%\\A8eBI$";"ZE#","Z5IacB8hcF$pgeh\\.D&","ZlV?+[.D*6/&5r\"\\FmWh3.t","ZA7#Qn.D^@";"ZRorhD.D*=/.Ef";"Z5Qb,K.#l","ZES%)V","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9qB<:r._/)/m_N","Z.$Y:<51j4","ZRNh%k.F[n#ELJOdA<Ga","ZlBZ\'qPQD^k1\\+h>.D_&Tp-","ZRorn\'ES%#>";"Z5e`3/*:Oo","ZRd1.opR4r(Pe[7+*VdoH";"Z)j6841-@$Epq#E9#2(db_/ADH#Qp";"ZR@rUU","ZRorr>lBF]\'";"ZFFVD*.L2o:P\"\"?:";"ZRfB\"S.DpU$","ZE^+nZ.D*jW)73";"Zoi\'Lp.LTU+pU+?NPQu";"ZEKVTJ.t";"ZEFh0H&A<rL&lUcJpMG<","Z)j6841-@$Epq#E9#2(db_/ADH#;)","ZA<GPa*ORdG1/^7YP33tB","Z5e`$Q1/=N?)K";"Z(@Uj:I&k,[.XD*`p=bJmPQu","ZA<GPa*ORXn1Pu=","ZRi@B1PQ,Jg.Ef";"ZR0a>GIr4s8Pe>n\\7)P*p&AbM4Pb","Z1-f+%Pb","ZA<T_Z.McpI1*,sn1!cN_.D&";"ZlBZSo&5D+";"ZR0r:#P,`bM","ZRorr>86K8Epg,p-Pen(","ZE5[U**ORUZpgEF","Zl:h6=.DL6k*OE=7","ZlV?+[.D*E^&l`S";"ZAtPYgFD\\3V1.gjqI4qI@","ZE^+j\'AkG^O&^QLuPQJSEpg&q";"Z5,?V>*V]:?pBb$HP\"\'","ZRbXpgPQ2ts";"Z5e`J/I41#j&AR;";"Z)j6841-@$Epq#E9#2(M&%\\!pt#3c:3","Z)j6841-@$Epq#E9#2k=&B<*aI%\\/Y","Z86KF","Z7P<fMP?2","ZFE[Mb1]<L)7&3rk)<F`\"","Z8u4:95,J[XE5+:uP33W,PQD/<)S","Z8+7bH.D*jj1PuHLPQD/<)S","Z5IlIRpgE;";"Z)[R-A.<";"Z5QT2f.D*:n*V`l","ZA<GPa*ORcmPQ:\\p.D\"";"ZlVa<9pq-E]PQ<";"ZlHKU(&A<>>1*Q;f.EDEa","ZRd6mpA7L5K1/HT";"Zl_k(:.Ckj/1P(G_)K","ZAkG^@&53fc.39tAAS";"ZR9j,e&LSka","Z5>63[&l`\"a7&l!n&5bNU&KN1?Pb","Z5e`p+)k2j\\1]7WE*V]n-1]<X*7)^4MpMGB7";"ZlV?+[.D*e+&^?b";"ZEWTEIR@=eU&KN8h5QgIV1/D$:)[<t2","ZlV?+[.D&","Zl\'BPVPQ2b:A<TI6.t","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3I9pq#&JBIrr._/)/X","ZAtPYgFXW";"ZRGR:ZPQ#sc1)F+97.t+q&Q";"ZlV*Ij1P6\'DP!/\\=p+4C";"ZlV?+[.D*&uPQ2!j*O\"!@","Z86WjXdcNuYP:-","ZRLg!-P\"\'","Zb^<sm1/JKJpM(G";"Z8US?J&WZ(;)[<t2","Z5;p[S1b`Yk";"Z=hU)?5Y;u#5O0:MXV6,-f5J-kUe3SCo0#M\'\"Ds","ZRfrB3E^g=IRGR>G)S","Z<WaKk";"ZEWt>#P,`bM","ZE^g=IRGR>G)S";"ZRorhD.D*a/tdJ$,IZcn";"ZlH6N/1-G2RP3I","Z5klH_";"Zl\'#gY.Xq";"ZlV?+[.D*ak.mkWiPQ<","ZESVDf1P(G_";"Z5>6+m&Ss3Q*:OL0)S","ZRbXpgPQ23k*OE!N","Z\"#","Z5>63[&l`\"a7.>_@)T\"I^1P(G_","ZES\'%mPe>X2";"Zl_k(:.r1","Z5eU8Hl_k(:.Ckj/1P(G_)K","Z86WrX)s(N!1*,NG&AsI";"Z5QgIn.[","Zl_jGm5Qt2[*p";"Z5Qh4$&K@cm.XDD","ZR0r:#pUuk]";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Ql`tB[X%HB\\";"Z#X!";"ZEFh0!5Qt2D.t","ZRbXpgPQ\"A";"Z8q,;","Z(@iS$lOdGS.mNm";"ZE^g=I7*,N?1*.hT7*m[4pg&hB#M.`))kD]!1*Q=";"ZFDX6D.m0jCP;\\";"ZlH`Y";"ZR0r:Z)YrBa.mY","ZFE[MI1Pc";"Z5QN`","Z5,l\\hpgEX-FmWh3.t";"ZR@3@d1Yg\"p5,r9";"Z53T0ZP:%ph.m<&C*VQ","ZEFb(";"Z.C[sC","ZR@3qlIg","ZR0r:Z)/bjr*OEn#)[(/-";"ZAYR!","ZRold;&l14jEASRn1F";"Z8+7bH.D&","ZFDZ\'ZFD\\sfA7#Ru.t";"Z8HZmfPe>tq&Ab1\"","Zl_jGm1T`Y/1*p\\`.t","ZI&o%s","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)Pc,BK1c3It(dCE7#,@1&Bk:6*","ZELaie.Xq";"ZE5[U**ORE!AkG^@&53N";"Z5Qb,K.(sN+1YqL","Z)j6841-@$E%Z\'\"\".L\\Ao)k#511-s4m1-s4f#Q]!^1dWGtI+";"Z5>63[&l`\"a7.j:\'#)";"ZFmWh3.U*puPQXS";"Z(g";"Zd-SiClV?+91)l261cEXL*Vdd","Zl6T,@*OMYQ1/-F%1F","ZRfrn/.MB]t1c$/.";"ZA<GPa*OR\"IPe>+r)S";"Z*:O*<Fr7NV";"ZR9jqL&A(&Jtdn";"Zl\'aj";"ZRbX!Z.DLhg&l\'qO)K";"Z8u4:9E5+1UI(";"ZpgkP(PQ8)!P;c-01AI6e1Sk>o)[R-(pt^Hs*Vi\"";"ZES_$";"ZRfrn\'*3<ik.t","Z86WnB1/n","Z)j6841-@$Epq#E9#2(\"5_!]+H%.Kq";"ZlV?+[.D*\"U&5L?>pg>N@*O(@u*Vdd";"Z53T;WlV*PO1P(G_";"ZlVa;k1a$\'E","Z5,8tZpg&gQ1)_5F.t","ZAjQQf.E8Xq";"Z5t!","ZE^g=I)K";"ZlV?+[.D*ef1!4","ZA?/O","Z8H.Q#pgE;";"ZR@rn+&KN1?Pb";"Z8M/p9pgEt:","ZFFVD[.L2oKpgC#\\RGE]Y.D&","Z&SsI","Z7)H=M";"Z5QgIV.U*pX1)_58*OE^";"ZFD\\Dq&5a##Rorna","Z1-+-&","ZRGR:\'&AA^YpqB[";"ZlVcF,pgE@","ZA7#(";"ZRGX!>1c,NK)aUkJPQu";"ZlBZS3&lP+I1)PIdFFVAD.D&";"ZE5[nXIr4%=&l\'qO7*Qo7PQu";"ZFF_aH.D.$<.XD*`ptLQ?*Vdd";"ZEWt>5&5D+";"ZRbE%>PG","Z8US?J&WZue&A+_","ZlV?+[.D*=XI9+E,1*p\\`.t";"ZAk([YPQXS";"ZBJ","ZRTE8QAt-mq&lSr";"ZRTE8QAt-mq&lSW5pg,p-Pen(","Zb_";"ZRor*n7*Zkg)K";"ZlV?+[.D*E^&l`9Dpg,&","Z8g1+X*J";"ZFD\\Tm1Y0\\\'PQ#SdP\"shV.t","Z5QgIV1/X","Z8+7)^7)-sb1P<J71cQ3\".<","ZR9kc;p(Y:85Qh4N*=h","ZlV*PO1P(G_E^+hj1F","ZR0a>GIr4sI1*p8!PQsZ7P;AKK1P(G_";"ZR0r:Z)/R>[.DO97","Z)j6841-@$Epq#E9#2k=A%\\AR1B[o","ZA<GCOp=bJm*On`-PQ<";"Z)j6841-@$Epq#E9#2oE.%.VS\'B<;","ZFD;/,7p-Ka)kTlOpqcr,IZT";"ZRGR>G)[o/\\*=W\'[pgC#\\8u;pL";"Z5,DDD.t","Z8+7VqpgEu";"ZlH`N$7)HMEI8*XB&5=4]7PI1B.E8d/pMfD";"ZlO9[:)7Vn4.t","ZA7L5K1/H4g)7\'Dq";"ZFD\\Tm1Y0\\=)[0/F";"Zdcs_a)[0R!*3iCD.F[f","Z5Qt5G.<","Z86WrX)s(N!1*,@","ZA7#Qn.DD4C.DST\"P;7i","Z7*$4K#RE","Z5Q<K/1&p<-";"Z53Tf[1*>:nPQJN(&5#/";"ZRTE8QP\"\"U0&hjnpI40I6phUd";"ZES%AS.Ur\'S","ZFF%#)PQ$K\"","ZRorr>RoW]j.F<r$RoW-","ZRTE8QRbXpgPQ\"rZ*Vdd","Zl_7bm1AI9t&AsP","Z8g1KQ";"ZELacPFF%#F1/cn";"ZR0*U9p\"n<-";"ZP;`)c","ZE^+1H.#oQ\\7)OeBI(";"ZAK","Z)j6841-@$Epq#E9#2(\"&%\\%8)_)A/X","Z8+7bH.Xgr!p+&Gh.82g#p6N!q)>8F","Z5>63[&l`\"a7p!2g)7U4";"Z7A^>","ZFF%#Y&Assr)S";"ZRT\"%S&K09K8u;+V.mNci";"ZR@=U+*Vd8c)[^";"ZRf3C11\\XB7*O%";"Z53T.Y8U^*.*J";"ZRi@BHP;\\";"ZRW:u","Z7*D&E","Z5Qt2D.t";"ZRNganl\'akWpgE;";"Z8g1+X)jj?\")[9QO&l`s","Z5>63[&l`\"a7.>b!p+4k","ZA<GCOp=bJm*On`-PQ#L";"ZAt-mq&lSrg*OE>T*J";"ZE^g=I1T6q/1*.hT.D&";"ZRdq4)p)";"Zl:C];FEb*t*OE^";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Ql`tB[X%=_N","ZAsHCkP;d]T","ZA<NPS.D*=/.EJ+","ZFE[MI1P7Dr)[(/-";"ZR0=dU.De";"Z5QgWW.39\'u1*mNW1F","ZE5[U**OE<","ZRf3CIpM9u\'pB+tS.t";"ZRorr>EFhi";"Z.EJOc","Z5QT29.U*Tt1*Qe","ZE^g=Ib\'","ZRd1.oI&o\'\\","ZRf3CIpMS_@P,*_\\P,`bM";"ZtdY<F","ZRi1H5.#obi.8Q5<&lra]pg,psPehV&2OX","Z5e`$Q*6?p_7)H=8P;6#7pslS01P%dFpg7N4IrTU#P2]h07*D&E1P<(\")[(gA7*,N01*Qe","ZRGX!>1c,NK)/b`KEKVT3pq5Bc";"ZbV";"Z8q,)91*p%F7&8=S)k#bE";"ZA7#Qn.DL=J1!cV\"&Wo","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3I9pq#&JBIrr._/)G=";"Z8+7)^7)-sb.E8&:.D.$Fp+&n!p+4J@","ZR@=eU&KN[E)<F`\".DPVEpuP]qP;c-EPe>d]pR4r(Pe/","Z)k#!7I4*","ZE^XTS","ZEWTEIFmWh3.t","Z8q,3^&K[]V1F";"ZAkG<O7*D20*O%","Z8q.)D*/h^R.EZ<t*Vdd";"Z5Q<K/1A1i\'l/Kf).FsBs";"Z5QT0^)7U?_";"ZRGR>G)[o/\\*=W\'D*OEtrP33W";"ZAk([YPQm6ipg]","Z5;p[S1.+*^.F<r$","ZES_r\"Pe/";"ZRdq4)pUN(","Z2t","ZEWTEI5QgIV1/X","ZEASRn1F","Z8+<<>)/b`@1-H","Z#-";"ZRf3C3&lU*6)GQM5.EJ+","Zd.VX+";"Zl:C];RNX8,","ZRGE]^E`2H","Z2$fJ&";"Z8U^:=.Xq","ZdcuQGPQ2C","ZELa&n(@iS","ZRGR6j)jjT_";"ZE%IZDl/Kdu5pD!","Zl6T,:pUu`ClVa;q)s7pkPN","Z8+7VkR0=dU.unI6*On[N","Z5,8tSPe[c^1)PId";"ZR9kc;p(Y:8FFVAD.D&","ZA7L5K1/HT";"ZRNh%k.F[n#FDZ\'Z1\\sW0*On[N";"ZR9kc;p(Y:8RGE]Y.D&","ZRGR>G)[^";"ZEA!tj)?Z.LP<f*k.Xq","Z8+7)^7)-sbpgEtW&r`e@)[^","ZAs/1$";"Z5QT2f.D*\"u)jK$`RGE]Y.D&";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)Pc,BK1c3It(dCE7#,@1&Bk:jb","ZA7$N>.(tV91-ur";"ZAt-mq&lSWP&AbcTp6qQ","ZE5[S";"Z5QT0^I4Ia";"ZRGR:f&2";"Z86WrX)-r*/pq\"";"ZY+9","ZlH7%n&K[sgPb","Z)sH";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3I9pq#&JBIrr._/A+=";"ZR0r:Z)/Ec0P,VC";"ZEK%!,.De","ZA<NPk1-f+\".mNi?lOj)D.D*7n1)PId";"Z5QT0^)7U?_8q,GfRGR>G)S";"ZRoLXfP<kBO.DHU?*O!","Zl\'akWpgE3ZpUu1VI(","Z8q.)D*J";"ZRGE]^FD\\sf)[0R<pg&q";"Zl\'BPVPQ#L","Z8HZm^)j/QK","Z5,L-q1]7@_P;60W1AInP7)^l\"7*m[i1Yugs.#oN\\)k.`!7)^l5PQ$J77)WEB*VJ","ZRNh%k7.tNr1P(JBpq55";"ZRT\"%S&WJa6P3e+";"ZFD\\Rjp6q:gtda^#1*.Sr.De";"ZRf3CIpM9u\'pBt[t)k<";"ZRi@B1PQ,pJ1!cV\"&Wo";"Z53Tf[1*,snPeV";"Z8+7bH.Xg$uP33DEI`[*^1-Ke&&5#L4*On&]&AsSI","ZlH7%n.DX","Z)j6841-@$Epq#E9#2(E&%.Sp;B[E#;";"ZRbXpgPQ23W&AsI","ZFE[MH1*;QV1F","ZA7L5Kd&Tk5p(^+@P3I","Zda[H&&A(N","ZRNh%k.F[n#5Qh4N*=h";"ZFFVD[.L2oKpgC#\\1!-I&*=h";"Z1c8s2.t";"ZRGR6/1Y@uK*OMY@P21B","Z5QT2f.D*aY&l950RGR6j&5#L6)S","ZR9jWD8+7)^";"ZFXW","ZlBZS)PQQJ!pqcXCpg&q","ZlH7%n&K[sgPp\'.\")[R\")1c$K%";"ZlV*Ij1PO";"ZRbXpgPQ\"rZ)[<t2";"ZRi@BE)7\'Dq","Z5eUtXPQ?%E.Ur\'Sl:Cp>";"Z5QT2f.D*jj1Pu=";"ZRGE]Y.D&";"ZRGR>G)[o/\\*=W\'[pgC#\\FE[Mb.D&","Z5,8$G)jj?\")Zn";"ZRGX!>1c,NK)/b`K";"ZlV?+[.D*\"U&5L\\";"ZEWt>2PQ$K\"pgE+HP:_";"ZpMGB71*.Gr";"ZE^+nZ.D*BH1cF>].E8&@14=E61*p\\`.De";"Z)j6841-@$Epq#E9#2(B._-nsI_-h+X","ZFD;\'bPj;.Z1!-e","ZooDRn&Ab)bp+4:-or?";"ZRd1kp&l`s";"ZRGR>G)[o/\\*=W\'[pgC#\\","Z8u4:95,J[Xl\'akWpgE;","Z8u4:9";"ZA7#Qn.DLl+&A<>>1*Qe","ZFD\\Rjp6q:gtda^#1-+_d.8\"","ZFmWh3.ub\'..mY";"ZR9kitl:h6=&l`\"hR@raj&5JX>","ZlV?+[&LSka5QgIV.t","ZEFh0mP\"\"?:";"ZR@3W37)H=B&Wo","Z8gI2W.t";"Z)k#!71*>:;*Vi\"","ZdcN_,p;p","ZAt-mq&lSrg.Fs7<&5JX>";"Z8M/p9pgEe\\";"Z.$Y:<EA\')9)admL*OEG6dpf","Z1-ob4*OEn#2Do)3.mjl91)P!";"ZRGR6j&5#L6)S";"Z1c3t?PQ#SA&5a2","ZA<T_Z.McpI1*QHJpg,p-Pen(";"Z5,8tZpg&g9*OEtrP33W","ZEK%!,.utDD.DP3C*J";"ZEWt>&.DP`\"&Wo","ZRTs`a1-fQc)k<","ZAkG<OP2SKK*J";"ZFE[MI1P<<g)S";"ZEWt>\"*V1\\K";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Q*re#3PsX%A";"Z)j6841-@$Epq#E9#2o*b%.\')e_)%Z","ZFF%2:1-+_d.<";"ZR@=ESpgC^";"ZA<T2n","ZRb+jt*O%","ZRi@B1PQ,Qj)[Y","ZRd1.oI&o\'\\5;p[S1F";"ZAIgof1*,`c.Xq","Zl:C];A<NPk1c$/BPQ23h.m0p";"ZlV?+[.D*aYP:7//&5=4]FmB.]P\"\"?:.<";"Z5,l</Pb","Z8q,)91*p%F7&:t/Pee?,7.b%>Penbq)S";"ZFDX6))[R\"","Z5,r-kb\'","Z8+7)^lH`?)1-c";"ZRbR>+1PkG_)K","ZE^g=I1\\RlL.F<r$","Z5;p[S1p!l].D*cSP0";"Z5QT0^)7U4";"Z86WrX)s(N!1*,N!&KtB4)S";"Z(@U1S&5L\\";"ZRT\"%S&K09KES%!X.D&";"ZAkG<OP2SKK*>S<f1)_58*OE^";"ZlV?+a.$Pa<5QgI[.<";"Z5>63[&l`\"a7p!\\$)[o/_Pb";"ZRfrBu)K";"ZR0r:Z)/seZ*OE!N&5JX>";"ZRorr>FE[MI1P<<g)S","Z8g1+X";"Zpghr?)K";"ZFFVAD","ZFD\\Tm1Y0\\J.DH>M)jKf","ZE^g=I5Qh4N*=rV","Zl6T^$*H&G28US?J&WJ1$";"ZRf3CIpM9u\'pBsA&&AO";"Zd-WY:","ZE^+nDA<NPk1-f+\".mNi?";"Z1cQ8]*O<n","Z8u49*7&3>j.m[lc.D&";"Zpg>h<P:INM";"Z(@ULf&5=4]&L98","Z86WrX)s(N!1*,NGPQJSEpg&q","ZFm5rG)k\"j/pOA_/.DX";"Z86WrX)?CunPQu","ZRoL>L7.+3S1Yqe";"ZlV?+[.DPO","ZRGX!>1c,NK)/sLjp++jk&l9c/P3I","Z8q,)91*p%F";"ZRf3CIpM9u\"AS","ZPeeP","Z8u4:9FEb*t";"ZlVa;,)k#A(Rd1C(1)_5F.t";"ZA7#R!&lSW3PQ.%,&l9c/P3I","Z(@u!q1c$!i.U*puPQu","Z)j6841-@$Epq#E9#2qL*#QY%X#3B[","ZEWt>#pUurV&KNl\\";"ZpMGBs)soG71Yc","Z5e`t^.XQ:6Pen(";"ZA7L<h2Omk2","Zl:h6=.DD4Cpg4bN1F","ZlV?+[.D*cSP29IaP,`bM";"Z5,?V>*ON1t)/ba>&K0`C1-W","Z.$-*c)S";"Z86WrX)-Bc91c3tE";"Z8+7bH.D*>pRGE]Y.D&";"ZRf3C11]<*_&Ks8N.Xg$CP,`bM","ZRi@BcP:sc@)7\'Dq","ZA7L5K1/H4kRV";"Z5Qb,K.<";"ZRG+jt1*,8OP,/VC1P(+\\","Z8US]jlH7%n&K[sgPIq49)k#A!";"ZRLdUe";"ZRbXpgPQ2R-";"ZR0a>GINm&i1.hl4P,VC","Z86WjXRd6mp";"Z8u4:9R0rQ","Z8g1KQR0=d9*:ObYphUd";"ZRi1=W*::K","ZFD;/,7p-Ka)kTl/&Ab]h.DX","ZbS_\\D)[jNO1!cN_","Z8gI2W.UL3f.D&";"ZFD44<P\"+\"Z)<8t(.DPs=P2j)R1pch";"Zl\'*2apgEbW5e`t^.XQ:6Pen(";"ZE`2\'lP,KKW)S";"Z*VdRsRT!","ZRGMuIPQ$K\".D&","ZRd#";"ZAkG^@&53fc.UJtK";"Zl\'BPVPQ2!mPe>+r)S","ZFmWh3.t";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9qB<laP_)ADX#/";"ZR9kc;p(Y:88gI2W.UL3f.D&";"ZRGEsG)S";"Z5eU8H1T`Y/1*p\\`.t","Z5,L-g*O\"!@1\\sW0*On[N";"ZEm>\\upgnai.t";"ZsTcBD1]-qS.#V\'\'7pr\"\\7)H9e.8_0/";"ZES_rs.XQ\"$","Z5e`J/1*Q=";"Z5,a\\GP3;:].D\"";"Z8;G","ZRd1Wt)K";"Zl\'akVPQ8faP\"E%6P3I","Zl\'akWpgE3=PQD/<)S","ZAs\'R";"ZFFVD[.L2oWpUu1VIdG9:.EJ[","ZdcuQGPQ2s/&l`s","ZA<NPk1-f+\".mNi?lOj)J1/HT";"Zl\'akWpgE3ZpUu1VIdG9:.EJ[";"ZA7L5K7)-*)*On[N";"ZR0=>f7P<4N*/hE`P\"\"?:";"Z8u4:9R0r:A1/YIRPeV","Z5QN@PP;7!\"&A<lZtdn";"Z5Q<K/1A1i\'l/K(8.Ef";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Qlnb_PhR1_G";"ZRGR6/1Y@uK*O%";"ZA7#R!&lSW8PQ:-oP7.^D.F<Lh1F";"Z5>6+m&Ss;","ZA7L5KRoW-","ZE^+hm","ZEK%!QpgE+=)[+-p";"Zb\'","Z86WrX)s(N!1*,NG*:OL0)S";"Z86Wn7Pb";"ZR9kc;p(Y:8l\'pNS)S";"ZF(PK3","ZR@3W37p!(Q&Wo";"Z8q,Gf7P0IMpgC^**VdR_";"ZRGR:Z*OEai.<";"Z)j6841-@$E%Z\'\"\".L\\Ao)k#511-s4m1-s4f#Q]!u.O;BlI+";"ZR9kiLPQ>!:*::6[","ZES\')j","ZEu+9","Z8q,JZ)S","Z)jj?T","Z.F[407PN7o7P0,%1!\\+","Z5eUtL.39A9PQai";"Z8US]jFE[MI1Pc";"Z5QtkqP3I";"Z)j6841-@$Epq#E9#2(EoBIr6*%.VQD","ZELa&n7&r%:","ZPeCi";"Z5j6.G","ZlH7%n&K[sgPp\'f_.F<Ua1Pg_&";"Z8gI2W.Ul\'J1Pg4URNX8,";"ZR@ra\'&^QLD1/HHR1)E","ZAIgof)kp)_1/cYM5e`$Q*6?pB";"ZA<GZq1P(n";"Z5;*_QIg","ZlV?+[.D*\"U&5L?j1)WZR","ZR5h";"ZR9kit7.[3^*==6,","ZFD\\Tm1Y0\\\'PQ#SdP\"shV.UB#HPG","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9q#Qlnb_PhR)BJ","ZE^hb3)7\'Dq","ZE^g=I14:lO1.s7:PQr\"","ZRGX!>1c,NK)S";"Z5>63[&l`\"a7p-KgI4Ie";"ZA7DgS)<D[d7.R8q";"Z5e`J/I4P,5*OEBT.De";"ZRNh%k5,DDHP:-";"ZFFVD[.L2oKpgC#\\";"Z)j6841-@$Epq#E9#2faIBI*U5%.AF";"Z5,rfQP:MDj";"ZA7#Qn.DD4q*:OL0)[^","Z8g1+^.Ck:`";"ZAIgof)kp)_1/cYS&5mO=)[Y","ZE5R*;1F";"Zd-S7W.<","ZRoW!)1/YIRPeV","ZRfB\"S.D&","Z(@ULf&5=4]","Z8g1+X)jj?\")GQd#Peh^";"Z8M/p9pgEI";"ZlOk2[*J","ZRN+99P*8\'3)k#s].D.$sPp\'CE&Ag1-1]<d\")kQ(`7*DdR.$YD`Pe>X2","ZAYG.M1PuG2.U*puPQu";"Zda[=";"Z5,rfD)k#A?1F";"ZP\"\"AKPN";"ZEK%!+&5;qL&l950)K";"ZRG+jt1*,]S1Pft<*=WH";"Z5e`Q/pqcXC.XCYJPQD8].t","ZEFgu","ZFEbdt7pHNQ*J","ZRi@B1PQk","ZFEb&u.D&";"Z51dPS";"Z7)H7cPQ#!<7*m$T","ZlVa;,)k#A(Rd1C4PQD/<)S","Z8g1KQA7L5K1/H4k.<","ZAYG2s.mq\"H1*Q3<&5I";"ZFE[Mb1cQ3RA[5,`P\"\'","ZE+*","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)Pc,BK1c3It(dCE7Bka9p_P>p=%A";"Zb9ef:.Ef","ZRor*nRd1H;R@raj&5JX>";"ZR@raJ*:ODk)k\\j4";"ZdcuQGPQ23W)[(/-","Z(@Uef1!cV\"&Wo";"ZE^+1H.(bQApq5;";"ZEA!tf*VJ","ZELa&n7*Qo\"*O\"e\"Pb","ZA<T_Z)S";"ZA7$N>.(tV91-uWjpg,p-Pen(";"Z)j6841-@$Epq#E9#2k=dBkr`P%pFq","Zl\'*2apgEbWA<NPk1-f+\".mNi?","Z1)BQi.XJc9*p";"ZE`2J6";"ZRT4!fP\"Ed<R0=d9*:Obk.m[8rpgC^","ZlV?+91)E","ZlOk0JpH)PLpqP?6)S";"Zl\'rZQ)Ya4n.t";"Z8q,3Q)K";"Z8gI2W.Ul\'J1Pg4+","ZEm>\\Z1/YIRPegj:)[(/-";"ZA<NPk1-f+\".mNi?FmWh3.t";"Z)j6841-@$Epq#E9#2o=1%\\Ab1_)%H","ZAkR-[&W:4B5e`$Q*6?pB";"ZRGX!>1c,NK)GQXb*O@(Ft0&7EI._2M7)^4MpMG#s&KtB4)GQc\"7Pk@7*=W0","Zl=>h\'1Y0\\$7*Qo7PQu","Z8g1+X)jj?\")[f_$1PuHLPQD/<)S","ZA7$NL*Hha-)K","Zl_jf","ZFD\\3V1F","ZRNh%k.F[n#";"ZlV?+[.D*\"U&5L?J&W#d@.EJldP,`bM";"Zb9tp1pV.ZG.mkhP.XDG";"ZA7r5/.t";"Z7A^>=","ZFDZ\'Z8u;+V.mNci";"ZEWTEIA<TI6.t";"ZEWTEI5QgIV1/DF";"ZpR41cpgC^";"ZRfrn/.8\"","Z2CDTo1F";"Z8gI2W.ue->.mg]K1F","Z","ZRKEA\\8u4:9","ZR0*eS","ZEm>\\uP,`bM";"ZAtPYgFD\\3V1.h8V1*k";"Z(@H","ZEl*EUP;-hVt0\"T","ZR0r:Z)aj@6pg1","ZR9kc;p(Y:88gI2W.ubGPI4*","ZELJOd1]<*B*BLh`1]<&d1AIlF7*,N01*Qe","Z5e`b^pgTaV&AsI","Z8u;+V.mNci","Zd-S7r1-fu@.Ur\'I.D&";"Z5,a-q*:O)`l:CtG","ZES_rA1*p%%";"Z1/cNMP:sc","Z5QT0^)7U?_R@raj&5JX>";"Z8q.)D*/h(7*Vdd","ZB\\";"Zp+mbF10q`s)jj2)p(-eT1aQ3E.DPl]P33ts1dW?.Pc,oipUN%W&5e,Z#((t&.EJ:g.mND*)k26c#(7r!.8#P&&5#LM";"ZA<GPa*ORdG1/^7Q.XDjC","ZA<GZq)K","Z5QtI:7)H=(.Xq","Z8q&6=1YW","ZP,KKa&5JaO","Z8g1+X)jj?\")[f_$1Pu\'#1)_5F.t";"ZA7L5K1/H4QP,!P","Z5,8Qn&KtB4Pb","ZRGR>G)aUk[)k2j\\pg&g9.CILj1F","ZEK%!+&5e?s.DST\"P;7i";"ZRNh%k.F[n#A<TI6.t","Z5,ae";"ZRGX!>1c#?%lV?+H.UBbSP:-";"ZR0*c1.mNDSP,`bM","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)Pc,BK1c3It(dCE7#,@1&Bk:n*","ZA*$qN1!c-jt0eOe","Zs\'","Z1!Br";"ZlV?+[.D*:[1c$!i.U*puPQu";"Z5,l\\hpgEX-";"Z5,8Nh.D*X,pqHs@)K";"ZR0=*X&Ab1\"";"Zl=>h\'1Y0\\$RGR>G)S","ZA7$Vn.t";"ZFDZ\'ZFF%s,PQL7","ZRN+99P*8\'3I.OH57)-sb)<DV<1-N\\AP0";"Z5>68=to>ZME^g=IRGR>G)S","ZEK_LD)K","Z)j6841-@$Epq#E9#2k=A%\\VQH%.l","ZR0r:Z)Ya4n.De";"Z5#bmY*30d/&Kiu^Pen>\\PQ#L";"Z5QgWW.X._\'.Ef","ZP\"\"f","ZlOjQY7p!\\V.De","ZR@ra\'&^QDN1)BQ27*CC@&l`s";"Z86WrX)-le$pgC?sP1EVppUW","ZEl*EUP;-&U)k2j\\pg&q","Z8U^*.*J";"Z8gI_>1]<XA.3f$%pqHs@7*ZCWpgEtc1-ug2.#b--*Vi\"","ZRoLcb*)XuA1PuG2.3f)4PQ$K\"7&DM!7)^Bo1AIBR)GQ*R&lS,Lpg4=!Ig","Z5G","Zl_7DS";"ZRoW!)1/YIRPegj:)[(/-","Z)7$","Z86WU1.D^;";"ZRidP8P33t0FF_aH*On\'W1F","ZA<GPa*OR\"L*O\"!@";"Zb^1h=1.gLV1/=$Mpg&q","ZFDZ\'Z5e`t^.XQ:6Pen(","ZA<NPk1-f+\".mNi?","ZRbR>+p+ms?1-W";"ZRorhD.D&","ZES_rB&AN;","Z5QtI:5e`$Q*6?pB","ZlV?+[.D*&G&l`\"A1/YYPPb","ZAkR-[&W:4B7.N[gP,`D\")S";"ZFD\\Dq&5a##*VdRR";"ZR0a>GI`+eQPQmgh1!B$s)K","Z)j6841-@$Epq#E9#2(\"&#QcU)Bt4!)";"Z5Q0g/p)","Z86WrX)s(N!1P(G_7&#=Gph!r<pg&q";"Z5;p[S1&JO9.<";"Z1Pg-RpgEUTMD";"ZFD\\Rjp6q:gtda^#E5>%J1)r(V&AR3MP>hth&KW","ZRGE]Y.D*nS.FsBs";"ZR9jO*)jYn\'IG$TcP7\\-G1*p\\`.t";"Z53G6","ZA7#RBPQr<ME5>%f)j;";"Z8\'7Pn";"ZFF%#Y&Assr)/sd/.F[AYPQQ)#pg&q";"Z5#b5Y.t";"Z5,L-CA7D3DP\"\"\'@)K","Z8u4:9R0lS","Zbm^";"Z5,auO","Z1-[(p","Z)j6841-@$Epq#E9#2(db_/ADHBI;","Z5;p[S1&#@j1)_58";"ZRbXpgPQ2!mPe>+r)S","Z8+7Qn)[^";"Z8gI2W.Ul\'J1PgT","Zl\'BPVPQ<","ZRf3CIpMS_W*Vdt<7*Qo7PQu";"Zl\'#/a1Y!6G)[R\"";"ZlV*PO1P(G_","ZA7#Qn.DD4$.XD1h&Abc4";"Z8q,)91*p%F7.1nf#/";"ZRf3CIpMfD","ZR@raJ*:OLB7&l]Q1c3PFpU@L:1P-,FPpU4MIJS";"ZAYnS","Z5QgY/*)XY57)^4MpMG2","Z)j6841-@$Epq#E9#2o1p%.Atu_-q";"Zl\'BPVPQ2sj.F<Ua1PgB";"Z5e`GY&l9cVpslQ\\&lrJhP,`bM","ZA7#Qn.DD\\-P,`bM";"ZRorr>8+<<>)Y?kH*V6o9P,`bM";"Zd-SiClV?+91)E";"ZEFh0Z&5#EC","ZE+l","ZA7L5Kd-WY:)7\'u","ZES%),.E8X$PQsnK1*Q)M";"ZES%Aq&A<g","Z8O.FaFu^k","ZI.OHA.<","Z5Qt5G.R!<D1Yc";"Z5QgWW.3fg2.EZ<lPI@M,I(";"Z#B#29pUW","Z1cQ]\\.Xq","ZFD\\Tm1Y0\\=P21B";"Z)j6841-@$Epq#E9#2@a)_-br)B<l\'","ZRiMCX*V`V_lV*PO1P(G_";"Z1c3#i1*Q\'F";"Zlek","ZR9j;A.t","ZR9kc;p(Y:8A<NPk1c$/BPQ23h.m0p";"Z8u;s+1&*4Z1-N\\RPb","ZRorr>FE[MI1Pc","Zl,7Ha","Z)j/VN.t","ZAIgof)kp)_1/ca","Z)j6841-@$Epq#E9#2(db_/ADH%\\:";"ZAkG<OP2SKK*Qdkn.Ep;4";"Z5Ia?","ZPN";"Zdcg2^*,FHDpqcXCPQu";"ZlV?+[.D*cSP29Ih.m<jV&KNs`&W..S*J";"ZRGR>G)Z>","ZA<NPS.D*79pqH7TPehhB";"Z)j6841-@$Epq#E9#2o1p%.AtHB<\\","ZFF_LI)a@\"f.F<Lh1F","ZlV?+[.D*X^&Ks8N.XC2t*Vdd";"ZlV?+[.D*7L1/c/cP;-lmI+","ZA<T_Z.#dRn&Ab\\","ZI&k%4PQ<","ZFF%#Y&Assr)[^","ZdcuQGPQsZ%P\"\"?:","ZFF%#tP,`+(.t";"Z8+7bH.Xgrc1/\\d*.DP`\"&Wb[hPQ#tc&KN1?P3o","Z8(2%fRTE%^RGR>G)S";"ZRfrBu1\\n1c.De","ZFm5rG)k2AZ1*Qe";"ZMD","Zo\\mdK","Z5e`GY&l9cVp-","ZRioi\'I4*";"ZFDZ\'ZRf3C1)K","ZFm5rG)k<";"Z)j6841-@$Epq#E9#2o1p%.Ap;_/L","Z8u4:98+<<>)adYY","ZR0r:Z)/seZ*OE!N&5JX>8hcE","ZR9j;A.XC-eP291","Z5eUtXPQ\\AG)[jGS&WJ)";"ZRoL>L7.[gYPehC","ZA<NPS.D*ef.Cb?NP\"\'","ZFD\\Tm1Y0\\H.mN]q";"Z)j6841-@$Epq#E9#2oE.%.V[+%.L";"ZlVa;,.DH$nPQD/<)S","ZEQ";"Z5>63[&l`\"a7p-Kg1P0/R";"ZFFVAD1]<XA.3G0-&5e?!PQJSEpg&g%I.c+!7*+*E&As]g1AI7!1!^f()K";"ZF8;[9P;`Ri5QgIV.+%W$.t";"ZP3DQ!.D&";"Z8u49L.t";"ZFFVD[.L2oo)7!SW*J","ZRGhtgPQ0";"Z8US?J&WZ531*Qe";"Z8+7+aFmWh3.t";"ZFDX:=)kD)(";"ZR@raJ*:ODj&5D+","Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3I9pq#&JBIrr._/AGX","ZE^+nD7&*?/PQu","ZRGRhG.F[n#7&l]k1!4","ZRorr>FF_aH.D*d+&5=4]RGR>G)S";"ZAcF^";"Z5e`8tp)";"ZELJOd5eU!H1/X","Zl:hh1pgEu";"Z8M/p9pgEt;1/YYPPb","ZRf3CIpM9ItPQ$mf.mNX?1)h";"ZELa&nRGRhG.F[n#";"Z5>63[&l`\"a7p-]-";"Z8+7bH.Xg$uP33DEI`[*^1-KtNpg>[<*On&]&AsSI";"ZEWt>#puP8C)k#7";"ZR@=BI1*[m-PQ##Tp-";"ZpgF!\\*On)\\&Asi?P\"XL<7AKGkM)ui&*O(>+.L\\#!&KN8h2:!uK.#b281Sk*8.Ea]\"pgF]R.XD!gP,l<#&5DX[&53j)","ZFF%Tj","ZRNh%k.F[n#ELJOdRor`QPQ0","Zl_k2V&5I";"Z5,?/k.t";"ZRd6mp","ZR0lbnp+4:-1]<l5&lSWn7D","Zp+n`]";"ZEAV[[)>E";"Z8g1+k*OEf","Z)j6841-@$Epq#E9#2u9*_/\'3U#Q^<","ZAt-;S1*k";"ZRornaR0=*X5Qt5G.<","ZE^g=IlVa;C.DPh<.De";"Z_0","ZRorr>Rf3C1)K","Z*VdRsAk([YPQu";"Z5e`GY&lD","Z&WJlq";"Z8g1+X)jj?\")YrBa.mY","ZR0ljXt0gWC)k.`!";"Z5J$Ta(r#<=Abu%","Z5Qb,K.Ma5";"Z5QgWW.3fg2.Ef";"Zl:hh1pgE+YPQo","ZFDZ\'Z)K","ZRi@b","Zd-SiQ.mK^SP:-";"Z5>63[&l`\"a7.+bG*Oeh\"","Z5e`/^.D*aq.D_Li.<","Zl\'*2apgEbWA7L5K1/H4k.<";"ZRTE8Q7)Y98)j/3V","ZR9jq%PQ$+?";"ZA7#Rc)[($ApUu1VIdsl>1*.hT.D&","ZA<GPa*O%","Z8gI2W.Ul\'J1Pg4u","ZRi1H5.#oD\".mV+7pg,psPehV&2[","Z5,8tZpg&g^PQD/<)S","ZRfrnYptL<Q&5a2","Z)K";"Z8g1+X)jj?\")[^";"ZA7#Rc)[($ApUu1VI(";"Zp+mbF%Z\'\"BIpfGnP>hUTI^%3)PcQdd1c3It(.d9qB<laP_)AD+#/","Z5,rfS1*p%_";"Z5,Dg[1&#YHP#0","ZE+B";"Zl_jGm)K","Z8(2%fRTE%^5eU!H1/X","Z8US?J&WZ_U1)PId"}for I,u in ipairs({{1;2272},{1,1983};{1984;2272}})do while u[1]<u[2]do wM[u[1]],wM[u[2]],u[1],u[2]=wM[u[2]],wM[u[1]],u[1]+1,u[2]-1 end end local function ZM(I)return wM[I-42637]end do local I=string.sub local u={r=41,K=44;S=35,["+"]=28;E=38,g=23;X=8;["7"]=33;u=50,n=0,D=10,Z=2;s=11;B=17;I=36,F=39,V=1,M=60;f=56,x=51,y=63,w=14;G=47;U=59;a=55;l=37;z=26,["5"]=40;v=43,L=7,e=19;p=21,t=58;W=3,O=29,m=4,["3"]=22;["/"]=62,R=18;k=27,["9"]=49,["1"]=24;h=31,A=45,C=13,j=48;N=25;["8"]=6;c=46;q=5,T=53;H=20;Y=16;d=34;o=30,["6"]=9,Q=57,["2"]=42;["4"]=61;P=12;["0"]=15;J=32;b=52;i=54}local U=string.char local W=wM local N=type local P={[">"]=67;J=60,["%"]=18,a=61;[")"]=36;T=3;M=19,H=44;["4"]=4;l=25,["*"]=34,E=22,p=33;["`"]=82,[":"]=70;m=50;o=29,["\""]=13;["7"]=10,b=30;K=81,u=47;I=38,["\\"]=5;["-"]=8,C=77,["1"]=37,["9"]=55,["\'"]=45;G=57,["^"]=53;N=84,L=52,Y=62;g=75,["["]=66;U=46;["?"]=6,["3"]=42;["@"]=83;k=65,B=16,s=12;["6"]=73,h=76;S=54,["0"]=2;[","]=68;["."]=32;O=71,["!"]=9;["$"]=78,["+"]=48;V=72,["]"]=0;t=39,["#"]=15,["8"]=24;c=7,f=56,X=49;e=40,d=28;R=21,D=51,A=27;F=23;[";"]=41,P=35,r=79;["<"]=11;["2"]=14,Z=59,["("]=20,W=80;["/"]=63;["5"]=26;n=58;["="]=43,j=64;["&"]=31;q=74,Q=69;_=17;i=1}local m=table.insert local D=table.concat local r=math.floor local t=string.len for K=1,#W,1 do local j=W[K]if N(j)=="string"then local N=I(j,1,1)if N=="-"then j=I(j,2)local N=t(j)local P={}local q=1 local v=0 local L=0 while q<=N do local W=I(j,q,q)local D=u[W]if D then v=v+D*(64^((3-L)))L=L+1 if L==4 then L=0 local I=r(v/65536)local u=r((v%65536)/256)local W=v%256 m(P,U(I,u,W))v=0 end elseif W=="="then m(P,U(r(v/65536)))if q>=N or I(j,q+1,q+1)~="="then m(P,U(r((v%65536)/256)))end break end q=q+1 end W[K]=D(P)elseif N=="Z"then j=I(j,2)local u=t(j)local N={}local q=1 while q<=u do local W=(u-q)+1 local D=W>=5 and 5 or W local t=0 local K=D>1 for u=0,4,1 do local U if u<D then local W=I(j,q+u,q+u)U=P[W]if not U then K=false break end else U=84 end t=t*85+U end if K then local I=r(t/16777216)%256 local u=r(t/65536)%256 local W=r(t/256)%256 local P=t%256 if D==5 then m(N,U(I,u,W,P))elseif D==4 then m(N,U(I,u,W))elseif D==3 then m(N,U(I,u))elseif D==2 then m(N,U(I))end end q=q+D end W[K]=D(N)end end end end do local I=(getgenv and getgenv())or _G if I[ZM(44894)]~=1347571535 then return end I[ZM(44894)]=nil local u=false pcall(function(...)local I=iscclosure or is_cclosure local U=hookfunction or replaceclosure or hookfunc if type(I)==ZM(42725)and type(U)==ZM(42725)then local U,W=pcall(I,loadstring)if U and W==false then u=true end local N,P=pcall(I,pcall)if N and P==false then u=true end end end)if u then return end pcall(function(...)local u=game:HttpGet(ZM(43207))if type(u)==ZM(43299)and(u:gsub(ZM(43345),ZM(44368)))~=ZM(44718)then I[ZM(44744)]=true end end)if I[ZM(44744)]then return end end local I={[ZM(44114)]=0}local u=string[ZM(44590)](147,83,68,180,43,30,48,136,61,104,122,19,122,67,181,42,75,158,121,190,172,183,120,142,52,165,9,130,129,110)local U=string[ZM(44590)](152,138,75,77,40,152,184,182,92,153,127,174,88,68,159,100,36,50,190,61,174,82,62,129,175,52,23,144,16,24)local W=nil local N=((function(...)local I,u=pcall(function(...)local I=game:GetService(ZM(44313))local u=I:FindFirstChild(ZM(44581))local U=u and u:FindFirstChild(ZM(44011))return U and require(U)or nil end)if I then return u end return nil end))()local function P(I,u,...)local U=CFrame[ZM(44215)](I,u)local W,N=U:ToEulerAnglesYXZ()return CFrame[ZM(44272)](U[ZM(44472)])*CFrame[ZM(44118)](0,N,0)end local function m(I,u,...)local U=u-I if U[ZM(43046)]<.1 then return true end local W=RaycastParams[ZM(44272)]()W[ZM(43755)]=Enum[ZM(44716)][ZM(43058)]W[ZM(44098)]={}local N=workspace:Raycast(I,U,W)if not N then return true end local P=N[ZM(43363)]and N[ZM(43363)]:FindFirstAncestorOfClass(ZM(43919))if P and P:FindFirstChildOfClass(ZM(43137))then return true end return false end local function D(I,...)local u=I and(I[ZM(43471)]and I:FindFirstAncestorOfClass(ZM(43919)))return u and u:FindFirstChildOfClass(ZM(43137))~=nil end local r={[ZM(44713)]=0,[ZM(44160)]={}}local t={[ZM(43560)]=true,[ZM(44229)]=true,[ZM(44683)]=true}local function K(...)if(tick()-r[ZM(44713)])<.6 and#r[ZM(44160)]>0 then return r[ZM(44160)]end local I={}for u,U in ipairs(workspace:GetChildren())do local W=U:IsA(ZM(43342))or U:IsA(ZM(43919))if W and(not t[U[ZM(43502)]]and(not U:FindFirstChildOfClass(ZM(43137))and not(game:GetService(ZM(44176))):GetPlayerFromCharacter(U)))then I[#I+1]=U end end r[ZM(44713)]=tick()r[ZM(44160)]=I return I end local function j(I,...)if type(I)~=ZM(43508)then I={}elseif table[ZM(44170)]and table[ZM(44170)](I)then I=table[ZM(44734)](I)end local u={}for U=1,#I,1 do u[I[U]]=true end local U=workspace:FindFirstChildOfClass(ZM(44822))if U and not u[U]then I[#I+1]=U u[U]=true end for U,W in ipairs(K())do if not u[W]and W[ZM(43378)]~=nil then I[#I+1]=W u[W]=true end end return I end local q={[ZM(43983)]=1.65;[ZM(44209)]=1.3;[ZM(44749)]=1.3;[ZM(43208)]=1.6;[ZM(44783)]=1.65;[ZM(43930)]=1.3;[ZM(42912)]=1.3;[ZM(43151)]=1.3,[ZM(44261)]=1.3;[ZM(43181)]=1.3;[ZM(43694)]=1.6;[ZM(43470)]=1.3,[ZM(44812)]=1.3;[ZM(43180)]=1.3,[ZM(44699)]=1.34,[ZM(43356)]=1.3,[ZM(44288)]=1.3;[ZM(42914)]=1.3;[ZM(44432)]=1.3;[ZM(44317)]=1.3}do local W=game:GetService(ZM(44313))local N=W:FindFirstChild(ZM(43357))if not N then task[ZM(43766)](function(...)N=W:WaitForChild(ZM(43357),30)end)end local P=0 local m local D=pcall(function(...)m=hookmetamethod(game,ZM(42759),newcclosure(function(W,...)local D=getnamecallmethod()if D==ZM(43439)or D==ZM(43519)then if W[ZM(43502)]==U and(W[ZM(43378)]and W[ZM(43378)][ZM(43502)]==u)then local u=false if checkcaller then u=checkcaller()end if not u then P+=1 return end I[ZM(44114)]+=1 end I[ZM(44114)]+=1 local D=table[ZM(43386)](...)for I=1,D[ZM(43000)],1 do if D[I]==ZM(43681)then P+=1 if D[2]==ZM(44499)then(getgenv())[ZM(44358)]=os[ZM(42638)]()end return end end if N~=nil and W==N then local I=D[1]if type(I)==ZM(43299)and((I:sub(1,2)==ZM(44217)or I:sub(1,2)==ZM(43836)))then P+=1 return end return m(W,...)end end return m(W,...)end))end);(getgenv())[ZM(43074)]=D end do local I=game:GetService(ZM(43476))local u=workspace:FindFirstChildOfClass(ZM(44822))local U={}local W={}local function N(I,u,...)if not I then return end local N={}for I,u in ipairs(u)do N[u]=true end U[I]=N W[I]=W[I]or{}for u in pairs(N)do local U,N=pcall(function(...)return I[u]end)if U and W[I][u]==nil then W[I][u]=N end end end N(I,{ZM(44438);ZM(44714),ZM(44233);ZM(44013);ZM(44382);ZM(44814),ZM(42797);ZM(44311)})N(I:FindFirstChildOfClass(ZM(44126)),{ZM(43659);ZM(44133),ZM(43852);ZM(43198),ZM(43117);ZM(44071)})N(I:FindFirstChildOfClass(ZM(43643)),{ZM(42696),ZM(44462);ZM(43177)})N(I:FindFirstChildOfClass(ZM(44396)),{ZM(44438),ZM(44028);ZM(44884),ZM(42987)})if u then N(u:FindFirstChildOfClass(ZM(44365)),{ZM(44133),ZM(43659),ZM(44223)})end N(I:FindFirstChildOfClass(ZM(43279)),{ZM(44845);ZM(44243);ZM(44207)})local function P(...)N(I:FindFirstChildOfClass(ZM(44126)),{ZM(43659),ZM(44133),ZM(43852),ZM(43198),ZM(43117),ZM(44071)})N(I:FindFirstChildOfClass(ZM(43643)),{ZM(42696);ZM(44462),ZM(43177)})N(I:FindFirstChildOfClass(ZM(44396)),{ZM(44438),ZM(44028);ZM(44884);ZM(42987)})local u=workspace:FindFirstChildOfClass(ZM(44822))if u then N(u:FindFirstChildOfClass(ZM(44365)),{ZM(44133);ZM(43659);ZM(44223)})end N(I:FindFirstChildOfClass(ZM(43279)),{ZM(44845);ZM(44243),ZM(44207)})end task[ZM(44860)](10,P)task[ZM(44860)](30,P)local m=(getgenv())[ZM(43246)]==true local D=game:GetService(ZM(44023))local r=D[ZM(44570)]local t={}for I,u in ipairs(r(D))do t[u]=true end local K={[ZM(42959)]=true,[ZM(44727)]=true,[ZM(44030)]=true;[ZM(44622)]=true,[ZM(43890)]=true,[ZM(43192)]=true;[ZM(44212)]=true}local j pcall(function(...)j=newcclosure(function(I,...)local u={r(I)}local U={}for I,u in ipairs(u)do local W,N=pcall(function(...)return u[ZM(44807)]end)if t[u]or K[u[ZM(43502)]]or(W and(N~=ZM(42749)and N~=ZM(43342)))then table[ZM(43063)](U,u)end end return table[ZM(44871)](U)end)end)local q local v=(not m)and pcall(function(...)q=hookmetamethod(game,ZM(42858),newcclosure(function(I,u,...)local N=false if checkcaller then N=checkcaller()end if not N and(u==ZM(44570)and(I==D and j))then return j end local P=U[I]if P and P[u]then local U=false if checkcaller then U=checkcaller()end if not U then local U=W[I]and W[I][u]if U~=nil then local N=nil pcall(function(...)N=I:GetAttribute(ZM(43114)..u)end)if N~=nil then W[I][u]=N return N end return U end end end return q(I,u)end))end)end local v do local I=(game:GetService(ZM(44176)))[ZM(43007)]pcall(function(...)I:SetAttribute(ZM(42828),true)end)function v(u,...)if type(u)~=ZM(44549)then return end pcall(function(...)workspace[ZM(43436)][ZM(44331)]=u end)pcall(function(...)local U=I[ZM(43160)]local W=U and U:FindFirstChild(ZM(44153))if W then W:SetAttribute(ZM(43239),u)end end)pcall(function(...)local I=shared[ZM(43234)]if type(I)==ZM(42725)then I(u)end end)end task[ZM(43766)](function(...)while true do task[ZM(43860)](.8)pcall(function(...)local I=workspace[ZM(43436)]local u=shared[ZM(43234)]if I and type(u)==ZM(42725)then u(I[ZM(44331)])end end)end end)end if not LPH_OBFUSCATED then LPH_JIT=function(I,...)return I end LPH_JIT_MAX=function(I,...)return I end LPH_NO_VIRTUALIZE=function(I,...)return I end LPH_NO_UPVALUES=function(I,...)return function(...)return I(...)end end LPH_ENCSTR=function(I,...)return I end LPH_ENCNUM=function(I,...)return I end LPH_CRASH=function(...)return rconsoleprint(ZM(43514))end LRM_IsUserPremium=true LRM_LinkedDiscordID=ZM(43713)LRM_ScriptName=ZM(43014)LRM_TotalExecutions=0 LRM_SecondsLeft=999999 LRM_UserNote=ZM(42979)if not getgenv then getgenv=function(...)return _G end end if not cloneref then cloneref=function(I,...)return I end end if not loadfile then loadfile=function(...)return...end end if not readfile then readfile=function(...)return...end end if not writefile then writefile=function(...) end end if not appendfile then appendfile=function(...) end end if not makefolder then makefolder=function(...) end end if not isfolder then isfolder=function(...)return false end end if not identifyexecutor then identifyexecutor=function(...)return ZM(44383)end end if not getgc then getgc=function(...)return{}end end if not islclosure then islclosure=function(...)return false end end if not isexecutorclosure then isexecutorclosure=function(...)return false end end if not checkcaller then checkcaller=function(...)return false end end if not request then request=function(...)return...end end if not clonefunction then clonefunction=function(I,...)return I end end if not newcclosure then newcclosure=function(...)return...end end if not hookfunction then hookfunction=function(...) end end if not getrenv then getrenv=function(...)return{}end end end local L=tick()local x=identifyexecutor()writefile(ZM(43670),ZM(42905))local function A(I,...)appendfile(ZM(43670),I..(ZM(44695)..tostring(tick()-L)))appendfile(ZM(43670),ZM(43653))end task[ZM(43860)](3)local i=false local O=ZM(43477)local e=true local J=ZM(44086)local c=ZM(44086)local a=c..ZM(42800)local l=c..ZM(43728)local C=c..ZM(42866)local f=c..ZM(43346)local z={}local R=ZM(44387)makefolder(c)makefolder(a)makefolder(l)makefolder(C)makefolder(f)A(ZM(42784))local p=LPH_NO_VIRTUALIZE(function(I,...)A(ZM(42966)..I)end);(LPH_NO_VIRTUALIZE(function(...)Font=getcustomasset and setreadonly(Font,false)or Font if getcustomasset then function Font.Register(N,I,u,U,W,...)if not isfile(W[ZM(44083)])then writefile(W[ZM(44083)],W[ZM(43565)])end local P={[ZM(43101)]=I;[ZM(44646)]={{[ZM(43101)]=ZM(43748);[ZM(43448)]=u,[ZM(42754)]=U;[ZM(42640)]=getcustomasset(W[ZM(44083)])}}}writefile(I..ZM(44366),(cloneref(game[ZM(44125)](game,ZM(42660)))):JSONEncode(P))return getcustomasset(I..ZM(44366))end function Font.GetRegistry(u,I,...)if isfile(I..ZM(44366))then return getcustomasset(I..ZM(44366))end end end Font=getcustomasset and setreadonly(Font,true)or Font local function I(I,u,U,W,...)if getcustomasset then return Font[ZM(44272)](Font:Register(I,u,U,W))else return Font[ZM(44272)](ZM(42927),Enum[ZM(44696)][ZM(42818)])end end local u=game:HttpGet(ZM(43435))local U=game:HttpGet(ZM(44835))local W=I(ZM(43420),400,ZM(44774),{[ZM(44083)]=ZM(44119);[ZM(43565)]=crypt[ZM(43056)][ZM(42946)](U)})local N=I(ZM(44005),400,ZM(44774),{[ZM(44083)]=ZM(42943),[ZM(43565)]=crypt[ZM(43056)][ZM(42946)](u)})z[ZM(43576)]=W z[ZM(44305)]=N local P={ZM(43221),ZM(43031),ZM(43753);ZM(43069);ZM(43539);ZM(43275);ZM(43060);ZM(44347),ZM(44554),ZM(43729),ZM(44155);ZM(42947);ZM(44568);ZM(43341);ZM(44600);ZM(42791);ZM(44639),ZM(44599);ZM(43972),ZM(43959),ZM(44474),ZM(42958);ZM(43144),ZM(43826),ZM(43997),ZM(43796),ZM(43131),ZM(42973),ZM(44546),ZM(44164),ZM(43650);ZM(43930),ZM(44209),ZM(43983);ZM(44783),ZM(44749),ZM(43181);ZM(43470);ZM(44812),ZM(43173);ZM(43526),ZM(44142),ZM(44733),ZM(43847);ZM(42702),ZM(44640),ZM(44111);ZM(43571);ZM(44850);ZM(43694);ZM(43208);ZM(43866),ZM(43281)}for I,u in P do if isfile(C..(ZM(44019)..(u..ZM(44024))))then continue end p(u)task[ZM(43860)](.1)end end))()A(ZM(43724))local H=LPH_NO_VIRTUALIZE(function(I,...)I=game[ZM(44125)](game,I)return cloneref(I)end)local w do w=LPH_NO_VIRTUALIZE(function(I,u,...)u=u or 1 return ZM(44368)end)end local Z=H(ZM(42660))local n=H(ZM(43774))local B=H(ZM(43219))local S=H(ZM(44793))local b=H(ZM(43680))local o=H(ZM(43445))local T=H(ZM(43476))local g=((function(...)local I,u=pcall(function(...)return gethui and gethui()end)if I and u then pcall(function(...)u[ZM(43502)]=ZM(43890)end)return u end return H(ZM(44023))end))()local h=H(ZM(44313))local Q=H(ZM(44176))local G=H(ZM(43569))local V=H(ZM(43680))local F=H(ZM(43214))local M=B[ZM(43436)]local Y=Q[ZM(43007)]local y=Color3[ZM(43744)](90,220,120)local X=Color3[ZM(43744)](46,120,66)local s={[ZM(43294)]={}}do local I,u=pcall(function(...)local I=Y:FindFirstChild(ZM(42837))return I and I:FindFirstChild(ZM(43613))end)if I and u then local I,U=pcall(function(...)return getsenv(u)end)if I and(type(U)==ZM(43508)and type(U[ZM(44495)])==ZM(43508))then s=U[ZM(44495)]end end end task[ZM(43766)](function(...)local I,u=pcall(function(...)return(Y:WaitForChild(ZM(42837),15)):WaitForChild(ZM(43613),15)end)if I and u then local I,U=pcall(function(...)return getsenv(u)end)if I and(type(U)==ZM(43508)and type(U[ZM(44495)])==ZM(43508))then s=U[ZM(44495)]end end end)local d=LPH_NO_VIRTUALIZE(function(I,...)if typeof(I)~=ZM(43363)or not I:IsA(ZM(43800))then return false end local u=s and s[ZM(43294)]if type(u)~=ZM(43508)then return false end return u[I[ZM(43803)]]and true or false end)local k=30 local E=Y:GetMouse()A(ZM(43551))local IM={[4619800148]=ZM(42716);[113179883]=ZM(42716);[1771300283]=ZM(42716),[1077540175]=ZM(42716);[3320377356]=ZM(42716),[3508020028]=ZM(42716),[3122439095]=ZM(42716);[3034556584]=ZM(42716);[886544546]=ZM(42716);[1616925260]=ZM(42716),[165053216]=ZM(42716);[1992294235]=ZM(42716);[971641336]=ZM(42716)}A(ZM(43453))local uM={[ZM(43200)]={},[ZM(42806)]=false;[ZM(43619)]=.2;[ZM(44502)]=.25;[ZM(42705)]=.25,[ZM(44139)]=.2;[ZM(44815)]={},[ZM(43889)]={},[ZM(43565)]=Font[ZM(44272)](ZM(42897),Enum[ZM(44696)][ZM(44391)]),[ZM(43747)]=Font[ZM(44272)](ZM(42897),Enum[ZM(44696)][ZM(42818)]);[ZM(44766)]=J..ZM(44819);[ZM(44751)]=J..ZM(44494);[ZM(42877)]={};[ZM(44117)]={[ZM(42910)]=ZM(43705);[ZM(44607)]=ZM(43577);[ZM(44345)]=ZM(43125);[ZM(44839)]=ZM(43868);[ZM(42906)]=ZM(42859);[ZM(43302)]=ZM(42847);[ZM(44649)]=ZM(42838);[ZM(44073)]=ZM(44691),[ZM(43824)]=ZM(44273);[ZM(43513)]=ZM(44628),[ZM(43777)]=ZM(43665),[ZM(44804)]=ZM(43501);[ZM(44869)]=ZM(44631);[ZM(44203)]=ZM(44231);[ZM(43391)]=ZM(43129),[ZM(44651)]=ZM(43615);[ZM(43242)]=ZM(43138);[ZM(44369)]=ZM(43967),[ZM(44834)]=ZM(42917);[ZM(43956)]=ZM(43956),[ZM(43868)]=ZM(43868),[ZM(44428)]=ZM(44428);[ZM(43711)]=ZM(43711),[ZM(43969)]=ZM(42889);[ZM(43025)]=ZM(44456);[ZM(43509)]=ZM(44867);[ZM(42969)]=ZM(42708),[ZM(44465)]=ZM(44318),[ZM(44460)]=ZM(43103),[ZM(43811)]=ZM(42915);[ZM(43402)]=ZM(43678);[ZM(43424)]=ZM(44314),[ZM(42817)]=ZM(44281);[ZM(43903)]=ZM(43891),[ZM(44082)]=ZM(44202);[ZM(43094)]=ZM(43548);[ZM(42956)]=ZM(43524);[ZM(43303)]=ZM(44256),[ZM(43687)]=ZM(43850);[ZM(43032)]=ZM(44505);[ZM(44022)]=ZM(44806);[ZM(44899)]=ZM(43111),[ZM(43158)]=ZM(44623),[ZM(44105)]=ZM(43674),[ZM(42903)]=ZM(43888);[ZM(43212)]=ZM(42867),[ZM(43843)]=ZM(44760),[ZM(44235)]=ZM(44386),[ZM(44359)]=ZM(43636);[ZM(43742)]=ZM(43913);[ZM(44003)]=ZM(44586);[ZM(44399)]=ZM(43603),[ZM(44141)]=ZM(43671);[ZM(44298)]=ZM(43118),[ZM(44429)]=ZM(42692);[ZM(43217)]=ZM(43217);[ZM(44837)]=ZM(44837);[ZM(43510)]=ZM(43510),[ZM(43127)]=ZM(43127),[ZM(43586)]=ZM(43586),[ZM(43248)]=ZM(43248);[ZM(44617)]=ZM(44617);[ZM(44486)]=ZM(44486),[ZM(44324)]=ZM(44324);[ZM(43152)]=ZM(43152);[ZM(43387)]=ZM(43387);[ZM(44263)]=ZM(44263),[ZM(44344)]=ZM(44015);[ZM(44332)]=ZM(44529),[ZM(43624)]=ZM(43352),[ZM(42841)]=ZM(43596),[ZM(44395)]=ZM(42949);[ZM(43472)]=ZM(44404);[ZM(44047)]=ZM(43641);[ZM(44642)]=ZM(43334),[ZM(44447)]=ZM(44019),[ZM(43351)]=ZM(42658);[ZM(43757)]=ZM(43996)},[ZM(43753)]=w(ZM(42686));[ZM(43069)]=ZM(44336);[ZM(43539)]=ZM(43106),[ZM(43275)]=ZM(44777);[ZM(43060)]=ZM(43780);[ZM(44347)]=ZM(43232);[ZM(44554)]=ZM(43187);[ZM(43729)]=w(ZM(43729)),[ZM(43031)]=w(ZM(43031))}A(ZM(43656))local UM={[ZM(44754)]=Color3[ZM(43744)](63,201,176),[ZM(43723)]=Color3[ZM(43744)](63,201,176),[ZM(44433)]=Color3[ZM(43744)](63,201,176)}A(ZM(44792))local WM={[ZM(42662)]={},[ZM(43462)]={},[ZM(43160)]={},[ZM(44355)]={}}A(ZM(44675))local NM={[ZM(44875)]={[ZM(44501)]={},[ZM(42647)]={}},[ZM(44848)]={[ZM(44501)]={},[ZM(42647)]={}},[ZM(43112)]={},[ZM(43889)]={};[ZM(42930)]=.15,[ZM(43584)]={[ZM(44155)]=w(ZM(44155)),[ZM(43866)]=w(ZM(43866)),[ZM(43972)]=w(ZM(43972)),[ZM(42947)]=w(ZM(42947));[ZM(42791)]=w(ZM(42791));[ZM(44599)]=w(ZM(44599)),[ZM(44849)]=w(ZM(44600)),[ZM(44568)]=w(ZM(44568));[ZM(44639)]=w(ZM(44639));[ZM(43341)]=w(ZM(43341));[ZM(43959)]=w(ZM(43959));[ZM(44474)]=w(ZM(44474));[ZM(42958)]=w(ZM(42958)),[ZM(43144)]=w(ZM(43144)),[ZM(43826)]=w(ZM(43826));[ZM(43997)]=w(ZM(43997));[ZM(43221)]=w(ZM(43221)),[ZM(43796)]=w(ZM(43796)),[ZM(43131)]=w(ZM(43131));[ZM(42973)]=w(ZM(42973)),[ZM(44546)]=w(ZM(44546)),[ZM(44164)]=w(ZM(44164));[ZM(43650)]=w(ZM(43650));[ZM(44749)]=w(ZM(44749));[ZM(43181)]=w(ZM(43181));[ZM(43470)]=w(ZM(43470));[ZM(44812)]=w(ZM(44812));[ZM(43173)]=w(ZM(43173)),[ZM(43526)]=w(ZM(43526));[ZM(44142)]=w(ZM(44142));[ZM(43208)]=w(ZM(43208)),[ZM(43694)]=w(ZM(43694))};[ZM(43572)]={ZM(44102);ZM(43441);ZM(43512);ZM(42834);ZM(44841),ZM(43359);ZM(44155);ZM(43866),ZM(42947),ZM(43972),ZM(42791),ZM(44599);ZM(44849),ZM(44568);ZM(44639);ZM(43341),ZM(43959);ZM(44474),ZM(42958);ZM(43144),ZM(43826),ZM(43997),ZM(43221),ZM(43796),ZM(43131),ZM(42973),ZM(44546);ZM(44164),ZM(43650);ZM(43930);ZM(44209),ZM(43983),ZM(44783),ZM(44749),ZM(43181),ZM(43470),ZM(44812);ZM(43173);ZM(43526);ZM(44142),ZM(43208),ZM(43694)},[ZM(42712)]={[ZM(44251)]=ZM(44368);[ZM(42783)]=ZM(44368);[ZM(42871)]=ZM(44368),[ZM(42945)]=ZM(44368),[ZM(44471)]=ZM(44368)};[ZM(43500)]={[ZM(44746)]=true};[ZM(43565)]=z[ZM(44305)];[ZM(44901)]=10}A(ZM(44451))local PM={}local mM={}local DM={}A(ZM(44066))DM[ZM(43666)]=tick()DM[ZM(44633)]={}DM[ZM(44417)]={}DM[ZM(42762)]={}DM[ZM(44418)]={}DM[ZM(44204)]=LPH_NO_VIRTUALIZE(function(I,...)local u=DM:Instance(ZM(43606),{[ZM(43378)]=I,[ZM(44353)]=1;[ZM(43659)]=Color3[ZM(43744)]()})return u end)DM[ZM(44825)]=LPH_NO_VIRTUALIZE(function(I,...)local u={}for I,U in pairs(I)do if type(U)==ZM(43508)then u[I]=DM[ZM(44825)](U)else u[I]=U end end return u end)function DM.TweenTransparencyIns(W,I,u,U,...)U=U or.2 for I,W in ipairs(I:GetDescendants())do if W:IsA(ZM(44868))then local I={}if W:IsA(ZM(43489))or W:IsA(ZM(43139))then I[ZM(44737)]=u end if W:IsA(ZM(44108))or W:IsA(ZM(43267))then I[ZM(44877)]=u end if W[ZM(42908)]~=nil then I[ZM(42908)]=u end DM:Tween(W,TweenInfo[ZM(44272)](U,Enum[ZM(44374)][ZM(42646)],Enum[ZM(44424)][ZM(43875)]),I)end if W:IsA(ZM(43606))then DM:Tween(W,TweenInfo[ZM(44272)](U,Enum[ZM(44374)][ZM(42646)],Enum[ZM(44424)][ZM(43875)]),{[ZM(44437)]=u})end end if I:IsA(ZM(44868))then DM:Tween(I,TweenInfo[ZM(44272)](U,Enum[ZM(44374)][ZM(42646)]),{[ZM(42908)]=u})end end function DM.Tween(I,...)local u=V:Create(...)u:Play()return u end function DM.Instance(U,I,u,...)local W=Instance[ZM(44272)](I)for I,u in u do W[I]=u end return W end function DM.Tween(I,...)local u=V:Create(...)u:Play()return u end if h:FindFirstChild(ZM(44581))and h[ZM(44581)]:FindFirstChild(ZM(44597))then local I=DM[ZM(44825)](require(h[ZM(44581)][ZM(44597)]))for I,u in I do if u[ZM(44040)]==ZM(44903)then DM[ZM(44633)][I]={[ZM(43502)]=u[ZM(43502)]}end end DM[ZM(43857)]=I end A(ZM(42860))uM[ZM(44411)]=UM uM[ZM(42858)]=uM uM[ZM(43793)]=DM:Instance(ZM(42749),{[ZM(43378)]=g;[ZM(44328)]=1;[ZM(44173)]=true})uM[ZM(43140)]=DM:Instance(ZM(42749),{[ZM(43378)]=g,[ZM(44328)]=1;[ZM(44173)]=true;[ZM(43984)]=true});(LPH_NO_VIRTUALIZE(function(...)function uM.Connection(W,I,u,U,...)local N=u:Connect(U)W[ZM(42877)][I]={[ZM(44641)]=u,[ZM(43822)]=U,[ZM(43570)]=N}return W[ZM(42877)][I]end function uM.Disconnect(u,I,...)local U=u[ZM(42877)][I]if U then U[ZM(43570)]:Disconnect()u[ZM(42877)][I]=nil end end function uM.DisconnectAll(I,...)for I,u in pairs(I[ZM(42877)])do u[ZM(43570)]:Disconnect()end table[ZM(42998)](I[ZM(42877)])end function uM.DoCallback(U,I,u,...)local W,N=pcall(I,u)if not W and N then return ZM(43862),N end return W end function uM.FormatValue(U,I,u,...)if I<1 then return string[ZM(43715)](ZM(43814),u)else return tostring(math[ZM(44193)](u+.5))end end function uM.GetInputName(u,I,...)if I and I[ZM(42843)]then if I[ZM(42843)]==Enum[ZM(42843)][ZM(42717)]then return I[ZM(42852)][ZM(43502)]elseif I[ZM(42843)][ZM(43502)]:match(ZM(44113))then return I[ZM(42843)][ZM(43502)]else return ZM(43588)end end end function uM.FormatKeyName(u,I,...)if uM[ZM(44117)][I]then return uM[ZM(44117)][I]elseif#I>4 then return I:sub(1,4)end return I end function uM.GetConfig(I,...)local u=I[ZM(43889)]local U={}for I,u in u do local W=u[ZM(44156)]local N=u[ZM(43663)]if W==ZM(44606)then U[I]=N end if W==ZM(42831)then U[I]={[1]={N[1][ZM(42874)];N[1][ZM(44545)],N[1][ZM(42859)]},[2]=N[2]}end if W==ZM(43272)then U[I]=N end if W==ZM(44249)then U[I]=N end if W==ZM(44356)then U[I]=N end if W==ZM(44304)then if u[ZM(42711)]then local W={[ZM(44040)]=u[ZM(42711)][ZM(44040)];[ZM(43663)]=u[ZM(42711)][ZM(43663)][ZM(43502)]}U[I]=W end end end return Z:JSONEncode(U)end function uM.SaveConfig(u,I,...)local U=uM:GetConfig()writefile(a..(ZM(44019)..(I..ZM(42698))),U)end function uM.LoadConfig(u,I,...)local U=a..(ZM(44019)..(I..ZM(42698)))if not isfile(U)then uM:Notify(ZM(43557)..(U..ZM(44647)),4,Color3[ZM(43744)](255,0,0))return end local W=readfile(U)local N=Z:JSONDecode(W)for I,u in N do local U=uM[ZM(43889)][I]if not U then continue end if U[ZM(44156)]==ZM(42831)then local I=Color3[ZM(44272)](u[1][1],u[1][2],u[1][3])task[ZM(43766)](function(...)U:Set({I;u[2]})end)continue end if U[ZM(44156)]==ZM(44304)then task[ZM(43766)](function(...)local I=u local W={}if I[ZM(44040)]==ZM(44468)then W[ZM(42843)]=Enum[ZM(42843)][I[ZM(43663)]]elseif I[ZM(44040)]==ZM(42852)then W[ZM(42843)]=Enum[ZM(42843)][ZM(42717)]W[ZM(42852)]=Enum[ZM(42852)][I[ZM(43663)]]else W[ZM(42843)]=Enum[ZM(42843)][I[ZM(43663)]]end U:SetKey(W)end)continue end task[ZM(43766)](function(...)U:Set(u)end)end end end))();(LPH_NO_VIRTUALIZE(function(...)function uM.CreateHotkeysPanel(I,...)local u={[ZM(43370)]=0}local U={}u[ZM(42858)]=u U[ZM(43211)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,20,.5,0),[ZM(44462)]=UDim2[ZM(44272)](0,215,0,30),[ZM(43502)]=ZM(43211);[ZM(43378)]=uM[ZM(43140)],[ZM(42723)]=false})U[ZM(42687)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43502)]=ZM(42687),[ZM(43378)]=U[ZM(43211)]})U[ZM(43339)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43502)]=ZM(43339),[ZM(43378)]=U[ZM(43211)]})U[ZM(43633)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](10,16,14),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,25),[ZM(43502)]=ZM(43633),[ZM(43378)]=U[ZM(43211)]})U[ZM(43895)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(43895),[ZM(43378)]=U[ZM(43633)]})U[ZM(44078)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43502)]=ZM(44078);[ZM(43378)]=U[ZM(43633)]})U[ZM(44292)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=ZM(43211);[ZM(43559)]=Color3[ZM(43744)](255,255,255);[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)],[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,35,0,0),[ZM(44462)]=UDim2[ZM(44272)](1,-35,1,0);[ZM(43502)]=ZM(44292);[ZM(43378)]=U[ZM(43633)]})U[ZM(42686)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43753)],[ZM(43618)]=Vector2[ZM(44272)](0,.5),[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,5,.5,0),[ZM(44462)]=UDim2[ZM(44272)](.0116279069,20,1,-5);[ZM(43502)]=ZM(42686);[ZM(43378)]=U[ZM(43633)]})U[ZM(43389)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,10,0,30);[ZM(44462)]=UDim2[ZM(44272)](1,-10,0,33),[ZM(43502)]=ZM(43389);[ZM(43378)]=U[ZM(43211)]})U[ZM(44403)]=DM:Instance(ZM(44403),{[ZM(44564)]=UDim[ZM(44272)](0,5),[ZM(43599)]=Enum[ZM(43599)][ZM(42682)],[ZM(43378)]=U[ZM(43389)]})U[ZM(44236)]=DM:Instance(ZM(43015),{[ZM(42908)]=1;[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0);[ZM(42648)]=0;[ZM(43502)]=ZM(44236);[ZM(43378)]=U[ZM(43211)]})U[ZM(44895)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43069)],[ZM(43867)]=Color3[ZM(43744)](0,0,0);[ZM(44830)]=Enum[ZM(44830)][ZM(43547)];[ZM(43988)]=Rect[ZM(44272)](49,49,450,450),[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(42908)]=1;[ZM(44877)]=.8;[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0),[ZM(44462)]=UDim2[ZM(44272)](1,47,1,47);[ZM(42648)]=0;[ZM(43502)]=ZM(44895);[ZM(43378)]=U[ZM(44236)]})u[ZM(43048)]=U function u.Add(W,I,u,...)W[ZM(43370)]+=1 DM:Tween(W[ZM(43048)][ZM(44895)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=W[ZM(43370)]>0 and 0 or.8})local N={}N[ZM(44120)]=DM:Instance(ZM(43015),{[ZM(42908)]=1;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,14);[ZM(43502)]=I;[ZM(43378)]=U[ZM(43389)]})N[ZM(43375)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43628)]=I,[ZM(43559)]=Color3[ZM(43744)](110,150,140),[ZM(43406)]=14,[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(42908)]=1;[ZM(44462)]=UDim2[ZM(44272)](.5,0,1,0);[ZM(44472)]=UDim2[ZM(44272)](0,0,0,0),[ZM(43502)]=ZM(43375),[ZM(43378)]=N[ZM(44120)]})N[ZM(43344)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43628)]=ZM(43352)..(tostring(u)..ZM(43596)),[ZM(43559)]=Color3[ZM(43744)](110,150,140);[ZM(43406)]=14,[ZM(44075)]=Enum[ZM(44075)][ZM(42903)],[ZM(42908)]=1,[ZM(44462)]=UDim2[ZM(44272)](.5,-5,1,0);[ZM(44472)]=UDim2[ZM(44272)](.5,-3,0,0),[ZM(43502)]=ZM(43344),[ZM(43378)]=N[ZM(44120)]})DM:Tween(W[ZM(43048)][ZM(43211)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](0,215,0,45)+UDim2[ZM(44272)](0,0,0,W[ZM(43370)]*17)})end function u.UpdateStatus(N,I,u,U,W,...)local P=N[ZM(43048)][ZM(43389)]:FindFirstChild(I)if P then if U and U~=ZM(44368)then P[ZM(43344)][ZM(43628)]=ZM(43352)..(tostring(U)..ZM(43596))end local I=u and Color3[ZM(43744)](255,255,255)or Color3[ZM(43744)](110,150,140)DM:Tween(P[ZM(43375)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=I})DM:Tween(P[ZM(43344)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=I})if W then N[ZM(43370)]-=1 P:Destroy()DM:Tween(N[ZM(43048)][ZM(43211)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](0,215,0,45)+UDim2[ZM(44272)](0,0,0,N[ZM(43370)]*17)})end else if U~=ZM(44368)then N:Add(I,U)end end DM:Tween(N[ZM(43048)][ZM(44895)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=N[ZM(43370)]>0 and 0 or.8})end return u end function uM.CreateModeratorsPanel(I,...)local u={[ZM(42695)]=0}local U={}u[ZM(42858)]=u U[ZM(44612)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,20,.5,200),[ZM(44462)]=UDim2[ZM(44272)](0,215,0,30);[ZM(43502)]=ZM(44612),[ZM(43378)]=uM[ZM(43140)],[ZM(42723)]=true})U[ZM(43179)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43502)]=ZM(43179);[ZM(43378)]=U[ZM(44612)]})U[ZM(43655)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43502)]=ZM(43655),[ZM(43378)]=U[ZM(44612)]})U[ZM(43732)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](10,16,14),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,25);[ZM(43502)]=ZM(43732);[ZM(43378)]=U[ZM(44612)]})U[ZM(44352)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43502)]=ZM(44352);[ZM(43378)]=U[ZM(43732)]})U[ZM(44393)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21);[ZM(43502)]=ZM(44393);[ZM(43378)]=U[ZM(43732)]})U[ZM(43654)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43628)]=ZM(44612),[ZM(43559)]=Color3[ZM(43744)](255,255,255),[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,25,0,0);[ZM(44462)]=UDim2[ZM(44272)](1,-35,1,0),[ZM(43502)]=ZM(43654);[ZM(43378)]=U[ZM(43732)]})U[ZM(43971)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43729)];[ZM(43618)]=Vector2[ZM(44272)](0,.5);[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,5,.5,0),[ZM(44462)]=UDim2[ZM(44272)](0,15,1,-10),[ZM(43502)]=ZM(43971),[ZM(43378)]=U[ZM(43732)]})U[ZM(43517)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,10,0,30);[ZM(44462)]=UDim2[ZM(44272)](1,-10,0,33);[ZM(43502)]=ZM(43517);[ZM(43378)]=U[ZM(44612)]})U[ZM(44403)]=DM:Instance(ZM(44403),{[ZM(44564)]=UDim[ZM(44272)](0,5),[ZM(43599)]=Enum[ZM(43599)][ZM(42682)];[ZM(43378)]=U[ZM(43517)]})U[ZM(43398)]=DM:Instance(ZM(43015),{[ZM(42908)]=1;[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0);[ZM(42648)]=0;[ZM(43502)]=ZM(43398),[ZM(43378)]=U[ZM(44612)]})U[ZM(42668)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43069)];[ZM(43867)]=Color3[ZM(43744)](0,0,0),[ZM(44830)]=Enum[ZM(44830)][ZM(43547)],[ZM(43988)]=Rect[ZM(44272)](49,49,450,450);[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(42908)]=1,[ZM(44877)]=.8,[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0),[ZM(44462)]=UDim2[ZM(44272)](1,47,1,47);[ZM(42648)]=0;[ZM(43502)]=ZM(42668);[ZM(43378)]=U[ZM(43398)]})u[ZM(43048)]=U function u.Add(W,I,u,...)W[ZM(42695)]+=1 DM:Tween(W[ZM(43048)][ZM(42668)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=W[ZM(42695)]>0 and 0 or.8})local N={}N[ZM(44120)]=DM:Instance(ZM(43015),{[ZM(42908)]=1,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,14);[ZM(43502)]=I,[ZM(43378)]=U[ZM(43517)]})N[ZM(43375)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=I,[ZM(43559)]=Color3[ZM(43744)](255,255,255);[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)],[ZM(42908)]=1,[ZM(44462)]=UDim2[ZM(44272)](.5,0,1,0),[ZM(44472)]=UDim2[ZM(44272)](0,0,0,0);[ZM(43502)]=ZM(43375);[ZM(43378)]=N[ZM(44120)]})N[ZM(43965)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43628)]=u;[ZM(43559)]=Color3[ZM(43744)](255,255,255);[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(42903)];[ZM(42908)]=1,[ZM(44462)]=UDim2[ZM(44272)](.5,-5,1,0);[ZM(44472)]=UDim2[ZM(44272)](.5,-3,0,0);[ZM(43502)]=ZM(43965);[ZM(43378)]=N[ZM(44120)]})DM:Tween(W[ZM(43048)][ZM(44612)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](0,215,0,30)+UDim2[ZM(44272)](0,0,0,W[ZM(42695)]*19)})end function u.UpdateModerator(W,I,u,U,...)local N=W[ZM(43048)][ZM(43517)]:FindFirstChild(I)if N then if u then N[ZM(43965)][ZM(43628)]=u end if U then W[ZM(42695)]-=1 N:Destroy()DM:Tween(W[ZM(43048)][ZM(44612)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](0,215,0,30)+UDim2[ZM(44272)](0,0,0,W[ZM(42695)]*19)})end else if I and u then W:Add(I,u)end end DM:Tween(W[ZM(43048)][ZM(42668)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=W[ZM(42695)]>0 and 0 or.8})end function u.ClearAll(I,...)for I,u in ipairs(I[ZM(43048)][ZM(43517)]:GetChildren())do if u:IsA(ZM(43489))then u:Destroy()end end I[ZM(42695)]=0 DM:Tween(I[ZM(43048)][ZM(44612)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](0,215,0,45)})DM:Tween(I[ZM(43048)][ZM(42668)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=.8})end return u end function uM.CreateArmorPanel(I,...)local u={[ZM(42695)]=0}local U={}u[ZM(42858)]=u U[ZM(44903)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](1,-245,.5,0),[ZM(44462)]=UDim2[ZM(44272)](0,215,0,30);[ZM(43502)]=ZM(44903);[ZM(43378)]=uM[ZM(43140)];[ZM(42723)]=true})U[ZM(43328)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(43328);[ZM(43378)]=U[ZM(44903)]})U[ZM(44053)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43502)]=ZM(44053),[ZM(43378)]=U[ZM(44903)]})U[ZM(44681)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](10,16,14),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,25),[ZM(43502)]=ZM(44681);[ZM(43378)]=U[ZM(44903)]})U[ZM(43567)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(43567);[ZM(43378)]=U[ZM(44681)]})U[ZM(43853)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43502)]=ZM(43853);[ZM(43378)]=U[ZM(44681)]})U[ZM(42977)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43628)]=ZM(43322);[ZM(43559)]=Color3[ZM(43744)](255,255,255),[ZM(43406)]=14,[ZM(44075)]=Enum[ZM(44075)][ZM(44105)],[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,25,0,0);[ZM(44462)]=UDim2[ZM(44272)](1,-35,1,0);[ZM(43502)]=ZM(42977);[ZM(43378)]=U[ZM(44681)]})U[ZM(43031)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43031)],[ZM(43618)]=Vector2[ZM(44272)](0,.5),[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,5,.5,0),[ZM(44462)]=UDim2[ZM(44272)](0,15,1,-10),[ZM(43502)]=ZM(43031),[ZM(43378)]=U[ZM(44681)]})U[ZM(43394)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,10,0,30),[ZM(44462)]=UDim2[ZM(44272)](1,-10,0,33),[ZM(43502)]=ZM(43394),[ZM(43378)]=U[ZM(44903)],[ZM(42642)]=Enum[ZM(42642)][ZM(42838)],[ZM(44836)]=true})U[ZM(44403)]=DM:Instance(ZM(44403),{[ZM(44564)]=UDim[ZM(44272)](0,5);[ZM(43599)]=Enum[ZM(43599)][ZM(42682)],[ZM(43378)]=U[ZM(43394)]})U[ZM(43685)]=DM:Instance(ZM(43015),{[ZM(42908)]=1,[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0),[ZM(42648)]=0,[ZM(43502)]=ZM(43685);[ZM(43378)]=U[ZM(44903)]})U[ZM(44645)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43069)];[ZM(43867)]=Color3[ZM(43744)](0,0,0);[ZM(44830)]=Enum[ZM(44830)][ZM(43547)],[ZM(43988)]=Rect[ZM(44272)](49,49,450,450),[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(42908)]=1;[ZM(44877)]=.8;[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0);[ZM(44462)]=UDim2[ZM(44272)](1,47,1,47);[ZM(42648)]=0,[ZM(43502)]=ZM(44645),[ZM(43378)]=U[ZM(43685)]})u[ZM(43048)]=U function u.Add(W,I,u,...)if not W[ZM(43048)][ZM(43394)]:FindFirstChild(I..(ZM(44252)..u))then W[ZM(42695)]+=1 DM:Tween(W[ZM(43048)][ZM(44645)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=W[ZM(42695)]>0 and 0 or.8})local N={}N[ZM(44120)]=DM:Instance(ZM(43015),{[ZM(42908)]=1,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,14);[ZM(43502)]=I..(ZM(44252)..u);[ZM(43378)]=U[ZM(43394)]})N[ZM(44120)]:SetAttribute(ZM(43037),true)N[ZM(43798)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=I;[ZM(43559)]=Color3[ZM(43744)](255,255,255),[ZM(43406)]=14,[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(42908)]=1;[ZM(44462)]=UDim2[ZM(44272)](.5,0,1,0);[ZM(44472)]=UDim2[ZM(44272)](0,0,0,0);[ZM(43502)]=ZM(43798);[ZM(43378)]=N[ZM(44120)]})N[ZM(43726)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43628)]=u;[ZM(43559)]=Color3[ZM(43744)](255,255,255);[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(42903)];[ZM(42908)]=1;[ZM(44462)]=UDim2[ZM(44272)](.5,-5,1,0);[ZM(44472)]=UDim2[ZM(44272)](.5,-3,0,0);[ZM(43502)]=ZM(43726),[ZM(43378)]=N[ZM(44120)]})DM:Tween(W[ZM(43048)][ZM(44903)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](0,215,0,30)+UDim2[ZM(44272)](0,0,0,W[ZM(42695)]*19)})end end function u.UpdateArmor(W,I,u,U,...)local N=W[ZM(43048)][ZM(43394)]:FindFirstChild(I)if N then if u then N[ZM(43726)][ZM(43628)]=u end if U then W[ZM(42695)]-=1 N:Destroy()DM:Tween(W[ZM(43048)][ZM(44903)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](0,215,0,30)+UDim2[ZM(44272)](0,0,0,W[ZM(42695)]*19)})end else if I and u then W:Add(I,u)end end DM:Tween(W[ZM(43048)][ZM(44645)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=W[ZM(42695)]>0 and 0 or.8})end function u.ClearAll(I,...)for I,u in ipairs(I[ZM(43048)][ZM(43394)]:GetChildren())do if u:IsA(ZM(43015))and u:GetAttribute(ZM(43037))then u:Destroy()end end I[ZM(42695)]=0 DM:Tween(I[ZM(43048)][ZM(44903)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](0,215,0,45)})DM:Tween(I[ZM(43048)][ZM(44645)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=.8})end return u end function uM.CreateWatermark(u,I,...)local U={}U[ZM(42772)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](10,16,14),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,400,0,20);[ZM(44462)]=UDim2[ZM(44272)](0,35,0,24);[ZM(43502)]=ZM(42772);[ZM(43378)]=uM[ZM(43140)]})U[ZM(43496)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(43496),[ZM(43378)]=U[ZM(42772)]})U[ZM(44909)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43502)]=ZM(44909);[ZM(43378)]=U[ZM(42772)]})U[ZM(42714)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(44554)];[ZM(43867)]=uM[ZM(44411)][ZM(44754)],[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,13,.5,0);[ZM(44462)]=UDim2[ZM(44272)](0,25,0,25);[ZM(43502)]=ZM(42714);[ZM(43378)]=U[ZM(42772)]})U[ZM(43407)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43628)]=I,[ZM(43559)]=Color3[ZM(43744)](255,255,255),[ZM(43406)]=14;[ZM(42642)]=Enum[ZM(42642)][ZM(42847)];[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,25,0,0);[ZM(44462)]=UDim2[ZM(44272)](0,0,1,0),[ZM(43502)]=ZM(43407);[ZM(43378)]=U[ZM(42772)]})U[ZM(43504)]=DM:Instance(ZM(43015),{[ZM(42908)]=1;[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0);[ZM(42648)]=0;[ZM(43502)]=ZM(43504),[ZM(43378)]=U[ZM(42772)]})U[ZM(43938)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43069)];[ZM(43867)]=Color3[ZM(43744)](0,0,0),[ZM(44877)]=.58999997377396;[ZM(44830)]=Enum[ZM(44830)][ZM(43547)],[ZM(43988)]=Rect[ZM(44272)](49,49,450,450),[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(42908)]=1,[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](.505405426,0,.501500428,0),[ZM(44462)]=UDim2[ZM(44272)](.935135126,47,.5,47),[ZM(42648)]=0,[ZM(43502)]=ZM(43938);[ZM(43378)]=U[ZM(43504)]})function U.SetText(u,I,...)local W=Instance[ZM(44272)](ZM(43489))W[ZM(43628)]=I W[ZM(43406)]=14 W[ZM(43565)]=Enum[ZM(43565)][ZM(43388)]W[ZM(44472)]=UDim2[ZM(44272)](-5,0,0,0)W[ZM(42723)]=true W[ZM(43378)]=uM[ZM(43140)]task[ZM(43860)](.3)U[ZM(43407)][ZM(43628)]=ZM(44368)task[ZM(43766)](function(...)for u=1,#I,1 do U[ZM(43407)][ZM(43628)]=string[ZM(44405)](I,1,u)task[ZM(43860)](.03)end end)local N=W[ZM(42761)]DM:Tween(U[ZM(42772)],TweenInfo[ZM(44272)](.3,Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](0,35+N[ZM(42847)],0,U[ZM(42772)][ZM(44462)][ZM(42838)][ZM(44071)])})end return U end function uM.CreateLoader(u,I,...)local U={[ZM(44580)]=I[ZM(44580)]}U[ZM(42858)]=U local W={}local N=ZM(44368)local P=ZM(44368)do W[ZM(43856)]=DM:Instance(ZM(42749),{[ZM(44173)]=true,[ZM(43502)]=ZM(43856);[ZM(43378)]=g})W[ZM(43516)]=DM:Instance(ZM(43139),{[ZM(43565)]=Enum[ZM(43565)][ZM(44892)];[ZM(43628)]=ZM(44368),[ZM(43559)]=Color3[ZM(43744)](0,0,0),[ZM(43406)]=14;[ZM(43949)]=false,[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,0,2,0);[ZM(44462)]=UDim2[ZM(44272)](0,400,0,329);[ZM(43502)]=ZM(43516),[ZM(43378)]=W[ZM(43856)]})W[ZM(44195)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(44195);[ZM(43378)]=W[ZM(43516)]})W[ZM(43543)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21);[ZM(43502)]=ZM(43543),[ZM(43378)]=W[ZM(43516)]})W[ZM(43413)]=DM:Instance(ZM(43015),{[ZM(42908)]=1,[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0),[ZM(43502)]=ZM(43413);[ZM(43378)]=W[ZM(43516)]})W[ZM(44291)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43069)];[ZM(43867)]=Color3[ZM(43744)](0,0,0),[ZM(44877)]=.12,[ZM(44830)]=Enum[ZM(44830)][ZM(43547)];[ZM(43988)]=Rect[ZM(44272)](49,49,450,450);[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(42908)]=1,[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0);[ZM(44462)]=UDim2[ZM(44272)](1,47,1,47),[ZM(42648)]=0,[ZM(43502)]=ZM(44291);[ZM(43378)]=W[ZM(43413)]})W[ZM(43614)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](10,16,14),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,30),[ZM(43502)]=ZM(43614);[ZM(43378)]=W[ZM(43516)]})W[ZM(43785)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(43785);[ZM(43378)]=W[ZM(43614)]})W[ZM(43546)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](15,24,21);[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,0,1,0),[ZM(44462)]=UDim2[ZM(44272)](1,0,0,1);[ZM(43502)]=ZM(43546),[ZM(43378)]=W[ZM(43614)]})W[ZM(44851)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(44554)],[ZM(43618)]=Vector2[ZM(44272)](0,.5),[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1;[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,3,.5,0);[ZM(44462)]=UDim2[ZM(44272)](0,25,0,25);[ZM(43502)]=ZM(44851),[ZM(43378)]=W[ZM(43614)]})W[ZM(42655)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(44666)],[ZM(43628)]=ZM(43133);[ZM(43559)]=Color3[ZM(43744)](255,255,255),[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(42908)]=1,[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,30,0,0);[ZM(44462)]=UDim2[ZM(44272)](0,200,1,0);[ZM(43502)]=ZM(42655),[ZM(43378)]=W[ZM(43614)]})W[ZM(43219)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1,[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,20,0,50),[ZM(44462)]=UDim2[ZM(44272)](1,-40,1,-70);[ZM(43502)]=ZM(43219);[ZM(43378)]=W[ZM(43516)]})W[ZM(44380)]=W[ZM(43219)]:Clone()W[ZM(44380)][ZM(43378)]=W[ZM(43516)]W[ZM(44380)][ZM(44462)]=UDim2[ZM(44272)](1,0,1,-30)W[ZM(44380)][ZM(43618)]=Vector2[ZM(44272)](0,0)W[ZM(44380)][ZM(44472)]=UDim2[ZM(44272)](0,0,0,30)W[ZM(44380)][ZM(43502)]=ZM(44380)W[ZM(44380)][ZM(42648)]=10 W[ZM(44380)][ZM(43749)]=Color3[ZM(43744)](7,10,9)W[ZM(43885)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,-5,0,0);[ZM(44462)]=UDim2[ZM(44272)](0,175,1,0),[ZM(43502)]=ZM(43885),[ZM(43378)]=W[ZM(43219)]})W[ZM(43690)]=DM:Instance(ZM(44403),{[ZM(44564)]=UDim[ZM(44272)](0,10);[ZM(43599)]=Enum[ZM(43599)][ZM(42682)];[ZM(43502)]=ZM(43690);[ZM(43378)]=W[ZM(43885)]})W[ZM(44363)]=DM:Instance(ZM(43015),{[ZM(42908)]=1;[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,191,0,0),[ZM(44462)]=UDim2[ZM(44272)](0,175,1,0);[ZM(43502)]=ZM(44016),[ZM(43378)]=W[ZM(43219)]})W[ZM(44661)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](10,16,14);[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,125);[ZM(43502)]=ZM(44661);[ZM(43378)]=W[ZM(44363)]})W[ZM(44743)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43378)]=W[ZM(44661)]})W[ZM(44674)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43378)]=W[ZM(44661)]})W[ZM(42713)]=DM:Instance(ZM(44108),{[ZM(44220)]=ZM(44368);[ZM(44877)]=.4;[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(42908)]=1;[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0),[ZM(44462)]=UDim2[ZM(44272)](1,-10,1,-10),[ZM(43502)]=ZM(44004);[ZM(43378)]=W[ZM(44661)]})W[ZM(43532)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43378)]=W[ZM(42713)]})W[ZM(43544)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21);[ZM(43378)]=W[ZM(42713)]})W[ZM(42933)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](10,16,14);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,0,0,135);[ZM(44462)]=UDim2[ZM(44272)](1,0,0,36),[ZM(43502)]=ZM(42933),[ZM(43378)]=W[ZM(44363)]})W[ZM(43799)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43378)]=W[ZM(42933)]})W[ZM(43478)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43378)]=W[ZM(42933)]})W[ZM(43921)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(44666)];[ZM(43628)]=ZM(44138),[ZM(43559)]=Color3[ZM(43744)](255,255,255),[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)],[ZM(42908)]=1;[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,5,0,16);[ZM(44462)]=UDim2[ZM(44272)](1,-20,0,20);[ZM(43502)]=ZM(43921);[ZM(43378)]=W[ZM(42933)]})W[ZM(42904)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43628)]=ZM(44593),[ZM(43559)]=Color3[ZM(43744)](110,150,140),[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(42908)]=1;[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,5,0,1),[ZM(44462)]=UDim2[ZM(44272)](1,-20,0,20),[ZM(43502)]=ZM(42904),[ZM(43378)]=W[ZM(42933)]})W[ZM(44580)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](10,16,14);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,0,0,180),[ZM(44462)]=UDim2[ZM(44272)](1,0,0,36),[ZM(43502)]=ZM(44580);[ZM(43378)]=W[ZM(44363)]})W[ZM(42926)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43378)]=W[ZM(44580)]})W[ZM(43466)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21);[ZM(43378)]=W[ZM(44580)]})W[ZM(43050)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(44666)];[ZM(43628)]=ZM(43403),[ZM(43559)]=Color3[ZM(43744)](255,255,255);[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(42908)]=1,[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,5,0,16),[ZM(44462)]=UDim2[ZM(44272)](1,-20,0,20);[ZM(43502)]=ZM(43050);[ZM(43378)]=W[ZM(44580)]})W[ZM(42776)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=U[ZM(44580)],[ZM(43559)]=Color3[ZM(43744)](110,150,140),[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(42908)]=1,[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,5,0,1),[ZM(44462)]=UDim2[ZM(44272)](1,-20,0,20),[ZM(43502)]=ZM(42776);[ZM(43378)]=W[ZM(44580)];[ZM(43628)]=ZM(44029)})W[ZM(44620)]=DM:Instance(ZM(43139),{[ZM(43565)]=Enum[ZM(43565)][ZM(44666)];[ZM(43628)]=ZM(43317);[ZM(43559)]=Color3[ZM(43744)](255,255,255),[ZM(43406)]=14;[ZM(43949)]=false,[ZM(43749)]=Color3[ZM(43744)](10,16,14),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,0,0,227),[ZM(44462)]=UDim2[ZM(44272)](1,0,0,40);[ZM(43502)]=ZM(44620);[ZM(43378)]=W[ZM(44363)]})W[ZM(43238)]=DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)];[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43378)]=W[ZM(44620)]})W[ZM(43810)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43378)]=W[ZM(44620)]})task[ZM(43860)](.15)DM:Tween(W[ZM(43516)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0)})uM:Connection(ZM(42710),W[ZM(44620)][ZM(44275)],function(...)task[ZM(43766)](function(...)DM:Tween(W[ZM(43238)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=uM[ZM(44411)][ZM(44754)]})DM:Tween(W[ZM(44620)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=uM[ZM(44411)][ZM(44754)]})task[ZM(43860)](.2)DM:Tween(W[ZM(44620)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=Color3[ZM(43744)](10,16,14)})end)U:Launch(N,P)end)uM:Connection(ZM(44553),W[ZM(44620)][ZM(44211)],function(...)DM:Tween(W[ZM(43238)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=uM[ZM(44411)][ZM(44754)]})end)uM:Connection(ZM(43910),W[ZM(44620)][ZM(42664)],function(...)DM:Tween(W[ZM(43238)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=Color3[ZM(43744)](15,24,21)})end)end local m function U.NewGame(D,I,u,U,...)local r={}r[ZM(43768)]=DM:Instance(ZM(43139),{[ZM(43565)]=Enum[ZM(43565)][ZM(44892)];[ZM(43628)]=ZM(44368);[ZM(43559)]=Color3[ZM(43744)](0,0,0),[ZM(43406)]=14;[ZM(43949)]=false;[ZM(43749)]=Color3[ZM(43744)](10,16,14),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.05,0,.00619195,0);[ZM(44462)]=UDim2[ZM(44272)](1,0,.0247678,50);[ZM(43502)]=ZM(43768),[ZM(43378)]=W[ZM(43885)]})r[ZM(44764)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43502)]=ZM(44764),[ZM(43378)]=r[ZM(43768)]})r[ZM(43126)]=DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)];[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43502)]=ZM(43126);[ZM(43378)]=r[ZM(43768)]})r[ZM(44362)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=I..(ZM(42808)..u);[ZM(43559)]=Color3[ZM(43744)](255,255,255),[ZM(43406)]=14,[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(42908)]=1,[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,8,0,36);[ZM(44462)]=UDim2[ZM(44272)](1,-10,0,10);[ZM(42648)]=2,[ZM(43502)]=ZM(44362);[ZM(43378)]=r[ZM(43768)]})r[ZM(44004)]=DM:Instance(ZM(44108),{[ZM(44220)]=U,[ZM(42908)]=1;[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,8,0,5),[ZM(44462)]=UDim2[ZM(44272)](0,20,0,20),[ZM(42648)]=2,[ZM(43502)]=ZM(44004);[ZM(43378)]=r[ZM(43768)]})r[ZM(43647)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43378)]=r[ZM(44004)]})r[ZM(44016)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](41,255,130),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,35,0,10);[ZM(44462)]=UDim2[ZM(44272)](0,10,0,10),[ZM(43502)]=ZM(44016);[ZM(43378)]=r[ZM(43768)]})r[ZM(43701)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43378)]=r[ZM(44016)]})uM:Connection(I..(u..ZM(43158)),r[ZM(43768)][ZM(44275)],function(...)m=r[ZM(43768)]N=I P=u for I,u in W[ZM(43885)]:GetChildren()do if u[ZM(43502)]==ZM(43768)then local I=u:FindFirstChild(ZM(43126))DM:Tween(u,TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=Color3[ZM(43744)](10,16,14)})DM:Tween(I,TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=Color3[ZM(43744)](15,24,21)})end end task[ZM(43766)](function(...)DM:Tween(r[ZM(43126)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=uM[ZM(44411)][ZM(44754)]})DM:Tween(r[ZM(43768)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=uM[ZM(44411)][ZM(44754)]})task[ZM(43860)](.2)DM:Tween(r[ZM(43768)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=Color3[ZM(43744)](10,16,14)})end)task[ZM(43766)](function(...)DM:Tween(W[ZM(42713)],TweenInfo[ZM(44272)](.1,Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=1})task[ZM(43860)](.15)W[ZM(42713)][ZM(44220)]=U DM:Tween(W[ZM(42713)],TweenInfo[ZM(44272)](.1,Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=.4})end)end)uM:Connection(I..(u..ZM(43402)),r[ZM(43768)][ZM(44211)],function(...)DM:Tween(r[ZM(43126)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=uM[ZM(44411)][ZM(44754)]})end)uM:Connection(I..(u..ZM(44550)),r[ZM(43768)][ZM(42664)],function(...)if m~=r[ZM(43768)]then DM:Tween(r[ZM(43126)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=Color3[ZM(43744)](15,24,21)})end end)end function U.SetProgress(u,I,...)DM:Tween(W[ZM(44881)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](I/100,0,1,0)})W[ZM(42857)][ZM(43628)]=tostring(math[ZM(44193)](I))..ZM(42899)end function U.SetStage(u,I,...)W[ZM(42673)][ZM(43628)]=ZM(42881)..I end function U.Launch(N,I,u,...)e=u~=ZM(43340)task[ZM(43860)](.2)local P=DM:Tween(W[ZM(44380)],TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(42646)]),{[ZM(42908)]=0})task[ZM(43766)](function(...)task[ZM(43860)](.15)DM:Tween(W[ZM(43516)],TweenInfo[ZM(44272)](.3,Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](0,400,0,200)})end)P[ZM(44259)]:Wait()for I,u in W[ZM(43219)]:GetChildren()do u:Destroy()end task[ZM(43860)](.3)do W[ZM(42978)]=DM:Instance(ZM(43015),{[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(43749)]=Color3[ZM(43744)](10,16,14),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,20);[ZM(44462)]=UDim2[ZM(44272)](0,200,0,20),[ZM(43502)]=ZM(42978),[ZM(43378)]=W[ZM(43516)]})W[ZM(44182)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43502)]=ZM(44182),[ZM(43378)]=W[ZM(42978)]})W[ZM(44320)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43502)]=ZM(44320),[ZM(43378)]=W[ZM(42978)]})W[ZM(44881)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](63,201,176);[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](0,0,1,0),[ZM(43502)]=ZM(44881);[ZM(43378)]=W[ZM(42978)]})W[ZM(44544)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(44544);[ZM(43378)]=W[ZM(44881)]})W[ZM(42857)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(44666)];[ZM(43628)]=ZM(44368);[ZM(43559)]=Color3[ZM(43744)](255,255,255),[ZM(43406)]=14;[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0),[ZM(43502)]=ZM(42857),[ZM(43378)]=W[ZM(42978)]})W[ZM(43298)]=DM:Instance(ZM(43606),{[ZM(44353)]=.9,[ZM(43502)]=ZM(43298),[ZM(43378)]=W[ZM(42857)]})W[ZM(42673)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(44666)];[ZM(43628)]=ZM(44086),[ZM(43559)]=Color3[ZM(43744)](255,255,255),[ZM(43406)]=14;[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,0,-1,-5);[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0),[ZM(43502)]=ZM(42673);[ZM(43378)]=W[ZM(42978)]})W[ZM(44851)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(44554)],[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,-45);[ZM(44462)]=UDim2[ZM(44272)](0,25,0,25);[ZM(43502)]=ZM(44851);[ZM(43378)]=W[ZM(42978)]})end i=true U[ZM(43637)]=true DM:Tween(W[ZM(44380)],TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(42646)]),{[ZM(42908)]=1})task[ZM(43766)](function(...)while W[ZM(42673)]do task[ZM(43860)]()if W[ZM(42673)]:GetAttribute(ZM(43979))then break end W[ZM(42673)][ZM(44737)]=math[ZM(43688)](tick()*3)+.5 end end)end U[ZM(43048)]=W return U end function uM.Window(u,I,...)local U={[ZM(43502)]=I[ZM(43502)];[ZM(43384)]={},[ZM(42748)]={};[ZM(43048)]={},[ZM(44891)]=I[ZM(44891)],[ZM(43443)]=true,[ZM(42806)]=true}uM[ZM(42806)]=true U[ZM(43844)]=u:CreateArmorPanel()U[ZM(42701)]=u:CreateModeratorsPanel()U[ZM(43211)]=u:CreateHotkeysPanel()U[ZM(42858)]=U local W={}do W[ZM(44880)]=DM:Instance(ZM(42749),{[ZM(44173)]=true,[ZM(43756)]=Enum[ZM(43756)][ZM(43029)];[ZM(43502)]=ZM(44880),[ZM(43378)]=g;[ZM(44328)]=3})W[ZM(43494)]=DM:Instance(ZM(43139),{[ZM(43565)]=Enum[ZM(43565)][ZM(44892)],[ZM(43628)]=ZM(44368);[ZM(43559)]=Color3[ZM(43744)](0,0,0);[ZM(43406)]=14;[ZM(43949)]=false,[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](.5,0,3,0),[ZM(44462)]=UDim2[ZM(44272)](0,650,0,470);[ZM(43502)]=ZM(43494),[ZM(43378)]=W[ZM(44880)]})W[ZM(44234)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(44234);[ZM(43378)]=W[ZM(43494)]})W[ZM(43257)]=DM:Instance(ZM(43015),{[ZM(44472)]=UDim2[ZM(44272)](1,0,1,0),[ZM(43618)]=Vector2[ZM(44272)](1,1),[ZM(44462)]=UDim2[ZM(44272)](0,200,1,0),[ZM(42908)]=1;[ZM(43817)]=0,[ZM(43502)]=ZM(43793);[ZM(43378)]=W[ZM(43494)]})W[ZM(43446)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](10,16,14);[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](0,50,1,0);[ZM(43502)]=ZM(43446);[ZM(43378)]=W[ZM(43494)]})W[ZM(43784)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(43784),[ZM(43378)]=W[ZM(43446)]})W[ZM(43210)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](10,16,14);[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](1,-2,0,0);[ZM(44462)]=UDim2[ZM(44272)](0,3,1,0),[ZM(43502)]=ZM(43210);[ZM(43378)]=W[ZM(43446)]})W[ZM(44104)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](15,24,21),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](1,0,0,0);[ZM(44462)]=UDim2[ZM(44272)](0,1,1,0);[ZM(43502)]=ZM(44104);[ZM(43378)]=W[ZM(43210)]})W[ZM(42974)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,50);[ZM(43502)]=ZM(42974),[ZM(43378)]=W[ZM(43446)]})W[ZM(42873)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(44554)];[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0),[ZM(44462)]=UDim2[ZM(44272)](1,-10,1,-10),[ZM(43502)]=ZM(42873),[ZM(43378)]=W[ZM(42974)]})W[ZM(43256)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,0,0,50);[ZM(44462)]=UDim2[ZM(44272)](1,0,1,-106);[ZM(43502)]=ZM(43256),[ZM(43378)]=W[ZM(43446)]})W[ZM(43503)]=DM:Instance(ZM(43776),{[ZM(43945)]=Enum[ZM(42642)][ZM(42838)],[ZM(43874)]=UDim2[ZM(44272)](1,0,1,0),[ZM(42770)]=Color3[ZM(43744)](0,0,0);[ZM(42727)]=1;[ZM(44192)]=0,[ZM(44532)]=true,[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,0,0,-3);[ZM(44462)]=UDim2[ZM(44272)](1,0,1,3),[ZM(43502)]=ZM(43503);[ZM(43378)]=W[ZM(43256)]})W[ZM(43353)]=DM:Instance(ZM(44403),{[ZM(44564)]=UDim[ZM(44272)](0,13);[ZM(43599)]=Enum[ZM(43599)][ZM(42682)],[ZM(43502)]=ZM(43353),[ZM(43378)]=W[ZM(43503)]})W[ZM(44797)]=DM:Instance(ZM(44797),{[ZM(43252)]=UDim[ZM(44272)](0,8),[ZM(44596)]=UDim[ZM(44272)](0,1);[ZM(43378)]=W[ZM(43503)]})W[ZM(43692)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,0,0,-10),[ZM(44462)]=UDim2[ZM(44272)](1,0,0,20);[ZM(43502)]=ZM(43692),[ZM(43378)]=W[ZM(43256)]})W[ZM(44183)]=DM:Instance(ZM(43369),{[ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,Color3[ZM(43744)](10,16,14)),ColorSequenceKeypoint[ZM(44272)](1,Color3[ZM(43744)](10,16,14))});[ZM(43320)]=90;[ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,.4),NumberSequenceKeypoint[ZM(44272)](1,1)});[ZM(43502)]=ZM(44183);[ZM(43378)]=W[ZM(43692)]})W[ZM(43499)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,0,1,-20);[ZM(44462)]=UDim2[ZM(44272)](1,0,0,20),[ZM(43502)]=ZM(43499);[ZM(43378)]=W[ZM(43256)]})W[ZM(44247)]=DM:Instance(ZM(43369),{[ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,Color3[ZM(43744)](10,16,14)),ColorSequenceKeypoint[ZM(44272)](1,Color3[ZM(43744)](10,16,14))}),[ZM(43320)]=-90,[ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,.4);NumberSequenceKeypoint[ZM(44272)](1,1)}),[ZM(43502)]=ZM(44247);[ZM(43378)]=W[ZM(43499)]})W[ZM(43806)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,0,1,-50);[ZM(44462)]=UDim2[ZM(44272)](1,0,0,50),[ZM(43502)]=ZM(43806),[ZM(43378)]=W[ZM(43446)]})W[ZM(43038)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(43038),[ZM(43378)]=W[ZM(44442)]})W[ZM(42989)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](10,16,14),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,52,0,0);[ZM(44462)]=UDim2[ZM(44272)](1,-52,0,50);[ZM(43502)]=ZM(42989);[ZM(43378)]=W[ZM(43494)],[ZM(44836)]=true})W[ZM(42845)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(42845);[ZM(43378)]=W[ZM(42989)]})W[ZM(43649)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](10,16,14);[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,0,1,-2),[ZM(44462)]=UDim2[ZM(44272)](1,0,0,3),[ZM(43502)]=ZM(43649),[ZM(43378)]=W[ZM(42989)]})W[ZM(43150)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](15,24,21);[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,1),[ZM(43502)]=ZM(43150),[ZM(43378)]=W[ZM(43649)]})W[ZM(43199)]=DM:Instance(ZM(43015),{[ZM(43618)]=Vector2[ZM(44272)](0,.5),[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,15,.5,0),[ZM(44462)]=UDim2[ZM(44272)](1,-30,1,-30),[ZM(43502)]=ZM(43199),[ZM(43378)]=W[ZM(42989)]})W[ZM(43255)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,64,0,62),[ZM(44462)]=UDim2[ZM(44272)](0,573,0,395),[ZM(43502)]=ZM(43255);[ZM(43378)]=W[ZM(43494)]})W[ZM(43311)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](7,10,9);[ZM(42908)]=0;[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,64,0,62);[ZM(44462)]=UDim2[ZM(44272)](0,573,0,395);[ZM(43502)]=ZM(43311);[ZM(43378)]=W[ZM(43494)]})W[ZM(43049)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,0,1,-20);[ZM(44462)]=UDim2[ZM(44272)](1,0,0,20);[ZM(43502)]=ZM(43049);[ZM(43378)]=W[ZM(43255)];[ZM(42648)]=2000})W[ZM(44654)]=DM:Instance(ZM(43369),{[ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,Color3[ZM(43744)](7,10,9));ColorSequenceKeypoint[ZM(44272)](1,Color3[ZM(43744)](7,10,9))});[ZM(43320)]=-90,[ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,0),NumberSequenceKeypoint[ZM(44272)](.43,1),NumberSequenceKeypoint[ZM(44272)](1,1)}),[ZM(43502)]=ZM(44654),[ZM(43378)]=W[ZM(43049)]})W[ZM(44838)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,0,0,-2),[ZM(44462)]=UDim2[ZM(44272)](1,0,0,20);[ZM(43502)]=ZM(44838);[ZM(43378)]=W[ZM(43255)];[ZM(42648)]=2000})W[ZM(42795)]=DM:Instance(ZM(43369),{[ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,Color3[ZM(43744)](7,10,9)),ColorSequenceKeypoint[ZM(44272)](1,Color3[ZM(43744)](7,10,9))});[ZM(43320)]=90,[ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,0),NumberSequenceKeypoint[ZM(44272)](.43,1);NumberSequenceKeypoint[ZM(44272)](1,1)});[ZM(43502)]=ZM(44654),[ZM(43378)]=W[ZM(44838)]})W[ZM(44239)]=DM:Instance(ZM(43015),{[ZM(42908)]=1,[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0),[ZM(42648)]=0,[ZM(43502)]=ZM(44239);[ZM(43378)]=W[ZM(43494)]})W[ZM(44058)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43539)],[ZM(43867)]=Color3[ZM(43744)](0,0,0);[ZM(44877)]=.3,[ZM(44830)]=Enum[ZM(44830)][ZM(43547)];[ZM(43988)]=Rect[ZM(44272)](49,49,450,450),[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(42908)]=1;[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0),[ZM(44462)]=UDim2[ZM(44272)](1,47,1,47);[ZM(42648)]=0;[ZM(43502)]=ZM(44058),[ZM(43378)]=W[ZM(44239)]})end do local I=false local u=nil local N=nil W[ZM(43494)][ZM(43451)]:Connect(function(P,...)if P[ZM(42843)]==Enum[ZM(42843)][ZM(42910)]and not U[ZM(43329)]then I=true u=P[ZM(44472)]N=W[ZM(43494)][ZM(44472)]P[ZM(44475)]:Connect(function(...)if P[ZM(44372)]==Enum[ZM(44372)][ZM(44045)]then I=false end end)end end)n[ZM(44653)]:Connect(function(U,...)if I and U[ZM(42843)]==Enum[ZM(42843)][ZM(44367)]then local I=U[ZM(44472)]-u local P=UDim2[ZM(44272)](N[ZM(42847)][ZM(43209)],N[ZM(42847)][ZM(44071)]+I[ZM(42847)],N[ZM(42838)][ZM(43209)],N[ZM(42838)][ZM(44071)]+I[ZM(42838)]);(V:Create(W[ZM(43494)],TweenInfo[ZM(44272)](.25,Enum[ZM(44374)][ZM(42646)],Enum[ZM(44424)][ZM(43875)]),{[ZM(44472)]=P})):Play()end end)n[ZM(43451)]:Connect(function(I,...)if I[ZM(42852)]==Enum[ZM(42852)][ZM(43509)]and not n:GetFocusedTextBox()then U[ZM(43443)]=not U[ZM(43443)]uM[ZM(42806)]=U[ZM(43443)]U:SetVisibility(U[ZM(43443)])end end)end function U.Notify(U,I,u,...) end function U.OpenWindow(I,...)local u=I[ZM(43048)][ZM(43494)]I[ZM(43048)][ZM(44880)][ZM(43984)]=true local U=u[ZM(44472)][ZM(42847)]local W=UDim2[ZM(44272)](U[ZM(43209)],U[ZM(44071)],.5,0)if I[ZM(43237)]then I[ZM(43237)]:Cancel()I[ZM(43237)]=nil end u[ZM(44472)]=UDim2[ZM(44272)](U[ZM(43209)],U[ZM(44071)],u[ZM(44472)][ZM(42838)][ZM(43209)],u[ZM(44472)][ZM(42838)][ZM(44071)])I[ZM(43237)]=DM:Tween(u,TweenInfo[ZM(44272)](.25),{[ZM(44472)]=W})local N N=I[ZM(43237)][ZM(44259)]:Connect(function(...)I[ZM(43237)]=nil I[ZM(42806)]=true if N then N:Disconnect()end end)end function U.Close(I,...)local u=I[ZM(43048)][ZM(43494)]if I[ZM(43237)]then I[ZM(43237)]:Cancel()I[ZM(43237)]=nil end local U=u[ZM(44472)][ZM(42847)]I[ZM(43237)]=DM:Tween(u,TweenInfo[ZM(44272)](.25),{[ZM(44472)]=UDim2[ZM(44272)](U[ZM(43209)],U[ZM(44071)],2,0)})local W W=I[ZM(43237)][ZM(44259)]:Connect(function(...)I[ZM(43237)]=nil I[ZM(43048)][ZM(44880)][ZM(43984)]=false I[ZM(42806)]=false if W then W:Disconnect()end end)end function U.SetVisibility(u,I,...)if u[ZM(43237)]then u[ZM(43237)]:Cancel()u[ZM(43237)]=nil end local U=(I~=nil)and I or not u[ZM(42806)]u[ZM(43443)]=U u[ZM(42806)]=U if U then u:OpenWindow()else u:Close()end end function U.SetTab(u,I,...)local U=u[ZM(43048)][ZM(43503)]local W=u[ZM(43048)][ZM(43199)]local N=u[ZM(43048)][ZM(43255)]local P=I[ZM(43536)][I[ZM(44255)][1]]local m task[ZM(43766)](function(...)DM:Tween(u[ZM(43048)][ZM(43199)],TweenInfo[ZM(44272)](uM[ZM(44502)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44472)]=UDim2[ZM(44272)](-0.7,0,.5,0)})end)task[ZM(43766)](function(...)if P then u:SetCategory({[ZM(43405)]=P;[ZM(43502)]=P[ZM(43378)][ZM(43502)]..(ZM(44252)..P[ZM(43502)]);[ZM(43378)]=P[ZM(43378)]})end end)task[ZM(43766)](function(...)for u,U in U:GetChildren()do local N=U[ZM(43502)]local P=W:FindFirstChild(N)if not P then continue end local D=N==I[ZM(43502)]if D then m=P else task[ZM(43766)](function(...)task[ZM(43860)](uM[ZM(43619)])P[ZM(42723)]=D end)end U[ZM(43017)]:SetAttribute(ZM(43820),D)DM:Tween(U[ZM(43017)],TweenInfo[ZM(44272)](.25),{[ZM(43867)]=D and Color3[ZM(43744)](255,255,255)or Color3[ZM(43744)](96,140,128)})end end)task[ZM(43766)](function(...)task[ZM(43860)](uM[ZM(43619)])DM:Tween(u[ZM(43048)][ZM(43199)],TweenInfo[ZM(44272)](uM[ZM(44502)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44472)]=UDim2[ZM(44272)](0,15,.5,0)})task[ZM(43860)](.1)m[ZM(42723)]=true end)end function U.SetCategory(u,I,...)local U=I[ZM(43405)]local W=U[ZM(43048)]local N=I[ZM(43378)]local P=u[ZM(43048)][ZM(43255)]local m W[ZM(43554)]:SetAttribute(ZM(43820),true)task[ZM(43766)](function(...)m=DM:Tween(u[ZM(43048)][ZM(43311)],TweenInfo[ZM(44272)](uM[ZM(44139)],Enum[ZM(44374)][ZM(42646)]),{[ZM(42908)]=0})end)task[ZM(43766)](function(...)for I,u in N[ZM(43536)]do local U=u[ZM(43048)]DM:Tween(U[ZM(43554)],TweenInfo[ZM(44272)](.25),{[ZM(43749)]=Color3[ZM(43744)](7,10,9)})DM:Tween(U[ZM(43563)],TweenInfo[ZM(44272)](.25),{[ZM(43559)]=Color3[ZM(43744)](96,140,128)})DM:Tween(U[ZM(43923)],TweenInfo[ZM(44272)](.25),{[ZM(43659)]=Color3[ZM(43744)](15,24,21)})DM:Tween(U[ZM(44613)],TweenInfo[ZM(44272)](.25),{[ZM(44877)]=1})U[ZM(43554)]:SetAttribute(ZM(43820),false)u[ZM(42806)]=false end end)task[ZM(43766)](function(...)DM:Tween(W[ZM(43554)],TweenInfo[ZM(44272)](.25),{[ZM(43749)]=uM[ZM(44411)][ZM(43723)]})DM:Tween(W[ZM(43563)],TweenInfo[ZM(44272)](.25),{[ZM(43559)]=Color3[ZM(43744)](255,255,255)})DM:Tween(W[ZM(43923)],TweenInfo[ZM(44272)](.25),{[ZM(43659)]=uM[ZM(44411)][ZM(44754)]})DM:Tween(W[ZM(44613)],TweenInfo[ZM(44272)](.25),{[ZM(44877)]=.5})W[ZM(43554)]:SetAttribute(ZM(43820),true)end)U[ZM(42806)]=true task[ZM(43766)](function(...)if m then m[ZM(44259)]:Wait()end DM:Tween(u[ZM(43048)][ZM(43311)],TweenInfo[ZM(44272)](uM[ZM(44139)],Enum[ZM(44374)][ZM(42646)]),{[ZM(42908)]=1})for u,U in P:GetChildren()do if not U:IsA(ZM(43015))or table[ZM(43851)]({ZM(44838);ZM(43049)},U[ZM(43502)])then continue end U[ZM(42723)]=U[ZM(43502)]==I[ZM(43502)]end end)end function U.Tab(u,I,...)local W={[ZM(43502)]=I[ZM(43502)],[ZM(44220)]=I[ZM(44220)],[ZM(43536)]={};[ZM(44255)]={}}W[ZM(42858)]=W local N={}do N[ZM(43905)]=DM:Instance(ZM(43139),{[ZM(43749)]=Color3[ZM(43744)](10,16,14);[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](0,35,0,35);[ZM(43502)]=W[ZM(43502)];[ZM(43378)]=u[ZM(43048)][ZM(43503)];[ZM(43628)]=ZM(44368),[ZM(43949)]=false})N[ZM(43017)]=DM:Instance(ZM(44108),{[ZM(44220)]=W[ZM(44220)];[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(43867)]=Color3[ZM(43744)](96,140,128),[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0);[ZM(44462)]=UDim2[ZM(44272)](0,25,0,25);[ZM(43502)]=ZM(43017);[ZM(43378)]=N[ZM(43905)]})N[ZM(44033)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0);[ZM(43502)]=W[ZM(43502)];[ZM(43378)]=U[ZM(43048)][ZM(43199)],[ZM(42723)]=false})N[ZM(44705)]=DM:Instance(ZM(44403),{[ZM(44564)]=UDim[ZM(44272)](0,10);[ZM(43285)]=Enum[ZM(43285)][ZM(43330)];[ZM(43599)]=Enum[ZM(43599)][ZM(42682)];[ZM(43502)]=ZM(43013);[ZM(43378)]=N[ZM(44033)]})end do local I=N[ZM(43905)]uM:Connection(ZM(42667)..W[ZM(43502)],I[ZM(44275)],function(...)U:SetTab(W)end)uM:Connection(ZM(44455)..W[ZM(43502)],N[ZM(43905)][ZM(44211)],function(...)DM:Tween(N[ZM(43017)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43867)]=Color3[ZM(43744)](255,255,255)})end)uM:Connection(ZM(43490)..W[ZM(43502)],N[ZM(43905)][ZM(42664)],function(...)if N[ZM(43017)]:GetAttribute(ZM(43820))then return end DM:Tween(N[ZM(43017)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43867)]=Color3[ZM(43744)](96,140,128)})end)end function W.Category(u,I,...)local N={[ZM(43502)]=I[ZM(43502)];[ZM(42748)]={},[ZM(43378)]=W,[ZM(42806)]=false}N[ZM(42858)]=N local P={}do P[ZM(43554)]=DM:Instance(ZM(43139),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(44768)]=true;[ZM(43628)]=ZM(44368),[ZM(43559)]=Color3[ZM(43744)](96,140,128);[ZM(43406)]=14,[ZM(44737)]=1,[ZM(43949)]=false,[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](0,82,0,20);[ZM(43502)]=N[ZM(43502)];[ZM(43378)]=u[ZM(43048)][ZM(44033)]})P[ZM(44036)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43502)]=ZM(44036),[ZM(43378)]=P[ZM(43554)]})P[ZM(43923)]=DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)],[ZM(43659)]=Color3[ZM(43744)](15,24,21);[ZM(43502)]=ZM(43923),[ZM(43378)]=P[ZM(43554)]})P[ZM(43563)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=N[ZM(43502)],[ZM(43559)]=Color3[ZM(43744)](96,140,128),[ZM(43406)]=14;[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0),[ZM(43502)]=ZM(43563),[ZM(43378)]=P[ZM(43554)]})P[ZM(44605)]=DM:Instance(ZM(43015),{[ZM(42908)]=1;[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0),[ZM(42648)]=0;[ZM(43502)]=ZM(44605),[ZM(43378)]=P[ZM(43554)]})P[ZM(44613)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43069)];[ZM(43867)]=uM[ZM(44411)][ZM(44754)],[ZM(44877)]=1;[ZM(44830)]=Enum[ZM(44830)][ZM(43547)];[ZM(43988)]=Rect[ZM(44272)](49,49,450,450),[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(42908)]=1,[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0);[ZM(44462)]=UDim2[ZM(44272)](1,30,1,30);[ZM(42648)]=0,[ZM(43502)]=ZM(44613);[ZM(43378)]=P[ZM(44605)]})P[ZM(43061)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0),[ZM(43502)]=W[ZM(43502)]..(ZM(44252)..N[ZM(43502)]),[ZM(42723)]=false;[ZM(43378)]=U[ZM(43048)][ZM(43255)]})P[ZM(44105)]=DM:Instance(ZM(43776),{[ZM(43945)]=Enum[ZM(42642)][ZM(42838)],[ZM(43874)]=UDim2[ZM(44272)](0,0,1,24);[ZM(42770)]=Color3[ZM(43744)](0,0,0);[ZM(42727)]=1,[ZM(44192)]=0;[ZM(44532)]=true;[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](.5,-5,1,0);[ZM(43502)]=ZM(44105),[ZM(43378)]=P[ZM(43061)]})P[ZM(43082)]=DM:Instance(ZM(44403),{[ZM(43378)]=P[ZM(44105)],[ZM(44564)]=UDim[ZM(44272)](0,15)})P[ZM(42921)]=DM:Instance(ZM(44797),{[ZM(43252)]=UDim[ZM(44272)](0,2);[ZM(44596)]=UDim[ZM(44272)](0,4);[ZM(43197)]=UDim[ZM(44272)](0,5);[ZM(43502)]=ZM(42921);[ZM(43378)]=P[ZM(44105)]})P[ZM(42903)]=DM:Instance(ZM(43776),{[ZM(43945)]=Enum[ZM(42642)][ZM(42838)];[ZM(43874)]=UDim2[ZM(44272)](0,0,1,0),[ZM(42770)]=Color3[ZM(43744)](0,0,0);[ZM(42727)]=1,[ZM(44192)]=0;[ZM(44532)]=true;[ZM(43618)]=Vector2[ZM(44272)](.5,0),[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,147,0,0),[ZM(44462)]=UDim2[ZM(44272)](.5,-5,1,0),[ZM(43502)]=ZM(42903);[ZM(43378)]=P[ZM(43061)]})P[ZM(44012)]=DM:Instance(ZM(44797),{[ZM(43252)]=UDim[ZM(44272)](0,2);[ZM(44596)]=UDim[ZM(44272)](0,4);[ZM(43197)]=UDim[ZM(44272)](0,5),[ZM(43502)]=ZM(44012),[ZM(43378)]=P[ZM(42903)]})P[ZM(43318)]=DM:Instance(ZM(44403),{[ZM(43378)]=P[ZM(42903)],[ZM(44564)]=UDim[ZM(44272)](0,15)})end function N.Section(u,I,...)local W={[ZM(43502)]=I[ZM(43502)],[ZM(44742)]=I[ZM(44742)]or ZM(44105);[ZM(44905)]={},[ZM(42648)]=9000}W[ZM(42858)]=W local P={}do P[ZM(43521)]=DM:Instance(ZM(43015),{[ZM(42642)]=Enum[ZM(42642)][ZM(42838)];[ZM(43749)]=Color3[ZM(43744)](10,16,14),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,-4,0,30);[ZM(43502)]=ZM(43521),[ZM(43378)]=u[ZM(43048)][W[ZM(44742)]]})P[ZM(43886)]=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43502)]=ZM(43886),[ZM(43378)]=P[ZM(43521)]})P[ZM(44609)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43502)]=ZM(44609),[ZM(43378)]=P[ZM(43521)]})P[ZM(42953)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](15,24,21),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,0,0,24),[ZM(44462)]=UDim2[ZM(44272)](1,0,0,1),[ZM(43502)]=ZM(42953);[ZM(43378)]=P[ZM(43521)]})P[ZM(43629)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43628)]=W[ZM(43502)],[ZM(43559)]=Color3[ZM(43744)](255,255,255);[ZM(43406)]=14,[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,14,0,2);[ZM(44462)]=UDim2[ZM(44272)](1,-14,0,20);[ZM(43502)]=ZM(43629),[ZM(43378)]=P[ZM(43521)]})P[ZM(44123)]=DM:Instance(ZM(43015),{[ZM(42642)]=Enum[ZM(42642)][ZM(42838)],[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,14,0,30);[ZM(44462)]=UDim2[ZM(44272)](0,249,0,-30),[ZM(43502)]=ZM(44123),[ZM(43378)]=P[ZM(43521)]})P[ZM(43105)]=DM:Instance(ZM(44403),{[ZM(44564)]=UDim[ZM(44272)](0,3);[ZM(43599)]=Enum[ZM(43599)][ZM(42682)],[ZM(43502)]=ZM(43105);[ZM(43378)]=P[ZM(44123)]})end function W.SetVisibility(u,I,...)u[ZM(42723)]=I end function W.Seperator(I,...)local u={}u[ZM(43062)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](15,24,21);[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,6),[ZM(43502)]=ZM(43062),[ZM(43378)]=I[ZM(43048)][ZM(44123)]})u[ZM(44709)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](15,24,21),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,1),[ZM(43502)]=ZM(44709);[ZM(43378)]=u[ZM(43062)]})function u.SetVisibility(U,I,...)u[ZM(43062)][ZM(42723)]=I end return u end function W.Toggle(u,I,...)local U={[ZM(43502)]=I[ZM(43502)];[ZM(43295)]=I[ZM(43295)],[ZM(43663)]=false;[ZM(42891)]=I[ZM(42891)]or false,[ZM(43795)]=I[ZM(43795)]or function(...) end,[ZM(44278)]=I[ZM(44278)]or nil;[ZM(44279)]=I[ZM(44279)];[ZM(44156)]=ZM(44606)}U[ZM(42858)]=U local P={}do P[ZM(44434)]=DM:Instance(ZM(43139),{[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44462)]=U[ZM(44278)]and UDim2[ZM(44272)](1,0,0,38)or UDim2[ZM(44272)](1,0,0,20);[ZM(43502)]=ZM(44434);[ZM(43378)]=u[ZM(43048)][ZM(44123)],[ZM(43628)]=ZM(44368),[ZM(43949)]=false})P[ZM(43763)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=U[ZM(43502)],[ZM(43559)]=not U[ZM(44279)]and Color3[ZM(43744)](96,140,128)or Color3[ZM(43744)](150,14,23),[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,15);[ZM(43502)]=ZM(43763);[ZM(43378)]=P[ZM(44434)]})P[ZM(43085)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(44892)],[ZM(43628)]=ZM(44368);[ZM(43559)]=Color3[ZM(43744)](0,0,0),[ZM(43406)]=14;[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](1,-15,0,0),[ZM(44462)]=UDim2[ZM(44272)](0,15,0,15),[ZM(43502)]=ZM(43085);[ZM(43378)]=P[ZM(44434)]})P[ZM(44694)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(44694),[ZM(43378)]=P[ZM(43085)]})P[ZM(42934)]=DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)];[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43502)]=ZM(42934),[ZM(43378)]=P[ZM(43085)]})P[ZM(43236)]=DM:Instance(ZM(43015),{[ZM(42908)]=1;[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0),[ZM(42648)]=0;[ZM(43502)]=ZM(43236);[ZM(43378)]=P[ZM(43085)]})P[ZM(43484)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43069)],[ZM(43867)]=uM[ZM(44411)][ZM(44754)];[ZM(44877)]=.5,[ZM(44830)]=Enum[ZM(44830)][ZM(43547)];[ZM(43988)]=Rect[ZM(44272)](49,49,450,450),[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(42908)]=1,[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0);[ZM(44462)]=UDim2[ZM(44272)](1,20,1,20);[ZM(42648)]=0,[ZM(43502)]=ZM(43484),[ZM(43378)]=P[ZM(43236)]})if U[ZM(44278)]then P[ZM(44278)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43628)]=U[ZM(44278)],[ZM(43559)]=Color3[ZM(43744)](70,100,92),[ZM(43406)]=14,[ZM(44075)]=Enum[ZM(44075)][ZM(44105)],[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,3,0,18);[ZM(44462)]=UDim2[ZM(44272)](1,0,0,15);[ZM(43502)]=ZM(44278),[ZM(43378)]=P[ZM(44434)]})end end local m=false U[ZM(43048)]=P function U.Set(u,I,...)u[ZM(43663)]=I m=I if u[ZM(43663)]==true then DM:Tween(P[ZM(43484)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=.5})DM:Tween(P[ZM(43085)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=uM[ZM(44411)][ZM(43723)]})DM:Tween(P[ZM(42934)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=uM[ZM(44411)][ZM(44754)]})DM:Tween(P[ZM(43763)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=u[ZM(44279)]and Color3[ZM(43744)](255,0,0)or Color3[ZM(43744)](255,255,255)})else DM:Tween(P[ZM(43484)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=1})DM:Tween(P[ZM(43085)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=Color3[ZM(43744)](7,10,9)})DM:Tween(P[ZM(42934)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=Color3[ZM(43744)](15,24,21)})DM:Tween(P[ZM(43763)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=u[ZM(44279)]and Color3[ZM(43744)](150,14,23)or Color3[ZM(43744)](96,140,128)})end uM:DoCallback(u[ZM(43795)])end function U.SetVisibility(u,I,...)u[ZM(43048)][ZM(44434)][ZM(42723)]=I end uM:Connection(ZM(43872)..U[ZM(43295)],P[ZM(44434)][ZM(44275)],function(...)U:Set(not m)end)uM:Connection(ZM(43760)..U[ZM(43502)],P[ZM(44434)][ZM(44211)],function(...)DM:Tween(P[ZM(42934)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=uM[ZM(44411)][ZM(44754)]})end)uM:Connection(ZM(44388)..N[ZM(43502)],P[ZM(44434)][ZM(42664)],function(...)if U[ZM(43663)]then return end DM:Tween(P[ZM(42934)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=Color3[ZM(43744)](15,24,21)})end)uM[ZM(43889)][U[ZM(43295)]]=U W[ZM(44905)][U[ZM(43295)]]=U U:Set(U[ZM(42891)])return U end function W.Slider(u,I,...)local N={[ZM(43839)]=I[ZM(43839)]or 0,[ZM(43781)]=I[ZM(43781)]or 100,[ZM(42891)]=I[ZM(42891)]or I[ZM(43781)];[ZM(42853)]=I[ZM(42853)]or 1;[ZM(43502)]=I[ZM(43502)];[ZM(43295)]=I[ZM(43295)],[ZM(43162)]=I[ZM(43162)]or ZM(44368);[ZM(43795)]=I[ZM(43795)]or function(...) end;[ZM(44156)]=ZM(43272)}N[ZM(42858)]=N local P={}do P[ZM(43272)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,0,4),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,44),[ZM(43502)]=ZM(43272);[ZM(43378)]=u[ZM(43048)][ZM(44123)]})P[ZM(44090)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=N[ZM(43502)],[ZM(43559)]=Color3[ZM(43744)](96,140,128),[ZM(43406)]=14,[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,15),[ZM(43502)]=ZM(44090);[ZM(43378)]=P[ZM(43272)]})P[ZM(43067)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,0,1,-15),[ZM(44462)]=UDim2[ZM(44272)](1,0,0,2);[ZM(43502)]=ZM(43067);[ZM(43378)]=P[ZM(43272)]})P[ZM(43600)]=DM:Instance(ZM(43015),{[ZM(43749)]=uM[ZM(44411)][ZM(43723)];[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](0,0,1,0),[ZM(43502)]=ZM(43600),[ZM(43378)]=P[ZM(43067)]})P[ZM(43454)]=DM:Instance(ZM(43015),{[ZM(43618)]=Vector2[ZM(44272)](0,.5),[ZM(43749)]=uM[ZM(44411)][ZM(43723)],[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](1,-10,.5,0);[ZM(44462)]=UDim2[ZM(44272)](0,10,0,10),[ZM(43502)]=ZM(43454),[ZM(43378)]=P[ZM(43600)]})P[ZM(44041)]=DM:Instance(ZM(43647),{[ZM(43502)]=ZM(44041);[ZM(43378)]=P[ZM(43454)]})P[ZM(44081)]=DM:Instance(ZM(43015),{[ZM(42908)]=1;[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0);[ZM(42648)]=0;[ZM(43502)]=ZM(44081),[ZM(43378)]=P[ZM(43600)]})P[ZM(44747)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43069)],[ZM(43867)]=uM[ZM(44411)][ZM(44754)];[ZM(44877)]=.72;[ZM(44830)]=Enum[ZM(44830)][ZM(43547)],[ZM(43988)]=Rect[ZM(44272)](49,49,450,450);[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(42908)]=1,[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](.5,-1,.5,0);[ZM(44462)]=UDim2[ZM(44272)](1,7,1,10);[ZM(42648)]=0;[ZM(43502)]=ZM(44747);[ZM(43378)]=P[ZM(44081)]})P[ZM(43788)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=tostring(N[ZM(42891)])..N[ZM(43162)];[ZM(43559)]=Color3[ZM(43744)](96,140,128),[ZM(43406)]=14,[ZM(44075)]=Enum[ZM(44075)][ZM(42903)],[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,15),[ZM(43502)]=ZM(43788);[ZM(43378)]=P[ZM(43272)]})end function N.Set(u,I,...)I=PM[ZM(43319)](math[ZM(42960)](I,u[ZM(43839)],u[ZM(43781)]),u[ZM(42853)])u[ZM(43663)]=I local U=((I-u[ZM(43839)]))/((u[ZM(43781)]-u[ZM(43839)]))DM:Tween(P[ZM(43600)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](U,0,1,0)})DM:Tween(P[ZM(43454)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44472)]=UDim2[ZM(44272)](1,-10,.5,0)})P[ZM(43788)][ZM(43628)]=uM:FormatValue(N[ZM(42853)],I)..N[ZM(43162)]uM:DoCallback(u[ZM(43795)],I)end function N.SetVisibility(u,I,...)u[ZM(43272)][ZM(42723)]=I end N[ZM(43048)]=P do local I=false local function u(I,...)local u=P[ZM(43067)]local U=P[ZM(43600)]local W=P[ZM(43454)]local m=P[ZM(43788)]local D=math[ZM(42960)](((I-u[ZM(44498)][ZM(42847)]))/u[ZM(43725)][ZM(42847)],0,1)local r=((N[ZM(43781)]-N[ZM(43839)]))*D+N[ZM(43839)]N:Set(r)end n[ZM(42869)]:Connect(function(u,...)if u[ZM(42843)]==Enum[ZM(42843)][ZM(42910)]then I=false U[ZM(43329)]=false end end)n[ZM(44653)]:Connect(function(U,...)if I and U[ZM(42843)]==Enum[ZM(42843)][ZM(44367)]then u(U[ZM(44472)][ZM(42847)])end end)uM:Connection(ZM(43272)..N[ZM(43295)],P[ZM(43272)][ZM(43451)],function(W,...)if W[ZM(42843)]==Enum[ZM(42843)][ZM(42910)]then I=true U[ZM(43329)]=true u(W[ZM(44472)][ZM(42847)])end end)end N:Set(N[ZM(42891)])uM[ZM(43889)][N[ZM(43295)]]=N W[ZM(44905)][N[ZM(43295)]]=N return N end function W.Button(u,I,...)local U={[ZM(43502)]=I[ZM(43502)];[ZM(43295)]=I[ZM(43295)],[ZM(44156)]=ZM(42822);[ZM(43795)]=I[ZM(43795)]or function(...) end}local N={}do N[ZM(44787)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,24);[ZM(43502)]=ZM(44787),[ZM(43378)]=u[ZM(43048)][ZM(44123)]})N[ZM(42822)]=DM:Instance(ZM(43139),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43559)]=Color3[ZM(43744)](96,140,128),[ZM(43406)]=14;[ZM(43949)]=false;[ZM(43749)]=Color3[ZM(43744)](7,10,9);[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,0,0,2);[ZM(44462)]=UDim2[ZM(44272)](1,0,0,18),[ZM(43502)]=ZM(42822);[ZM(43378)]=N[ZM(44787)],[ZM(43628)]=U[ZM(43502)]})N[ZM(44087)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(44087);[ZM(43378)]=N[ZM(42822)]})N[ZM(43689)]=DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)];[ZM(43659)]=Color3[ZM(43744)](15,24,21);[ZM(43502)]=ZM(43689);[ZM(43378)]=N[ZM(42822)]})end uM:Connection(ZM(44211)..U[ZM(43295)],N[ZM(42822)][ZM(44211)],function(...)DM:Tween(N[ZM(43689)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=uM[ZM(44411)][ZM(44754)]})end)uM:Connection(ZM(42664)..U[ZM(43295)],N[ZM(42822)][ZM(42664)],function(...)DM:Tween(N[ZM(43689)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=Color3[ZM(43744)](15,24,21)})end)uM:Connection(ZM(44466)..U[ZM(43295)],N[ZM(42822)][ZM(44275)],function(...)uM:DoCallback(U[ZM(43795)])task[ZM(43766)](function(...)DM:Tween(N[ZM(42822)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=uM[ZM(44411)][ZM(44754)]})task[ZM(43860)](.2)DM:Tween(N[ZM(42822)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=Color3[ZM(43744)](7,10,9)})end)end)function U.AddButton(u,I,...)if u[ZM(44032)]then return end local U=I[ZM(43295)]or(u[ZM(43295)]..ZM(44461))local W=I[ZM(43502)]or ZM(42822)local P=I[ZM(43795)]or function(...) end N[ZM(42822)][ZM(44462)]=UDim2[ZM(44272)](.5,-1,0,18)N[ZM(42822)][ZM(44472)]=UDim2[ZM(44272)](0,0,0,2)local m=DM:Instance(ZM(43139),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43559)]=Color3[ZM(43744)](96,140,128);[ZM(43406)]=14,[ZM(43949)]=false;[ZM(43749)]=Color3[ZM(43744)](7,10,9);[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](.5,1,0,2),[ZM(44462)]=UDim2[ZM(44272)](.5,-1,0,18);[ZM(43502)]=ZM(43838),[ZM(43378)]=N[ZM(44787)];[ZM(43628)]=W})DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43378)]=m})local D=DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)];[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43378)]=m})uM:Connection(ZM(44466)..U,m[ZM(44275)],function(...)uM:DoCallback(P)task[ZM(43766)](function(...)DM:Tween(m,TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=uM[ZM(44411)][ZM(44754)]})task[ZM(43860)](.2)DM:Tween(m,TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=Color3[ZM(43744)](7,10,9)})end)end)uM:Connection(ZM(44211)..U,m[ZM(44211)],function(...)DM:Tween(D,TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=uM[ZM(44411)][ZM(44754)]})end)uM:Connection(ZM(42664)..U,m[ZM(42664)],function(...)DM:Tween(D,TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=Color3[ZM(43744)](15,24,21)})end)u[ZM(44032)]={[ZM(43502)]=W,[ZM(43295)]=U,[ZM(43795)]=P,[ZM(43363)]=m}return u[ZM(44032)]end U[ZM(43048)]=N U[ZM(42858)]=U W[ZM(44905)][U[ZM(43295)]]=U return U end function W.Dropdown(u,I,...)local U={[ZM(43502)]=I[ZM(43502)];[ZM(43295)]=I[ZM(43295)];[ZM(43323)]=I[ZM(43323)]or false,[ZM(43663)]=not I[ZM(43323)]and ZM(44368)or{},[ZM(42891)]=I[ZM(42891)];[ZM(43795)]=I[ZM(43795)]or function(...) end,[ZM(44156)]=ZM(44356)}u[ZM(42648)]-=1 U[ZM(42858)]=U local N=false local P={}do P[ZM(44356)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,44),[ZM(42648)]=2;[ZM(43502)]=ZM(44356);[ZM(43378)]=u[ZM(43048)][ZM(44123)];[ZM(42648)]=u[ZM(42648)]})P[ZM(44398)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=U[ZM(43502)];[ZM(43559)]=Color3[ZM(43744)](96,140,128),[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)],[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,15);[ZM(43502)]=ZM(44398),[ZM(43378)]=P[ZM(44356)]})P[ZM(42684)]=DM:Instance(ZM(43139),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=ZM(43960),[ZM(43559)]=Color3[ZM(43744)](96,140,128);[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)],[ZM(43949)]=false;[ZM(43749)]=Color3[ZM(43744)](7,10,9);[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,0,0,18),[ZM(44462)]=UDim2[ZM(44272)](1,0,0,22),[ZM(43502)]=ZM(42684);[ZM(43378)]=P[ZM(44356)];[ZM(44836)]=false})P[ZM(43617)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43502)]=ZM(43617);[ZM(43378)]=P[ZM(42684)]})P[ZM(44077)]=DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)];[ZM(43659)]=Color3[ZM(43744)](15,24,21);[ZM(43502)]=ZM(44077);[ZM(43378)]=P[ZM(42684)]})P[ZM(43275)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43275)];[ZM(43618)]=Vector2[ZM(44272)](0,.5),[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](1,-15,.5,0);[ZM(44462)]=UDim2[ZM(44272)](0,15,0,15),[ZM(43502)]=ZM(43275);[ZM(43378)]=P[ZM(42684)];[ZM(42648)]=3})P[ZM(44035)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,0,0,21),[ZM(44462)]=UDim2[ZM(44272)](1,0,0,0),[ZM(43502)]=ZM(44035);[ZM(42723)]=false,[ZM(43378)]=P[ZM(42684)];[ZM(44836)]=true,[ZM(42648)]=2})P[ZM(43243)]=DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)],[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43502)]=ZM(43243),[ZM(43378)]=P[ZM(44035)];[ZM(44437)]=1})P[ZM(43175)]=DM:Instance(ZM(43776),{[ZM(43945)]=Enum[ZM(42642)][ZM(42838)],[ZM(43874)]=UDim2[ZM(44272)](0,0,1,0),[ZM(42770)]=uM[ZM(44411)][ZM(44754)],[ZM(42727)]=.67,[ZM(44192)]=3;[ZM(42723)]=true,[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,2,0,2),[ZM(44462)]=UDim2[ZM(44272)](1,-4,1,-4),[ZM(43502)]=ZM(43175);[ZM(43378)]=P[ZM(44035)],[ZM(44836)]=true})P[ZM(44725)]=DM:Instance(ZM(44403),{[ZM(44564)]=UDim[ZM(44272)](0,3);[ZM(43599)]=Enum[ZM(43599)][ZM(42682)];[ZM(43502)]=ZM(44725),[ZM(43378)]=P[ZM(43175)]})P[ZM(44574)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,0,1,-20),[ZM(44462)]=UDim2[ZM(44272)](1,0,0,20),[ZM(43502)]=ZM(44574);[ZM(43378)]=P[ZM(44035)]})P[ZM(42706)]=DM:Instance(ZM(43369),{[ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,Color3[ZM(43744)](7,10,9)),ColorSequenceKeypoint[ZM(44272)](1,Color3[ZM(43744)](7,10,9))}),[ZM(43320)]=-90,[ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,.4);NumberSequenceKeypoint[ZM(44272)](1,1)}),[ZM(43502)]=ZM(42706),[ZM(43378)]=P[ZM(44574)]})P[ZM(43745)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,20);[ZM(43502)]=ZM(43745);[ZM(43378)]=P[ZM(44035)]})P[ZM(43087)]=DM:Instance(ZM(43369),{[ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,Color3[ZM(43744)](7,10,9)),ColorSequenceKeypoint[ZM(44272)](1,Color3[ZM(43744)](7,10,9))});[ZM(43320)]=90,[ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,.4);NumberSequenceKeypoint[ZM(44272)](1,1)});[ZM(43502)]=ZM(42706),[ZM(43378)]=P[ZM(43745)]})P[ZM(44711)]=DM:Instance(ZM(43489),{[ZM(43378)]=P[ZM(42684)],[ZM(42908)]=1,[ZM(44075)]=Enum[ZM(44075)][ZM(44105)],[ZM(43559)]=Color3[ZM(43744)](96,140,128);[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0),[ZM(42648)]=1,[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43406)]=14;[ZM(44836)]=true})P[ZM(42728)]=Instance[ZM(44272)](ZM(43015))P[ZM(42728)][ZM(43749)]=Color3[ZM(43744)](255,255,255)P[ZM(42728)][ZM(43561)]=Color3[ZM(43744)](0,0,0)P[ZM(42728)][ZM(43817)]=0 P[ZM(42728)][ZM(44472)]=UDim2[ZM(44272)](1,-20,.5,0)P[ZM(42728)][ZM(44462)]=UDim2[ZM(44272)](0,20,1,-2)P[ZM(42728)][ZM(43618)]=Vector2[ZM(44272)](0,.5)P[ZM(42728)][ZM(43378)]=P[ZM(42684)]P[ZM(44517)]=Instance[ZM(44272)](ZM(43369))P[ZM(44517)][ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,Color3[ZM(43744)](11.000000294298,11.000000294298,11.000000294298)),ColorSequenceKeypoint[ZM(44272)](1,Color3[ZM(43744)](11.000000294298,11.000000294298,11.000000294298))})P[ZM(44517)][ZM(43320)]=-180 P[ZM(44517)][ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,0),NumberSequenceKeypoint[ZM(44272)](.72194516658783,0);NumberSequenceKeypoint[ZM(44272)](.78428930044174,0),NumberSequenceKeypoint[ZM(44272)](.86907732486725,.44999998807907),NumberSequenceKeypoint[ZM(44272)](.96508729457855,.70624995231628);NumberSequenceKeypoint[ZM(44272)](1,.36250001192093)})P[ZM(44517)][ZM(43502)]=ZM(44654)P[ZM(44517)][ZM(43378)]=P[ZM(42728)]end U[ZM(43048)]=P U[ZM(44061)]={}function U.SetVisibility(u,I,...)u[ZM(43048)][ZM(44356)][ZM(42723)]=I end function U.AddOption(u,I,...)local W={[ZM(43502)]=I;[ZM(43663)]=false;[ZM(43048)]={}}local N={}N[ZM(44469)]=DM:Instance(ZM(43139),{[ZM(43565)]=Enum[ZM(43565)][ZM(44892)];[ZM(43628)]=ZM(44368),[ZM(43559)]=Color3[ZM(43744)](0,0,0);[ZM(43406)]=14;[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(42908)]=1;[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,20),[ZM(43502)]=ZM(44469),[ZM(43378)]=P[ZM(43175)]})N[ZM(43801)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=I,[ZM(43559)]=Color3[ZM(43744)](96,140,128);[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(43749)]=Color3[ZM(43744)](96,140,128),[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,10,0,0),[ZM(44462)]=UDim2[ZM(44272)](1,-10,1,0);[ZM(43502)]=ZM(43801);[ZM(43378)]=N[ZM(44469)]})N[ZM(44480)]=DM:Instance(ZM(43015),{[ZM(43749)]=uM[ZM(44411)][ZM(44754)],[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](0,3,1,0);[ZM(43502)]=ZM(44480);[ZM(42723)]=true;[ZM(42908)]=1;[ZM(43378)]=N[ZM(44469)]})uM:Connection(ZM(44219)..(W[ZM(43502)]..(ZM(44252)..U[ZM(43295)])),N[ZM(44469)][ZM(44275)],function(...)if U[ZM(43323)]then W[ZM(43663)]=not W[ZM(43663)]DM:Tween(N[ZM(44480)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(42908)]=W[ZM(43663)]and 0 or 1})DM:Tween(N[ZM(43801)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=W[ZM(43663)]and Color3[ZM(43744)](255,255,255)or Color3[ZM(43744)](96,140,128)})else for I,u in ipairs(U[ZM(44061)])do u[ZM(43663)]=false DM:Tween(u[ZM(43048)][ZM(44480)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(42908)]=u[ZM(43663)]and 0 or 1})DM:Tween(u[ZM(43048)][ZM(43801)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=u[ZM(43663)]and Color3[ZM(43744)](255,255,255)or Color3[ZM(43744)](96,140,128)})end W[ZM(43663)]=true DM:Tween(N[ZM(44480)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(42908)]=0})DM:Tween(N[ZM(43801)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=W[ZM(43663)]and Color3[ZM(43744)](255,255,255)or Color3[ZM(43744)](96,140,128)})P[ZM(44711)][ZM(43628)]=ZM(43960)..I local u=DM:Tween(P[ZM(44035)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](1,0,0,0)})DM:Tween(P[ZM(43243)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44437)]=1})task[ZM(43766)](function(...)task[ZM(43860)](uM[ZM(42705)])P[ZM(44035)][ZM(42723)]=false end)end if U[ZM(43323)]then local I={}for u,U in ipairs(U[ZM(44061)])do if U[ZM(43663)]then table[ZM(43063)](I,U[ZM(43502)])end end U:Set(I)else U:Set(I)end end)W[ZM(43048)]=N table[ZM(43063)](U[ZM(44061)],W)return W end for I,u in I[ZM(44061)]do U:AddOption(u)end function U.Set(u,I,...)u[ZM(43663)]=I if U[ZM(43323)]then local U={}for u,W in ipairs(u[ZM(44061)])do local N=table[ZM(43851)](I,W[ZM(43502)])~=nil W[ZM(43663)]=N DM:Tween(W[ZM(43048)][ZM(44480)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(42908)]=N and 0 or 1})DM:Tween(W[ZM(43048)][ZM(43801)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=N and Color3[ZM(43744)](255,255,255)or Color3[ZM(43744)](96,140,128)})if N then table[ZM(43063)](U,W[ZM(43502)])end end if#U==0 then P[ZM(44711)][ZM(43628)]=ZM(42779)else P[ZM(44711)][ZM(43628)]=ZM(43960)..table[ZM(44753)](U,ZM(43718))end else for u,U in ipairs(u[ZM(44061)])do local W=U[ZM(43502)]==I U[ZM(43663)]=W DM:Tween(U[ZM(43048)][ZM(44480)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(42908)]=W and 0 or 1})DM:Tween(U[ZM(43048)][ZM(43801)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=W and Color3[ZM(43744)](255,255,255)or Color3[ZM(43744)](96,140,128)})end DM:Tween(P[ZM(44356)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](1,0,0,44)})P[ZM(44711)][ZM(43628)]=ZM(43960)..tostring(I)end uM:DoCallback(u[ZM(43795)],I)end uM:Connection(ZM(43414)..(U[ZM(43295)]..ZM(44875)),P[ZM(42684)][ZM(44275)],function(...)N=not N if N then local I=#U[ZM(44061)]local u=24 local W=math[ZM(42820)](I,3)*u local N=44+W P[ZM(44035)][ZM(42723)]=true DM:Tween(P[ZM(44035)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](1,0,0,W)})DM:Tween(P[ZM(44356)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](1,0,0,N)})DM:Tween(P[ZM(43243)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44437)]=0})else DM:Tween(P[ZM(44035)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](1,0,0,0)})DM:Tween(P[ZM(44356)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](1,0,0,44)})DM:Tween(P[ZM(43243)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44437)]=1})task[ZM(43766)](function(...)task[ZM(43860)](uM[ZM(42705)])P[ZM(44035)][ZM(42723)]=false end)end end)if not U[ZM(42891)]or(U[ZM(43323)]and#U[ZM(42891)]==0)then if U[ZM(43323)]then U[ZM(42891)]={I[ZM(44061)][1]}else U[ZM(42891)]=I[ZM(44061)][1]end end U:Set(U[ZM(42891)])uM[ZM(43889)][U[ZM(43295)]]=U W[ZM(44905)][U[ZM(43295)]]=U return U end function W.Textbox(u,I,...)local U={[ZM(43502)]=I[ZM(43502)];[ZM(43295)]=I[ZM(43295)],[ZM(42891)]=I[ZM(42891)]or ZM(44368);[ZM(43795)]=I[ZM(43795)]or function(...) end;[ZM(43663)]=ZM(44368),[ZM(44156)]=ZM(44249)}local W={}W[ZM(43488)]=DM:Instance(ZM(43015),{[ZM(42908)]=1;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,40);[ZM(43378)]=u[ZM(43048)][ZM(44123)]})W[ZM(42880)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43628)]=U[ZM(43502)],[ZM(43559)]=Color3[ZM(43744)](96,140,128);[ZM(43406)]=14,[ZM(42908)]=1,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,15),[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(43378)]=W[ZM(43488)]})local N=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(44472)]=UDim2[ZM(44272)](0,0,0,18),[ZM(44462)]=UDim2[ZM(44272)](1,0,0,18);[ZM(44836)]=true,[ZM(43378)]=W[ZM(43488)]})DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43378)]=N})local P=DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21);[ZM(44803)]=Enum[ZM(44803)][ZM(44439)],[ZM(43378)]=N})local m=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=ZM(44368),[ZM(43559)]=Color3[ZM(43744)](210,235,228);[ZM(43406)]=14,[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(42908)]=1,[ZM(44462)]=UDim2[ZM(44272)](1,-5,1,0);[ZM(44472)]=UDim2[ZM(44272)](0,5,0,0);[ZM(43378)]=N})local D=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(44462)]=UDim2[ZM(44272)](1,-2,1,-2),[ZM(44472)]=UDim2[ZM(44272)](0,1,0,1);[ZM(43378)]=N})DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43378)]=D})local r=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](210,235,228);[ZM(44462)]=UDim2[ZM(44272)](0,1,.8,0);[ZM(44472)]=UDim2[ZM(44272)](0,0,.1,0),[ZM(43378)]=N,[ZM(42648)]=D[ZM(42648)]+1,[ZM(42723)]=false})DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43378)]=r})local t=DM:Instance(ZM(44249),{[ZM(43565)]=m[ZM(43565)];[ZM(43406)]=m[ZM(43406)];[ZM(44737)]=1,[ZM(43628)]=ZM(44368),[ZM(42908)]=1,[ZM(44890)]=false,[ZM(44462)]=UDim2[ZM(44272)](1,-5,1,0);[ZM(44472)]=UDim2[ZM(44272)](0,5,0,0);[ZM(43378)]=N})local K=V local j=TweenInfo[ZM(44272)](.7,Enum[ZM(44374)][ZM(44864)],Enum[ZM(44424)][ZM(42750)],-1,true)local q=K:Create(r,j,{[ZM(42908)]=1})local function v(...)local I=m[ZM(43628)]local u=m[ZM(42761)][ZM(42847)]local U=N[ZM(43725)][ZM(42847)]local W=math[ZM(42960)](u,0,U-7)if I:sub(-1)==ZM(42808)then W=W+3 end D:TweenPosition(UDim2[ZM(44272)](0,6+W,0,1),Enum[ZM(44424)][ZM(43875)],Enum[ZM(44374)][ZM(44680)],.1,true)r:TweenPosition(UDim2[ZM(44272)](0,5+W,.1,0),Enum[ZM(44424)][ZM(43875)],Enum[ZM(44374)][ZM(44680)],.1,true)end function U.Set(u,I,...)u[ZM(43663)]=I m[ZM(43628)]=I t[ZM(43628)]=I task[ZM(44676)](v)uM:DoCallback(u[ZM(43795)],I)end function U.SetVisibility(u,I,...)W[ZM(43488)][ZM(42723)]=I end t[ZM(43079)]:Connect(function(...)(K:Create(P,TweenInfo[ZM(44272)](.2),{[ZM(43659)]=uM[ZM(44411)][ZM(44754)]})):Play()r[ZM(42723)]=true if q[ZM(44110)]~=Enum[ZM(44110)][ZM(43417)]then q:Play()end end)t[ZM(44785)]:Connect(function(...)(K:Create(P,TweenInfo[ZM(44272)](.2),{[ZM(43659)]=Color3[ZM(43744)](15,24,21)})):Play()r[ZM(42723)]=false q:Pause()end);(t:GetPropertyChangedSignal(ZM(43628))):Connect(function(...)local u=t[ZM(43628)]U[ZM(43663)]=u m[ZM(43628)]=u task[ZM(44676)](v)uM:DoCallback(I[ZM(43795)],u)end)U:Set(U[ZM(42891)])U[ZM(43048)]=W U[ZM(42858)]=U uM[ZM(43889)][U[ZM(43295)]]=U return U end function W.Colorpicker(u,I,...)local W={[ZM(43502)]=I[ZM(43502)],[ZM(43295)]=I[ZM(43295)];[ZM(42891)]=I[ZM(42891)]or{Color3[ZM(43744)](255,255,255),0},[ZM(43795)]=I[ZM(43795)]or function(...) end,[ZM(44156)]=ZM(42831)}W[ZM(42858)]=W local N={}N[ZM(42831)]=DM:Instance(ZM(43015),{[ZM(42908)]=1;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,20),[ZM(43502)]=ZM(42831);[ZM(43378)]=u[ZM(43048)][ZM(44123)];[ZM(43817)]=0})N[ZM(44103)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(44892)],[ZM(43628)]=W[ZM(43502)];[ZM(43559)]=Color3[ZM(43744)](96,140,128),[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(42908)]=1,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,15);[ZM(43502)]=ZM(44103),[ZM(43378)]=N[ZM(42831)],[ZM(43817)]=0})N[ZM(43157)]=DM:Instance(ZM(43139),{[ZM(43565)]=Enum[ZM(43565)][ZM(44892)];[ZM(43628)]=ZM(44368);[ZM(43559)]=Color3[ZM(43744)](0,0,0);[ZM(43406)]=14;[ZM(43949)]=false,[ZM(43749)]=W[ZM(42891)][1],[ZM(44472)]=UDim2[ZM(44272)](1,-15,0,0),[ZM(44462)]=UDim2[ZM(44272)](0,15,0,15);[ZM(43502)]=ZM(43157),[ZM(43378)]=N[ZM(42831)];[ZM(43817)]=0})DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43378)]=N[ZM(43157)]})DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)];[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(43378)]=N[ZM(43157)]})N[ZM(43260)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](7,10,9);[ZM(42908)]=1,[ZM(44472)]=UDim2[ZM(44272)](1,20,0,0);[ZM(44462)]=UDim2[ZM(44272)](0,215,0,210);[ZM(43502)]=ZM(43260),[ZM(43378)]=U[ZM(43048)][ZM(43494)],[ZM(43817)]=0,[ZM(42723)]=false})DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43378)]=N[ZM(43260)]})DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21);[ZM(44437)]=1;[ZM(44353)]=1.5;[ZM(43378)]=N[ZM(43260)]})N[ZM(43931)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](15,24,21),[ZM(42908)]=1;[ZM(44472)]=UDim2[ZM(44272)](0,0,0,25);[ZM(44462)]=UDim2[ZM(44272)](1,0,0,1);[ZM(43502)]=ZM(43931),[ZM(43378)]=N[ZM(43260)];[ZM(43817)]=0})N[ZM(44092)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)],[ZM(43628)]=ZM(44360)..W[ZM(43502)];[ZM(43559)]=Color3[ZM(43744)](255,255,255),[ZM(43406)]=14,[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(42908)]=1;[ZM(43749)]=Color3[ZM(43744)](10,16,14);[ZM(44472)]=UDim2[ZM(44272)](0,0,0,0);[ZM(44462)]=UDim2[ZM(44272)](1,0,0,25);[ZM(43502)]=ZM(44092);[ZM(43378)]=N[ZM(43260)];[ZM(43817)]=0})N[ZM(44010)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](7,10,9);[ZM(42908)]=1,[ZM(44472)]=UDim2[ZM(44272)](0,10,0,208);[ZM(44462)]=UDim2[ZM(44272)](1,-20,-0.548837364,-50);[ZM(43502)]=ZM(44010);[ZM(43378)]=N[ZM(43260)],[ZM(43817)]=0})N[ZM(43005)]=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43060)];[ZM(43618)]=Vector2[ZM(44272)](.5,0),[ZM(42908)]=1,[ZM(44472)]=UDim2[ZM(44272)](.5,-20,0,0);[ZM(44462)]=UDim2[ZM(44272)](0,150,0,150),[ZM(43502)]=ZM(43005),[ZM(43378)]=N[ZM(44010)],[ZM(43817)]=0})DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43378)]=N[ZM(43005)]})DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)];[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(44437)]=1;[ZM(44353)]=3,[ZM(43378)]=N[ZM(43005)]})N[ZM(43621)]=DM:Instance(ZM(43139),{[ZM(43628)]=ZM(44368);[ZM(43949)]=false,[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(44472)]=UDim2[ZM(44272)](1,-35,0,0),[ZM(44462)]=UDim2[ZM(44272)](0,10,0,150),[ZM(43502)]=ZM(43621),[ZM(43378)]=N[ZM(44010)],[ZM(43817)]=0})DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43378)]=N[ZM(43621)]})DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)];[ZM(43659)]=Color3[ZM(43744)](15,24,21),[ZM(44437)]=1,[ZM(43378)]=N[ZM(43621)]})DM:Instance(ZM(43369),{[ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,Color3[ZM(43744)](255,255,255));ColorSequenceKeypoint[ZM(44272)](1,Color3[ZM(43744)](0,0,0))}),[ZM(43320)]=90;[ZM(43378)]=N[ZM(43621)]})N[ZM(44055)]=DM:Instance(ZM(43139),{[ZM(43628)]=ZM(44368),[ZM(43949)]=false;[ZM(43749)]=W[ZM(42891)][1];[ZM(44472)]=UDim2[ZM(44272)](1,-15,0,0),[ZM(44462)]=UDim2[ZM(44272)](0,10,0,150);[ZM(43502)]=ZM(44055),[ZM(43378)]=N[ZM(44010)];[ZM(43817)]=0})local P=DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(44347)],[ZM(44830)]=Enum[ZM(44830)][ZM(44134)],[ZM(43080)]=UDim2[ZM(44272)](8,0,.5,0),[ZM(43749)]=W[ZM(42891)][1];[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0);[ZM(43502)]=ZM(44238);[ZM(43378)]=N[ZM(44055)];[ZM(43817)]=0,[ZM(43320)]=180;[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0)})DM:Instance(ZM(43369),{[ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,0),NumberSequenceKeypoint[ZM(44272)](1,1)}),[ZM(43320)]=90,[ZM(43378)]=P})DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43378)]=N[ZM(44055)]})DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)];[ZM(43659)]=Color3[ZM(43744)](15,24,21);[ZM(43378)]=N[ZM(44055)]})local m=DM:Instance(ZM(43015),{[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=2,[ZM(44462)]=UDim2[ZM(44272)](0,6,0,6),[ZM(43502)]=ZM(44512),[ZM(43378)]=N[ZM(43005)]})DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43378)]=m})local D=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(43817)]=1;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,2),[ZM(43502)]=ZM(43376),[ZM(43378)]=N[ZM(43621)]})local r=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(43817)]=1,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,2);[ZM(43502)]=ZM(43244);[ZM(43378)]=N[ZM(44055)]})W[ZM(43048)]=N local function t(I,...)I[ZM(42723)]=true DM:TweenTransparencyIns(I,0,.2)end local function K(I,...)DM:TweenTransparencyIns(I,1,.2)task[ZM(44860)](.2,function(...)if I and I[ZM(43378)]then I[ZM(42723)]=false end end)end N[ZM(43157)][ZM(44275)]:Connect(function(...)local I=N[ZM(43260)]local u=not((I[ZM(42723)]and I[ZM(42908)]<1))for u,U in ipairs(U[ZM(43048)][ZM(43494)]:GetChildren())do if U[ZM(43502)]==ZM(43260)and(U~=I and U[ZM(42723)])then K(U)end end if u then t(I)else K(I)end end)local function j(...)local I,u=W[ZM(43663)][1],W[ZM(43663)][2]local U,P,t=I:ToHSV()local K=N[ZM(43005)][ZM(43725)][ZM(42847)]/2 local j=(U*2)*math[ZM(44431)]local q=P*K local v=Vector2[ZM(44272)](math[ZM(43289)](j),math[ZM(43688)](j))*q DM:Tween(m,TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(42646)]),{[ZM(44472)]=UDim2[ZM(44272)](.5,v[ZM(42847)],.5,v[ZM(42838)])})DM:Tween(D,TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(42646)]),{[ZM(44472)]=UDim2[ZM(44272)](0,0,1-t,-1)})DM:Tween(r,TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(42646)]),{[ZM(44472)]=UDim2[ZM(44272)](0,0,u,-1)})end function W.Set(u,I,...)u[ZM(43663)]=I local U=I[1]local W=I[2]DM:Tween(N[ZM(43157)],TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=U})DM:Tween(P,TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=U})DM:Tween(N[ZM(44055)],TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=U})local m,D,r=U:ToHSV()if r>0 then u[ZM(43124)]=m u[ZM(44435)]=D end j()uM:DoCallback(u[ZM(43795)],I)end function W.SetVisibility(u,I,...)u[ZM(42831)][ZM(42723)]=I if u[ZM(43260)][ZM(42723)]and not I then u[ZM(43260)][ZM(42723)]=I end end local function q(I,u,U,...)local N=U[ZM(44498)]+U[ZM(43725)]/2 local P=U[ZM(43725)][ZM(42847)]/2 local m=Vector2[ZM(44272)](I,u)-N local D=m[ZM(43046)]local r,t=0,0 if D>0 then r=math[ZM(43580)](m[ZM(42838)],m[ZM(42847)])/((2*math[ZM(44431)]))if r<0 then r=r+1 end t=math[ZM(42960)](D/P,0,1)end local K,j,q=W[ZM(43663)][1]:ToHSV()return Color3[ZM(43627)](r,t,q)end local function v(I,u,...)I[ZM(43451)]:Connect(function(I,...)if I[ZM(42843)]==Enum[ZM(42843)][ZM(42910)]then local I,U I=S[ZM(44601)]:Connect(function(...)local I=n:GetMouseLocation()local U=Vector2[ZM(44272)](I[ZM(42847)],I[ZM(42838)]-k)u(U)end)U=n[ZM(42869)]:Connect(function(u,...)if u[ZM(42843)]==Enum[ZM(42843)][ZM(42910)]then I:Disconnect()U:Disconnect()end end)end end)end v(N[ZM(43005)],function(I,...)local u=Vector2[ZM(44272)](I[ZM(42847)],I[ZM(42838)]-k)local U=q(u[ZM(42847)],u[ZM(42838)],N[ZM(43005)])W:Set({U,W[ZM(43663)][2]})end)v(N[ZM(43621)],function(I,...)local u=Vector2[ZM(44272)](I[ZM(42847)],I[ZM(42838)]-k)local U=N[ZM(43621)][ZM(44498)][ZM(42838)]local P=N[ZM(43621)][ZM(43725)][ZM(42838)]local m=math[ZM(42960)](((u[ZM(42838)]-U))/P,0,1)local D,r=W[ZM(43124)]or 0,W[ZM(44435)]or 0 local t=1-m local K=Color3[ZM(43627)](D,r,t)W:Set({K,W[ZM(43663)][2]})end)v(N[ZM(44055)],function(I,...)local u=Vector2[ZM(44272)](I[ZM(42847)],I[ZM(42838)]-k)local U=N[ZM(44055)][ZM(44498)][ZM(42838)]local P=N[ZM(44055)][ZM(43725)][ZM(42838)]local m=math[ZM(42960)](((u[ZM(42838)]-U))/P,0,1)W:Set({W[ZM(43663)][1],m})end)W:Set(W[ZM(42891)])uM[ZM(43889)][W[ZM(43295)]]=W return W end function W.Keybind(u,I,...)local W={[ZM(43502)]=I[ZM(43502)];[ZM(43295)]=I[ZM(43295)];[ZM(42891)]=I[ZM(42891)]or nil,[ZM(43795)]=I[ZM(43795)]or function(...) end;[ZM(42711)]=I[ZM(42711)]or nil;[ZM(44159)]=I[ZM(44159)]or ZM(44606);[ZM(44532)]=false,[ZM(44156)]=ZM(44304)}W[ZM(42858)]=W local N={}do N[ZM(43276)]=DM:Instance(ZM(43015),{[ZM(42908)]=1;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,20),[ZM(43502)]=ZM(43276);[ZM(43378)]=u[ZM(43048)][ZM(44123)]})N[ZM(43077)]=DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=W[ZM(43502)];[ZM(43559)]=Color3[ZM(43744)](96,140,128);[ZM(43406)]=14;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(42908)]=1,[ZM(44462)]=UDim2[ZM(44272)](1,0,0,15);[ZM(43502)]=ZM(43077),[ZM(43378)]=N[ZM(43276)]})N[ZM(44565)]=DM:Instance(ZM(43139),{[ZM(43565)]=Enum[ZM(43565)][ZM(43388)];[ZM(43628)]=ZM(43273),[ZM(43559)]=Color3[ZM(43744)](96,140,128);[ZM(43406)]=14,[ZM(44075)]=Enum[ZM(44075)][ZM(44301)],[ZM(43949)]=false,[ZM(43749)]=Color3[ZM(43744)](7,10,9),[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](1,-50,0,0),[ZM(44462)]=UDim2[ZM(44272)](0,50,0,15);[ZM(43502)]=ZM(44565);[ZM(43378)]=N[ZM(43276)]})DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0);[ZM(43378)]=N[ZM(44565)]})DM:Instance(ZM(43606),{[ZM(44803)]=Enum[ZM(44803)][ZM(44439)];[ZM(43659)]=Color3[ZM(43744)](15,24,21);[ZM(43378)]=N[ZM(44565)]})end W[ZM(43048)]=N function W.SetVisibility(u,I,...)u[ZM(43276)][ZM(42723)]=I end function W.SetKey(u,I,...)if I then if typeof(I[ZM(42843)])==ZM(43299)then I[ZM(42843)]=Enum[ZM(42843)][I[ZM(42843)]]if I[ZM(42843)]==ZM(42852)then I[ZM(42852)]=Enum[ZM(42852)][I[ZM(42852)]]end end local W local P if I[ZM(42843)]==Enum[ZM(42843)][ZM(42910)]or I[ZM(42843)]==Enum[ZM(42843)][ZM(44607)]or I[ZM(42843)]==Enum[ZM(42843)][ZM(44345)]then W=ZM(44468)P=I[ZM(42843)]elseif I[ZM(42843)]==Enum[ZM(42843)][ZM(42717)]then W=ZM(42852)P=I[ZM(42852)]else W=ZM(42843)P=I[ZM(42843)]end u[ZM(42711)]={[ZM(44040)]=W,[ZM(43663)]=P}U[ZM(43211)]:UpdateStatus(u[ZM(43502)],u[ZM(44532)],uM:FormatKeyName(uM:GetInputName(I)))N[ZM(44565)][ZM(43628)]=uM:FormatKeyName(uM:GetInputName(I))else U[ZM(43211)]:UpdateStatus(u[ZM(43502)],u[ZM(44532)],ZM(44368),true)u[ZM(42711)]=nil N[ZM(44565)][ZM(43628)]=ZM(43273)end DM:Tween(N[ZM(44565)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=Color3[ZM(43744)](96,140,128)})end function W.SetState(u,I,...)u[ZM(44532)]=I U[ZM(43211)]:UpdateStatus(u[ZM(43502)],u[ZM(44532)])uM:DoCallback(u[ZM(43795)],I)end function W.Set(u,I,...)u[ZM(43663)]=I u:SetKey(I)end function W.Matches(u,I,...)if not u[ZM(42711)]then return false end if u[ZM(42711)][ZM(44040)]==ZM(42852)then return I[ZM(42852)]==u[ZM(42711)][ZM(43663)]elseif u[ZM(42711)][ZM(44040)]==ZM(44468)then return I[ZM(42843)]==u[ZM(42711)][ZM(43663)]elseif u[ZM(42711)][ZM(44040)]==ZM(42843)then return I[ZM(42843)]==u[ZM(42711)][ZM(43663)]end return false end local P=false uM:Connection(ZM(43894)..(W[ZM(43295)]..ZM(44210)),N[ZM(44565)][ZM(42789)],function(...)if P then return end P=true DM:Tween(N[ZM(44565)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=Color3[ZM(43744)](7,10,9)})N[ZM(44565)][ZM(43628)]=ZM(44846)DM:Tween(N[ZM(44565)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=Color3[ZM(43744)](255,255,255)})local I=ZM(43894)..(W[ZM(43295)]..ZM(44872))task[ZM(43860)](.06)uM:Connection(I,n[ZM(43451)],function(u,U,...)if not P then return end P=false uM:Disconnect(I)if u[ZM(42852)]==Enum[ZM(42852)][ZM(42817)]then W:Set(nil)return end if u[ZM(42843)]==Enum[ZM(42843)][ZM(42910)]or u[ZM(42843)]==Enum[ZM(42843)][ZM(44607)]or u[ZM(42843)]==Enum[ZM(42843)][ZM(44345)]or u[ZM(42843)]==Enum[ZM(42843)][ZM(42717)]then W:SetKey(u)end end)end)uM:Connection(ZM(43894)..(W[ZM(43295)]..ZM(43809)),n[ZM(43451)],function(I,u,...)if u or P or not W[ZM(42711)]then return end if W:Matches(I)then if W[ZM(44159)]==ZM(44606)then W:SetState(not W[ZM(44532)])elseif W[ZM(44159)]==ZM(43795)then uM:DoCallback(W[ZM(43795)])elseif W[ZM(44159)]==ZM(44161)then W:SetState(true)W[ZM(44532)]=true end end end)uM:Connection(ZM(43894)..(W[ZM(43295)]..ZM(43493)),n[ZM(42869)],function(I,u,...)if u or P or not W[ZM(42711)]then return end if W:Matches(I)and(W[ZM(44159)]==ZM(44161)and W[ZM(44532)])then W:SetState(false)W[ZM(44532)]=false end end)W:Set(W[ZM(42891)])uM[ZM(43889)][W[ZM(43295)]]=W return W end W[ZM(43048)]=P N[ZM(42748)][W[ZM(43502)]]=W return W end N[ZM(43048)]=P do uM:Connection(ZM(43977)..N[ZM(43502)],P[ZM(43554)][ZM(44275)],function(...)U:SetCategory({[ZM(43502)]=W[ZM(43502)]..(ZM(44252)..N[ZM(43502)]),[ZM(43405)]=N;[ZM(43378)]=W})end)uM:Connection(ZM(44222)..N[ZM(43502)],P[ZM(43554)][ZM(44211)],function(...)DM:Tween(P[ZM(43923)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=uM[ZM(44411)][ZM(44433)]})end)uM:Connection(ZM(44376)..N[ZM(43502)],P[ZM(43554)][ZM(42664)],function(...)if P[ZM(43554)]:GetAttribute(ZM(43820))then return end DM:Tween(P[ZM(43923)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=Color3[ZM(43744)](15,24,21)})end)end table[ZM(43063)](W[ZM(44255)],N[ZM(43502)])W[ZM(43536)][N[ZM(43502)]]=N return N end W[ZM(43048)]=N U[ZM(43384)][I[ZM(43502)]]=W return W end function U.TabSeperator(I,...)local u={}u[ZM(42721)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1,[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43817)]=0;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,1),[ZM(43502)]=ZM(42721);[ZM(43378)]=I[ZM(43048)][ZM(43503)]})u[ZM(43562)]=DM:Instance(ZM(43015),{[ZM(43618)]=Vector2[ZM(44272)](0,.5),[ZM(43749)]=Color3[ZM(43744)](15,24,21),[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=0;[ZM(44472)]=UDim2[ZM(44272)](0,0,.5,0),[ZM(44462)]=UDim2[ZM(44272)](1,-7,1,0);[ZM(43502)]=ZM(43562),[ZM(43378)]=u[ZM(42721)]})return u end U[ZM(43048)]=W uM[ZM(44662)]=U return U end function uM.Notify(W,I,u,U,...)u=u or 3 U=U or Color3[ZM(43744)](63,201,176)local N={}local P=12 local m=25 local D=5 local r=14 local t=4 local K=Instance[ZM(44272)](ZM(43489))K[ZM(44462)]=UDim2[ZM(44272)](1,0,1,0)K[ZM(43406)]=r K[ZM(43565)]=Enum[ZM(43565)][ZM(44666)]K[ZM(43628)]=I K[ZM(44487)]=true K[ZM(43378)]=uM[ZM(43793)]K[ZM(42723)]=false task[ZM(43860)]()local j=K[ZM(42761)]K:Destroy()local q=math[ZM(44420)](j[ZM(42838)]+t,m)local v=(m+j[ZM(42847)])+D*2 local L=75 for I,u in ipairs(uM[ZM(43200)])do L=(L+u[ZM(43550)])+P end N[ZM(44084)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)](7,10,9);[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](0,-v-20,0,L),[ZM(44462)]=UDim2[ZM(44272)](0,v,0,q),[ZM(43502)]=ZM(44084);[ZM(43378)]=uM[ZM(43793)]})DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](0,0),[ZM(43378)]=N[ZM(44084)]})DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(43069)];[ZM(43867)]=U,[ZM(44877)]=.7;[ZM(44830)]=Enum[ZM(44830)][ZM(43547)],[ZM(43988)]=Rect[ZM(44272)](49,49,450,450);[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(42908)]=1,[ZM(43817)]=0,[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0),[ZM(44462)]=UDim2[ZM(44272)](1,30,1,30);[ZM(42648)]=0;[ZM(43378)]=N[ZM(44084)]})DM:Instance(ZM(43606),{[ZM(43659)]=Color3[ZM(43744)](15,24,21);[ZM(43378)]=N[ZM(44084)]})DM:Instance(ZM(43489),{[ZM(43565)]=Enum[ZM(43565)][ZM(44666)];[ZM(43628)]=I;[ZM(43559)]=Color3[ZM(44272)](1,1,1),[ZM(43406)]=r,[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(42908)]=1;[ZM(44472)]=UDim2[ZM(44272)](0,m+D,0,0);[ZM(44462)]=UDim2[ZM(44272)](1,-m-D*2,1,0);[ZM(44487)]=true,[ZM(43378)]=N[ZM(44084)]})DM:Instance(ZM(44108),{[ZM(44220)]=uM[ZM(44554)];[ZM(43867)]=U;[ZM(42908)]=1;[ZM(44462)]=UDim2[ZM(44272)](0,m,0,m);[ZM(44472)]=UDim2[ZM(44272)](0,0,.5,-m/2);[ZM(43378)]=N[ZM(44084)]})table[ZM(43063)](uM[ZM(43200)],{[ZM(43015)]=N[ZM(44084)];[ZM(43550)]=q})DM:Tween(N[ZM(44084)],TweenInfo[ZM(44272)](.35,Enum[ZM(44374)][ZM(42646)],Enum[ZM(44424)][ZM(43875)]),{[ZM(44472)]=UDim2[ZM(44272)](0,10,0,L)})local x=75 for I,u in ipairs(uM[ZM(43200)])do DM:Tween(u[ZM(43015)],TweenInfo[ZM(44272)](.25,Enum[ZM(44374)][ZM(42646)],Enum[ZM(44424)][ZM(43875)]),{[ZM(44472)]=UDim2[ZM(44272)](0,10,0,x)})x=(x+u[ZM(43550)])+P end task[ZM(44860)](u,function(...)for I,u in pairs(N[ZM(44084)]:GetChildren())do if u:IsA(ZM(43489))then DM:Tween(u,TweenInfo[ZM(44272)](.2,Enum[ZM(44374)][ZM(44864)],Enum[ZM(44424)][ZM(43875)]),{[ZM(44737)]=1})elseif u:IsA(ZM(44108))then DM:Tween(u,TweenInfo[ZM(44272)](.2,Enum[ZM(44374)][ZM(44864)],Enum[ZM(44424)][ZM(43875)]),{[ZM(44877)]=1})elseif u:IsA(ZM(43606))then DM:Tween(u,TweenInfo[ZM(44272)](.2,Enum[ZM(44374)][ZM(44864)],Enum[ZM(44424)][ZM(43875)]),{[ZM(44437)]=1})end end task[ZM(43860)](.2)local I for u,U in ipairs(uM[ZM(43200)])do if U[ZM(43015)]==N[ZM(44084)]then I=u break end end if I then uM[ZM(43200)][I][ZM(43015)]:Destroy()table[ZM(44002)](uM[ZM(43200)],I)end x=75 for I,u in ipairs(uM[ZM(43200)])do DM:Tween(u[ZM(43015)],TweenInfo[ZM(44272)](.25,Enum[ZM(44374)][ZM(42646)],Enum[ZM(44424)][ZM(43875)]),{[ZM(44472)]=UDim2[ZM(44272)](0,10,0,x)})x=(x+u[ZM(43550)])+P end end)end end))()A(ZM(43392))WM[ZM(42858)]=WM WM[ZM(44454)]=LPH_NO_VIRTUALIZE(function(I,...)local u,U=pcall(I[ZM(43822)])if not u and U then uM:Notify(ZM(42924)..tostring(U),1,Color3[ZM(43744)](255,0,0))end end)WM[ZM(42855)]=LPH_NO_VIRTUALIZE(function(I,u,U,...)local W=setmetatable({[ZM(43502)]=I;[ZM(43822)]=u;[ZM(42752)]=U},WM)if not U then U=ZM(42662)end W[ZM(42752)]=U local N=#WM[U]+1 WM[U][N]=W return WM[U][N]end)A(ZM(43958))PM[ZM(43319)]=LPH_NO_VIRTUALIZE(function(I,u,...)return math[ZM(43787)](I/u)*u end)PM[ZM(43176)]=LPH_NO_VIRTUALIZE(function(I,...)if typeof(I)==ZM(43052)then return Vector2[ZM(44272)](math[ZM(44193)](I[ZM(42847)]),math[ZM(44193)](I[ZM(42838)]))else return Vector3[ZM(44272)](math[ZM(44193)](I[ZM(42847)]),math[ZM(44193)](I[ZM(42838)]),math[ZM(44193)](I[ZM(43467)]))end end)A(ZM(43170))mM[ZM(43279)]={}mM[ZM(42780)]={}mM[ZM(44522)]={}mM[ZM(43326)]={}mM[ZM(42704)]=30 function mM.Sky.NewSky(u,I,...)local U=I[ZM(43502)]mM[ZM(42780)][U]={[ZM(44294)]=I[ZM(44294)],[ZM(42697)]=I[ZM(42697)];[ZM(42709)]=I[ZM(42709)],[ZM(43635)]=I[ZM(43635)];[ZM(44644)]=I[ZM(44644)],[ZM(43497)]=I[ZM(43497)],[ZM(44321)]=I[ZM(43951)]or ZM(43611),[ZM(43202)]=I[ZM(43846)]or ZM(43116)}end function mM.Sky.SwitchSkybox(u,I,...)uM:Notify(ZM(43383)..I)local U=T:FindFirstChildOfClass(ZM(43279))local W=T:FindFirstChildOfClass(ZM(43279))do for I,u in next,mM[ZM(42780)][I]do W[I]=u end end end do do(LPH_NO_VIRTUALIZE(function(...)mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(42937);[ZM(44294)]=ZM(43927),[ZM(42697)]=ZM(43735),[ZM(42709)]=ZM(42878);[ZM(43635)]=ZM(44416);[ZM(44644)]=ZM(43475);[ZM(43497)]=ZM(42836)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(43634),[ZM(44294)]=ZM(43156),[ZM(42697)]=ZM(42747),[ZM(42709)]=ZM(43024),[ZM(43635)]=ZM(42975);[ZM(44644)]=ZM(44614);[ZM(43497)]=ZM(44221)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(44689),[ZM(44294)]=ZM(43667);[ZM(42697)]=ZM(43750);[ZM(42709)]=ZM(43193);[ZM(43635)]=ZM(43759),[ZM(44644)]=ZM(44464);[ZM(43497)]=ZM(44508)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(43098),[ZM(44294)]=ZM(44726);[ZM(42697)]=ZM(43146);[ZM(42709)]=ZM(43699),[ZM(43635)]=ZM(43699),[ZM(44644)]=ZM(43699);[ZM(43497)]=ZM(43882)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(43969),[ZM(44294)]=ZM(44130),[ZM(42697)]=ZM(42986);[ZM(42709)]=ZM(43315),[ZM(43635)]=ZM(43355);[ZM(44644)]=ZM(42844),[ZM(43497)]=ZM(43730)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(43849),[ZM(44294)]=ZM(43574);[ZM(42697)]=ZM(43708);[ZM(42709)]=ZM(42758),[ZM(43635)]=ZM(44260),[ZM(44644)]=ZM(43865);[ZM(43497)]=ZM(43089)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(44828),[ZM(44294)]=ZM(44325);[ZM(42697)]=ZM(43174),[ZM(42709)]=ZM(43121),[ZM(43635)]=ZM(43527),[ZM(44644)]=ZM(42792),[ZM(43497)]=ZM(43722)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(44421);[ZM(44294)]=ZM(44284);[ZM(42697)]=ZM(43703);[ZM(42709)]=ZM(42769),[ZM(43635)]=ZM(43461);[ZM(44644)]=ZM(42849);[ZM(43497)]=ZM(44245)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(43870);[ZM(44294)]=ZM(44632);[ZM(42697)]=ZM(43253);[ZM(42709)]=ZM(44516),[ZM(43635)]=ZM(44479);[ZM(44644)]=ZM(43438);[ZM(43497)]=ZM(44535)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(43043),[ZM(44294)]=ZM(44402);[ZM(42697)]=ZM(43861),[ZM(42709)]=ZM(44042);[ZM(43635)]=ZM(42807);[ZM(44644)]=ZM(44755);[ZM(43497)]=ZM(43235)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(43691),[ZM(44294)]=ZM(42942);[ZM(42697)]=ZM(43598);[ZM(42709)]=ZM(43159),[ZM(43635)]=ZM(43088);[ZM(44644)]=ZM(42788),[ZM(43497)]=ZM(43743)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(44175),[ZM(44294)]=ZM(43041),[ZM(42697)]=ZM(44052);[ZM(42709)]=ZM(43999);[ZM(43635)]=ZM(42766),[ZM(44644)]=ZM(44557);[ZM(43497)]=ZM(43802)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(44540);[ZM(44294)]=ZM(43222),[ZM(42697)]=ZM(43683),[ZM(42709)]=ZM(43929),[ZM(43635)]=ZM(44543);[ZM(44644)]=ZM(44873),[ZM(43497)]=ZM(43135)})mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(44257);[ZM(44294)]=ZM(43978);[ZM(42697)]=ZM(43240);[ZM(42709)]=ZM(43251),[ZM(43635)]=ZM(42740);[ZM(44644)]=ZM(43835);[ZM(43497)]=ZM(43196)})if T:FindFirstChildOfClass(ZM(43279))then local I=T:FindFirstChildOfClass(ZM(43279))mM[ZM(43279)]:NewSky({[ZM(43502)]=ZM(43848),[ZM(44294)]=I[ZM(44294)];[ZM(42697)]=I[ZM(42697)];[ZM(42709)]=I[ZM(42709)],[ZM(43635)]=I[ZM(43635)];[ZM(44644)]=I[ZM(44644)];[ZM(43497)]=I[ZM(43497)]})end end))()end end local rM=Instance[ZM(44272)](ZM(43015))do rM[ZM(42723)]=false rM[ZM(43749)]=Color3[ZM(43744)](255,255,255)rM[ZM(42908)]=0 rM[ZM(43378)]=uM[ZM(43140)]rM[ZM(43817)]=0 end local tM=Instance[ZM(44272)](ZM(43606))do tM[ZM(43378)]=rM tM[ZM(43659)]=Color3[ZM(43744)](255,255,255)tM[ZM(44353)]=1 end for I=1,mM[ZM(42704)],1 do local u=rM:Clone()u[ZM(43378)]=uM[ZM(43140)]u[ZM(43502)]=ZM(44732)..tostring(I)table[ZM(43063)](mM[ZM(43326)],u)end mM[ZM(43086)]=DM:Instance(ZM(42749),{[ZM(43378)]=g;[ZM(44173)]=true})mM[ZM(43304)]=DM:Instance(ZM(43015),{[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0);[ZM(42908)]=1,[ZM(42648)]=9999,[ZM(44462)]=UDim2[ZM(44272)](0,500,0,500),[ZM(42723)]=true,[ZM(43378)]=mM[ZM(43086)];[ZM(42723)]=false})mM[ZM(44226)]=DM:Instance(ZM(43015),{[ZM(42908)]=1;[ZM(42648)]=9999;[ZM(44472)]=UDim2[ZM(44272)](0,-1,0,-1);[ZM(44462)]=UDim2[ZM(44272)](1,2,1,2),[ZM(42723)]=true;[ZM(43378)]=mM[ZM(43304)];[ZM(43749)]=uM[ZM(44411)][ZM(44754)]})mM[ZM(42720)]=DM:Instance(ZM(43015),{[ZM(44462)]=UDim2[ZM(44272)](1,-2,1,-2),[ZM(44472)]=UDim2[ZM(44272)](0,1,0,1);[ZM(42908)]=.8,[ZM(43378)]=mM[ZM(44226)],[ZM(43749)]=uM[ZM(44411)][ZM(44754)]})mM[ZM(44796)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](1,0),[ZM(43378)]=mM[ZM(44226)]})mM[ZM(44758)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](1,0);[ZM(43378)]=mM[ZM(42720)]})mM[ZM(42909)]=DM:Instance(ZM(43606),{[ZM(43378)]=mM[ZM(44226)],[ZM(44353)]=3,[ZM(43659)]=uM[ZM(44411)][ZM(44754)]})mM[ZM(44346)]=DM:Instance(ZM(43606),{[ZM(44353)]=5;[ZM(43659)]=Color3[ZM(44272)]();[ZM(43378)]=mM[ZM(43304)]})mM[ZM(43579)]=DM:Instance(ZM(43647),{[ZM(44452)]=UDim[ZM(44272)](1,0);[ZM(43378)]=mM[ZM(43304)]})mM[ZM(44752)]=DM:Instance(ZM(43015),{[ZM(44472)]=UDim2[ZM(44272)](0,M[ZM(43469)][ZM(42847)]/2,0,M[ZM(43469)][ZM(42838)]/2),[ZM(44462)]=UDim2[ZM(44272)](0,100,0,100);[ZM(42908)]=1,[ZM(43378)]=uM[ZM(43140)];[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(42723)]=false})mM[ZM(44094)]=DM:Instance(ZM(43015),{[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(43561)]=Color3[ZM(43744)]();[ZM(43740)]=Enum[ZM(43740)][ZM(42911)],[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,-20),[ZM(44462)]=UDim2[ZM(44272)](0,2,0,20);[ZM(43378)]=mM[ZM(44752)]})mM[ZM(43995)]=DM:Instance(ZM(43369),{[ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,Color3[ZM(43744)](255,255,255));ColorSequenceKeypoint[ZM(44272)](1,Color3[ZM(43744)](0,0,0))});[ZM(43320)]=-90,[ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,0),NumberSequenceKeypoint[ZM(44272)](.69451373815536,.52499997615814);NumberSequenceKeypoint[ZM(44272)](.85037410259247,.78125);NumberSequenceKeypoint[ZM(44272)](1,.86250001192093)});[ZM(43378)]=mM[ZM(44094)]})mM[ZM(43410)]=DM:Instance(ZM(43015),{[ZM(43618)]=Vector2[ZM(44272)](.5,.5);[ZM(43749)]=Color3[ZM(43744)](255,255,255);[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43740)]=Enum[ZM(43740)][ZM(42911)];[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,20);[ZM(44462)]=UDim2[ZM(44272)](0,2,0,20),[ZM(43378)]=mM[ZM(44752)];[ZM(43502)]=ZM(44712)})mM[ZM(43362)]=DM:Instance(ZM(43369),{[ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,Color3[ZM(43744)](255,255,255)),ColorSequenceKeypoint[ZM(44272)](1,Color3[ZM(43744)](0,0,0))});[ZM(43320)]=90,[ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,0);NumberSequenceKeypoint[ZM(44272)](.6945,.525);NumberSequenceKeypoint[ZM(44272)](.8504,.78125),NumberSequenceKeypoint[ZM(44272)](1,.8625)});[ZM(43378)]=mM[ZM(43410)]})mM[ZM(44630)]=DM:Instance(ZM(43015),{[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43740)]=Enum[ZM(43740)][ZM(42911)],[ZM(44472)]=UDim2[ZM(44272)](.5,-20,.5,0),[ZM(44462)]=UDim2[ZM(44272)](0,20,0,2);[ZM(43378)]=mM[ZM(44752)];[ZM(43502)]=ZM(44105)})mM[ZM(44784)]=DM:Instance(ZM(43369),{[ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,Color3[ZM(43744)](255,255,255));ColorSequenceKeypoint[ZM(44272)](1,Color3[ZM(43744)](0,0,0))}),[ZM(43320)]=180,[ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,0);NumberSequenceKeypoint[ZM(44272)](.6945,.525),NumberSequenceKeypoint[ZM(44272)](.8504,.78125),NumberSequenceKeypoint[ZM(44272)](1,.8625)});[ZM(43378)]=mM[ZM(44630)]})mM[ZM(43411)]=DM:Instance(ZM(43015),{[ZM(43502)]=ZM(42903),[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(43749)]=Color3[ZM(43744)](255,255,255),[ZM(43561)]=Color3[ZM(43744)](0,0,0);[ZM(43740)]=Enum[ZM(43740)][ZM(42911)];[ZM(44472)]=UDim2[ZM(44272)](.5,20,.5,0),[ZM(44462)]=UDim2[ZM(44272)](0,20,0,2),[ZM(43378)]=mM[ZM(44752)]})mM[ZM(44177)]=DM:Instance(ZM(43369),{[ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,Color3[ZM(43744)](255,255,255));ColorSequenceKeypoint[ZM(44272)](1,Color3[ZM(43744)](0,0,0))}),[ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,0);NumberSequenceKeypoint[ZM(44272)](.69451373815536,.52499997615814);NumberSequenceKeypoint[ZM(44272)](.85037410259247,.78125);NumberSequenceKeypoint[ZM(44272)](1,.86250001192093)});[ZM(43378)]=mM[ZM(43411)]})mM[ZM(44886)]=DM:Instance(ZM(42749),{[ZM(43378)]=g;[ZM(44173)]=true,[ZM(44328)]=0;[ZM(43502)]=ZM(44761)})mM[ZM(43027)]=DM:Instance(ZM(42749),{[ZM(43378)]=g,[ZM(44173)]=true,[ZM(44328)]=0;[ZM(43502)]=ZM(43837)})mM[ZM(44062)]=DM:Instance(ZM(43015),{[ZM(43618)]=Vector2[ZM(44272)](.5,0),[ZM(42908)]=1;[ZM(44462)]=UDim2[ZM(44272)](0,500,0,500);[ZM(43378)]=mM[ZM(43027)];[ZM(44472)]=UDim2[ZM(44272)](.5,0,0,100)})mM[ZM(43084)]=DM:Instance(ZM(44403),{[ZM(43378)]=mM[ZM(44062)];[ZM(44564)]=UDim[ZM(44272)](0,3)})mM[ZM(44069)]=LPH_NO_VIRTUALIZE(function(I,u,U,W,...)local N,P,m,D=U[ZM(42847)],U[ZM(42838)],W[ZM(42847)],W[ZM(42838)]local r=((N+m))/2 local t=((P+D))/2 local K=math[ZM(43377)](N-m)^2 local j=math[ZM(43377)](P-D)^2 local q=math[ZM(44463)](K+j)local v=math[ZM(43264)](math[ZM(43580)](P-D,N-m))I[ZM(43618)]=Vector2[ZM(44272)](.5,.5)I[ZM(44472)]=UDim2[ZM(43686)](r,t)I[ZM(44462)]=UDim2[ZM(43686)](q,u)I[ZM(43320)]=v end)mM[ZM(44312)]=LPH_NO_VIRTUALIZE(function(I,u,...)local U=#mM[ZM(44522)]+1 local W=DM:Instance(ZM(44108),{[ZM(44220)]=w(ZM(43281));[ZM(44462)]=UDim2[ZM(44272)](0,uM[ZM(43889)][ZM(43191)][ZM(43663)]+10,0,uM[ZM(43889)][ZM(43191)][ZM(43663)]+10);[ZM(42908)]=1,[ZM(43618)]=Vector2[ZM(44272)](.5,.5),[ZM(43378)]=mM[ZM(43027)],[ZM(42648)]=uM[ZM(43889)][ZM(42939)][ZM(43663)]and 5 or 1,[ZM(44877)]=1,[ZM(43867)]=uM[ZM(43889)][ZM(43714)][ZM(43663)][1];[ZM(42723)]=true})mM[ZM(44522)][U]={[ZM(44472)]=u;[ZM(43675)]=I;[ZM(43961)]=W}DM:Tween(W,TweenInfo[ZM(44272)](.25,Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=0,[ZM(44462)]=UDim2[ZM(44272)](0,uM[ZM(43889)][ZM(43191)][ZM(43663)],0,uM[ZM(43889)][ZM(43191)][ZM(43663)])})if uM[ZM(43889)][ZM(44457)][ZM(43663)]then DM:Tween(W,TweenInfo[ZM(44272)](.25,Enum[ZM(44374)][ZM(42646)]),{[ZM(43320)]=math[ZM(43047)](-90,90)})end Delay(uM[ZM(43889)][ZM(43300)][ZM(43663)],function(...)local I=DM:Tween(W,TweenInfo[ZM(44272)](.1,Enum[ZM(44374)][ZM(42646)]),{[ZM(44877)]=1})I[ZM(44259)]:Wait()W:Destroy()mM[ZM(44522)][U]=nil end)end)mM[ZM(44778)]=LPH_NO_VIRTUALIZE(function(...)local I=Drawing[ZM(44272)](ZM(44862))I[ZM(42723)]=false I[ZM(42648)]=2 I[ZM(43659)]=Color3[ZM(43744)](255,255,255)return I end)mM[ZM(43970)]=LPH_NO_VIRTUALIZE(function(...)local I=Drawing[ZM(44272)](ZM(44862))I[ZM(42723)]=false I[ZM(42648)]=1 I[ZM(44353)]=3 I[ZM(43659)]=Color3[ZM(43744)](0,0,0)return I end)local KM=setmetatable({},{[ZM(44326)]=ZM(43168)})mM[ZM(43093)]=LPH_NO_VIRTUALIZE(function(I,u,...)if not I then return nil end local U=not u and KM[I]if U and(tick()-U[ZM(44713)])<.12 then return U[ZM(43040)]end if not u then u=M[ZM(43808)][ZM(44511)]end local W=((I[ZM(43808)][ZM(44511)]-u))[ZM(43189)]*((((I[ZM(43808)][ZM(44511)]-u))[ZM(43046)]+10))local N=DM[ZM(43426)]local P=B:Raycast(u,W,N)local m=(P and(P[ZM(43363)]and P[ZM(43363)]:IsDescendantOf(I[ZM(43378)])))or nil if not u then KM[I]={[ZM(44713)]=tick(),[ZM(43040)]=m}end return m end)mM[ZM(44858)]=LPH_NO_VIRTUALIZE(function(I,...)local u=I if typeof(I)==ZM(43363)then u=I[ZM(43808)][ZM(44511)]end local U,W=M:WorldToViewportPoint(u)if W then local I=Vector2[ZM(44272)](M[ZM(43469)][ZM(42847)]/2,M[ZM(43469)][ZM(42838)]/2)return((I-Vector2[ZM(44272)](U[ZM(42847)],U[ZM(42838)])))[ZM(43046)]end return math[ZM(44579)]end)A(ZM(43266))NM[ZM(42858)]=NM NM[ZM(43112)][ZM(42858)]=NM[ZM(43112)]NM[ZM(44875)][ZM(42858)]=NM[ZM(44875)]NM[ZM(44875)][ZM(42647)][ZM(42858)]=NM[ZM(44875)][ZM(42647)]do local function I(I,...)local u=uM[ZM(43889)][I]return u and u[ZM(43663)]end DM[ZM(42842)]=I local u=RaycastParams[ZM(44272)]()u[ZM(43755)]=Enum[ZM(44716)][ZM(43143)]u[ZM(44528)]=true DM[ZM(43130)]=LPH_NO_VIRTUALIZE(function(...)local I={}local U=DM[ZM(43426)]and DM[ZM(43426)][ZM(44098)]if type(U)==ZM(43508)then for u,U in ipairs(U)do I[#I+1]=U end end if Y[ZM(43160)]then I[#I+1]=Y[ZM(43160)]end I[#I+1]=M for u,U in ipairs({ZM(43560);ZM(43051),ZM(44341),ZM(44724)})do local W=B:FindFirstChild(U)if W then I[#I+1]=W end end u[ZM(44098)]=I end)DM[ZM(43130)]()DM[ZM(44700)]=LPH_NO_VIRTUALIZE(function(I,U,...)local W=I local N=U for I=1,4,1 do local U=B:Raycast(W,N,u)if not U then return nil end local P=U[ZM(43363)]if P[ZM(44437)]<.95 and P[ZM(44745)]then return U end local m=((U[ZM(44472)]-W))[ZM(43046)]+.02 local D=N[ZM(43046)]-m if D<=.02 then return nil end W=U[ZM(44472)]+N[ZM(43189)]*.02 N=N[ZM(43189)]*D end return nil end)DM[ZM(43833)]=LPH_NO_VIRTUALIZE(function(I,u,...)if typeof(I)~=ZM(43912)or typeof(u)~=ZM(43912)then return false end local U=u-I if U[ZM(43046)]<.05 then return true end return DM[ZM(44700)](I,U+U[ZM(43189)]*.4)==nil end)DM[ZM(44408)]=LPH_NO_VIRTUALIZE(function(...)local I=Y[ZM(43160)]local u=I and((I[ZM(43166)]or I:FindFirstChild(ZM(44746))))if not u then return{}end local U=((u[ZM(43808)]*CFrame[ZM(44272)](0,1.5,0)))[ZM(44472)]local W,N=pcall(function(...)return Y:GetNetworkPing()end)local P=math[ZM(42960)](((W and(type(N)==ZM(44549)and N)or.1))+.05,.05,.35)local m=u[ZM(44781)]local D={U}if m[ZM(43046)]>1 then D[2]=U-m*P D[3]=U-m*((P*.5))end return D end)DM[ZM(43020)]=LPH_NO_VIRTUALIZE(function(I,u,...)local U=Vector3[ZM(44272)](u[ZM(42847)],I[ZM(42838)],u[ZM(43467)])if((U-I))[ZM(43046)]<.05 then return I end return((CFrame[ZM(44215)](I,U)*CFrame[ZM(44272)](.5,-0.3,-2)))[ZM(44472)]end)DM[ZM(43030)]=nil DM[ZM(44381)]=LPH_NO_VIRTUALIZE(function(I,u,U,W,N,P,m,...)if typeof(I)~=ZM(43912)or typeof(u)~=ZM(43912)or type(U)~=ZM(44549)or U<=1 then return false,math[ZM(44579)]end W=type(W)==ZM(44549)and W or 0 N=type(N)==ZM(44549)and N or 1000 local D=B[ZM(44638)]*W local r=.016666666666667 local t=I local K=u[ZM(43189)]*U local j=0 local q=math[ZM(44579)]for I=1,400,1 do local u=math[ZM(42820)](U*r,N-j)if u<=.05 then break end local W=K[ZM(43189)]*u if typeof(m)==ZM(43912)then local I=m-t local U=math[ZM(42960)](I:Dot(W[ZM(43189)]),0,u)q=math[ZM(42820)](q,(((t+W[ZM(43189)]*U)-m))[ZM(43046)])end local v=DM[ZM(44700)](t,W)if v then local I=P~=nil and v[ZM(43363)]:IsDescendantOf(P)return I,q end t=t+W j=j+u K=K-Vector3[ZM(44272)](0,D,0)*r end return false,q end)DM[ZM(44667)]=LPH_NO_VIRTUALIZE(function(I,u,U,W,...)if type(U)~=ZM(44549)or U<=1 or type(W)~=ZM(44549)or W<=0 then return u end local N=B[ZM(44638)]*W local P=.016666666666667 local m=u for W=1,5,1 do local D=m-I if D[ZM(43046)]<.05 then return u end local r=I local t=D[ZM(43189)]*U local K,j=r,math[ZM(44579)]local q=math[ZM(44579)]for I=1,600,1 do local W=(t[ZM(43189)]*U)*P local m=u-r local D=math[ZM(42960)](m:Dot(W[ZM(43189)]),0,W[ZM(43046)])local v=r+W[ZM(43189)]*D local L=((v-u))[ZM(43046)]if L<j then K,j=v,L end if L>q and D<=0 then break end q=L r=r+W t=t-Vector3[ZM(44272)](0,N,0)*P end local v=u-K if v[ZM(43046)]<.05 then break end m=m+v end return m end)DM[ZM(44842)]=LPH_NO_VIRTUALIZE(function(I,u,U,...)local W=DM[ZM(43030)]if not W then return nil end if((u-I))[ZM(43046)]>W[ZM(44506)]then return false end local N,P=pcall(DM[ZM(44667)],I,u,W[ZM(43223)],W[ZM(44364)])if not N or typeof(P)~=ZM(43912)then P=u end local m=P-I if m[ZM(43046)]<.05 then return false end local D,r=pcall(DM[ZM(44381)],I,m[ZM(43189)],W[ZM(43223)],W[ZM(44364)],W[ZM(44506)],U,u)return D and r==true end)DM[ZM(44048)]=LPH_NO_VIRTUALIZE(function(I,u,...)for u,U in ipairs(DM[ZM(44408)]())do if not DM[ZM(43833)](U,I)then return false end end if typeof(u)==ZM(43912)then local U=DM[ZM(43020)](I,u)if not DM[ZM(43833)](I,U)then return false end end return true end)local U={}for I,u in ipairs({3,5.5,8;10})do for I,W in ipairs({0,3,6})do for I=0,15,1 do local N=(I*math[ZM(44431)])/8 local P=Vector3[ZM(44272)](math[ZM(43688)](N)*u,W,-math[ZM(43289)](N)*u)if P[ZM(43046)]<=10.5 then U[#U+1]=P end end end end for I,u in ipairs({3;5,7.5,10})do U[#U+1]=Vector3[ZM(44272)](0,u,0)end DM[ZM(44194)]=U DM[ZM(42830)]={ZM(43001),ZM(43283);ZM(43119);ZM(44746),ZM(44018)}end do local function I(I,...)local u=uM[ZM(43889)][I]return u and u[ZM(43663)]end local u=setmetatable({},{[ZM(44326)]=ZM(43168)})DM[ZM(43642)]=setmetatable({},{[ZM(44326)]=ZM(43168)})DM[ZM(42990)]=setmetatable({},{[ZM(44326)]=ZM(43168)})DM[ZM(42887)]=setmetatable({},{[ZM(44326)]=ZM(43168)})local U=setmetatable({},{[ZM(44326)]=ZM(43168)})local W=0 local function N(...)if not I(ZM(44441))then return end local U=os[ZM(42638)]()for I,W in ipairs(Q:GetPlayers())do local N=W~=Y and W[ZM(43160)]local P=N and N:FindFirstChild(ZM(44746))if P then local I,W=P[ZM(43808)]:ToOrientation()local N=u[P]if not N then u[P]={[ZM(43231)]=W,[ZM(44713)]=U;[ZM(44265)]=0,[ZM(42678)]=0;[ZM(43873)]=0}else local I=U-N[ZM(44713)]if I>0 then local u=(((W-N[ZM(43231)])+math[ZM(44431)]))%((2*math[ZM(44431)]))-math[ZM(44431)]local P=math[ZM(43377)](u)/I N[ZM(44265)]=N[ZM(44265)]*.85+P*.15 if math[ZM(43377)](u)>math[ZM(43206)](45)then N[ZM(42678)]=math[ZM(42820)](N[ZM(42678)]+1,10)N[ZM(43873)]=U elseif U-N[ZM(43873)]>.6 then N[ZM(42678)]=0 end end N[ZM(43231)],N[ZM(44713)]=W,U end end end end local function P(...)local u=DM[ZM(42887)]if not I(ZM(42756))then for I in pairs(u)do u[I]=nil end return end for I,U in ipairs(Q:GetPlayers())do local W=U~=Y and U[ZM(43160)]local N=W and W:FindFirstChild(ZM(43001))if N and N:IsA(ZM(43712))then local I=N[ZM(43808)][ZM(43662)][ZM(42838)]if I>.3 then u[W]=ZM(42719)elseif I<-0.3 then u[W]=ZM(43594)else u[W]=ZM(42675)end end end end local function m(...)local u=DM[ZM(43642)]if not I(ZM(42819))then for I in pairs(u)do u[I]=nil end for I in pairs(U)do U[I]=nil end return end local W=os[ZM(42638)]()for I,N in ipairs(Q:GetPlayers())do if N~=Y then local I=N[ZM(43160)]local P=I and I:FindFirstChild(ZM(44746))if not P then U[N]=nil if I then u[I]=nil end else local m=U[N]local D=P[ZM(44472)]if not m or m[ZM(43160)]~=I then U[N]={[ZM(43160)]=I;[ZM(43566)]=D;[ZM(43506)]=D;[ZM(42848)]=W+1.2}u[I]=nil else local U=((D-m[ZM(43566)]))[ZM(43046)]if W<m[ZM(42848)]or U>60 then m[ZM(43566)],m[ZM(43506)]=D,D u[I]=nil elseif U>14 then u[I]=m[ZM(43506)]m[ZM(43566)]=D else m[ZM(43566)],m[ZM(43506)]=D,D u[I]=nil end end end end end end local function D(...)local u=DM[ZM(42990)]if not I(ZM(42671))then for I in pairs(u)do u[I]=nil end return end if os[ZM(42638)]()-W<.15 then return end W=os[ZM(42638)]()for I,U in ipairs(Q:GetPlayers())do local W=U~=Y and U[ZM(43160)]local N=W and W:FindFirstChildOfClass(ZM(43137))local P=N and N:FindFirstChildOfClass(ZM(44409))local m=false if P then for I,u in ipairs(P:GetPlayingAnimationTracks())do if u[ZM(42665)]and u[ZM(42665)][ZM(43249)]==ZM(44270)then m=true break end end end if W then u[W]=m or nil end end end DM[ZM(44794)]=LPH_NO_VIRTUALIZE(function(U,W,...)local N=U[ZM(44472)]local P=W and W[ZM(44802)]if P then local I=P[ZM(43378)]local u=I and DM[ZM(43642)][I]if typeof(u)==ZM(43912)then N=Vector3[ZM(44272)](u[ZM(42847)],N[ZM(42838)],u[ZM(43467)])end end if I(ZM(44441))and P then local I=u[P]if I then local u=math[ZM(43377)](P[ZM(44340)][ZM(42838)])if I[ZM(44265)]>5 or u>5 or I[ZM(42678)]>=2 then local I=P[ZM(44472)]return Vector3[ZM(44272)](I[ZM(42847)],N[ZM(42838)],I[ZM(43467)]),true end end end return N,false end)DM[ZM(43072)]=LPH_NO_VIRTUALIZE(function(u,U,...)local W=U and U[ZM(44802)]local N=W and W[ZM(44781)]if typeof(N)~=ZM(43912)then N=u[ZM(44781)]end if typeof(N)~=ZM(43912)then return Vector3[ZM(43992)]end local P=N[ZM(42838)]~=N[ZM(42838)]or N[ZM(42847)]~=N[ZM(42847)]or N[ZM(42838)]<-100 or math[ZM(43377)](N[ZM(42847)])>1000 or math[ZM(43377)](N[ZM(43467)])>1000 if U then if P and I(ZM(44349))then N=U:GetMoveVelocity()*1.7 elseif U:GetState()==Enum[ZM(44548)][ZM(42767)]or(U[ZM(43263)][ZM(43046)]>.05 and((W and((W[ZM(44781)]*Vector3[ZM(44272)](1,0,1)))[ZM(43046)]or 0))<1)then N=(U[ZM(43263)]*U[ZM(43343)])*1.7 end end return Vector3[ZM(44272)](math[ZM(42960)](N[ZM(42847)],-26,26),N[ZM(42838)],math[ZM(42960)](N[ZM(43467)],-26,26))end)S[ZM(44074)]:Connect(LPH_NO_VIRTUALIZE(function(...)pcall(N)pcall(P)pcall(m)pcall(D)end))end NM[ZM(43112)][ZM(43775)]=LPH_NO_VIRTUALIZE(function(I,u,...)if not((u and u[ZM(43378)]))then return nil end local U=Y[ZM(43160)]local W=U and((U[ZM(43166)]or U:FindFirstChild(ZM(44746))))if not W then return nil end DM[ZM(43130)]()local N=((W[ZM(43808)]*CFrame[ZM(44272)](0,1.5,0)))[ZM(44472)]local P=u[ZM(44472)]local m=u[ZM(43378)]local D=Vector3[ZM(44272)](P[ZM(42847)]-N[ZM(42847)],0,P[ZM(43467)]-N[ZM(43467)])local r=D[ZM(43046)]>.05 and D[ZM(43189)]or Vector3[ZM(44272)](0,0,-1)local t=r:Cross(Vector3[ZM(44272)](0,1,0))local K=D[ZM(43046)]>150 and DM[ZM(43030)]~=nil local j={P}for I,U in ipairs(DM[ZM(42830)])do local W=m:FindFirstChild(U)if W and(W:IsA(ZM(43712))and W~=u)then j[#j+1]=W[ZM(44472)]end end local q={}for I,u in ipairs(DM[ZM(44194)])do local U=(t*u[ZM(42847)]+Vector3[ZM(44272)](0,u[ZM(42838)],0))-r*u[ZM(43467)]local W=U[ZM(43046)]>.01 and r:Dot(U[ZM(43189)])or 0 q[#q+1]={[ZM(44491)]=U,[ZM(44079)]=U[ZM(43046)]-W*1.5}end table[ZM(43900)](q,function(I,u,...)return I[ZM(44079)]<u[ZM(44079)]end)local v=0 for I,u in ipairs(q)do local U=N+u[ZM(44491)]if DM[ZM(43833)](N,U)then local I=DM[ZM(43020)](U,P)if DM[ZM(43833)](U,I)then for u,W in ipairs(j)do local N=W-I local D=DM[ZM(44700)](I,N+N[ZM(43189)]*.5)if not D or D[ZM(43363)]:IsDescendantOf(m)then if not K then if DM[ZM(44048)](U,P)then return U end break end if v<24 then v=v+1 if DM[ZM(44842)](I,W,m)and DM[ZM(44048)](U,P)then return U end end end end end end end local L=M[ZM(43808)][ZM(44472)]for I,U in{.3;.45,.6;.75;.9}do local W=L:Lerp(P,U)if mM[ZM(43093)](u,W)then return W end end return nil end)NM[ZM(43112)][ZM(43292)]=LPH_NO_VIRTUALIZE(function(I,u,U,...)if typeof(u)~=ZM(43363)then rconsoleprint(ZM(44708),ZM(43412),ZM(44893),typeof(u))return end if typeof(U)~=ZM(43508)then rconsoleprint(ZM(44708),ZM(44572),ZM(44893),typeof(U))return end local W=setmetatable({[ZM(43502)]=U[ZM(43502)]or u[ZM(43502)];[ZM(43160)]=U[ZM(43160)]or(u:IsA(ZM(43800))and u[ZM(43160)]),[ZM(44556)]=u:IsA(ZM(43800))and u[ZM(44556)]or(U[ZM(43502)]or u[ZM(43502)]);[ZM(43048)]={},[ZM(44201)]=tick();[ZM(42813)]=tick();[ZM(43306)]=tick();[ZM(43048)]=NM[ZM(44875)][ZM(42647)][ZM(44657)]();[ZM(44538)]={},[ZM(43163)]=nil;[ZM(43265)]={},[ZM(44412)]={},[ZM(44156)]=U[ZM(44156)],[ZM(43366)]=U[ZM(43366)],[ZM(43405)]=u;[ZM(44811)]={}},NM[ZM(44875)][ZM(42647)])NM[ZM(44875)][ZM(44501)][u]=W return W end)A(ZM(44898))NM[ZM(44585)]={[ZM(44462)]=UDim2[ZM(44272)](0,200,0,7);[ZM(42679)]=z[ZM(43576)],[ZM(43406)]=8,[ZM(42908)]=1,[ZM(44737)]=1,[ZM(42650)]=1;[ZM(43628)]=ZM(44368);[ZM(44836)]=false;[ZM(44075)]=Enum[ZM(44075)][ZM(44105)];[ZM(43660)]=Enum[ZM(43660)][ZM(44791)]}NM[ZM(44875)][ZM(42647)][ZM(42858)]=NM[ZM(44875)][ZM(42647)]NM[ZM(44875)][ZM(42647)][ZM(42765)]=LPH_NO_VIRTUALIZE(function(I,u,...)local U=NM[ZM(44875)][ZM(44501)][u]if not U then return end U[ZM(43048)][ZM(43021)]:Remove()U[ZM(43048)][ZM(44031)]:Remove()for I,u in U[ZM(43048)]do if I==ZM(42801)or I==ZM(43021)or I==ZM(43108)or I==ZM(44031)then continue end u:Destroy()end for I,u in U[ZM(43048)][ZM(42801)]do u:Destroy()end for I,u in U[ZM(43048)][ZM(43108)]do u:Remove()end NM[ZM(44875)][ZM(44501)][u]=nil end)NM[ZM(44875)][ZM(42647)][ZM(44445)]=LPH_NO_VIRTUALIZE(function(I,u,...)if u:IsA(ZM(44656))and u[ZM(44437)]~=1 then u:SetAttribute(ZM(43597),u[ZM(43698)])u:SetAttribute(ZM(43368),u[ZM(43659)])u:SetAttribute(ZM(44602),u[ZM(44198)])u:SetAttribute(ZM(44213),u[ZM(44188)])u[ZM(42935)]=false if uM[ZM(43889)][ZM(44248)..I[ZM(43366)]]and uM[ZM(43889)][ZM(44248)..I[ZM(43366)]][ZM(43663)]then u[ZM(43659)]=uM[ZM(43889)][I[ZM(43366)]..ZM(44759)][ZM(43663)][1]u[ZM(44188)]=uM[ZM(43889)][I[ZM(43366)]..ZM(44157)][ZM(43663)]*uM[ZM(43889)][I[ZM(43366)]..ZM(44537)][ZM(43663)]u[ZM(43698)]=uM[ZM(43889)][I[ZM(43366)]..ZM(42884)][ZM(43663)]if u:IsA(ZM(44656))and u[ZM(43698)]==Enum[ZM(43698)][ZM(44780)]then u[ZM(44198)]=ZM(44446)elseif u:IsA(ZM(44656))and u[ZM(43698)]~=Enum[ZM(43698)][ZM(44780)]then u[ZM(44198)]=ZM(44368)end else u[ZM(43659)]=u:GetAttribute(ZM(43368))u[ZM(43698)]=u:GetAttribute(ZM(43597))u[ZM(44188)]=u:GetAttribute(ZM(44213))if u:IsA(ZM(44656))then u[ZM(44198)]=u:GetAttribute(ZM(44602))end end end end)NM[ZM(44875)][ZM(42647)][ZM(43791)]=LPH_NO_VIRTUALIZE(function(I,u,...)I[ZM(44538)]={}I[ZM(43163)]=nil if not u then rconsoleprint(ZM(43123),typeof(u))return end for u,U in next,u:GetChildren()do if table[ZM(43851)](NM[ZM(43572)],U[ZM(43502)])then I[ZM(43163)]=U end if U[ZM(43502)]:find(ZM(44903))then for u,U in U:GetChildren()do I:ApplyArmorVisuals(U)end if DM[ZM(44417)][U[ZM(43502)]]then local u=DM[ZM(44417)][U[ZM(43502)]]I[ZM(44538)][U]={[ZM(43502)]=u[ZM(43502)];[ZM(44690)]=u[ZM(44690)]}else local u=U[ZM(43502)]local W=u:split(ZM(44019))if not W then return end local N=W[1]local P=W[2]local m=N:split(ZM(44252))local D=m[2]D=tonumber(D)local r=DM[ZM(44633)][D]if r then I[ZM(44538)][U]={[ZM(43502)]=r[ZM(43502)],[ZM(44690)]=P}DM[ZM(44417)][U[ZM(43502)]]={[ZM(43502)]=r[ZM(43502)],[ZM(44690)]=P}end end end end u[ZM(42803)]:Connect(function(u,...)task[ZM(43860)](.3)if u and table[ZM(43851)](NM[ZM(43572)],u[ZM(43502)])then I[ZM(43163)]=u end if u and u[ZM(43502)]:find(ZM(44903))then for u,U in u:GetChildren()do I:ApplyArmorVisuals(U)end if DM[ZM(44417)][u[ZM(43502)]]then local U=DM[ZM(44417)][u[ZM(43502)]]I[ZM(44538)][u]={[ZM(43502)]=U[ZM(43502)];[ZM(44690)]=U[ZM(44690)]}else local U=u[ZM(43502)]local W=U:split(ZM(44019))if not W then return end local N=W[1]local P=W[2]local m=N:split(ZM(44252))local D=m[2]D=tonumber(D)local r=DM[ZM(44633)][D]I[ZM(44538)][u]={[ZM(43502)]=r[ZM(43502)];[ZM(44690)]=P}DM[ZM(44417)][u[ZM(43502)]]={[ZM(43502)]=r[ZM(43502)];[ZM(44690)]=P}end end end)u[ZM(44821)]:Connect(function(u,...)if I[ZM(43163)]==u then I[ZM(43163)]=nil end if I[ZM(44538)][u]then I[ZM(44538)][u]=nil end end)end)NM[ZM(44875)][ZM(42647)][ZM(44657)]=LPH_NO_VIRTUALIZE(function(I,...)local u={}u[ZM(44300)]=DM:Instance(ZM(43015),{[ZM(43378)]=mM[ZM(43027)];[ZM(42723)]=false,[ZM(42908)]=1,[ZM(42648)]=2})u[ZM(44430)]=DM:Instance(ZM(43606),{[ZM(43378)]=u[ZM(44300)],[ZM(44353)]=3;[ZM(43659)]=Color3[ZM(43744)](0,0,0);[ZM(44803)]=Enum[ZM(44803)][ZM(44439)];[ZM(44874)]=Enum[ZM(44874)][ZM(44264)]})u[ZM(43230)]=DM:Instance(ZM(43015),{[ZM(43378)]=u[ZM(44300)],[ZM(42723)]=true,[ZM(42908)]=1,[ZM(44472)]=UDim2[ZM(44272)](0,-1,0,-1),[ZM(44462)]=UDim2[ZM(44272)](1,2,1,2),[ZM(42648)]=2})u[ZM(44882)]=DM:Instance(ZM(43606),{[ZM(43378)]=u[ZM(43230)],[ZM(44874)]=Enum[ZM(44874)][ZM(44264)],[ZM(43659)]=Color3[ZM(43744)](255,255,255)})u[ZM(42923)]=DM:Instance(ZM(43015),{[ZM(43378)]=u[ZM(44300)];[ZM(42908)]=1;[ZM(44462)]=UDim2[ZM(44272)](1,4,1,2);[ZM(44472)]=UDim2[ZM(44272)](0,-2,0,-1)})local U={}local W=.3 local N=.3 local P=1 local m=-P U[1]=Instance[ZM(44272)](ZM(43015))U[1][ZM(43378)]=u[ZM(42923)]U[1][ZM(44462)]=UDim2[ZM(44272)](W,0,0,P)U[1][ZM(44472)]=UDim2[ZM(44272)](0,0,0,m)U[1][ZM(43749)]=Color3[ZM(43744)](255,255,255)U[1][ZM(43817)]=0 U[1][ZM(42723)]=false U[2]=Instance[ZM(44272)](ZM(43015))U[2][ZM(43378)]=u[ZM(42923)]U[2][ZM(44462)]=UDim2[ZM(44272)](0,P,N,0)U[2][ZM(44472)]=UDim2[ZM(44272)](0,0,0,m)U[2][ZM(43749)]=Color3[ZM(43744)](255,255,255)U[2][ZM(43817)]=0 U[3]=Instance[ZM(44272)](ZM(43015))U[3][ZM(43378)]=u[ZM(42923)]U[3][ZM(44462)]=UDim2[ZM(44272)](W,0,0,P)U[3][ZM(44472)]=UDim2[ZM(44272)](1-W,0,0,m)U[3][ZM(43749)]=Color3[ZM(43744)](255,255,255)U[3][ZM(43817)]=0 U[4]=Instance[ZM(44272)](ZM(43015))U[4][ZM(43378)]=u[ZM(42923)]U[4][ZM(44462)]=UDim2[ZM(44272)](0,P,N,0)U[4][ZM(44472)]=UDim2[ZM(44272)](1,-P,0,m)U[4][ZM(43749)]=Color3[ZM(43744)](255,255,255)U[4][ZM(43817)]=0 U[5]=Instance[ZM(44272)](ZM(43015))U[5][ZM(43378)]=u[ZM(42923)]U[5][ZM(44462)]=UDim2[ZM(44272)](0,P,N,0)U[5][ZM(44472)]=UDim2[ZM(44272)](0,0,1-N,0)U[5][ZM(43749)]=Color3[ZM(43744)](255,255,255)U[5][ZM(43817)]=0 U[6]=Instance[ZM(44272)](ZM(43015))U[6][ZM(43378)]=u[ZM(42923)]U[6][ZM(44462)]=UDim2[ZM(44272)](W,0,0,P)U[6][ZM(44472)]=UDim2[ZM(44272)](0,0,1,0)U[6][ZM(43749)]=Color3[ZM(43744)](255,255,255)U[6][ZM(43817)]=0 U[7]=Instance[ZM(44272)](ZM(43015))U[7][ZM(43378)]=u[ZM(42923)]U[7][ZM(44462)]=UDim2[ZM(44272)](0,P,N,0)U[7][ZM(44472)]=UDim2[ZM(44272)](1,-P,1-N,0)U[7][ZM(43749)]=Color3[ZM(43744)](255,255,255)U[7][ZM(43817)]=0 U[8]=Instance[ZM(44272)](ZM(43015))U[8][ZM(43378)]=u[ZM(42923)]U[8][ZM(44462)]=UDim2[ZM(44272)](W,0,0,P)U[8][ZM(44472)]=UDim2[ZM(44272)](1-W,0,1,0)U[8][ZM(43749)]=Color3[ZM(43744)](255,255,255)U[8][ZM(43817)]=0 for I=9,16,1 do local W=U[I-8]:Clone()W[ZM(43378)]=u[ZM(42923)]W[ZM(43817)]=1 W[ZM(43561)]=Color3[ZM(43744)](0,0,0)U[I]=W end u[ZM(42801)]=U u[ZM(44128)]=DM:Instance(ZM(43015),{[ZM(43378)]=u[ZM(44300)],[ZM(44462)]=UDim2[ZM(44272)](0,1,1,4);[ZM(44472)]=UDim2[ZM(44272)](0,-6,0,-2);[ZM(43749)]=Color3[ZM(43744)](255,0,0);[ZM(43561)]=Color3[ZM(43744)](0,0,0),[ZM(43817)]=1;[ZM(42723)]=false})u[ZM(42688)]=DM:Instance(ZM(43015),{[ZM(43749)]=Color3[ZM(43744)]();[ZM(44462)]=UDim2[ZM(44272)](0,0,0,0),[ZM(43378)]=u[ZM(44128)];[ZM(43817)]=0,[ZM(42723)]=false})u[ZM(43845)]=DM:Instance(ZM(43489),{[ZM(42908)]=1,[ZM(43378)]=u[ZM(42688)],[ZM(42723)]=false,[ZM(42679)]=NM[ZM(43565)];[ZM(43406)]=NM[ZM(44901)],[ZM(44075)]=Enum[ZM(44075)][ZM(42903)],[ZM(43660)]=Enum[ZM(43660)][ZM(44791)];[ZM(43559)]=Color3[ZM(43744)](255,255,255),[ZM(43628)]=ZM(44368);[ZM(44462)]=UDim2[ZM(44272)](0,20,0,12),[ZM(44472)]=UDim2[ZM(44272)](-1,-23,0,-2)})u[ZM(43981)]=DM[ZM(44204)](u[ZM(43845)])u[ZM(43502)]=DM:Instance(ZM(43489),{[ZM(43378)]=u[ZM(44300)];[ZM(42679)]=NM[ZM(43565)],[ZM(43406)]=NM[ZM(44901)];[ZM(42908)]=1,[ZM(43559)]=Color3[ZM(43744)](255,255,255);[ZM(44462)]=UDim2[ZM(44272)](1,0,0,14),[ZM(44472)]=UDim2[ZM(44272)](0,0,0,-17);[ZM(42650)]=1;[ZM(42723)]=false})u[ZM(44706)]=DM[ZM(44204)](u[ZM(43502)])u[ZM(43697)]=DM:Instance(ZM(43489),{[ZM(43378)]=u[ZM(44300)];[ZM(42648)]=1,[ZM(43406)]=NM[ZM(44901)];[ZM(44462)]=UDim2[ZM(44272)](1,0,0,14),[ZM(44472)]=UDim2[ZM(44272)](0,0,1,6);[ZM(42650)]=1;[ZM(42723)]=false,[ZM(43628)]=ZM(44368);[ZM(42908)]=1;[ZM(42679)]=NM[ZM(43565)],[ZM(43559)]=Color3[ZM(43744)](255,255,255)})u[ZM(44878)]=DM[ZM(44204)](u[ZM(43697)])u[ZM(44823)]=DM:Instance(ZM(43489),{[ZM(43378)]=u[ZM(44300)];[ZM(42648)]=1;[ZM(43406)]=NM[ZM(44901)],[ZM(44462)]=UDim2[ZM(44272)](1,0,0,14),[ZM(44472)]=UDim2[ZM(44272)](0,0,1,6),[ZM(42650)]=1;[ZM(42723)]=false;[ZM(43628)]=ZM(44368);[ZM(42908)]=1;[ZM(42679)]=NM[ZM(43565)],[ZM(43559)]=Color3[ZM(43744)](255,255,255)})u[ZM(44329)]=DM[ZM(44204)](u[ZM(44823)])u[ZM(44237)]=DM:Instance(ZM(44108),{[ZM(43378)]=u[ZM(44300)],[ZM(42648)]=1,[ZM(44220)]=w(ZM(42947));[ZM(43618)]=Vector2[ZM(44272)](.5,0);[ZM(44462)]=UDim2[ZM(44272)](0,25,0,25),[ZM(44830)]=Enum[ZM(44830)][ZM(44813)],[ZM(43867)]=Color3[ZM(43744)](255,255,255);[ZM(42908)]=1})u[ZM(43975)]=DM:Instance(ZM(43015),{[ZM(43378)]=u[ZM(44300)],[ZM(44836)]=true;[ZM(44462)]=UDim2[ZM(44272)](0,150,1,12);[ZM(44472)]=UDim2[ZM(44272)](1,2,0,-6),[ZM(42908)]=1})u[ZM(44286)]=DM:Instance(ZM(44403),{[ZM(44564)]=UDim[ZM(44272)](0,0),[ZM(43599)]=Enum[ZM(43599)][ZM(42682)],[ZM(43378)]=u[ZM(43975)]})u[ZM(44147)]=DM:Instance(ZM(44797),{[ZM(44596)]=UDim[ZM(44272)](0,2),[ZM(43378)]=u[ZM(43975)];[ZM(43252)]=UDim[ZM(44272)](0,2)})for I,U in NM[ZM(43889)]do u[ZM(43989)..I]=DM:Instance(ZM(43489),NM[ZM(44585)])u[ZM(43989)..I][ZM(43378)]=u[ZM(43975)]u[ZM(44163)..I]=DM[ZM(44204)](u[ZM(43989)..I])u[ZM(44163)..I][ZM(44437)]=1 end u[ZM(44902)]=DM:Instance(ZM(43489),{[ZM(43628)]=ZM(42796),[ZM(43406)]=14,[ZM(42908)]=1;[ZM(44462)]=UDim2[ZM(44272)](0,20,0,20);[ZM(42723)]=false;[ZM(43378)]=mM[ZM(43027)]})u[ZM(43511)]=DM[ZM(44204)](u[ZM(44902)])u[ZM(43858)]=DM:Instance(ZM(43489),{[ZM(43378)]=mM[ZM(44062)];[ZM(42679)]=Font[ZM(44272)](ZM(42656),Enum[ZM(44696)][ZM(42818)]);[ZM(43406)]=15;[ZM(42908)]=1,[ZM(43559)]=Color3[ZM(43744)](255,255,255);[ZM(44462)]=UDim2[ZM(44272)](1,0,0,0);[ZM(44472)]=UDim2[ZM(44272)](0,0,0,-18);[ZM(42650)]=1;[ZM(44737)]=1;[ZM(42723)]=false;[ZM(43660)]=Enum[ZM(43660)][ZM(44791)]})u[ZM(42997)]=DM[ZM(44204)](u[ZM(43858)])u[ZM(42997)][ZM(44437)]=1 u[ZM(43021)]=mM[ZM(44778)]()u[ZM(44031)]=mM[ZM(43970)]()u[ZM(43108)]={[ZM(44875)]=mM[ZM(44778)]();[ZM(43786)]=mM[ZM(44778)]();[ZM(43892)]=mM[ZM(44778)](),[ZM(43581)]=mM[ZM(44778)](),[ZM(44693)]=mM[ZM(44778)](),[ZM(44206)]=mM[ZM(44778)]();[ZM(44664)]=mM[ZM(44778)](),[ZM(42824)]=mM[ZM(44778)](),[ZM(43877)]=mM[ZM(44778)](),[ZM(44573)]=mM[ZM(44778)](),[ZM(43734)]=mM[ZM(44778)](),[ZM(43422)]=mM[ZM(43970)](),[ZM(43270)]=mM[ZM(43970)](),[ZM(44730)]=mM[ZM(43970)](),[ZM(43421)]=mM[ZM(43970)]();[ZM(42967)]=mM[ZM(43970)]();[ZM(44242)]=mM[ZM(43970)](),[ZM(44703)]=mM[ZM(43970)](),[ZM(43039)]=mM[ZM(43970)](),[ZM(43155)]=mM[ZM(43970)](),[ZM(43639)]=mM[ZM(43970)](),[ZM(44225)]=mM[ZM(43970)]()}return u end)NM[ZM(44875)][ZM(42647)][ZM(42835)]=LPH_NO_VIRTUALIZE(function(I,...)local u=I[ZM(43160)]local U=I[ZM(43010)]local W=M[ZM(43808)][ZM(44472)]if not u or not U then return{[ZM(42723)]=false;[ZM(42950)]=false;[ZM(43010)]=nil}end if((W-U[ZM(44472)]))[ZM(43046)]>2000 then return{[ZM(42723)]=false;[ZM(42950)]=false;[ZM(43010)]=U}end local N,P,m=10,20,10 local D,r=I:GetBoundingBox(u,U[ZM(43808)])local t=r/2 local K=Vector3[ZM(44272)](math[ZM(42820)](t[ZM(42847)],N/2)*2,math[ZM(42820)](t[ZM(42838)],P/2)*2,math[ZM(42820)](t[ZM(43467)],m/2)*2)local j={Vector3[ZM(44272)](K[ZM(42847)]/2,K[ZM(42838)]/2,K[ZM(43467)]/2),Vector3[ZM(44272)](K[ZM(42847)]/2,K[ZM(42838)]/2,-K[ZM(43467)]/2),Vector3[ZM(44272)](K[ZM(42847)]/2,-K[ZM(42838)]/2,K[ZM(43467)]/2);Vector3[ZM(44272)](K[ZM(42847)]/2,-K[ZM(42838)]/2,-K[ZM(43467)]/2),Vector3[ZM(44272)](-K[ZM(42847)]/2,K[ZM(42838)]/2,K[ZM(43467)]/2);Vector3[ZM(44272)](-K[ZM(42847)]/2,K[ZM(42838)]/2,-K[ZM(43467)]/2);Vector3[ZM(44272)](-K[ZM(42847)]/2,-K[ZM(42838)]/2,K[ZM(43467)]/2),Vector3[ZM(44272)](-K[ZM(42847)]/2,-K[ZM(42838)]/2,-K[ZM(43467)]/2)}local q,v=math[ZM(44579)],math[ZM(44579)]local L,x=-math[ZM(44579)],-math[ZM(44579)]local A=0 local i=M[ZM(43245)]for I,u in ipairs(j)do local U=D:PointToWorldSpace(u)local W,N=i(M,U)if N then A+=1 q=math[ZM(42820)](q,W[ZM(42847)])v=math[ZM(42820)](v,W[ZM(42838)])L=math[ZM(44420)](L,W[ZM(42847)])x=math[ZM(44420)](x,W[ZM(42838)])end end if A==0 and u:FindFirstChild(ZM(43001))then local I=mM[ZM(43093)](u[ZM(43001)])return{[ZM(43010)]=U;[ZM(42950)]=false;[ZM(43884)]=U[ZM(44472)],[ZM(42723)]=I;[ZM(42985)]=I and u[ZM(43001)]or nil}end local O=nil local e={u:FindFirstChild(ZM(44746)),u:FindFirstChild(ZM(43382)),u:FindFirstChild(ZM(43700)),u:FindFirstChild(ZM(44148)),u:FindFirstChild(ZM(42810))}for I,u in ipairs(e)do if u and(u:IsA(ZM(43712))and mM[ZM(43093)](u))then O=u break end end local J=L-q local c=x-v local a=PM[ZM(43176)](Vector2[ZM(44272)](J,c))local l=PM[ZM(43176)](Vector2[ZM(44272)](q,v))local C=Vector2[ZM(44272)](l[ZM(42847)]+a[ZM(42847)]/2,l[ZM(42838)]+a[ZM(42838)]/2)return{[ZM(42723)]=O~=nil;[ZM(42985)]=O;[ZM(43010)]=U,[ZM(43884)]=U[ZM(44472)];[ZM(43550)]=c;[ZM(43100)]=J,[ZM(44462)]=a;[ZM(44472)]=l;[ZM(43754)]=C;[ZM(42950)]=A>0}end)NM[ZM(44875)][ZM(42647)][ZM(44096)]=LPH_NO_VIRTUALIZE(function(I,u,U,...)local W=typeof(u)==ZM(43363)and u:GetChildren()or u U=U or CFrame[ZM(44272)]()local N=math[ZM(44579)]local P,m,D=N,N,N local r,t,K=-N,-N,-N for I,u in ipairs(W)do if u:IsA(ZM(43712))then local I=U:ToObjectSpace(u[ZM(43808)])local W,N,j=u[ZM(44462)][ZM(42847)],u[ZM(44462)][ZM(42838)],u[ZM(44462)][ZM(43467)]local q,v,L,x,A,i,O,e,J,c,a,l=I:components()local C=.5*(((math[ZM(43377)](x)*W+math[ZM(43377)](A)*N)+math[ZM(43377)](i)*j))local f=.5*(((math[ZM(43377)](O)*W+math[ZM(43377)](e)*N)+math[ZM(43377)](J)*j))local z=.5*(((math[ZM(43377)](c)*W+math[ZM(43377)](a)*N)+math[ZM(43377)](l)*j))P=math[ZM(42820)](P,q-C)m=math[ZM(42820)](m,v-f)D=math[ZM(42820)](D,L-z)r=math[ZM(44420)](r,q+C)t=math[ZM(44420)](t,v+f)K=math[ZM(44420)](K,L+z)end end local j=Vector3[ZM(44272)](P,m,D)local q=Vector3[ZM(44272)](r,t,K)local v=((q+j))/2 local L=(U-U[ZM(44472)])+U:PointToWorldSpace(v)local x=q-j return L,x end)NM[ZM(44875)][ZM(42647)][ZM(42992)]=LPH_NO_VIRTUALIZE(function(I,...)local u=I[ZM(43010)]if not u then return 9000000000 end return math[ZM(44193)](((u[ZM(44472)]-M[ZM(43808)][ZM(44472)]))[ZM(43046)])end)NM[ZM(44875)][ZM(42647)][ZM(43331)]=LPH_NO_VIRTUALIZE(function(I,...)if((I[ZM(44156)]==ZM(43800)or I[ZM(44156)]==ZM(44373)))and I[ZM(43160)]then if I[ZM(43160)][ZM(43502)]==ZM(43620)then return I[ZM(43160)]:GetAttribute(ZM(43845)),I[ZM(43160)]:GetAttribute(ZM(42814))end local u=I[ZM(43137)]if not u then return 0,100 end return u[ZM(43845)],u[ZM(42814)]end return 0,100 end)NM[ZM(44875)][ZM(42647)][ZM(42826)]=LPH_NO_VIRTUALIZE(function(I,...)local u=I[ZM(43160)]if not u then return end local U=u:FindFirstChildOfClass(ZM(43137))if U then I[ZM(43137)]=U end if I[ZM(44156)]==ZM(43800)or I[ZM(44156)]==ZM(44373)then return U and U[ZM(44802)]or u:FindFirstChild(ZM(44746))end end)NM[ZM(44875)][ZM(42647)][ZM(44186)]=LPH_NO_VIRTUALIZE(function(I,...)if I[ZM(44156)]==ZM(44373)then return I[ZM(43405)]end if I[ZM(44156)]==ZM(43800)then return I[ZM(43405)][ZM(43160)]end end)NM[ZM(44875)][ZM(42647)][ZM(43269)]=LPH_NO_VIRTUALIZE(function(I,u,U,...)local W=u[ZM(44472)]+((U or Vector3[ZM(43992)]))local N=M:WorldToViewportPoint(W)return PM[ZM(43176)](Vector2[ZM(44272)](N[ZM(42847)],N[ZM(42838)]))end)NM[ZM(44875)][ZM(42647)][ZM(44650)]=LPH_NO_VIRTUALIZE(function(I,u,U,W,N,P,...)local m=I[ZM(43048)][ZM(43108)][u]if m then m[ZM(42723)]=true m[ZM(44262)]=U m[ZM(44636)]=W m[ZM(43659)]=P m[ZM(44437)]=1-N end local D=I[ZM(43048)][ZM(43108)][u..ZM(43494)]if D then D[ZM(42723)]=true D[ZM(44262)]=U D[ZM(44636)]=W D[ZM(44437)]=1-N end end)NM[ZM(44875)][ZM(42647)][ZM(43115)]=LPH_NO_VIRTUALIZE(function(I,...)if I[ZM(43048)][ZM(43108)][ZM(43786)][ZM(42723)]then for I,u in I[ZM(43048)][ZM(43108)]do u[ZM(42723)]=false end end end)NM[ZM(44875)][ZM(42647)][ZM(44583)]=LPH_NO_VIRTUALIZE(function(I,...)I[ZM(43160)]=I:GetCharacter()I[ZM(43010)]=I:GetRoot()I[ZM(43697)]=I:GetDistance()I[ZM(44060)]=I:GetBoxSize()or{}local u=I[ZM(43048)]if not I[ZM(43010)]then u[ZM(43858)][ZM(42723)]=false u[ZM(44902)][ZM(42723)]=false u[ZM(44300)][ZM(42723)]=false u[ZM(43021)][ZM(42723)]=false u[ZM(44031)][ZM(42723)]=false I:SetSkeletonsInvisible()return end do local U=uM[ZM(43889)][I[ZM(43366)]..ZM(43515)]if U and(I[ZM(43697)]and I[ZM(43697)]>U[ZM(43663)])then u[ZM(43858)][ZM(42723)]=false u[ZM(44902)][ZM(42723)]=false u[ZM(44300)][ZM(42723)]=false u[ZM(43021)][ZM(42723)]=false u[ZM(44031)][ZM(42723)]=false I:SetSkeletonsInvisible()return end end local U,W=I:GetHealth()local N=I[ZM(44060)]local P=N[ZM(42723)]local m=I[ZM(43366)]local D=uM[ZM(43889)]local r=not P and D[m..ZM(44410)][ZM(43663)][1]or D[m..ZM(43380)][ZM(43663)][1]if I==NM[ZM(42972)]then r=D[ZM(42850)][ZM(43663)][1]if NM[ZM(44253)]==I[ZM(43405)]then r=D[ZM(44174)][ZM(43663)][1]end end if m==ZM(43800)and d(I[ZM(43405)])then I[ZM(43827)]=true r=y else I[ZM(43827)]=false end I[ZM(43259)]=U<=.1 local t=I[ZM(43259)]and 1 or 0 DM:Tween(u[ZM(44882)],TweenInfo[ZM(44272)](NM[ZM(42930)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43659)]=r})DM:Tween(u[ZM(44430)],TweenInfo[ZM(44272)](NM[ZM(42930)]+.25,Enum[ZM(44374)][ZM(42646)]),{[ZM(44437)]=t})local K=u[ZM(44882)][ZM(43659)]t=u[ZM(44430)][ZM(44437)]local j=u[ZM(42801)]local q=1 local v=I[ZM(43163)]~=nil if D[ZM(43033)][ZM(43663)]and(m==ZM(43800)and D[ZM(44771)][ZM(43663)])then local U=Y[ZM(43160)]and Y[ZM(43160)]:FindFirstChild(ZM(43001))local W=I[ZM(43160)]and I[ZM(43160)]:FindFirstChild(ZM(43001))if W and U then local N=(U[ZM(44472)]-W[ZM(44472)])local m=N[ZM(43046)]local r=N[ZM(43189)]local t=W[ZM(43808)][ZM(43662)]local K=t:Dot(r)local j=(t:Cross(r))[ZM(43046)]local q=math[ZM(43264)](math[ZM(43580)](j,K))local v=math[ZM(42960)](60-(m/10),15,60)local L=math[ZM(44193)](math[ZM(42960)](100-((q/v)*100),0,100))local x=q<=v local A=not P local i=L>=D[ZM(44145)][ZM(43663)]and Color3[ZM(43744)](255,0,0)or Color3[ZM(43744)](255,255,255)if x and L>=D[ZM(43185)][ZM(43663)]then u[ZM(43858)][ZM(42682)]=tick()u[ZM(43858)][ZM(42723)]=true u[ZM(43858)][ZM(43628)]=string[ZM(43715)](ZM(44227),I[ZM(43502)],A and ZM(43878)or ZM(42882),L,math[ZM(44193)](m))if not u[ZM(43858)]:GetAttribute(ZM(43842))then u[ZM(43858)]:SetAttribute(ZM(43842),true)local I=DM:Tween(u[ZM(43858)],TweenInfo[ZM(44272)](NM[ZM(42930)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43559)]=i;[ZM(44462)]=UDim2[ZM(44272)](1,0,0,u[ZM(43858)][ZM(43406)]);[ZM(44737)]=0})u[ZM(42997)][ZM(44437)]=u[ZM(43858)][ZM(44737)]I[ZM(44259)]:Connect(function(...)u[ZM(43858)]:SetAttribute(ZM(43842),false)end)end u[ZM(42997)][ZM(44437)]=u[ZM(43858)][ZM(44737)]else if not u[ZM(43858)]:GetAttribute(ZM(43842))then u[ZM(43858)]:SetAttribute(ZM(43842),true)local I=DM:Tween(u[ZM(43858)],TweenInfo[ZM(44272)](NM[ZM(42930)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=UDim2[ZM(44272)](1,0,0,0),[ZM(44737)]=1})I[ZM(44259)]:Connect(function(...)task[ZM(43860)](.1)u[ZM(43858)]:SetAttribute(ZM(43842),false)u[ZM(43858)][ZM(42723)]=false end)end u[ZM(42997)][ZM(44437)]=u[ZM(43858)][ZM(44737)]end end else u[ZM(43858)][ZM(42723)]=false end if N[ZM(42950)]and(D[m..ZM(43481)][ZM(43663)]and((not I[ZM(43827)]or D[ZM(44459)][ZM(43663)])))then u[ZM(44902)][ZM(42723)]=false local P=m==ZM(43800)and D[m..ZM(44823)]local r=m==ZM(43800)and D[m..ZM(44237)]local L=TweenInfo[ZM(44272)](NM[ZM(42930)],Enum[ZM(44374)][ZM(42646)])if tick()-I[ZM(42813)]>D[ZM(43505)][ZM(43663)]then I[ZM(42813)]=tick()for u,U in I[ZM(43160)]:GetChildren()do if U:IsA(ZM(43919))and U[ZM(43502)]:find(ZM(44903))then for u,U in U:GetChildren()do I:ApplyArmorVisuals(U)end end if U:IsA(ZM(43712))and not NM[ZM(43500)][U[ZM(43502)]]then if not I[ZM(44811)][U]then local u={}local W for I=1,2,1 do if U[ZM(43502)]==ZM(43001)then W=DM:Instance(ZM(43070),{[ZM(43502)]=ZM(44368),[ZM(43630)]=U,[ZM(43378)]=U,[ZM(42648)]=I==1 and 2 or 1,[ZM(43550)]=I==1 and.87 or 1.02;[ZM(43648)]=I==1 and.5 or.65;[ZM(43808)]=CFrame[ZM(44272)](Vector3[ZM(44272)](),Vector3[ZM(44272)](0,1,0));[ZM(42723)]=false;[ZM(43164)]=I==1})else local u=I==1 and-0.05 or.05 W=DM:Instance(ZM(43529),{[ZM(43502)]=ZM(44368);[ZM(43630)]=U,[ZM(43378)]=U;[ZM(42648)]=I==1 and 2 or 1;[ZM(43164)]=I==1;[ZM(44462)]=U[ZM(44462)]+Vector3[ZM(44272)](u,u,u),[ZM(42723)]=false})end u[I]=W end I[ZM(44811)][U]=u else local u=I[ZM(44811)][U]if u then local U=I[ZM(43827)]and X or D[m..ZM(42669)][ZM(43663)][1]local W=D[m..ZM(42669)][ZM(43663)][2]local N=D[m..ZM(43542)][ZM(43663)]local P=D[m..ZM(43964)][ZM(43663)]==ZM(43706)local r=I[ZM(43827)]and y or D[m..ZM(42827)][ZM(43663)][1]local t=D[m..ZM(42827)][ZM(43663)][2]u[1][ZM(42723)]=N u[1][ZM(44514)]=U u[1][ZM(44437)]=W u[2][ZM(42723)]=N u[2][ZM(42648)]=P and 9000000000 or 1 u[2][ZM(43164)]=P u[2][ZM(44514)]=r u[2][ZM(44437)]=t end end end end end u[ZM(44300)][ZM(44472)]=UDim2[ZM(44272)](0,N[ZM(44472)][ZM(42847)],0,N[ZM(44472)][ZM(42838)])u[ZM(44300)][ZM(44462)]=UDim2[ZM(44272)](0,N[ZM(44462)][ZM(42847)],0,N[ZM(44462)][ZM(42838)])u[ZM(44300)][ZM(42723)]=true local x=D[m..ZM(42991)][ZM(43663)]and D[m..ZM(43610)][ZM(43663)]==ZM(44678)u[ZM(44430)][ZM(43984)]=x u[ZM(44882)][ZM(43984)]=x K=u[ZM(44882)][ZM(43659)]u[ZM(44882)][ZM(44437)]=t for I=1,16,1 do j[I][ZM(42723)]=D[m..ZM(42991)][ZM(43663)]and D[m..ZM(43610)][ZM(43663)]==ZM(44091)if j[I][ZM(42723)]then if I<=8 then j[I][ZM(42648)]=3 j[I][ZM(43749)]=K end j[I][ZM(42908)]=t end end if D[m..ZM(44128)][ZM(43663)]then local N=U/W if tostring(N)==ZM(44180)then N=0 end local P=UDim2[ZM(44272)](1,0,1-N,0)u[ZM(42688)][ZM(42723)]=true u[ZM(44128)][ZM(42723)]=true u[ZM(44128)][ZM(42908)]=t u[ZM(42688)][ZM(42908)]=t local r=D[m..ZM(43301)][ZM(43663)]local K=not r or(r and U<W)if D[m..ZM(43845)][ZM(43663)]and K then u[ZM(43845)][ZM(42723)]=true u[ZM(43845)][ZM(43628)]=tostring(math[ZM(44193)](N*100))u[ZM(43845)][ZM(44737)]=t u[ZM(43981)][ZM(44437)]=((D[ZM(43568)]==nil or D[ZM(43568)][ZM(43663)]))and t or 1 else u[ZM(43845)][ZM(42723)]=false end if U~=I[ZM(44268)]then I[ZM(44268)]=U DM:Tween(u[ZM(42688)],TweenInfo[ZM(44272)](NM[ZM(42930)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44462)]=P})local N=D[m..ZM(42916)][ZM(43663)][1]:lerp(D[m..ZM(44698)][ZM(43663)][1],U/W)DM:Tween(u[ZM(44128)],TweenInfo[ZM(44272)](NM[ZM(42930)],Enum[ZM(44374)][ZM(42646)]),{[ZM(43749)]=N})end else u[ZM(44128)][ZM(42723)]=false end if D[m..ZM(43502)][ZM(43663)]then u[ZM(43502)][ZM(42723)]=true u[ZM(44706)][ZM(44437)]=((D[ZM(43568)]==nil or D[ZM(43568)][ZM(43663)]))and t or 1 u[ZM(43502)][ZM(44737)]=t u[ZM(43502)][ZM(43628)]=I[ZM(43502)]u[ZM(43502)][ZM(43559)]=K else u[ZM(43502)][ZM(42723)]=false end if D[m..ZM(43697)][ZM(43663)]then u[ZM(43697)][ZM(42723)]=true u[ZM(44878)][ZM(44437)]=((D[ZM(43568)]==nil or D[ZM(43568)][ZM(43663)]))and t or 1 u[ZM(43697)][ZM(43628)]=tostring(I[ZM(43697)])..ZM(44611)u[ZM(43697)][ZM(43559)]=K u[ZM(43697)][ZM(44737)]=t u[ZM(43697)][ZM(44472)]=UDim2[ZM(44272)](0,0,1,q)q+=8 else u[ZM(43697)][ZM(42723)]=false end if P and P[ZM(43663)]then u[ZM(44823)][ZM(42723)]=true if v and I[ZM(43163)]then u[ZM(44823)][ZM(43628)]=I[ZM(43163)][ZM(43502)]end u[ZM(44823)][ZM(43559)]=K if not u[ZM(44823)]:GetAttribute(ZM(43842))then u[ZM(44823)]:SetAttribute(ZM(43842),true)local I=v and q or(q-4)local U=DM:Tween(u[ZM(44823)],L,{[ZM(44737)]=v and t or 1,[ZM(44472)]=UDim2[ZM(44272)](0,0,1,I)})DM:Tween(u[ZM(44329)],L,{[ZM(44437)]=v and t or 1})U[ZM(44259)]:Connect(function(...)u[ZM(44823)]:SetAttribute(ZM(43842),false)end)end q+=6 else u[ZM(44823)][ZM(42723)]=false end if r and r[ZM(43663)]then if not u[ZM(44823)][ZM(42723)]then q-=4 end local U=(v and(I[ZM(43163)]and NM[ZM(43584)][I[ZM(43163)][ZM(43502)]]))or nil local W=v and U~=nil u[ZM(44237)][ZM(42723)]=W if W then u[ZM(44237)][ZM(44220)]=U end if not u[ZM(44237)]:GetAttribute(ZM(43842))then u[ZM(44237)]:SetAttribute(ZM(43842),true)local I=W and q or(q-5)local U=DM:Tween(u[ZM(44237)],L,{[ZM(44877)]=W and t or 1;[ZM(44472)]=UDim2[ZM(44272)](.5,0,1,I)})U[ZM(44259)]:Connect(function(...)u[ZM(44237)]:SetAttribute(ZM(43842),false)end)end else u[ZM(44237)][ZM(42723)]=false end if m==ZM(43800)and D[m..ZM(43889)][ZM(43663)]then u[ZM(43975)][ZM(42723)]=true local U=NM[ZM(42930)]local W=Enum[ZM(44374)][ZM(42646)]local N=TweenInfo[ZM(44272)](U,W)for U,W in NM[ZM(43889)]do local P=W[ZM(42809)](I)local m=u[ZM(43989)..U]local r=u[ZM(44163)..U]if not m then m=DM:Instance(ZM(43489),NM[ZM(44585)])m[ZM(43378)]=u[ZM(43975)]r=DM[ZM(44204)](m)r[ZM(44437)]=1 u[ZM(43989)..U]=m u[ZM(44163)..U]=r end if m then local u=W[ZM(43628)](I)or ZM(44368)m[ZM(43559)]=W[ZM(43659)]and W[ZM(43659)](I)or D[U..ZM(43816)][ZM(43663)][1]m[ZM(43628)]=ZM(42808)..u if not m:GetAttribute(ZM(43842))then m:SetAttribute(ZM(43842),true)if P then m[ZM(42723)]=true m[ZM(42682)]=tick()end local I=DM:Tween(m,N,{[ZM(44737)]=P and t or 1,[ZM(44462)]=P and UDim2[ZM(44272)](0,200,0,m[ZM(42761)][ZM(42838)])or UDim2[ZM(44272)](0,200,0,0)})DM:Tween(r,N,{[ZM(44437)]=P and t or 1})I[ZM(44259)]:Connect(function(...)m:SetAttribute(ZM(43842),false)m[ZM(42723)]=P end)end end end else u[ZM(43975)][ZM(42723)]=false end if D[m..ZM(43021)][ZM(43663)]and(I[ZM(43160)]:FindFirstChild(ZM(43001))and not uM[ZM(42806)])then local U=I[ZM(43160)][ZM(43001)]local W,N=M:WorldToViewportPoint(U[ZM(44472)])local P,m=M:WorldToViewportPoint(U[ZM(44472)]+U[ZM(43808)][ZM(43662)]*5)local D=u[ZM(43021)]local r=u[ZM(44031)]if N and m then local I=Vector2[ZM(44272)](W[ZM(42847)],W[ZM(42838)])local u=Vector2[ZM(44272)](P[ZM(42847)],P[ZM(42838)])I=PM[ZM(43176)](I)u=PM[ZM(43176)](u)D[ZM(42723)]=true D[ZM(44262)]=I D[ZM(44636)]=u D[ZM(43659)]=K D[ZM(44437)]=1-t r[ZM(42723)]=true r[ZM(44262)]=I r[ZM(44636)]=u r[ZM(44437)]=1-t else D[ZM(42723)]=false r[ZM(42723)]=false end else u[ZM(43021)][ZM(42723)]=false u[ZM(44031)][ZM(42723)]=false end if D[m..ZM(43108)][ZM(43663)]and(I[ZM(43160)]:FindFirstChild(ZM(43001))and not uM[ZM(42806)])then local u=true for U,W in{ZM(43283);ZM(43487),ZM(44693),ZM(43581),ZM(43321),ZM(42810);ZM(44148),ZM(43286),ZM(44449),ZM(44181)}do if not I[ZM(43160)]:FindFirstChild(W)then u=false break end end if u then local u=I:ProjectSkeletonLine(I[ZM(43160)][ZM(43001)])local U=I:ProjectSkeletonLine(I[ZM(43160)][ZM(43487)])local W=I:ProjectSkeletonLine(I[ZM(43160)][ZM(43321)])local N=I:ProjectSkeletonLine(I[ZM(43160)][ZM(43487)],Vector3[ZM(44272)](0,.5,0))local P=I:ProjectSkeletonLine(I[ZM(43160)][ZM(43321)],Vector3[ZM(44272)](0,.5,0))local m=I:ProjectSkeletonLine(I[ZM(43160)][ZM(43581)])local D=I:ProjectSkeletonLine(I[ZM(43160)][ZM(44693)])local r=I:ProjectSkeletonLine(I[ZM(43160)][ZM(44148)],Vector3[ZM(44272)](0,.2,0))local j=I:ProjectSkeletonLine(I[ZM(43160)][ZM(42810)],Vector3[ZM(44272)](0,.2,0))local q=I:ProjectSkeletonLine(I[ZM(43160)][ZM(43286)],Vector3[ZM(44272)](0,.2,0))local v=I:ProjectSkeletonLine(I[ZM(43160)][ZM(44536)],Vector3[ZM(44272)](0,.2,0))local L=I:ProjectSkeletonLine(I[ZM(43160)][ZM(44449)])local x=I:ProjectSkeletonLine(I[ZM(43160)][ZM(44181)])I:SetSkeletonLine(ZM(43581),m,U,t,K)I:SetSkeletonLine(ZM(44693),D,W,t,K)I:SetSkeletonLine(ZM(43892),P,W,t,K)I:SetSkeletonLine(ZM(43786),N,U,t,K)I:SetSkeletonLine(ZM(44664),r,q,t,K)I:SetSkeletonLine(ZM(42824),q,L,t,K)I:SetSkeletonLine(ZM(44206),j,v,t,K)I:SetSkeletonLine(ZM(43877),v,x,t,K)I:SetSkeletonLine(ZM(44875),Vector2[ZM(44272)](((P[ZM(42847)]+N[ZM(42847)]))/2,P[ZM(42838)]),u,t,K)I:SetSkeletonLine(ZM(44573),P,N,t,K)I:SetSkeletonLine(ZM(43734),r,j,t,K)else I:SetSkeletonsInvisible()end else I:SetSkeletonsInvisible()end else u[ZM(44300)][ZM(42723)]=false u[ZM(43021)][ZM(42723)]=false u[ZM(44031)][ZM(42723)]=false I:SetSkeletonsInvisible()if N[ZM(43010)]and(D[m..ZM(44050)]and D[m..ZM(44050)][ZM(43663)])then local I=D[m..ZM(42699)][ZM(43663)]local U=D[m..ZM(42677)][ZM(43663)]local W=u[ZM(44902)]local P=M[ZM(43808)][ZM(44511)]local r=M[ZM(43808)][ZM(44588)]local j=M:WorldToScreenPoint(N[ZM(43010)][ZM(44472)])local q=M[ZM(43469)]/2 local v=((Vector2[ZM(44272)](j[ZM(42847)],j[ZM(42838)])-Vector2[ZM(44272)](q[ZM(42847)],q[ZM(42838)])))[ZM(43189)]local L=I local x=Vector2[ZM(44272)](q[ZM(42847)],q[ZM(42838)])+v*L W[ZM(43406)]=U W[ZM(44462)]=UDim2[ZM(44272)](0,25,0,25)W[ZM(44472)]=UDim2[ZM(44272)](0,x[ZM(42847)]-W[ZM(44462)][ZM(42847)][ZM(44071)]/2,0,x[ZM(42838)]-W[ZM(44462)][ZM(42838)][ZM(44071)]/2)W[ZM(43320)]=math[ZM(43264)](math[ZM(43580)](v[ZM(42838)],v[ZM(42847)]))+90 W[ZM(42723)]=true W[ZM(43559)]=K W[ZM(44737)]=t u[ZM(43511)][ZM(44437)]=t else u[ZM(44902)][ZM(42723)]=false end end end)NM[ZM(44875)][ZM(42647)][ZM(44208)]=LPH_NO_VIRTUALIZE(function(I,u,...)NM[ZM(43889)][u[ZM(43502)]]=u return NM[ZM(43889)][u[ZM(43502)]]end)A(ZM(44070))NM[ZM(44848)][ZM(42647)][ZM(42858)]=NM[ZM(44848)][ZM(42647)]NM[ZM(44848)][ZM(42647)][ZM(44657)]=LPH_NO_VIRTUALIZE(function(I,...)local u={}u[ZM(43502)]=DM:Instance(ZM(43489),{[ZM(43378)]=mM[ZM(44886)],[ZM(42648)]=1;[ZM(42908)]=1,[ZM(43406)]=NM[ZM(44901)];[ZM(43628)]=ZM(44368),[ZM(42679)]=NM[ZM(43565)],[ZM(44462)]=UDim2[ZM(44272)](0,0,0,NM[ZM(44901)]);[ZM(42723)]=false,[ZM(44472)]=UDim2[ZM(44272)](0,0,0,0);[ZM(43660)]=Enum[ZM(43660)][ZM(44791)];[ZM(42642)]=Enum[ZM(42642)][ZM(42838)]})u[ZM(44706)]=DM[ZM(44204)](u[ZM(43502)])return u end)NM[ZM(44848)][ZM(42647)][ZM(42670)]=LPH_NO_VIRTUALIZE(function(I,...)local u=I[ZM(43378)]local U=I[ZM(44807)]local W=I[ZM(43502)]for u,N in u:GetChildren()do if N[ZM(44807)]==U or W==N[ZM(43502)]then I[ZM(43142)]=N NM[ZM(44848)][ZM(44501)][N]={[ZM(43048)]=I:CreateComponents();[ZM(44379)]=I,[ZM(43142)]=N}end end u[ZM(42803)]:Connect(function(N,...)task[ZM(43860)](.5)if u==B:FindFirstChild(ZM(43051))then task[ZM(43860)](2)end if((N[ZM(44807)]==U or W==N[ZM(43502)]))and(not N:GetAttribute(ZM(44143))and not NM[ZM(44848)][ZM(44501)][N])then NM[ZM(44848)][ZM(44501)][N]={[ZM(43048)]=I:CreateComponents(),[ZM(44379)]=I,[ZM(43142)]=N};(N:GetPropertyChangedSignal(ZM(43378))):Connect(function(...)if N[ZM(43378)]~=u and NM[ZM(44848)][ZM(44501)][N]then for I,u in NM[ZM(44848)][ZM(44501)][N][ZM(43048)]do u:Destroy()end NM[ZM(44848)][ZM(44501)][N]=nil end end);(N:GetAttributeChangedSignal(ZM(44143))):Connect(function(...)task[ZM(43860)](.1)if N:GetAttribute(ZM(44143))then for I,u in NM[ZM(44848)][ZM(44501)][N][ZM(43048)]do u:Destroy()end NM[ZM(44848)][ZM(44501)][N]=nil end end)end end)u[ZM(44821)]:Connect(function(I,...)if NM[ZM(44848)][ZM(44501)][I]then for I,u in NM[ZM(44848)][ZM(44501)][I][ZM(43048)]do u:Destroy()end NM[ZM(44848)][ZM(44501)][I]=nil end end)end)NM[ZM(44848)][ZM(42647)][ZM(43558)]=LPH_NO_VIRTUALIZE(function(I,...) end)A(ZM(44569))local jM=uM:Window({[ZM(43502)]=ZM(43807)});(LPH_JIT_MAX(function(...)local I={[ZM(42840)]=jM:Tab({[ZM(43502)]=ZM(42840);[ZM(44220)]=ZM(42925)});[ZM(43481)]=jM:Tab({[ZM(43502)]=ZM(43481),[ZM(44220)]=ZM(43625)}),[ZM(43148)]=jM:TabSeperator(),[ZM(44831)]=jM:Tab({[ZM(43502)]=ZM(44831);[ZM(44220)]=ZM(42846)});[ZM(44848)]=jM:Tab({[ZM(43502)]=ZM(44848);[ZM(44220)]=ZM(43358)});[ZM(44904)]=jM:Tab({[ZM(43502)]=ZM(44904),[ZM(44220)]=ZM(44072)});[ZM(44093)]=jM:TabSeperator();[ZM(44407)]=jM:Tab({[ZM(43502)]=ZM(44407),[ZM(44220)]=ZM(44099)}),[ZM(43902)]=jM:Tab({[ZM(43502)]=ZM(43902),[ZM(44220)]=ZM(43552)})}local u={[ZM(44316)]=I[ZM(42840)]:Category({[ZM(43502)]=ZM(44875)}),[ZM(42802)]=I[ZM(42840)]:Category({[ZM(43502)]=ZM(44663)});[ZM(43401)]=I[ZM(42840)]:Category({[ZM(43502)]=ZM(43695)}),[ZM(42649)]=I[ZM(42840)]:Category({[ZM(43502)]=ZM(44729)});[ZM(44287)]=I[ZM(42840)]:Category({[ZM(43502)]=ZM(44287)})}do local I=u[ZM(43401)]:Section({[ZM(43502)]=ZM(44875);[ZM(44742)]=ZM(44105)})local U=u[ZM(43401)]:Section({[ZM(43502)]=ZM(44831),[ZM(44742)]=ZM(42903)})I:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(43401);[ZM(42891)]=false})I:Slider({[ZM(43502)]=ZM(43648);[ZM(43295)]=ZM(44619),[ZM(43839)]=1,[ZM(43781)]=20,[ZM(42853)]=.1,[ZM(42891)]=14})U:Toggle({[ZM(43502)]=ZM(42902),[ZM(43295)]=ZM(43863)})U:Colorpicker({[ZM(43502)]=ZM(43659);[ZM(43295)]=ZM(44526)})local W=u[ZM(44316)]:Section({[ZM(43502)]=ZM(44316),[ZM(44742)]=ZM(44105)})W:Toggle({[ZM(43502)]=ZM(43984),[ZM(43295)]=ZM(44316);[ZM(44278)]=ZM(43797)})W:Dropdown({[ZM(43502)]=ZM(44159),[ZM(43295)]=ZM(43764);[ZM(44061)]={ZM(44763);ZM(44719)}})W:Toggle({[ZM(43502)]=ZM(43556);[ZM(43295)]=ZM(44592),[ZM(42891)]=true;[ZM(44278)]=ZM(43361)})W:Toggle({[ZM(43502)]=ZM(43396),[ZM(43295)]=ZM(44089)})W:Toggle({[ZM(43502)]=ZM(42773);[ZM(43295)]=ZM(43169);[ZM(44278)]=ZM(43226)})W:Toggle({[ZM(43502)]=ZM(42663),[ZM(43295)]=ZM(42663),[ZM(44278)]=ZM(42651)})W:Toggle({[ZM(43502)]=ZM(43535);[ZM(43295)]=ZM(44441),[ZM(42891)]=false,[ZM(44278)]=ZM(43994)})W:Toggle({[ZM(43502)]=ZM(44443);[ZM(43295)]=ZM(44349);[ZM(42891)]=false,[ZM(44278)]=ZM(43644)})W:Toggle({[ZM(43502)]=ZM(43036),[ZM(43295)]=ZM(42819),[ZM(42891)]=false,[ZM(44278)]=ZM(44547)})W:Toggle({[ZM(43502)]=ZM(43290);[ZM(43295)]=ZM(42756);[ZM(42891)]=false,[ZM(44278)]=ZM(44833)})W:Toggle({[ZM(43502)]=ZM(44277);[ZM(43295)]=ZM(42671);[ZM(42891)]=false,[ZM(44278)]=ZM(44001)})W:Toggle({[ZM(43502)]=ZM(43397),[ZM(43295)]=ZM(43946);[ZM(42891)]=false;[ZM(44278)]=ZM(44775)})W:Toggle({[ZM(43502)]=ZM(44473),[ZM(43295)]=ZM(42832);[ZM(42891)]=false,[ZM(44278)]=ZM(43325)})W:Toggle({[ZM(43502)]=ZM(44190);[ZM(43295)]=ZM(43772),[ZM(42891)]=false;[ZM(44278)]=ZM(42815)})W:Seperator()W:Keybind({[ZM(43502)]=ZM(42965);[ZM(43295)]=ZM(44448),[ZM(44159)]=ZM(44606)})W:Toggle({[ZM(43502)]=ZM(43474),[ZM(43295)]=ZM(43393),[ZM(42891)]=true;[ZM(44278)]=ZM(44426)})W:Keybind({[ZM(43502)]=ZM(44790),[ZM(43295)]=ZM(42744);[ZM(44159)]=ZM(44161)})W:Seperator()W:Toggle({[ZM(43502)]=ZM(44295),[ZM(43295)]=ZM(43590);[ZM(42891)]=true})W:Toggle({[ZM(43502)]=ZM(42983),[ZM(43295)]=ZM(44861);[ZM(42891)]=true})W:Toggle({[ZM(43502)]=ZM(44847),[ZM(43295)]=ZM(43607);[ZM(42891)]=true})W:Seperator()W:Slider({[ZM(43502)]=ZM(43697),[ZM(43295)]=ZM(44068);[ZM(43839)]=0,[ZM(43781)]=1200;[ZM(43162)]=ZM(44611);[ZM(42853)]=.1})W:Dropdown({[ZM(43502)]=ZM(43721);[ZM(43295)]=ZM(44136);[ZM(44061)]={ZM(43001),ZM(44018);ZM(43283)}})local N=u[ZM(44316)]:Section({[ZM(43502)]=ZM(44788);[ZM(44742)]=ZM(42903)})N:Toggle({[ZM(43502)]=ZM(43794),[ZM(43295)]=ZM(44218),[ZM(43795)]=function(I,...)mM[ZM(43304)][ZM(42723)]=uM[ZM(43889)][ZM(44218)][ZM(43663)]end})N:Toggle({[ZM(43502)]=ZM(42901);[ZM(43295)]=ZM(43395),[ZM(44278)]=ZM(44808)})N:Slider({[ZM(43502)]=ZM(43648);[ZM(43295)]=ZM(43720);[ZM(43162)]=ZM(44051);[ZM(43839)]=30;[ZM(43781)]=1500,[ZM(42891)]=350})N:Colorpicker({[ZM(43502)]=ZM(43659),[ZM(43295)]=ZM(44371),[ZM(42891)]={uM[ZM(44411)][ZM(44754)],.8};[ZM(43795)]=function(I,...)mM[ZM(42909)][ZM(43659)]=uM[ZM(43889)][ZM(44371)][ZM(43663)][1]mM[ZM(42720)][ZM(43749)]=uM[ZM(43889)][ZM(44371)][ZM(43663)][1]mM[ZM(42720)][ZM(42908)]=uM[ZM(43889)][ZM(44371)][ZM(43663)][2]end})N:Colorpicker({[ZM(43502)]=ZM(44482);[ZM(43295)]=ZM(42850),[ZM(42891)]={uM[ZM(44411)][ZM(44754)],0}})N:Colorpicker({[ZM(43502)]=ZM(44150),[ZM(43295)]=ZM(44174),[ZM(42891)]={Color3[ZM(43744)](255,162,0);0}})local P=u[ZM(44316)]:Section({[ZM(43502)]=ZM(43322);[ZM(44742)]=ZM(42903)})P:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(44824);[ZM(44278)]=ZM(43186),[ZM(43795)]=function(...)jM[ZM(43844)][ZM(43048)][ZM(44903)][ZM(42723)]=uM[ZM(43889)][ZM(44824)][ZM(43663)]end})local m=h:FindFirstChild(ZM(44581))and((h[ZM(44581)]:FindFirstChild(ZM(43463))or h[ZM(44581)]:FindFirstChild(ZM(43612))))local D=m and require(m)or{}local r=DM[ZM(44825)](D)DM[ZM(43612)]=D local t=u[ZM(42649)]:Section({[ZM(43502)]=ZM(43477);[ZM(44742)]=ZM(44105)})local K=u[ZM(42649)]:Section({[ZM(43502)]=ZM(44339);[ZM(44742)]=ZM(42903)})local j=u[ZM(42649)]:Section({[ZM(43502)]=ZM(42864),[ZM(44742)]=ZM(44105)})t:Toggle({[ZM(43502)]=ZM(43205),[ZM(43295)]=ZM(44625),[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)for I,u in D do if type(u)==ZM(43508)and rawget(u,ZM(44823))then local U=r[I][ZM(44823)]u[ZM(44823)][ZM(44038)]=uM[ZM(43889)][ZM(44625)][ZM(43663)]and 6 or U[ZM(44038)]end end end)})K:Toggle({[ZM(43502)]=ZM(43480);[ZM(43295)]=ZM(42722)})K:Toggle({[ZM(43502)]=ZM(43277),[ZM(43295)]=ZM(44870)})K:Toggle({[ZM(43502)]=ZM(43899);[ZM(43295)]=ZM(42954),[ZM(42891)]=false,[ZM(44278)]=ZM(43009)})K:Toggle({[ZM(43502)]=ZM(43507),[ZM(43295)]=ZM(43247);[ZM(42891)]=false,[ZM(44278)]=ZM(43710)})K:Toggle({[ZM(43502)]=ZM(43668),[ZM(43295)]=ZM(43268),[ZM(42891)]=false;[ZM(44278)]=ZM(44063)})K:Slider({[ZM(43502)]=ZM(44064);[ZM(43295)]=ZM(43349),[ZM(43839)]=0;[ZM(43781)]=2;[ZM(42853)]=.05;[ZM(42891)]=1;[ZM(43162)]=ZM(44634);[ZM(44278)]=ZM(42733)})K:Slider({[ZM(43502)]=ZM(43790);[ZM(43295)]=ZM(43790),[ZM(43839)]=0,[ZM(43781)]=2;[ZM(42853)]=.05;[ZM(42891)]=1;[ZM(43162)]=ZM(44634);[ZM(44278)]=ZM(43054)})K:Slider({[ZM(43502)]=ZM(43312);[ZM(43295)]=ZM(42918),[ZM(43839)]=1;[ZM(43781)]=3;[ZM(42853)]=.05,[ZM(42891)]=1;[ZM(43162)]=ZM(44634)})K:Toggle({[ZM(43502)]=ZM(44779);[ZM(43295)]=ZM(43640);[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)for I,u in D do if type(u)==ZM(43508)and(rawget(u,ZM(44823))and rawget(u[ZM(44823)],ZM(44510)))then u[ZM(44823)][ZM(43018)]=uM[ZM(43889)][ZM(43640)][ZM(43663)]and true or r[I][ZM(44521)][ZM(43018)]end end end)})K:Seperator()K:Toggle({[ZM(43502)]=ZM(43899);[ZM(43295)]=ZM(42954);[ZM(44279)]=true,[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)for I,u in D do if type(u)==ZM(43508)and(rawget(u,ZM(44823))and rawget(u[ZM(44823)],ZM(44584)))then u[ZM(44823)][ZM(44692)]=uM[ZM(43889)][ZM(42954)][ZM(43663)]and 10 or r[I][ZM(44823)][ZM(44692)]u[ZM(44823)][ZM(44584)]=uM[ZM(43889)][ZM(42954)][ZM(43663)]and 10 or r[I][ZM(44823)][ZM(44584)]end end end)})K:Seperator()K:Toggle({[ZM(43502)]=ZM(44897),[ZM(43295)]=ZM(43385);[ZM(44279)]=true;[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)for I,u in D do if type(u)==ZM(43508)and(rawget(u,ZM(44823))and rawget(u[ZM(44823)],ZM(44510)))then u[ZM(44823)][ZM(44510)]=uM[ZM(43889)][ZM(43385)][ZM(43663)]and r[I][ZM(44823)][ZM(44510)]*uM[ZM(43889)][ZM(43057)][ZM(43663)]or r[I][ZM(44823)][ZM(44510)]end end end)})K:Slider({[ZM(43502)]=ZM(43737);[ZM(43295)]=ZM(43057),[ZM(43162)]=ZM(44634),[ZM(43839)]=1,[ZM(43781)]=3,[ZM(42853)]=.01,[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)for I,u in D do if type(u)==ZM(43508)and(rawget(u,ZM(44823))and rawget(u[ZM(44823)],ZM(44510)))then u[ZM(44823)][ZM(44510)]=uM[ZM(43889)][ZM(43385)][ZM(43663)]and r[I][ZM(44823)][ZM(44510)]*uM[ZM(43889)][ZM(43057)][ZM(43663)]or r[I][ZM(44823)][ZM(44510)]end end end)})K:Seperator()K:Toggle({[ZM(43502)]=ZM(43399);[ZM(43295)]=ZM(44027);[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)local I=uM[ZM(43889)][ZM(44027)][ZM(43663)]for u,U in next,D do if type(U)==ZM(43508)and rawget(U,ZM(44823))then local W=r[u][ZM(44823)]if rawget(U[ZM(44823)],ZM(44197))then U[ZM(44823)][ZM(44197)][ZM(43364)]=I and W[ZM(44197)][ZM(43364)]-(W[ZM(44197)][ZM(43364)]*((uM[ZM(43889)][ZM(44088)][ZM(43663)]/100)))or W[ZM(44197)][ZM(43364)]U[ZM(44823)][ZM(44197)][ZM(43875)]=I and W[ZM(44197)][ZM(43875)]-(W[ZM(44197)][ZM(43875)]*((uM[ZM(43889)][ZM(44088)][ZM(43663)]/100)))or W[ZM(44197)][ZM(43875)]end end end end)})K:Slider({[ZM(43502)]=ZM(43840),[ZM(43295)]=ZM(44088);[ZM(43162)]=ZM(42899),[ZM(43839)]=0,[ZM(43781)]=100,[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)local I=uM[ZM(43889)][ZM(44027)][ZM(43663)]for u,U in next,D do if type(U)==ZM(43508)and rawget(U,ZM(44823))then local W=r[u][ZM(44823)]if rawget(U[ZM(44823)],ZM(44197))then U[ZM(44823)][ZM(44197)][ZM(43364)]=I and W[ZM(44197)][ZM(43364)]-(W[ZM(44197)][ZM(43364)]*((uM[ZM(43889)][ZM(44088)][ZM(43663)]/100)))or W[ZM(44197)][ZM(43364)]U[ZM(44823)][ZM(44197)][ZM(43875)]=I and W[ZM(44197)][ZM(43875)]-(W[ZM(44197)][ZM(43875)]*((uM[ZM(43889)][ZM(44088)][ZM(43663)]/100)))or W[ZM(44197)][ZM(43875)]end end end end)})j:Toggle({[ZM(43502)]=ZM(44562);[ZM(43295)]=ZM(44562);[ZM(44279)]=true})j:Toggle({[ZM(43502)]=ZM(44655);[ZM(43295)]=ZM(43145)})j:Toggle({[ZM(43502)]=ZM(44333);[ZM(43295)]=ZM(44567);[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)for I,u in D do if type(u)==ZM(43508)and(rawget(u,ZM(44823))and rawget(u[ZM(44823)],ZM(43540)))then u[ZM(44823)][ZM(43540)]=uM[ZM(43889)][ZM(44567)][ZM(43663)]and r[I][ZM(44823)][ZM(43540)]/((uM[ZM(43889)][ZM(42839)]and uM[ZM(43889)][ZM(42839)][ZM(43663)]or 1.25))or r[I][ZM(44823)][ZM(43540)]end end end)})j:Slider({[ZM(43502)]=ZM(44559);[ZM(43295)]=ZM(42839);[ZM(43839)]=1,[ZM(43781)]=3,[ZM(42853)]=.05;[ZM(42891)]=1,[ZM(43162)]=ZM(44634)})j:Slider({[ZM(43502)]=ZM(44267),[ZM(43295)]=ZM(43447),[ZM(43839)]=1;[ZM(43781)]=4,[ZM(42853)]=.05;[ZM(42891)]=1;[ZM(43162)]=ZM(44634)})j:Toggle({[ZM(43502)]=ZM(44271),[ZM(43295)]=ZM(43254);[ZM(42891)]=false;[ZM(44278)]=ZM(42729)})local q=u[ZM(42802)]:Section({[ZM(43502)]=ZM(43434),[ZM(44742)]=ZM(44105)})q:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(42802)})local v=u[ZM(42802)]:Section({[ZM(43502)]=ZM(44308);[ZM(44742)]=ZM(42903)})v:Slider({[ZM(43502)]=ZM(44296),[ZM(43295)]=ZM(42703);[ZM(43839)]=0,[ZM(43781)]=360;[ZM(43162)]=ZM(44049)})v:Dropdown({[ZM(43502)]=ZM(42951);[ZM(43295)]=ZM(44076);[ZM(44061)]={ZM(44683);ZM(42731),ZM(43371),ZM(43739)}})v:Slider({[ZM(43502)]=ZM(44390);[ZM(43295)]=ZM(43523);[ZM(43839)]=10,[ZM(43781)]=720,[ZM(42891)]=180,[ZM(43162)]=ZM(43942);[ZM(44278)]=ZM(43044)})local L=u[ZM(42802)]:Section({[ZM(43502)]=ZM(43154);[ZM(44742)]=ZM(44105)})L:Slider({[ZM(43502)]=ZM(44296),[ZM(43295)]=ZM(44342),[ZM(43839)]=-1;[ZM(43781)]=1;[ZM(42853)]=.1})L:Dropdown({[ZM(43502)]=ZM(42951),[ZM(43295)]=ZM(44652),[ZM(44061)]={ZM(44354),ZM(44899);ZM(43158);ZM(44552)}})local x=u[ZM(44287)]:Section({[ZM(43502)]=ZM(44407);[ZM(44742)]=ZM(44105)})x:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(44287)})x:Toggle({[ZM(43502)]=ZM(43925);[ZM(43295)]=ZM(43944)})x:Seperator()x:Slider({[ZM(43502)]=ZM(42653);[ZM(43295)]=ZM(43528);[ZM(43839)]=3;[ZM(43781)]=40;[ZM(42891)]=20})x:Slider({[ZM(43502)]=ZM(43100);[ZM(43295)]=ZM(43307),[ZM(43839)]=2,[ZM(43781)]=4;[ZM(42891)]=2})x:Slider({[ZM(43502)]=ZM(44906),[ZM(43295)]=ZM(43416),[ZM(43839)]=1;[ZM(43781)]=20;[ZM(42891)]=10})x:Seperator()x:Colorpicker({[ZM(43502)]=ZM(43659),[ZM(43295)]=ZM(43904),[ZM(42891)]={Color3[ZM(43744)](255,255,255);0}})local A=u[ZM(44287)]:Section({[ZM(43502)]=ZM(43941),[ZM(44742)]=ZM(42903)})A:Toggle({[ZM(43502)]=ZM(44478),[ZM(43295)]=ZM(43669),[ZM(44278)]=ZM(42777)})A:Toggle({[ZM(43502)]=ZM(43458),[ZM(43295)]=ZM(42764);[ZM(44278)]=ZM(44350)})end local U={[ZM(44176)]=I[ZM(43481)]:Category({[ZM(43502)]=ZM(44176)}),[ZM(44373)]=I[ZM(43481)]:Category({[ZM(43502)]=ZM(44373)});[ZM(44658)]=I[ZM(43481)]:Category({[ZM(43502)]=ZM(43099)}),[ZM(44299)]=I[ZM(43481)]:Category({[ZM(43502)]=ZM(44299)})}do do local I=U[ZM(44176)]:Section({[ZM(43502)]=ZM(44875);[ZM(44742)]=ZM(44105)})local u=U[ZM(44176)]:Section({[ZM(43502)]=ZM(44407),[ZM(44742)]=ZM(44105)})local W=U[ZM(44176)]:Section({[ZM(43502)]=ZM(44037),[ZM(44742)]=ZM(42903)})local N=U[ZM(44176)]:Section({[ZM(43502)]=ZM(44020),[ZM(44742)]=ZM(42903)})local P=U[ZM(44176)]:Section({[ZM(43502)]=ZM(44039);[ZM(44742)]=ZM(44105)})do P:Toggle({[ZM(43502)]=ZM(43984),[ZM(43295)]=ZM(43033)})P:Slider({[ZM(43502)]=ZM(43922);[ZM(43295)]=ZM(43185);[ZM(43839)]=30;[ZM(43781)]=90;[ZM(42891)]=70})P:Slider({[ZM(43502)]=ZM(44000),[ZM(43295)]=ZM(44145);[ZM(43839)]=30,[ZM(43781)]=90;[ZM(42891)]=70})end do I:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(44771)})I:Toggle({[ZM(43502)]=ZM(43479),[ZM(43295)]=ZM(44459),[ZM(42891)]=true;[ZM(44278)]=ZM(44679)})I:Toggle({[ZM(43502)]=ZM(44671),[ZM(43295)]=ZM(44519)})I:Toggle({[ZM(43502)]=ZM(43108),[ZM(43295)]=ZM(43821)})I:Toggle({[ZM(43502)]=ZM(44006);[ZM(43295)]=ZM(43195)})I:Toggle({[ZM(43502)]=ZM(44128);[ZM(43295)]=ZM(43134)})I:Toggle({[ZM(43502)]=ZM(43502);[ZM(43295)]=ZM(42743)})I:Toggle({[ZM(43502)]=ZM(43697),[ZM(43295)]=ZM(43261)})I:Toggle({[ZM(43502)]=ZM(43006);[ZM(43295)]=ZM(43449)})I:Toggle({[ZM(43502)]=ZM(43845);[ZM(43295)]=ZM(42689),[ZM(44278)]=ZM(42785)})I:Toggle({[ZM(43502)]=ZM(44523);[ZM(43295)]=ZM(43738),[ZM(44278)]=ZM(43427)})I:Toggle({[ZM(43502)]=ZM(43889),[ZM(43295)]=ZM(43773),[ZM(44278)]=ZM(43841)})I:Dropdown({[ZM(43323)]=true;[ZM(43502)]=ZM(42805);[ZM(43295)]=ZM(43918),[ZM(44061)]={ZM(43966),ZM(44531),ZM(43373);ZM(43440);ZM(43854);ZM(43831)}})I:Toggle({[ZM(43502)]=ZM(44274);[ZM(43295)]=ZM(43537)})end do u:Toggle({[ZM(43502)]=ZM(44240),[ZM(43295)]=ZM(43568);[ZM(42891)]=true;[ZM(44278)]=ZM(44427)})u:Slider({[ZM(43502)]=ZM(43676),[ZM(43295)]=ZM(43911);[ZM(43839)]=100;[ZM(43781)]=4000,[ZM(42891)]=4000;[ZM(43162)]=ZM(44738);[ZM(44278)]=ZM(43081)})u:Toggle({[ZM(43502)]=ZM(43432);[ZM(43295)]=ZM(43104),[ZM(44278)]=ZM(44306)})u:Dropdown({[ZM(43502)]=ZM(44776);[ZM(43295)]=ZM(43324);[ZM(44061)]={ZM(44678),ZM(44091)}})u:Toggle({[ZM(43502)]=ZM(43934),[ZM(43295)]=ZM(44140)})u:Slider({[ZM(43502)]=ZM(43076),[ZM(43295)]=ZM(43911),[ZM(43839)]=100;[ZM(43781)]=1300;[ZM(43162)]=ZM(43183)})u:Slider({[ZM(43502)]=ZM(44085),[ZM(43295)]=ZM(43026),[ZM(43839)]=10;[ZM(43781)]=30,[ZM(42853)]=.1})u:Slider({[ZM(43502)]=ZM(42736);[ZM(43295)]=ZM(42700),[ZM(43839)]=100,[ZM(43781)]=700,[ZM(42853)]=.1})end do W:Colorpicker({[ZM(43502)]=ZM(43684);[ZM(43295)]=ZM(44406),[ZM(42891)]={Color3[ZM(43744)](255,0,0),0}})W:Colorpicker({[ZM(43502)]=ZM(44351),[ZM(43295)]=ZM(44518),[ZM(42891)]={Color3[ZM(43744)](255,255,255);0}})W:Colorpicker({[ZM(43502)]=ZM(43907),[ZM(43295)]=ZM(44668);[ZM(42891)]={Color3[ZM(43744)](120,255,100);0}})W:Colorpicker({[ZM(43502)]=ZM(43608),[ZM(43295)]=ZM(43530);[ZM(42891)]={Color3[ZM(43744)](255,0,0),0}})W:Seperator()W:Colorpicker({[ZM(43502)]=ZM(43652),[ZM(43295)]=ZM(43638);[ZM(42891)]={Color3[ZM(43744)](3,169,252);0}})W:Colorpicker({[ZM(43502)]=ZM(44481),[ZM(43295)]=ZM(44720);[ZM(42891)]={Color3[ZM(43744)](255,255,255),0}})W:Colorpicker({[ZM(43502)]=ZM(42786);[ZM(43295)]=ZM(44827),[ZM(42891)]={Color3[ZM(43744)](120,255,100),0}})W:Colorpicker({[ZM(43502)]=ZM(43418),[ZM(43295)]=ZM(43316),[ZM(42891)]={Color3[ZM(43744)](252,211,3),0}})W:Colorpicker({[ZM(43502)]=ZM(43429),[ZM(43295)]=ZM(44414);[ZM(42891)]={Color3[ZM(43744)](0,211,0);0}})W:Colorpicker({[ZM(43502)]=ZM(43425);[ZM(43295)]=ZM(43813);[ZM(42891)]={Color3[ZM(43744)](255,255,255),0}})W:Colorpicker({[ZM(43502)]=ZM(42976);[ZM(43295)]=ZM(43310),[ZM(42891)]={Color3[ZM(43744)](255,255,255);0}})end do N:Toggle({[ZM(43502)]=ZM(43542);[ZM(43295)]=ZM(44095)})N:Dropdown({[ZM(43502)]=ZM(42865),[ZM(43295)]=ZM(44280),[ZM(44061)]={ZM(44678),ZM(43706)}})N:Colorpicker({[ZM(43502)]=ZM(43733),[ZM(43295)]=ZM(43883);[ZM(42891)]={uM[ZM(44411)][ZM(44754)];.2}})N:Colorpicker({[ZM(43502)]=ZM(44196);[ZM(43295)]=ZM(44357);[ZM(42891)]={uM[ZM(44411)][ZM(44754)],.8}})N:Seperator()N:Toggle({[ZM(43502)]=ZM(43601),[ZM(43295)]=ZM(43823)})N:Dropdown({[ZM(43502)]=ZM(43698),[ZM(43295)]=ZM(44818);[ZM(44061)]={ZM(44780),ZM(42757),ZM(42694);ZM(43278),ZM(44415)}})N:Slider({[ZM(43502)]=ZM(44188),[ZM(43295)]=ZM(43520);[ZM(43839)]=0;[ZM(43781)]=1,[ZM(42853)]=.001})N:Slider({[ZM(43502)]=ZM(42885);[ZM(43295)]=ZM(44513),[ZM(43839)]=0;[ZM(43781)]=100})N:Colorpicker({[ZM(43502)]=ZM(43659);[ZM(43295)]=ZM(44191);[ZM(42891)]={uM[ZM(44411)][ZM(44754)],.2}})end end do local I=U[ZM(44373)]:Section({[ZM(43502)]=ZM(44875);[ZM(44742)]=ZM(44105)})local u=U[ZM(44373)]:Section({[ZM(43502)]=ZM(44407);[ZM(44742)]=ZM(44105)})local W=U[ZM(44373)]:Section({[ZM(43502)]=ZM(44037),[ZM(44742)]=ZM(42903)})local N=U[ZM(44373)]:Section({[ZM(43502)]=ZM(44020),[ZM(44742)]=ZM(42903)})do I:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(43333)})I:Toggle({[ZM(43502)]=ZM(44671);[ZM(43295)]=ZM(44688)})I:Toggle({[ZM(43502)]=ZM(43108);[ZM(43295)]=ZM(44660)})I:Toggle({[ZM(43502)]=ZM(44006),[ZM(43295)]=ZM(43184)})I:Toggle({[ZM(43502)]=ZM(44128),[ZM(43295)]=ZM(44171)})I:Toggle({[ZM(43502)]=ZM(43502),[ZM(43295)]=ZM(44722)})I:Toggle({[ZM(43502)]=ZM(43697),[ZM(43295)]=ZM(44330)})I:Toggle({[ZM(43502)]=ZM(43845),[ZM(43295)]=ZM(44302),[ZM(44278)]=ZM(44684)})end do u:Dropdown({[ZM(43502)]=ZM(44776);[ZM(43295)]=ZM(43204),[ZM(44061)]={ZM(44678),ZM(44091)}})u:Toggle({[ZM(43502)]=ZM(43934),[ZM(43295)]=ZM(42753)})u:Slider({[ZM(43502)]=ZM(43076),[ZM(43295)]=ZM(42856),[ZM(43839)]=100;[ZM(43781)]=1300,[ZM(43162)]=ZM(43183)})end do W:Colorpicker({[ZM(43502)]=ZM(43684);[ZM(43295)]=ZM(44184);[ZM(42891)]={Color3[ZM(43744)](255,0,0);0}})W:Colorpicker({[ZM(43502)]=ZM(44351);[ZM(43295)]=ZM(43078);[ZM(42891)]={Color3[ZM(43744)](255,255,255),0}})W:Colorpicker({[ZM(43502)]=ZM(43907);[ZM(43295)]=ZM(44810);[ZM(42891)]={Color3[ZM(43744)](120,255,100),0}})W:Colorpicker({[ZM(43502)]=ZM(43608),[ZM(43295)]=ZM(43762),[ZM(42891)]={Color3[ZM(43744)](255,0,0);0}})end do N:Toggle({[ZM(43502)]=ZM(43542),[ZM(43295)]=ZM(44151)})N:Dropdown({[ZM(43502)]=ZM(42865),[ZM(43295)]=ZM(44672),[ZM(44061)]={ZM(44678),ZM(43706)}})N:Colorpicker({[ZM(43502)]=ZM(43733),[ZM(43295)]=ZM(44685);[ZM(42891)]={uM[ZM(44411)][ZM(44754)],.2}})N:Colorpicker({[ZM(43502)]=ZM(44196),[ZM(43295)]=ZM(43677),[ZM(42891)]={uM[ZM(44411)][ZM(44754)];.8}})end end do local I=U[ZM(44658)]:Section({[ZM(43502)]=ZM(44875),[ZM(44742)]=ZM(44105)})local u=U[ZM(44658)]:Section({[ZM(43502)]=ZM(44407),[ZM(44742)]=ZM(44105)})local W=U[ZM(44658)]:Section({[ZM(43502)]=ZM(44037),[ZM(44742)]=ZM(42903)})local N=U[ZM(44658)]:Section({[ZM(43502)]=ZM(44020),[ZM(44742)]=ZM(42903)})do I:Toggle({[ZM(43502)]=ZM(43984),[ZM(43295)]=ZM(43986)})I:Toggle({[ZM(43502)]=ZM(44671);[ZM(43295)]=ZM(43948)})I:Toggle({[ZM(43502)]=ZM(43108),[ZM(43295)]=ZM(43172)})I:Toggle({[ZM(43502)]=ZM(44006),[ZM(43295)]=ZM(44816)})I:Toggle({[ZM(43502)]=ZM(44128),[ZM(43295)]=ZM(44158)})I:Toggle({[ZM(43502)]=ZM(43502);[ZM(43295)]=ZM(43752)})I:Toggle({[ZM(43502)]=ZM(43697);[ZM(43295)]=ZM(43452)})I:Toggle({[ZM(43502)]=ZM(43845);[ZM(43295)]=ZM(44504),[ZM(44278)]=ZM(44476)})end do u:Dropdown({[ZM(43502)]=ZM(44776);[ZM(43295)]=ZM(43605),[ZM(44061)]={ZM(44678),ZM(44091)}})u:Toggle({[ZM(43502)]=ZM(43934);[ZM(43295)]=ZM(43284)})u:Slider({[ZM(43502)]=ZM(43076);[ZM(43295)]=ZM(43770),[ZM(43839)]=100;[ZM(43781)]=1300,[ZM(43162)]=ZM(43183)})end do W:Colorpicker({[ZM(43502)]=ZM(43684);[ZM(43295)]=ZM(43593);[ZM(42891)]={Color3[ZM(43744)](255,0,0),0}})W:Colorpicker({[ZM(43502)]=ZM(44351),[ZM(43295)]=ZM(42876);[ZM(42891)]={Color3[ZM(43744)](255,255,255),0}})W:Colorpicker({[ZM(43502)]=ZM(43907);[ZM(43295)]=ZM(44560);[ZM(42891)]={Color3[ZM(43744)](120,255,100);0}})W:Colorpicker({[ZM(43502)]=ZM(43608),[ZM(43295)]=ZM(44483),[ZM(42891)]={Color3[ZM(43744)](255,0,0);0}})end do N:Toggle({[ZM(43502)]=ZM(43542);[ZM(43295)]=ZM(44587)})N:Dropdown({[ZM(43502)]=ZM(42865),[ZM(43295)]=ZM(44799),[ZM(44061)]={ZM(44678);ZM(43706)}})N:Colorpicker({[ZM(43502)]=ZM(43733);[ZM(43295)]=ZM(43250);[ZM(42891)]={uM[ZM(44411)][ZM(44754)],.2}})N:Colorpicker({[ZM(43502)]=ZM(44196),[ZM(43295)]=ZM(43592),[ZM(42891)]={uM[ZM(44411)][ZM(44754)],.8}})end end do local I=U[ZM(44299)]:Section({[ZM(43502)]=ZM(44397);[ZM(44742)]=ZM(44105)})I:Keybind({[ZM(43502)]=ZM(43901);[ZM(43295)]=ZM(44682),[ZM(44159)]=ZM(44606)})I:Toggle({[ZM(43502)]=ZM(44244);[ZM(44278)]=ZM(44377);[ZM(43295)]=ZM(43943)})I:Slider({[ZM(43502)]=ZM(44008);[ZM(43295)]=ZM(44563),[ZM(43839)]=0,[ZM(43781)]=1000})local u=U[ZM(44299)]:Section({[ZM(44742)]=ZM(44105);[ZM(43502)]=ZM(43693)})u:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(42745)})u:Colorpicker({[ZM(43502)]=ZM(43659);[ZM(43295)]=ZM(43869),[ZM(42891)]={Color3[ZM(43744)](25,107,0),1}})u:Slider({[ZM(43839)]=10;[ZM(43781)]=1000,[ZM(43162)]=ZM(44611),[ZM(43502)]=ZM(43697),[ZM(43295)]=ZM(44854)})local W=U[ZM(44299)]:Section({[ZM(44742)]=ZM(42903),[ZM(43502)]=ZM(44618)})W:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(42654)})W:Seperator()W:Toggle({[ZM(43502)]=ZM(42870);[ZM(43295)]=ZM(44493)})W:Colorpicker({[ZM(43502)]=ZM(43167);[ZM(43295)]=ZM(44635);[ZM(42891)]={Color3[ZM(43744)](255,255,255),1}})W:Seperator()W:Toggle({[ZM(43502)]=ZM(44059),[ZM(43295)]=ZM(43604)})W:Colorpicker({[ZM(43502)]=ZM(44385),[ZM(43295)]=ZM(44007);[ZM(42891)]={Color3[ZM(43744)](214,135,153);1}})W:Seperator()W:Toggle({[ZM(43502)]=ZM(43935),[ZM(43295)]=ZM(42896)})W:Colorpicker({[ZM(43502)]=ZM(42919),[ZM(43295)]=ZM(43090),[ZM(42891)]={Color3[ZM(43744)](237,193,104),1}})W:Seperator()W:Slider({[ZM(43839)]=10,[ZM(43781)]=1000,[ZM(43162)]=ZM(44611);[ZM(43502)]=ZM(43697);[ZM(43295)]=ZM(43859)})local N=U[ZM(44299)]:Section({[ZM(43502)]=ZM(43917),[ZM(44742)]=ZM(44105)})N:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(44748),[ZM(42891)]={Color3[ZM(43744)](244,80,40);0}})N:Colorpicker({[ZM(43502)]=ZM(43659);[ZM(43295)]=ZM(42994),[ZM(42891)]={Color3[ZM(43744)](255,255,255);0}})N:Slider({[ZM(43502)]=ZM(43697);[ZM(43295)]=ZM(44327),[ZM(43839)]=50;[ZM(43781)]=1000,[ZM(43162)]=ZM(44611)})local P=U[ZM(44299)]:Section({[ZM(43502)]=ZM(44597),[ZM(44742)]=ZM(42903)})P:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(43178)})P:Seperator()P:Toggle({[ZM(43502)]=ZM(44339);[ZM(43295)]=ZM(43587)})P:Toggle({[ZM(43502)]=ZM(44080);[ZM(43295)]=ZM(44283)})P:Toggle({[ZM(43502)]=ZM(42652),[ZM(43295)]=ZM(43271)})P:Toggle({[ZM(43502)]=ZM(44370),[ZM(43295)]=ZM(44496)})P:Toggle({[ZM(43502)]=ZM(44903);[ZM(43295)]=ZM(43937)})P:Toggle({[ZM(43502)]=ZM(44389);[ZM(43295)]=ZM(43218)})P:Toggle({[ZM(43502)]=ZM(43028),[ZM(43295)]=ZM(42962)})P:Toggle({[ZM(43502)]=ZM(44014),[ZM(43295)]=ZM(44542)})P:Toggle({[ZM(43502)]=ZM(43761);[ZM(43295)]=ZM(44162)})P:Toggle({[ZM(43502)]=ZM(43804),[ZM(43295)]=ZM(44900)})P:Toggle({[ZM(43502)]=ZM(42746);[ZM(43295)]=ZM(42751)})P:Toggle({[ZM(43502)]=ZM(43696);[ZM(43295)]=ZM(43920)})P:Seperator()P:Colorpicker({[ZM(43502)]=ZM(43659);[ZM(43295)]=ZM(43646)})P:Slider({[ZM(43502)]=ZM(43697);[ZM(43295)]=ZM(43092),[ZM(43839)]=50,[ZM(43781)]=1000,[ZM(43162)]=ZM(44611)})local m=U[ZM(44299)]:Section({[ZM(43502)]=ZM(42833),[ZM(44742)]=ZM(42903)})m:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(44485)})m:Colorpicker({[ZM(43502)]=ZM(43659);[ZM(43295)]=ZM(43215);[ZM(42891)]={Color3[ZM(43744)](255,0,102),0}})m:Slider({[ZM(43502)]=ZM(43697);[ZM(43295)]=ZM(44224);[ZM(43839)]=50;[ZM(43781)]=10000;[ZM(43162)]=ZM(44611)})m:Seperator()m:Toggle({[ZM(43502)]=ZM(43793),[ZM(43295)]=ZM(43829);[ZM(44278)]=ZM(43602)})local D=U[ZM(44299)]:Section({[ZM(43502)]=ZM(42936),[ZM(44742)]=ZM(44105)})D:Toggle({[ZM(43502)]=ZM(43984),[ZM(43295)]=ZM(44863)})D:Colorpicker({[ZM(43295)]=ZM(44866),[ZM(42891)]={Color3[ZM(43744)](0,122,8),0};[ZM(43502)]=ZM(43659)})D:Slider({[ZM(43502)]=ZM(43697);[ZM(43295)]=ZM(44122);[ZM(43839)]=50;[ZM(43781)]=1000,[ZM(43162)]=ZM(44611)})local r=U[ZM(44299)]:Section({[ZM(43502)]=ZM(43553),[ZM(44742)]=ZM(42903)})r:Toggle({[ZM(43502)]=ZM(43984),[ZM(43295)]=ZM(43758)})r:Colorpicker({[ZM(43502)]=ZM(43659);[ZM(43295)]=ZM(43073);[ZM(42891)]={Color3[ZM(43744)](0,244,8);0}})r:Slider({[ZM(43502)]=ZM(43697),[ZM(43295)]=ZM(44109),[ZM(43839)]=50;[ZM(43781)]=10000,[ZM(43162)]=ZM(44611)})local t=U[ZM(44299)]:Section({[ZM(43502)]=ZM(44009),[ZM(44742)]=ZM(42903)})t:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(43465)})t:Colorpicker({[ZM(43502)]=ZM(43659);[ZM(43295)]=ZM(44056)})t:Slider({[ZM(43502)]=ZM(43697),[ZM(43295)]=ZM(44384);[ZM(43839)]=50;[ZM(43781)]=1000,[ZM(43162)]=ZM(44611)})end end local W={[ZM(44683)]=I[ZM(44831)]:Category({[ZM(43502)]=ZM(44683)});[ZM(44299)]=I[ZM(44831)]:Category({[ZM(43502)]=ZM(44299)});[ZM(44127)]=I[ZM(44831)]:Category({[ZM(43502)]=ZM(42929)})}local N=W[ZM(44683)]:Section({[ZM(43502)]=ZM(42940),[ZM(44742)]=ZM(44105)})local P=W[ZM(44683)]:Section({[ZM(43502)]=ZM(43661);[ZM(44742)]=ZM(42903)})local m=W[ZM(44683)]:Section({[ZM(43502)]=ZM(43354),[ZM(44742)]=ZM(42903)})m:Toggle({[ZM(43502)]=ZM(43984),[ZM(43295)]=ZM(44043);[ZM(44278)]=ZM(44757)})m:Keybind({[ZM(43502)]=ZM(44665);[ZM(43295)]=ZM(42944);[ZM(44159)]=ZM(44606);[ZM(43795)]=function(...)local I=(B[ZM(43560)][ZM(44477)]:GetChildren())[1]local u=uM[ZM(43889)][ZM(44043)][ZM(43663)]and uM[ZM(43889)][ZM(42944)][ZM(44532)]if I then if u then for I,u in I:GetDescendants()do if u:IsA(ZM(43675))or u:IsA(ZM(44656))then if u[ZM(44437)]~=1 then u:SetAttribute(ZM(44337),u[ZM(44437)])end u[ZM(44437)]=1 end end else for I,u in I:GetDescendants()do if u:IsA(ZM(43675))or u:IsA(ZM(44656))then if u:GetAttribute(ZM(44337))then u[ZM(44437)]=u:GetAttribute(ZM(44337))end end end end end end})m:Slider({[ZM(43502)]=ZM(43697);[ZM(43295)]=ZM(44335);[ZM(43839)]=0,[ZM(43781)]=20;[ZM(42853)]=.1})N:Toggle({[ZM(43502)]=ZM(44765);[ZM(43295)]=ZM(43450)})N:Seperator()N:Toggle({[ZM(43502)]=ZM(44856),[ZM(43295)]=ZM(44179),[ZM(43795)]=function(...)if uM[ZM(43889)][ZM(44179)][ZM(43663)]then v(uM[ZM(43889)][ZM(43165)][ZM(43663)])end end})local D=120 N:Slider({[ZM(43502)]=ZM(43955),[ZM(43162)]=ZM(44049),[ZM(43295)]=ZM(43165),[ZM(43839)]=70;[ZM(43781)]=D;[ZM(43795)]=function(...)if uM[ZM(43889)][ZM(44179)][ZM(43663)]then v(uM[ZM(43889)][ZM(43165)][ZM(43663)])end end})N:Seperator()N:Toggle({[ZM(43502)]=ZM(44530);[ZM(43295)]=ZM(44530)})N:Slider({[ZM(43502)]=ZM(43091),[ZM(43162)]=ZM(44049);[ZM(43295)]=ZM(44770),[ZM(43839)]=10;[ZM(43781)]=40})N:Keybind({[ZM(43502)]=ZM(43190),[ZM(43295)]=ZM(43573);[ZM(44159)]=ZM(44161),[ZM(43795)]=function(...)if uM[ZM(43889)][ZM(44530)][ZM(43663)]and uM[ZM(43889)][ZM(43573)][ZM(44532)]then v(uM[ZM(43889)][ZM(44770)][ZM(43663)])end end})P:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(42907)})P:Keybind({[ZM(43502)]=ZM(43578),[ZM(43295)]=ZM(42879);[ZM(44159)]=ZM(44606)})P:Slider({[ZM(43502)]=ZM(43939);[ZM(43295)]=ZM(43065);[ZM(43839)]=1,[ZM(43781)]=300;[ZM(42853)]=.1})local r=W[ZM(44299)]:Section({[ZM(43502)]=ZM(43476),[ZM(44742)]=ZM(44105)})local t=W[ZM(44299)]:Section({[ZM(43502)]=ZM(44232);[ZM(44742)]=ZM(42903)})local K=W[ZM(44299)]:Section({[ZM(43502)]=ZM(44522),[ZM(44742)]=ZM(44105)})local j=W[ZM(44299)]:Section({[ZM(43502)]=ZM(42732);[ZM(44742)]=ZM(42903)})local q=W[ZM(44299)]:Section({[ZM(43502)]=ZM(44822);[ZM(44742)]=ZM(44105)})local L=W[ZM(44299)]:Section({[ZM(43502)]=ZM(44365),[ZM(44742)]=ZM(42903)})local x=W[ZM(44299)]:Section({[ZM(43502)]=ZM(43879),[ZM(44742)]=ZM(44105)})local A=W[ZM(44299)]:Section({[ZM(43502)]=ZM(43201);[ZM(44742)]=ZM(42903)})local i=W[ZM(44299)]:Section({[ZM(43502)]=ZM(42780),[ZM(43819)]=ZM(42903)})local O={}for I,u in mM[ZM(42780)]do O[#O+1]=I end i:Dropdown({[ZM(43502)]=ZM(43279),[ZM(43295)]=ZM(43279);[ZM(44061)]=O,[ZM(42891)]=ZM(43848);[ZM(43795)]=function(...)mM[ZM(43279)]:SwitchSkybox(uM[ZM(43889)][ZM(43279)][ZM(43663)])end})local e=T:FindFirstChildOfClass(ZM(43643))or DM:Instance(ZM(43643),{[ZM(43378)]=T;[ZM(43984)]=false})A:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(43201);[ZM(43795)]=function(...)e[ZM(43984)]=uM[ZM(43889)][ZM(43201)][ZM(43663)]end})A:Slider({[ZM(43502)]=ZM(42696),[ZM(43295)]=ZM(43390),[ZM(43839)]=0,[ZM(43781)]=5,[ZM(42853)]=.1;[ZM(43795)]=function(...)e[ZM(42696)]=uM[ZM(43889)][ZM(43390)][ZM(43663)]end})A:Slider({[ZM(43502)]=ZM(43177);[ZM(43295)]=ZM(44057);[ZM(43839)]=0,[ZM(43781)]=1,[ZM(42853)]=.1;[ZM(43795)]=function(...)e[ZM(42696)]=uM[ZM(43889)][ZM(44057)][ZM(43663)]end})A:Slider({[ZM(43502)]=ZM(44462),[ZM(43295)]=ZM(43308);[ZM(43839)]=0,[ZM(43781)]=50;[ZM(42853)]=.1;[ZM(43795)]=function(...)e[ZM(44462)]=uM[ZM(43889)][ZM(43308)][ZM(43663)]end})j:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(43876)})j:Toggle({[ZM(43502)]=ZM(44637),[ZM(43295)]=ZM(44896)})j:Seperator()j:Colorpicker({[ZM(43502)]=ZM(42938);[ZM(43295)]=ZM(43541),[ZM(42891)]={uM[ZM(44411)][ZM(44754)],0}})j:Colorpicker({[ZM(43502)]=ZM(43906),[ZM(43295)]=ZM(42851),[ZM(42891)]={Color3[ZM(43744)](255,0,0),0}})j:Seperator()j:Slider({[ZM(43502)]=ZM(44146);[ZM(43839)]=1;[ZM(43781)]=10,[ZM(43295)]=ZM(44515)})j:Slider({[ZM(43502)]=ZM(43468);[ZM(43295)]=ZM(44541),[ZM(43839)]=1,[ZM(43781)]=5;[ZM(42853)]=.1})j:Slider({[ZM(43502)]=ZM(43939),[ZM(43295)]=ZM(43258),[ZM(43839)]=50;[ZM(43781)]=300,[ZM(42891)]=250})j:Seperator()j:Dropdown({[ZM(43502)]=ZM(44034),[ZM(43295)]=ZM(43792);[ZM(44061)]={ZM(42891),ZM(43227);ZM(43549)}})K:Toggle({[ZM(43502)]=ZM(43984),[ZM(43295)]=ZM(44522)})K:Toggle({[ZM(43502)]=ZM(42963),[ZM(43295)]=ZM(42939)})K:Toggle({[ZM(43502)]=ZM(43765);[ZM(43295)]=ZM(44457)})K:Colorpicker({[ZM(43502)]=ZM(43659);[ZM(43295)]=ZM(43714)})K:Slider({[ZM(43502)]=ZM(44462);[ZM(43295)]=ZM(43191),[ZM(43839)]=10,[ZM(43781)]=20})K:Slider({[ZM(43502)]=ZM(43468);[ZM(43295)]=ZM(43300);[ZM(43839)]=.1;[ZM(43781)]=3,[ZM(42853)]=.1})if B[ZM(44822)]:FindFirstChild(ZM(44365))then local I=B[ZM(44822)][ZM(44365)][ZM(44133)]local u=B[ZM(44822)][ZM(44365)][ZM(44223)]local U=B[ZM(44822)][ZM(44365)][ZM(43659)]local function W(...)B[ZM(44822)][ZM(44365)][ZM(44133)]=uM[ZM(43889)][ZM(44566)][ZM(43663)]and uM[ZM(43889)][ZM(43871)][ZM(43663)]or I B[ZM(44822)][ZM(44365)][ZM(44223)]=uM[ZM(43889)][ZM(44826)][ZM(43663)]and uM[ZM(43889)][ZM(44820)][ZM(43663)]or u B[ZM(44822)][ZM(44365)][ZM(43659)]=uM[ZM(43889)][ZM(43673)][ZM(43663)]and uM[ZM(43889)][ZM(44648)][ZM(43663)][1]or U end L:Toggle({[ZM(43502)]=ZM(43102),[ZM(43295)]=ZM(44566);[ZM(43795)]=W})L:Slider({[ZM(43502)]=ZM(44133),[ZM(43295)]=ZM(43871),[ZM(43839)]=0;[ZM(43781)]=1,[ZM(42853)]=.001;[ZM(43795)]=W})L:Seperator()L:Toggle({[ZM(43502)]=ZM(43444);[ZM(43295)]=ZM(44826);[ZM(43795)]=W})L:Slider({[ZM(43502)]=ZM(44133);[ZM(43295)]=ZM(44820),[ZM(43839)]=0,[ZM(43781)]=1,[ZM(42853)]=.001,[ZM(43795)]=W})L:Seperator()L:Toggle({[ZM(43502)]=ZM(44470);[ZM(43295)]=ZM(43673),[ZM(43795)]=W})L:Colorpicker({[ZM(43502)]=ZM(43659);[ZM(43295)]=ZM(44648);[ZM(43795)]=W})end local J=T:FindFirstChild(ZM(44126))if J then local I=J[ZM(44133)]local u=J[ZM(43659)]local U=J[ZM(43117)]local W=J[ZM(43198)]local N=J[ZM(43852)]local function P(...)J[ZM(44133)]=uM[ZM(43889)][ZM(43305)][ZM(43663)]and uM[ZM(43889)][ZM(42988)][ZM(43663)]or I J[ZM(43659)]=uM[ZM(43889)][ZM(43433)][ZM(43663)]and uM[ZM(43889)][ZM(44814)][ZM(43663)][1]or u J[ZM(43852)]=uM[ZM(43889)][ZM(44165)][ZM(43663)]and uM[ZM(43889)][ZM(43672)][ZM(43663)][1]or N J[ZM(43198)]=uM[ZM(43889)][ZM(44067)][ZM(43663)]and uM[ZM(43889)][ZM(42898)][ZM(43663)]or W J[ZM(43117)]=uM[ZM(43889)][ZM(43985)][ZM(43663)]and uM[ZM(43889)][ZM(44440)][ZM(43663)]or U end x:Toggle({[ZM(43502)]=ZM(42984),[ZM(43295)]=ZM(43305),[ZM(43795)]=P})x:Slider({[ZM(43502)]=ZM(44133),[ZM(43295)]=ZM(42988),[ZM(43839)]=0,[ZM(43781)]=1,[ZM(42853)]=.001;[ZM(43795)]=P})x:Seperator()x:Toggle({[ZM(43502)]=ZM(44735),[ZM(43295)]=ZM(43985);[ZM(43795)]=P})x:Slider({[ZM(43502)]=ZM(43117),[ZM(43839)]=0;[ZM(43781)]=1,[ZM(42853)]=.001,[ZM(43795)]=P;[ZM(43295)]=ZM(44440)})x:Seperator()x:Toggle({[ZM(43502)]=ZM(42863);[ZM(43295)]=ZM(44067),[ZM(43795)]=P})x:Slider({[ZM(43502)]=ZM(43198);[ZM(43839)]=0,[ZM(43781)]=1,[ZM(42853)]=.001,[ZM(43795)]=P,[ZM(43295)]=ZM(42898)})x:Toggle({[ZM(43502)]=ZM(43991),[ZM(43295)]=ZM(43433),[ZM(43795)]=P})x:Colorpicker({[ZM(43502)]=ZM(43659);[ZM(43295)]=ZM(44814);[ZM(43795)]=P})x:Seperator()x:Toggle({[ZM(43502)]=ZM(43485);[ZM(43295)]=ZM(44165);[ZM(43795)]=P})x:Colorpicker({[ZM(43502)]=ZM(43852);[ZM(43295)]=ZM(44228);[ZM(43795)]=P})end local c=LPH_NO_VIRTUALIZE(function(...)if uM[ZM(43889)][ZM(43071)][ZM(43663)]then T[ZM(44438)]=uM[ZM(43889)][ZM(44438)][ZM(43663)]end end)local l=LPH_NO_VIRTUALIZE(function(...)if uM[ZM(43889)][ZM(44714)][ZM(43663)]then T[ZM(44233)]=uM[ZM(43889)][ZM(44401)][ZM(43663)][1]T[ZM(44714)]=uM[ZM(43889)][ZM(44401)][ZM(43663)][1]end end)local C=LPH_NO_VIRTUALIZE(function(...)if uM[ZM(43889)][ZM(44844)][ZM(43663)]then T[ZM(43880)]=uM[ZM(43889)][ZM(42735)][ZM(43663)]end end)r:Toggle({[ZM(43502)]=ZM(43071);[ZM(43295)]=ZM(43071),[ZM(43795)]=c})r:Slider({[ZM(43502)]=ZM(44438);[ZM(43295)]=ZM(44438),[ZM(43839)]=2;[ZM(43781)]=6,[ZM(42853)]=.1;[ZM(43795)]=c})r:Seperator()r:Toggle({[ZM(43502)]=ZM(43291);[ZM(43295)]=ZM(44714),[ZM(43795)]=l})local f=nil local function z(...)local I=uM[ZM(43889)][ZM(44309)]and uM[ZM(43889)][ZM(44309)][ZM(43663)]or ZM(42891)local u=uM[ZM(43889)][ZM(44615)]and uM[ZM(43889)][ZM(44615)][ZM(43663)]or 1500 pcall(function(...)local U=T:FindFirstChildOfClass(ZM(43279))if not f then f={[ZM(43880)]=T[ZM(43880)];[ZM(44714)]=T[ZM(44714)],[ZM(44233)]=T[ZM(44233)],[ZM(44013)]=T[ZM(44013)],[ZM(44845)]=U and U[ZM(44845)],[ZM(44243)]=U and U[ZM(44243)];[ZM(44207)]=U and U[ZM(44207)]}end if I==ZM(42891)then T[ZM(43880)]=f[ZM(43880)]T[ZM(44714)]=f[ZM(44714)]T[ZM(44233)]=f[ZM(44233)]T[ZM(44013)]=f[ZM(44013)]if U then U[ZM(44845)]=f[ZM(44845)]or 3000 U[ZM(44243)]=f[ZM(44243)]or 21 U[ZM(44207)]=f[ZM(44207)]or 11 end elseif I==ZM(43950)then T[ZM(43880)]=0 if U then U[ZM(44845)]=u U[ZM(44243)]=8 U[ZM(44207)]=14 end elseif I==ZM(44112)then T[ZM(43880)]=0 T[ZM(44714)]=Color3[ZM(43744)](0,0,0)T[ZM(44233)]=Color3[ZM(43744)](4,4,10)T[ZM(44013)]=100000 if U then U[ZM(44845)]=4000 end elseif I==ZM(42937)then T[ZM(43880)]=6.7 T[ZM(44714)]=Color3[ZM(43744)](120,70,45)T[ZM(44233)]=Color3[ZM(43744)](140,90,60)end end)end r:Dropdown({[ZM(43502)]=ZM(43279);[ZM(43295)]=ZM(44309),[ZM(44061)]={ZM(42891),ZM(43950);ZM(44112);ZM(42937)};[ZM(43795)]=z})r:Slider({[ZM(43502)]=ZM(43682);[ZM(43295)]=ZM(44615);[ZM(43839)]=0;[ZM(43781)]=4000;[ZM(42853)]=50,[ZM(42891)]=1500;[ZM(43795)]=z})r:Colorpicker({[ZM(43502)]=ZM(43360),[ZM(43295)]=ZM(44401),[ZM(42891)]={uM[ZM(44411)][ZM(44754)],.1};[ZM(43795)]=l})r:Seperator()r:Toggle({[ZM(43502)]=ZM(42892),[ZM(43295)]=ZM(44844),[ZM(43795)]=C})r:Slider({[ZM(43502)]=ZM(42735);[ZM(43295)]=ZM(42735),[ZM(43839)]=0;[ZM(43781)]=14,[ZM(42853)]=.1;[ZM(43795)]=C})t:Toggle({[ZM(43502)]=ZM(44021),[ZM(43295)]=ZM(44021)})t:Keybind({[ZM(43502)]=ZM(43241);[ZM(43295)]=ZM(43229),[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)for I,u in next,DM[ZM(42676)]do if uM[ZM(43889)][ZM(44021)][ZM(43663)]and uM[ZM(43889)][ZM(43229)][ZM(44532)]then u[ZM(44437)]=uM[ZM(43889)][ZM(42781)][ZM(43663)]else u[ZM(44437)]=0 end end end)})t:Slider({[ZM(43502)]=ZM(42798),[ZM(43295)]=ZM(42781),[ZM(43839)]=0,[ZM(43781)]=1,[ZM(42853)]=.1;[ZM(42891)]=.5})q:Toggle({[ZM(43502)]=ZM(42981);[ZM(43295)]=ZM(43778),[ZM(43795)]=function(...)sethiddenproperty(B[ZM(44822)],ZM(43336),not uM[ZM(43889)][ZM(43778)][ZM(43663)])end})local R=W[ZM(44127)]:Section({[ZM(43502)]=ZM(43434);[ZM(44742)]=ZM(44105)})R:Toggle({[ZM(43502)]=ZM(43984),[ZM(43295)]=ZM(44509)})local p=W[ZM(44127)]:Section({[ZM(43502)]=ZM(44597),[ZM(44742)]=ZM(42903)})local H=W[ZM(44127)]:Section({[ZM(43502)]=ZM(43141);[ZM(44742)]=ZM(44105)})local w=W[ZM(44127)]:Section({[ZM(43502)]=ZM(44054);[ZM(44742)]=ZM(44105)})local Z=W[ZM(44127)]:Section({[ZM(43502)]=ZM(44046);[ZM(44742)]=ZM(42903)})local n=W[ZM(44127)]:Section({[ZM(43502)]=ZM(43297),[ZM(44742)]=ZM(44105)})p:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(44533)})p:Toggle({[ZM(43502)]=ZM(44853),[ZM(43295)]=ZM(42920)})p:Colorpicker({[ZM(43502)]=ZM(43659),[ZM(43295)]=ZM(42674);[ZM(42891)]={Color3[ZM(43744)](0,100,255);0}})p:Dropdown({[ZM(43502)]=ZM(43698),[ZM(43295)]=ZM(44322),[ZM(44061)]={ZM(42694);ZM(44780),ZM(42757),ZM(44415)}})p:Slider({[ZM(43502)]=ZM(44188),[ZM(43295)]=ZM(44436);[ZM(43839)]=0;[ZM(43781)]=5;[ZM(42853)]=.001})H:Toggle({[ZM(43502)]=ZM(43984),[ZM(43295)]=ZM(43834)})H:Colorpicker({[ZM(43502)]=ZM(43659),[ZM(43295)]=ZM(43769);[ZM(42891)]={Color3[ZM(43744)](0,100,255),0}})H:Dropdown({[ZM(43502)]=ZM(43698);[ZM(43295)]=ZM(43059),[ZM(44061)]={ZM(42694),ZM(44780),ZM(42757);ZM(44415)}})H:Slider({[ZM(43502)]=ZM(44188),[ZM(43295)]=ZM(42760);[ZM(43839)]=0,[ZM(43781)]=5;[ZM(42853)]=.001})Z:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(44616)})Z:Colorpicker({[ZM(43502)]=ZM(43659),[ZM(43295)]=ZM(43616),[ZM(42891)]={Color3[ZM(43744)](0,100,255),0}})Z:Dropdown({[ZM(43502)]=ZM(43698),[ZM(43295)]=ZM(44798);[ZM(44061)]={ZM(42694),ZM(44780),ZM(42757),ZM(44415)}})Z:Toggle({[ZM(43502)]=ZM(44290);[ZM(43295)]=ZM(43233)})Z:Slider({[ZM(43502)]=ZM(44188),[ZM(43295)]=ZM(43034),[ZM(43839)]=0,[ZM(43781)]=5;[ZM(42853)]=.001})w:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(43075)})w:Colorpicker({[ZM(43502)]=ZM(43659);[ZM(43295)]=ZM(42775),[ZM(42891)]={Color3[ZM(43744)](0,100,255),0}})w:Dropdown({[ZM(43502)]=ZM(43698),[ZM(43295)]=ZM(44124),[ZM(44061)]={ZM(42694);ZM(44780),ZM(42757),ZM(44415)}})w:Slider({[ZM(43502)]=ZM(44188),[ZM(43295)]=ZM(43623);[ZM(43839)]=0,[ZM(43781)]=5;[ZM(42853)]=.001})n:Colorpicker({[ZM(43502)]=ZM(44558),[ZM(43295)]=ZM(43287);[ZM(42891)]={Color3[ZM(43744)](0,0,0);1}})n:Colorpicker({[ZM(43502)]=ZM(43132);[ZM(43295)]=ZM(44307);[ZM(42891)]={Color3[ZM(43744)](0,0,0);0}})local S={[ZM(44832)]=I[ZM(44848)]:Category({[ZM(43502)]=ZM(44832)}),[ZM(44740)]=I[ZM(44848)]:Category({[ZM(43502)]=ZM(44740)});[ZM(44199)]=I[ZM(44848)]:Category({[ZM(43502)]=ZM(43741)})}local b=S[ZM(44199)]:Section({[ZM(43502)]=ZM(44875);[ZM(44742)]=ZM(44105)})local o=F:FindFirstChild(ZM(42982))local g=F:FindFirstChild(ZM(44670))if g and o then local I=g[ZM(44885)]local u=g[ZM(44594)]local U=o[ZM(44885)]local W=o[ZM(44594)]local N={[ZM(44561)]=ZM(44497),[ZM(42888)]=ZM(44582);[ZM(44859)]=ZM(43004),[ZM(42681)]=ZM(43495),[ZM(44135)]=ZM(42812),[ZM(44458)]=ZM(42883),[ZM(43953)]=ZM(42816);[ZM(43751)]=ZM(44348),[ZM(44005)]=ZM(43534),[ZM(42755)]=ZM(43709),[ZM(43585)]=ZM(44185)}local P={}for I,u in N do table[ZM(43063)](P,I)end b:Dropdown({[ZM(43502)]=ZM(44750);[ZM(43295)]=ZM(43482);[ZM(44061)]=P,[ZM(42891)]=ZM(42891),[ZM(43795)]=function(...)local I=uM[ZM(43889)][ZM(43482)][ZM(43663)]if I==ZM(42891)then o[ZM(44594)]=W o[ZM(44885)]=U else o[ZM(44594)]=N[I]end end})b:Slider({[ZM(43502)]=ZM(44673);[ZM(43295)]=ZM(44323);[ZM(43839)]=.1;[ZM(43781)]=10,[ZM(42891)]=o[ZM(44885)],[ZM(43795)]=function(...)o[ZM(44885)]=uM[ZM(43889)][ZM(44323)][ZM(43663)]end})b:Dropdown({[ZM(43502)]=ZM(44132),[ZM(43295)]=ZM(43947),[ZM(44061)]=P;[ZM(42891)]=ZM(42891),[ZM(43795)]=function(...)local U=uM[ZM(43889)][ZM(43947)][ZM(43663)]if U==ZM(42891)then g[ZM(44594)]=u g[ZM(44885)]=I else g[ZM(44594)]=N[U]end end})b:Slider({[ZM(43502)]=ZM(43136);[ZM(43295)]=ZM(44524);[ZM(43839)]=.1;[ZM(43781)]=10;[ZM(42891)]=g[ZM(44885)],[ZM(43795)]=function(...)g[ZM(44885)]=uM[ZM(43889)][ZM(44524)][ZM(43663)]end})end local Q=S[ZM(44832)]:Section({[ZM(43502)]=ZM(43933);[ZM(44742)]=ZM(42903)})Q:Toggle({[ZM(43502)]=ZM(44444),[ZM(43295)]=ZM(42793);[ZM(43795)]=function(...)if#DM[ZM(44418)]>0 then for I,u in pairs(DM[ZM(44418)])do debug[ZM(44121)](u,19,uM[ZM(43889)][ZM(42793)][ZM(43663)]and 0 or.9)debug[ZM(44121)](u,20,uM[ZM(43889)][ZM(42793)][ZM(43663)]and 0 or.3)debug[ZM(44121)](u,21,uM[ZM(43889)][ZM(42793)][ZM(43663)]and 0 or.1)end end end})local G=S[ZM(44832)]:Section({[ZM(43502)]=ZM(44232),[ZM(44742)]=ZM(44105)})G:Toggle({[ZM(43502)]=ZM(42768),[ZM(43295)]=ZM(44276);[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)for I,u in next,DM[ZM(43973)]do u[ZM(44604)]=not uM[ZM(43889)][ZM(44276)][ZM(43663)]end end)})G:Toggle({[ZM(43502)]=ZM(44422),[ZM(43295)]=ZM(43717);[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)for I,u in next,DM[ZM(43338)]do u[ZM(44604)]=not uM[ZM(43889)][ZM(43717)][ZM(43663)]end end)})local V=S[ZM(44832)]:Section({[ZM(43502)]=ZM(42739);[ZM(44742)]=ZM(44105)})V:Toggle({[ZM(43502)]=ZM(44603);[ZM(43295)]=ZM(43914)})V:Slider({[ZM(43502)]=ZM(44116),[ZM(43295)]=ZM(43915),[ZM(43839)]=5;[ZM(43781)]=30})V:Dropdown({[ZM(43502)]=ZM(43974),[ZM(43295)]=ZM(44044),[ZM(44061)]={ZM(43064),ZM(42870);ZM(44059),ZM(43107)}})local M=S[ZM(44740)]:Section({[ZM(43502)]=ZM(43147);[ZM(44742)]=ZM(44105)})local Y=S[ZM(44740)]:Section({[ZM(43502)]=ZM(42787),[ZM(44742)]=ZM(42903)})Y:Toggle({[ZM(43502)]=ZM(43939);[ZM(43295)]=ZM(43430);[ZM(44278)]=ZM(43379)})Y:Slider({[ZM(43502)]=ZM(43023),[ZM(43295)]=ZM(44492),[ZM(43839)]=4,[ZM(43781)]=100;[ZM(42891)]=19;[ZM(43162)]=ZM(43897)})Y:Toggle({[ZM(43502)]=ZM(44507);[ZM(43295)]=ZM(44507);[ZM(42891)]=false,[ZM(44279)]=true,[ZM(44278)]=ZM(42875)})Y:Slider({[ZM(43502)]=ZM(42970);[ZM(43295)]=ZM(43188);[ZM(43839)]=2,[ZM(43781)]=40,[ZM(42891)]=8,[ZM(43162)]=ZM(44738)})local y=S[ZM(44740)]:Section({[ZM(43502)]=ZM(44241),[ZM(44742)]=ZM(44105)})local X=S[ZM(44740)]:Section({[ZM(43502)]=ZM(42821);[ZM(44742)]=ZM(42903)})X:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(43456),[ZM(44279)]=true})X:Keybind({[ZM(43502)]=ZM(44289),[ZM(43295)]=ZM(43419),[ZM(44159)]=ZM(44606)})M:Toggle({[ZM(43502)]=ZM(43984),[ZM(43295)]=ZM(43564)})M:Toggle({[ZM(43502)]=ZM(43348);[ZM(43295)]=ZM(43457),[ZM(44279)]=true})M:Keybind({[ZM(43502)]=ZM(42782);[ZM(43295)]=ZM(43545)})M:Slider({[ZM(43502)]=ZM(43727),[ZM(43295)]=ZM(44285),[ZM(43839)]=2,[ZM(43781)]=6,[ZM(42853)]=.1})Y:Toggle({[ZM(43502)]=ZM(44800),[ZM(43295)]=ZM(44230);[ZM(44279)]=true})Y:Toggle({[ZM(43502)]=ZM(42680),[ZM(43295)]=ZM(42680)})Y:Toggle({[ZM(43502)]=ZM(43818),[ZM(43295)]=ZM(43818)})Y:Toggle({[ZM(43502)]=ZM(43153);[ZM(43295)]=ZM(44624);[ZM(44278)]=ZM(44413)})y:Toggle({[ZM(43502)]=ZM(43984),[ZM(43295)]=ZM(42861)})local s={[ZM(43112)]=I[ZM(44904)]:Category({[ZM(43502)]=ZM(43182)}),[ZM(44339)]=I[ZM(44904)]:Category({[ZM(43502)]=ZM(44597)}),[ZM(44903)]=I[ZM(44904)]:Category({[ZM(43502)]=ZM(44903)})}local d=s[ZM(43112)]:Section({[ZM(43502)]=ZM(43182),[ZM(44742)]=ZM(44105)})d:Toggle({[ZM(43502)]=ZM(44889);[ZM(43295)]=ZM(43431)})if h:FindFirstChild(ZM(44477))then local I=h[ZM(44477)]local u=h[ZM(44046)]local U={}local W={}for I,u in I:GetChildren()do if u:IsA(ZM(43342))then U[u[ZM(43502)]]={}for I,W in u:GetChildren()do if W:IsA(ZM(43919))then U[u[ZM(43502)]][#U[u[ZM(43502)]]+1]=W[ZM(43502)]end end end end for I,u in u:GetChildren()do if u:IsA(ZM(43342))then W[u[ZM(43502)]]={}for I,U in u:GetChildren()do if U:IsA(ZM(43919))then W[u[ZM(43502)]][#W[u[ZM(43502)]]+1]=U[ZM(43502)]end end end end do local I=false for u,U in U do if#U>1 then I=not I local W=s[ZM(44339)]:Section({[ZM(43502)]=u;[ZM(44742)]=I and ZM(44105)or ZM(42903)})W:Toggle({[ZM(43502)]=ZM(43984);[ZM(43295)]=ZM(43771)..u})W:Dropdown({[ZM(43502)]=ZM(44690),[ZM(43295)]=ZM(44144)..u,[ZM(44061)]=U})end end end do local I=false for u,U in W do if#U>1 then I=not I local W=s[ZM(44903)]:Section({[ZM(43502)]=u,[ZM(44742)]=I and ZM(44105)or ZM(42903)})W:Toggle({[ZM(43502)]=ZM(43984),[ZM(43295)]=ZM(43771)..u})W:Dropdown({[ZM(43502)]=ZM(44690),[ZM(43295)]=ZM(44144)..u,[ZM(44061)]=U})end end end end local k={[ZM(44875)]=I[ZM(44407)]:Category({[ZM(43502)]=ZM(44875)})}local E=k[ZM(44875)]:Section({[ZM(43502)]=ZM(43400),[ZM(44742)]=ZM(44105)})E:Textbox({[ZM(43502)]=ZM(44876);[ZM(43295)]=ZM(43498)})local IM=(E:Button({[ZM(43502)]=ZM(44756);[ZM(43295)]=ZM(43350),[ZM(42893)]=true;[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)uM:SaveConfig(uM[ZM(43889)][ZM(43498)][ZM(43663)])end)})):AddButton({[ZM(43502)]=ZM(44762);[ZM(43295)]=ZM(44829);[ZM(42893)]=true;[ZM(43795)]=LPH_NO_VIRTUALIZE(function(...)local I,u=pcall(uM:LoadConfig(uM[ZM(43889)][ZM(43498)][ZM(43663)]))if not I and u then rconsoleprint(u)end end)})E:Button({[ZM(43502)]=ZM(44571),[ZM(43295)]=ZM(43704);[ZM(42893)]=true,[ZM(43795)]=function(...)local I=tostring(uM[ZM(43889)][ZM(43498)][ZM(43663)])local u=a..(ZM(44019)..(I..ZM(42698)))if not isfile(u)then uM:Notify(ZM(43483)..(u..ZM(44266)),4,Color3[ZM(43744)](255,165,0))return end delfile(u)end})if game[ZM(43220)]==17574618959 or game[ZM(43220)]==18911599934 then E:Button({[ZM(43502)]=ZM(44805);[ZM(43295)]=ZM(44805),[ZM(43795)]=function(...)game[ZM(44731)]:Teleport(game[ZM(43220)])end})end local UM=k[ZM(44875)]:Section({[ZM(43502)]=ZM(43783);[ZM(44742)]=ZM(42903)})UM:Toggle({[ZM(43502)]=ZM(44551),[ZM(43295)]=ZM(43626),[ZM(42891)]=true;[ZM(43795)]=function(...)jM[ZM(43211)][ZM(43048)][ZM(43211)][ZM(42723)]=uM[ZM(43889)][ZM(43626)][ZM(43663)]end})UM:Toggle({[ZM(43502)]=ZM(44303),[ZM(43295)]=ZM(44591);[ZM(42891)]=true;[ZM(43795)]=function(...)jM[ZM(42701)][ZM(43048)][ZM(44612)][ZM(42723)]=uM[ZM(43889)][ZM(44591)][ZM(43663)]end})local WM=k[ZM(44875)]:Section({[ZM(43502)]=ZM(44710);[ZM(44742)]=ZM(44105)})WM:Slider({[ZM(43502)]=ZM(43372);[ZM(43295)]=ZM(43505);[ZM(43839)]=0,[ZM(43781)]=10,[ZM(43162)]=ZM(44611);[ZM(42853)]=.1})local NM=uM:CreateWatermark(ZM(44368))task[ZM(43860)](.5)DM:Tween(jM[ZM(43048)][ZM(43494)],TweenInfo[ZM(44272)](uM[ZM(42705)],Enum[ZM(44374)][ZM(42646)]),{[ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,0)})jM:SetTab(I[ZM(42840)])task[ZM(43860)](2)if not LPH_OBFUSCATED then NM:SetText(ZM(43133))else NM:SetText((ZM(43133)):format(LRM_LinkedDiscordID))end local PM=jM[ZM(43844)]DM[ZM(43844)]=PM end))()A(ZM(44741))local qM=ZM(43957)local vM={[ZM(43228)]=true;[ZM(44131)]=true}NM[ZM(44875)][ZM(42647)]:AddFlag({[ZM(43502)]=ZM(43966);[ZM(44527)]={ZM(43800)};[ZM(43628)]=LPH_NO_VIRTUALIZE(function(I,...)return ZM(44576)end);[ZM(42809)]=LPH_NO_VIRTUALIZE(function(I,...)if not((I[ZM(43160)]and I[ZM(43160)]:FindFirstChild(ZM(43137))))then return false end local u=I[ZM(43160)][ZM(43137)][ZM(44802)]if not u then return false end local U=I[ZM(43163)]if U and U[ZM(43502)]==ZM(44599)then local I=u:FindFirstChild(ZM(42957))return I and I[ZM(43409)]end for I,u in ipairs(I[ZM(43160)][ZM(43137)]:GetPlayingAnimationTracks())do if u[ZM(42665)][ZM(43249)]==qM then return true end end return false end)})NM[ZM(44875)][ZM(42647)]:AddFlag({[ZM(43502)]=ZM(44531),[ZM(44527)]={ZM(43800)};[ZM(43628)]=LPH_NO_VIRTUALIZE(function(I,...)return ZM(44589)end),[ZM(42809)]=LPH_NO_VIRTUALIZE(function(I,...)local u=I[ZM(43160)]and I[ZM(43160)]:FindFirstChild(ZM(44746))local U=I[ZM(43163)]if not((u and U))then return false end local W=U[ZM(43502)]local N,P if W==ZM(44639)then N=u:FindFirstChild(ZM(44400))P=u:FindFirstChild(ZM(42999))else N=u:FindFirstChild(W..ZM(44254))P=u:FindFirstChild(W..ZM(43881))end return(N and N[ZM(43409)])or(P and P[ZM(43409)])end)})NM[ZM(44875)][ZM(42647)]:AddFlag({[ZM(43502)]=ZM(43373);[ZM(44527)]={ZM(43800)};[ZM(43628)]=LPH_NO_VIRTUALIZE(function(I,...)return ZM(42968)end),[ZM(42809)]=LPH_NO_VIRTUALIZE(function(I,...)if not((I[ZM(43160)]and I[ZM(43160)]:FindFirstChild(ZM(43137))))then return false end for I,u in ipairs(I[ZM(43160)][ZM(43137)]:GetPlayingAnimationTracks())do if vM[u[ZM(42665)][ZM(43249)]]then return true end end return false end)})NM[ZM(44875)][ZM(42647)]:AddFlag({[ZM(43502)]=ZM(43854),[ZM(44527)]={ZM(43800)},[ZM(43628)]=LPH_NO_VIRTUALIZE(function(I,...)return ZM(43854)end),[ZM(42809)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43405)]and I[ZM(43405)]:GetAttribute(ZM(43854))end)})NM[ZM(44875)][ZM(42647)]:AddFlag({[ZM(43502)]=ZM(43440);[ZM(44527)]={ZM(43800)},[ZM(43628)]=LPH_NO_VIRTUALIZE(function(I,...)if I[ZM(43405)]:GetAttribute(ZM(43555))then return ZM(42980)..I[ZM(43405)]:GetAttribute(ZM(43555))end return ZM(44368)end);[ZM(42809)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43405)]and I[ZM(43405)]:GetAttribute(ZM(43555))end)})NM[ZM(44875)][ZM(42647)]:AddFlag({[ZM(43502)]=ZM(43831),[ZM(44527)]={ZM(43800)},[ZM(43628)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43405)]and(DM[ZM(42762)][I[ZM(43405)]]and ZM(43296)..DM[ZM(42762)][I[ZM(43405)]])or nil end),[ZM(42809)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43405)]and DM[ZM(42762)][I[ZM(43405)]]end)})local LM=DM:Instance(ZM(43342),{[ZM(43378)]=g,[ZM(43502)]=ZM(42833)})DM[ZM(43113)]=LM local xM=DM:Instance(ZM(43342),{[ZM(43378)]=g;[ZM(43502)]=ZM(44152)})DM[ZM(43428)]=xM;(LPH_JIT_MAX(function(...)local I=uM[ZM(44662)][ZM(42701)]local u={ZM(44500);ZM(42886);ZM(44772),ZM(43963),ZM(44169);ZM(44216);ZM(44888)}local function U(U,...)if U==Y then uM:Notify(ZM(44189))I:Add(U[ZM(43502)],ZM(43518))end local W=ZM(43149)local N=false if U:IsInGroup(1154360)then W=U:GetRoleInGroup(1154360)if table[ZM(43851)](u,W)then uM:Notify(ZM(42931)..(U[ZM(43502)]..(ZM(43216)..W)),15,Color3[ZM(43744)](255,0,0))I:Add(U[ZM(43502)],W)DM[ZM(42762)][U]=W end end if IM[U[ZM(43803)]]and not DM[ZM(42762)][U]then W=ZM(42716)uM:Notify(ZM(43582)..(U[ZM(43502)]..(ZM(43525)..W)),15,Color3[ZM(43744)](255,0,0))I:Add(U[ZM(43502)],W)DM[ZM(42762)][U]=W end return N,W end for I,u in Q:GetChildren()do if u~=Y then local I=NM[ZM(43112)]:Create(u,{[ZM(44156)]=ZM(43800);[ZM(43366)]=ZM(43800)})u[ZM(43332)]:Connect(function(u,...)I:OnCharacterAdded(u)end)if u[ZM(43160)]then I:OnCharacterAdded(u[ZM(43160)])end pcall(U,u)end end Q[ZM(42643)]:Connect(function(I,...)local u=NM[ZM(43112)]:Create(I,{[ZM(44156)]=ZM(43800);[ZM(43366)]=ZM(43800)})I[ZM(43332)]:Connect(function(I,...)u:OnCharacterAdded(I)end)if I[ZM(43160)]then u:OnCharacterAdded(I[ZM(43160)])end pcall(U,I)end)Q[ZM(44821)]:Connect(function(u,...)NM[ZM(44875)][ZM(42647)]:Remove(u)if DM[ZM(42762)][u]then I:UpdateModerator(u[ZM(43502)],nil,true)end end)local W=B:FindFirstChild(ZM(44178))if W then local I=B:FindFirstChild(ZM(42811))local function u(I,...)if table[ZM(43851)]({ZM(43374);ZM(43909);ZM(43620),ZM(43068);ZM(43473)},I[ZM(43502)])then local u=ZM(44373)if I[ZM(43502)]==ZM(43374)or I[ZM(43502)]==ZM(43909)or I[ZM(43502)]==ZM(43068)or I[ZM(43502)]==ZM(43620)then u=ZM(44658)end local U=NM[ZM(43112)]:Create(I,{[ZM(44156)]=ZM(44373);[ZM(43366)]=u})else return end end for I,U in I:GetChildren()do if U[ZM(43502)]==ZM(43620)then u(U)end end I[ZM(42803)]:Connect(function(I,...)task[ZM(43860)](1)if I[ZM(43502)]==ZM(43620)then u(I)end end)I[ZM(44821)]:Connect(function(I,...)NM[ZM(44875)][ZM(42647)]:Remove(I)end)for I,U in W:GetChildren()do for I,U in U:GetChildren()do if U:IsA(ZM(43919))then u(U)end end U[ZM(42803)]:Connect(function(I,...)task[ZM(43860)](1)if I:IsA(ZM(43919))then u(I)end end)U[ZM(44821)]:Connect(function(I,...)NM[ZM(44875)][ZM(42647)]:Remove(I)end)end end local N=B:FindFirstChild(ZM(44618))local P=B:FindFirstChild(ZM(43051))local m=B:FindFirstChild(ZM(44232))local D=B:FindFirstChild(ZM(44341))local r={[ZM(44852)]=ZM(43455);[ZM(42890)]=ZM(43096);[ZM(44419)]=ZM(44595)}if N then NM[ZM(44848)][ZM(42647)][ZM(43558)]({[ZM(43378)]=N;[ZM(44807)]=ZM(43919),[ZM(44379)]=ZM(44782),[ZM(43295)]=ZM(44618);[ZM(43815)]=LPH_NO_VIRTUALIZE(function(I,...)local u=r[I[ZM(43142)][ZM(43502)]]return uM[ZM(43889)][u..ZM(43659)][ZM(43663)][1]end);[ZM(44129)]=LPH_NO_VIRTUALIZE(function(I,...)local u=r[I[ZM(43142)][ZM(43502)]]return uM[ZM(43889)][u..ZM(43659)][ZM(43663)][2]end),[ZM(43908)]=LPH_NO_VIRTUALIZE(function(I,...)local u=math[ZM(44193)](((I[ZM(43142)]:GetAttribute(ZM(43845))/I[ZM(43142)]:GetAttribute(ZM(42814))))*100)local U=r[I[ZM(43142)][ZM(43502)]]return U..(ZM(42808)..(tostring(u)..ZM(42899)))end);[ZM(43225)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)]:FindFirstChild(ZM(44875))and(I[ZM(43142)]:FindFirstChild(ZM(44875)))[ZM(43808)][ZM(44511)]end);[ZM(42992)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)]:FindFirstChild(ZM(44875))and math[ZM(44193)](((M[ZM(43808)][ZM(44511)]-(I[ZM(43142)]:FindFirstChild(ZM(44875)))[ZM(43808)][ZM(44511)]))[ZM(43046)])end),[ZM(43887)]=LPH_NO_VIRTUALIZE(function(I,...)local u=r[I[ZM(43142)][ZM(43502)]]return uM[ZM(43889)][u..ZM(43423)][ZM(43663)]end)})uM:Notify(ZM(42683))end if P then local I={[ZM(44848)]=Color3[ZM(43744)](210,210,210),[ZM(43533)]=Color3[ZM(43744)](214,20,20);[ZM(44370)]=Color3[ZM(43744)](214,50,50),[ZM(44246)]=Color3[ZM(43744)](50,214,50);[ZM(43976)]=Color3[ZM(43744)](210,210,210);[ZM(43313)]=Color3[ZM(43744)](252,215,3);[ZM(44686)]=Color3[ZM(43744)](3,252,161),[ZM(42862)]=Color3[ZM(43744)](210,210,210),[ZM(43658)]=Color3[ZM(43744)](255,255,255),[ZM(44903)]=Color3[ZM(43744)](255,0,183)}NM[ZM(44848)][ZM(42647)][ZM(43558)]({[ZM(43378)]=P,[ZM(44807)]=ZM(43919);[ZM(44379)]=ZM(44361);[ZM(43295)]=ZM(44597),[ZM(43815)]=LPH_NO_VIRTUALIZE(function(I,...)return uM[ZM(43889)][ZM(43646)][ZM(43663)][1]end),[ZM(44129)]=LPH_NO_VIRTUALIZE(function(I,...)return uM[ZM(43889)][ZM(43646)][ZM(43663)][2]end);[ZM(43908)]=LPH_NO_VIRTUALIZE(function(u,...)if not u[ZM(44627)]then local I=u[ZM(43142)]:FindFirstChild(ZM(43006))I=Z:JSONDecode(I[ZM(43663)])local U=I[ZM(43609)]local W=I[ZM(42778)]local N=DM[ZM(43857)][U]local P=N[ZM(44040)]u[ZM(44040)]=P u[ZM(44627)]={[ZM(43609)]=U,[ZM(42778)]=W}end local U=I[u[ZM(44040)]]local W=u[ZM(43142)][ZM(43502)]if u[ZM(44627)][ZM(42778)]>1 then W=W..(ZM(44843)..tostring(u[ZM(44627)][ZM(42778)]))end return W end);[ZM(43225)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43166)]and I[ZM(43142)][ZM(43166)][ZM(43808)][ZM(44511)]end);[ZM(42992)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43166)]and math[ZM(44193)](((M[ZM(43808)][ZM(44511)]-I[ZM(43142)][ZM(43166)][ZM(43808)][ZM(44511)]))[ZM(43046)])end),[ZM(43887)]=LPH_NO_VIRTUALIZE(function(I,...)if I[ZM(43142)]:FindFirstChild(ZM(43006))then if not I[ZM(44627)]then local u=I[ZM(43142)]:FindFirstChild(ZM(43006))u=Z:JSONDecode(u[ZM(43663)])local U=u[ZM(43609)]local W=u[ZM(42778)]local N=DM[ZM(43857)][U]local P=N[ZM(44040)]I[ZM(44040)]=P I[ZM(44627)]={[ZM(43609)]=U;[ZM(42778)]=W}end return uM[ZM(43889)][ZM(43367)..I[ZM(44040)]][ZM(43663)]end end)})uM:Notify(ZM(44608))NM[ZM(44848)][ZM(42647)][ZM(43558)]({[ZM(43378)]=DM[ZM(43113)],[ZM(44807)]=ZM(43675),[ZM(44379)]=ZM(42734),[ZM(43295)]=ZM(42833),[ZM(43908)]=LPH_NO_VIRTUALIZE(function(I,...)local u=I[ZM(43142)]local U=u[ZM(43502)]local W=tostring(math[ZM(44193)](tick()-u[ZM(44659)][ZM(43663)]))return ZM(42763)..(u[ZM(43502)]..(ZM(43653)..(tostring(W)..ZM(44319))))end);[ZM(43225)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)]and I[ZM(43142)][ZM(43808)][ZM(44511)]end),[ZM(42992)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)]and math[ZM(44193)](((M[ZM(43808)][ZM(44511)]-I[ZM(43142)][ZM(43808)][ZM(44511)]))[ZM(43046)])end),[ZM(43887)]=LPH_NO_VIRTUALIZE(function(I,...)return true end)})NM[ZM(44848)][ZM(42647)][ZM(43558)]({[ZM(43378)]=DM[ZM(43428)],[ZM(44807)]=ZM(43675),[ZM(44379)]=ZM(43962);[ZM(43295)]=ZM(42715);[ZM(43908)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43502)]end);[ZM(43225)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)]and I[ZM(43142)][ZM(43808)][ZM(44511)]end);[ZM(42992)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)]and math[ZM(44193)](((M[ZM(43808)][ZM(44511)]-I[ZM(43142)][ZM(43808)][ZM(44511)]))[ZM(43046)])end),[ZM(43887)]=LPH_NO_VIRTUALIZE(function(I,...)return true end)})end if m then local I=m:FindFirstChild(ZM(44467))local u=I:FindFirstChild(ZM(44520))local U=I:FindFirstChild(ZM(44149))if u then NM[ZM(44848)][ZM(42647)][ZM(43558)]({[ZM(43378)]=u;[ZM(44807)]=ZM(43919),[ZM(44379)]=ZM(43767);[ZM(43295)]=ZM(42961);[ZM(43908)]=LPH_NO_VIRTUALIZE(function(I,...)local u=I[ZM(43142)][ZM(43502)]local U=I[ZM(43142)]:FindFirstChild(ZM(44334))local W=U and U:FindFirstChild(ZM(44214))local N=W and W:FindFirstChild(ZM(44425))local P=N and N:FindFirstChild(ZM(43489))local m=P and P[ZM(43628)]or ZM(43053)return u..(ZM(44697)..(m..ZM(43596)))end),[ZM(43225)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43166)]and I[ZM(43142)][ZM(43166)][ZM(43808)][ZM(44511)]end);[ZM(42992)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43166)]and math[ZM(44193)](((M[ZM(43808)][ZM(44511)]-I[ZM(43142)][ZM(43166)][ZM(43808)][ZM(44511)]))[ZM(43046)])end),[ZM(43887)]=LPH_NO_VIRTUALIZE(function(I,...)return true end)})uM:Notify(ZM(43314))end if I then local u=I:FindFirstChild(ZM(44282))local U=I:FindFirstChild(ZM(42742))if u then NM[ZM(44848)][ZM(42647)][ZM(43558)]({[ZM(43378)]=u,[ZM(44807)]=ZM(43919),[ZM(44379)]=ZM(42726),[ZM(43295)]=ZM(42854);[ZM(43908)]=LPH_NO_VIRTUALIZE(function(I,...)local u=I[ZM(43142)][ZM(43502)]return u end);[ZM(43225)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43166)]and I[ZM(43142)][ZM(43166)][ZM(43808)][ZM(44511)]end);[ZM(42992)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43166)]and math[ZM(44193)](((M[ZM(43808)][ZM(44511)]-I[ZM(43142)][ZM(43166)][ZM(43808)][ZM(44511)]))[ZM(43046)])end),[ZM(43887)]=LPH_NO_VIRTUALIZE(function(I,...)return true end)})uM:Notify(ZM(43408))end if U then NM[ZM(44848)][ZM(42647)][ZM(43558)]({[ZM(43378)]=U,[ZM(44807)]=ZM(43919),[ZM(43502)]=ZM(42742),[ZM(44379)]=ZM(43274),[ZM(43295)]=ZM(42894),[ZM(43908)]=LPH_NO_VIRTUALIZE(function(I,...)local u=I[ZM(43142)][ZM(43502)]local U=I[ZM(43142)]:GetAttribute(ZM(44343))local W=u..(ZM(44701)..U)return W end),[ZM(43225)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43166)]and I[ZM(43142)][ZM(43166)][ZM(43808)][ZM(44511)]end),[ZM(42992)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43166)]and math[ZM(44193)](((M[ZM(43808)][ZM(44511)]-I[ZM(43142)][ZM(43166)][ZM(43808)][ZM(44511)]))[ZM(43046)])end),[ZM(43887)]=LPH_NO_VIRTUALIZE(function(I,...)return true end)})uM:Notify(ZM(43993))end end if U then NM[ZM(44848)][ZM(42647)][ZM(43558)]({[ZM(43378)]=U;[ZM(44807)]=ZM(43919),[ZM(44379)]=ZM(42771),[ZM(43295)]=ZM(44009);[ZM(43908)]=LPH_NO_VIRTUALIZE(function(I,...)local u=I[ZM(43142)][ZM(43502)]local U=ZM(43589)local W=I[ZM(43142)]:FindFirstChild(ZM(43288))local N=W and W:FindFirstChild(ZM(44425))U=N and N[ZM(43628)]or U local P=u..(ZM(44701)..U)return P end),[ZM(43225)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43166)]and I[ZM(43142)][ZM(43166)][ZM(43808)][ZM(44511)]end),[ZM(42992)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43166)]and math[ZM(44193)](((M[ZM(43808)][ZM(44511)]-I[ZM(43142)][ZM(43166)][ZM(43808)][ZM(44511)]))[ZM(43046)])end);[ZM(43887)]=LPH_NO_VIRTUALIZE(function(I,...)return true end)})uM:Notify(ZM(43381))end end if D then NM[ZM(44848)][ZM(42647)][ZM(43558)]({[ZM(43378)]=D,[ZM(43502)]=ZM(43097),[ZM(44379)]=ZM(44857);[ZM(43295)]=ZM(44484);[ZM(43908)]=LPH_NO_VIRTUALIZE(function(I,...)return ZM(44610)end);[ZM(43225)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43166)]and I[ZM(43142)][ZM(43166)][ZM(43808)][ZM(44511)]end),[ZM(42992)]=LPH_NO_VIRTUALIZE(function(I,...)return I[ZM(43142)][ZM(43166)]and math[ZM(44193)](((M[ZM(43808)][ZM(44511)]-I[ZM(43142)][ZM(43166)][ZM(43808)][ZM(44511)]))[ZM(43046)])end),[ZM(43887)]=LPH_NO_VIRTUALIZE(function(I,...)return true end)})uM:Notify(ZM(44721))end;(M:GetPropertyChangedSignal(ZM(44331))):Connect(LPH_NO_VIRTUALIZE(function(...)if uM[ZM(43889)][ZM(44530)][ZM(43663)]and uM[ZM(43889)][ZM(43573)][ZM(44532)]then v(uM[ZM(43889)][ZM(44770)][ZM(43663)])return end if uM[ZM(43889)][ZM(44179)][ZM(43663)]then v(uM[ZM(43889)][ZM(43165)][ZM(43663)])end end))local t=B:FindFirstChild(ZM(43560))local K=t and t:FindFirstChild(ZM(44477))if K then K[ZM(42803)]:Connect(LPH_NO_VIRTUALIZE(function(I,...)task[ZM(43860)]()if I:IsA(ZM(43919))then local u=I:WaitForChild(ZM(43141))local U=I:WaitForChild(ZM(44823))local W=I:WaitForChild(ZM(43297),1)if u and U then if uM[ZM(43889)][ZM(44509)][ZM(43663)]then if W then W[ZM(42645)]=uM[ZM(43889)][ZM(43287)][ZM(43663)][1]W[ZM(44167)]=uM[ZM(43889)][ZM(43287)][ZM(43663)][2]W[ZM(43464)]=uM[ZM(43889)][ZM(44307)][ZM(43663)][1]W[ZM(44855)]=uM[ZM(43889)][ZM(44307)][ZM(43663)][2]end for I,u in next,u:GetDescendants()do if u:IsA(ZM(44656))then if((u[ZM(43502)]==ZM(42928)or u[ZM(43502)]==ZM(44903)))and(uM[ZM(43889)][ZM(44616)]and uM[ZM(43889)][ZM(44616)][ZM(43663)])then u[ZM(43698)]=uM[ZM(43889)][ZM(44798)][ZM(43663)]u[ZM(43659)]=uM[ZM(43889)][ZM(43616)][ZM(43663)][1]u[ZM(44437)]=uM[ZM(43889)][ZM(43616)][ZM(43663)][2]u[ZM(44188)]=uM[ZM(43889)][ZM(43034)][ZM(43663)]end if((u[ZM(43502)]==ZM(42928)or u[ZM(43502)]==ZM(44903)))and(uM[ZM(43889)][ZM(43233)]and uM[ZM(43889)][ZM(43233)][ZM(43663)])then u[ZM(44437)]=1 end if((u[ZM(43502)]==ZM(43491)or u[ZM(43502)]==ZM(44166)))and(uM[ZM(43889)][ZM(43075)]and uM[ZM(43889)][ZM(43075)][ZM(43663)])then u[ZM(43698)]=uM[ZM(43889)][ZM(44124)][ZM(43663)]u[ZM(43659)]=uM[ZM(43889)][ZM(42775)][ZM(43663)][1]u[ZM(44437)]=uM[ZM(43889)][ZM(42775)][ZM(43663)][2]u[ZM(44188)]=uM[ZM(43889)][ZM(43623)][ZM(43663)]end if((u[ZM(43502)]==ZM(44664)or u[ZM(43502)]==ZM(44206)))and(uM[ZM(43889)][ZM(43834)]and uM[ZM(43889)][ZM(43834)][ZM(43663)])then u[ZM(43698)]=uM[ZM(43889)][ZM(43059)][ZM(43663)]u[ZM(43659)]=uM[ZM(43889)][ZM(43769)][ZM(43663)][1]u[ZM(44437)]=uM[ZM(43889)][ZM(43769)][ZM(43663)][2]u[ZM(44188)]=uM[ZM(43889)][ZM(42760)][ZM(43663)]end if u[ZM(43698)]==Enum[ZM(43698)][ZM(42694)]or u[ZM(43698)]==Enum[ZM(43698)][ZM(44415)]or u[ZM(43698)]==Enum[ZM(43698)][ZM(42757)]then u[ZM(44198)]=ZM(44368)end if u[ZM(43698)]==Enum[ZM(43698)][ZM(44780)]then u[ZM(44198)]=ZM(44293)end end end if uM[ZM(43889)][ZM(44533)][ZM(43663)]then for I,u in next,U:GetDescendants()do if u and(u:IsA(ZM(44656))and u[ZM(44437)]~=1)then if U:FindFirstChild(ZM(42746))then if u:IsDescendantOf(U:FindFirstChild(ZM(42746)))then if not uM[ZM(43889)][ZM(42920)][ZM(43663)]then u[ZM(43698)]=uM[ZM(43889)][ZM(44322)][ZM(43663)]u[ZM(43659)]=uM[ZM(43889)][ZM(42674)][ZM(43663)][1]u[ZM(44437)]=uM[ZM(43889)][ZM(42674)][ZM(43663)][2]u[ZM(44188)]=uM[ZM(43889)][ZM(44436)][ZM(43663)]end else u[ZM(44188)]=uM[ZM(43889)][ZM(44436)][ZM(43663)]u[ZM(43698)]=uM[ZM(43889)][ZM(44322)][ZM(43663)]u[ZM(43659)]=uM[ZM(43889)][ZM(42674)][ZM(43663)][1]u[ZM(44437)]=uM[ZM(43889)][ZM(42674)][ZM(43663)][2]end else u[ZM(44188)]=uM[ZM(43889)][ZM(44436)][ZM(43663)]u[ZM(43698)]=uM[ZM(43889)][ZM(44322)][ZM(43663)]u[ZM(43659)]=uM[ZM(43889)][ZM(42674)][ZM(43663)][1]u[ZM(44437)]=uM[ZM(43889)][ZM(42674)][ZM(43663)][2]end if u[ZM(43698)]==Enum[ZM(43698)][ZM(42694)]or u[ZM(43698)]==Enum[ZM(43698)][ZM(44415)]or u[ZM(43698)]==Enum[ZM(43698)][ZM(42757)]then u[ZM(44198)]=ZM(44368)end if u[ZM(43698)]==Enum[ZM(43698)][ZM(44780)]then u[ZM(44198)]=ZM(44293)end end end end end if uM[ZM(43889)][ZM(44043)][ZM(43663)]and uM[ZM(43889)][ZM(42944)][ZM(44532)]then for I,u in I:GetDescendants()do if u:IsA(ZM(44656))or u:IsA(ZM(43675))then if u[ZM(44437)]~=1 then u:SetAttribute(ZM(44337),u[ZM(44437)])end u[ZM(44437)]=1 end end end end end end))end local j={}local q={}local L={}local x={ZM(43679),ZM(44315);ZM(42661);ZM(43262),ZM(44662);ZM(43347);ZM(43583);ZM(43492),ZM(44908);ZM(43404);ZM(44879);ZM(44621);ZM(42900),ZM(44488);ZM(43347),ZM(43008)}local A={[ZM(43064)]=1,[ZM(42870)]=2;[ZM(44059)]=3;[ZM(43107)]=4}if B:FindFirstChild(ZM(44232))then(LPH_NO_VIRTUALIZE(function(...)for I,u in next,B[ZM(44232)]:GetDescendants()do if u:IsA(ZM(44656))and u[ZM(43502)]==ZM(43595)then if u[ZM(43378)]and table[ZM(43851)](x,u[ZM(43378)][ZM(43502)])then L[#L+1]=u end end if u[ZM(43502)]==ZM(43928)and(u[ZM(43378)]and u[ZM(43378)][ZM(43502)]==ZM(43011))then j[#j+1]=u end if u[ZM(43502)]==ZM(43575)then q[#q+1]=u end end end))()B[ZM(44232)][ZM(43631)]:Connect(LPH_NO_VIRTUALIZE(function(I,...)if Y[ZM(43160)]and(Y[ZM(43160)]:FindFirstChild(ZM(43441))and(table[ZM(43851)](x,I[ZM(43502)])and uM[ZM(43889)][ZM(43914)][ZM(43663)]))then task[ZM(43766)](function(...)if not I[ZM(43166)]then local u=tick()repeat task[ZM(43860)]()until I[ZM(43166)]or tick()-u>2 end local u=I[ZM(43166)]if u and((u[ZM(43808)][ZM(44511)]-M[ZM(43808)][ZM(44511)]))[ZM(43046)]<uM[ZM(43889)][ZM(43915)][ZM(43663)]then local U=A[uM[ZM(43889)][ZM(44044)][ZM(43663)]]uM:Notify(ZM(43702)..(I[ZM(43502)]..(ZM(44801)..(uM[ZM(43889)][ZM(44044)][ZM(43663)]..(ZM(42730)..(tostring(math[ZM(44193)](((u[ZM(43808)][ZM(44511)]-M[ZM(43808)][ZM(44511)]))[ZM(43046)]))..ZM(44611)))))),3,Color3[ZM(43744)](255,133,3))DM[ZM(43716)](ZM(44250),ZM(43337),ZM(43280),I,U)end end)end task[ZM(43860)](.5)if I:IsA(ZM(44656))and I[ZM(43502)]==ZM(43595)then if I[ZM(43378)]and table[ZM(43851)](x,I[ZM(43378)][ZM(43502)])then L[#L+1]=I if uM[ZM(43889)][ZM(44021)][ZM(43663)]and uM[ZM(43889)][ZM(43229)][ZM(44532)]then I[ZM(44437)]=uM[ZM(43889)][ZM(42781)][ZM(43663)]end end end if I[ZM(43502)]==ZM(43928)and(I[ZM(43378)]and I[ZM(43378)][ZM(43502)]==ZM(43011))then j[#j+1]=I I[ZM(44604)]=not uM[ZM(43889)][ZM(44276)][ZM(43663)]end if I[ZM(43502)]==ZM(43575)then q[#q+1]=I I[ZM(44604)]=not uM[ZM(43889)][ZM(43717)][ZM(43663)]end end))end DM[ZM(43973)]=j DM[ZM(43338)]=q DM[ZM(42676)]=L end))();(T:GetPropertyChangedSignal(ZM(44438))):Connect(LPH_NO_VIRTUALIZE(function(...)if uM[ZM(43889)][ZM(43071)][ZM(43663)]then T[ZM(44438)]=uM[ZM(43889)][ZM(44438)][ZM(43663)]end end));(T:GetPropertyChangedSignal(ZM(44714))):Connect(LPH_NO_VIRTUALIZE(function(...)if uM[ZM(43889)][ZM(44714)][ZM(43663)]then T[ZM(44714)]=uM[ZM(43889)][ZM(44401)][ZM(43663)][1]end end));(T:GetPropertyChangedSignal(ZM(44233))):Connect(LPH_NO_VIRTUALIZE(function(...)if uM[ZM(43889)][ZM(44714)][ZM(43663)]then T[ZM(44233)]=uM[ZM(43889)][ZM(44401)][ZM(43663)][1]end end))local AM=B[ZM(44822)]local iM=AM:FindFirstChild(ZM(44365))local OM=T:FindFirstChild(ZM(44126))if iM then(iM:GetPropertyChangedSignal(ZM(44133))):Connect(LPH_NO_VIRTUALIZE(function(...)if uM[ZM(43889)][ZM(44566)][ZM(43663)]then iM[ZM(44133)]=uM[ZM(43889)][ZM(43871)][ZM(43663)]end end));(iM:GetPropertyChangedSignal(ZM(44223))):Connect(LPH_NO_VIRTUALIZE(function(...)if uM[ZM(43889)][ZM(44826)][ZM(43663)]then iM[ZM(44223)]=uM[ZM(43889)][ZM(44820)][ZM(43663)]end end));(iM:GetPropertyChangedSignal(ZM(43659))):Connect(LPH_NO_VIRTUALIZE(function(...)if uM[ZM(43889)][ZM(43673)][ZM(43663)]then iM[ZM(43659)]=uM[ZM(43889)][ZM(44648)][ZM(43663)][1]end end))end if OM then(OM:GetPropertyChangedSignal(ZM(44133))):Connect(function(...)if uM[ZM(43889)][ZM(43305)][ZM(43663)]then OM[ZM(44133)]=uM[ZM(43889)][ZM(42988)][ZM(43663)]end end);(OM:GetPropertyChangedSignal(ZM(43659))):Connect(function(...)if uM[ZM(43889)][ZM(43433)][ZM(43663)]then OM[ZM(43659)]=uM[ZM(43889)][ZM(44814)][ZM(43663)][1]end end);(OM:GetPropertyChangedSignal(ZM(43852))):Connect(function(...)if uM[ZM(43889)][ZM(44165)][ZM(43663)]then OM[ZM(43852)]=uM[ZM(43889)][ZM(44228)][ZM(43663)][1]end end);(OM:GetPropertyChangedSignal(ZM(43117))):Connect(function(...)if uM[ZM(43889)][ZM(43985)][ZM(43663)]then OM[ZM(43117)]=uM[ZM(43889)][ZM(44440)][ZM(43663)]end end);(OM:GetPropertyChangedSignal(ZM(43198))):Connect(function(...)if uM[ZM(43889)][ZM(44067)][ZM(43663)]then OM[ZM(43198)]=uM[ZM(43889)][ZM(42898)][ZM(43663)]end end)end A(ZM(42794))NM[ZM(44704)]=NM[ZM(44704)]or nil NM[ZM(42895)]=NM[ZM(42895)]or{}local eM=function(I,u,U,...)DM[ZM(44702)](ZM(44250),ZM(43812),ZM(42964),unpack(U))end local JM=function(I,u,...)local U=I or B:GetServerTimeNow()local W=U*10000 local N=math[ZM(43787)](W)local P=(Random[ZM(44272)](N)):NextInteger(1,1000000000)local m=(Random[ZM(44272)](N)):NextInteger(1,10000000000)local D={u[1],u[2];u[3],u[4],u[5],u[6],P;m}local r={m,P;u[6],u[5];u[4];u[3];u[2];u[1]}local t=u[2]local K=t[ZM(44472)]local j=u[3][ZM(44472)]local q=j-K local v=q[ZM(43046)]+20 local L=q[ZM(43189)]*v local x=u[3][ZM(43378)]local A local i=RaycastParams[ZM(44272)]()i[ZM(44098)]={x}i[ZM(43755)]=Enum[ZM(44716)][ZM(42993)]i[ZM(44528)]=true local O=B:Raycast(K,L,DM[ZM(43426)])local e=B:Raycast(K,L,i)if O and O[ZM(43363)]then if O[ZM(44575)][ZM(43046)]~=1 then r[4]=O[ZM(44575)]end if e and e[ZM(44575)]then r[4]=e[ZM(44575)]end local I=O[ZM(44472)]r[5]=D[3][ZM(43808)]:PointToObjectSpace(I)if not O[ZM(43363)]:IsDescendantOf(x)then return end end if typeof(D[3])==ZM(43363)and(typeof(D[2])==ZM(43808)and(typeof(D[5])==ZM(43912)and type(D[8])==ZM(44549)))then pcall(function(...)table[ZM(42741)](r,warn)DM[ZM(44702)](ZM(44250),ZM(43812),ZM(43035),unpack(r))end)end end local cM=tick()local aM=tick()local lM=WM[ZM(42855)](ZM(43282),LPH_NO_VIRTUALIZE(function(...)local I=RaycastParams[ZM(44272)]()I[ZM(43755)]=Enum[ZM(44716)][ZM(43058)]I[ZM(44098)]={M;Y[ZM(43160)];B:FindFirstChild(ZM(43560))}DM[ZM(43426)]=I local u=uM[ZM(43889)][ZM(43720)][ZM(43663)]if uM[ZM(43889)][ZM(43395)]and uM[ZM(43889)][ZM(43395)][ZM(43663)]then local I=uM[ZM(43889)][ZM(44179)][ZM(43663)]and uM[ZM(43889)][ZM(43165)][ZM(43663)]or 90 local U=(I/M[ZM(44331)])DM:Tween(mM[ZM(43304)],TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(44864)]),{[ZM(44462)]=UDim2[ZM(44272)](0,U*u,0,U*u)})else mM[ZM(43304)][ZM(44462)]=UDim2[ZM(44272)](0,u,0,u)end local U=math[ZM(44579)]local W,N,P,m=nil,nil,nil,nil local D,r,t,K=false,nil,nil,nil local j,q,v,L=nil,{},nil,nil local x=uM[ZM(43889)][ZM(44316)][ZM(43663)]local A=uM[ZM(43889)][ZM(42744)][ZM(44532)]local i=uM[ZM(43889)][ZM(44592)][ZM(43663)]local O=uM[ZM(43889)][ZM(43268)]and uM[ZM(43889)][ZM(43268)][ZM(43663)]local e=uM[ZM(43889)][ZM(43169)][ZM(43663)]local J=uM[ZM(43889)][ZM(44089)][ZM(43663)]local c=uM[ZM(43889)][ZM(44136)][ZM(43663)]local a=uM[ZM(43889)][ZM(42663)][ZM(43663)]and uM[ZM(43889)][ZM(44448)][ZM(44532)]local l=mM[ZM(44226)][ZM(43725)][ZM(42847)]/2 local C=Y[ZM(43160)]and Y[ZM(43160)]:FindFirstChild(ZM(44746))for I,u in NM[ZM(44875)][ZM(44501)]do if tick()-u[ZM(43306)]>.0145 then u[ZM(43306)]=tick()u:Update()end local j=u[ZM(44060)]if not((j and(j[ZM(43010)]and(u[ZM(43160)]and I~=Y))))then continue end if u[ZM(43366)]==ZM(43800)then u[ZM(43827)]=d(I)end if not((j[ZM(42950)]and(((not u[ZM(43827)]or uM[ZM(43889)][ZM(42832)][ZM(43663)]))and x)))then continue end local v=uM[ZM(43889)][ZM(42639)..u[ZM(43366)]]if not((v and(v[ZM(43663)]and((A or i)))))then continue end local L=mM[ZM(44858)](j[ZM(43010)])if L>=U or L>l then continue end local f if e and j[ZM(42723)]then f=j[ZM(42985)]elseif not e or O then f=u[ZM(43160)]:FindFirstChild(c)end if Y[ZM(43160)]and(Y[ZM(43160)]:FindFirstChild(ZM(43137))and(Y[ZM(43160)][ZM(43137)][ZM(44802)]and(uM[ZM(43889)][ZM(43401)][ZM(43663)]and(I[ZM(43160)]and I[ZM(43160)]:FindFirstChild(ZM(43001))))))then local u=((Y[ZM(43160)][ZM(43137)][ZM(44802)][ZM(43808)][ZM(44511)]-(I[ZM(43160)]:FindFirstChild(ZM(43001)))[ZM(43808)][ZM(44511)]))[ZM(43046)]if u<=uM[ZM(43889)][ZM(44619)][ZM(43663)]then table[ZM(43063)](q,{I[ZM(43160)]:FindFirstChild(ZM(43001)),u;I})end end if j[ZM(42723)]and J then local I=tick()local U=u[ZM(44539)]if not((U and(I-U[ZM(44713)]<.15 and(U[ZM(43365)]and U[ZM(43365)][ZM(43378)]))))then local W={}for I,u in ipairs(u[ZM(43160)]:GetChildren())do if u:IsA(ZM(43712))and mM[ZM(43093)](u)then table[ZM(43063)](W,u)end end u[ZM(44539)]={[ZM(44713)]=I,[ZM(43365)]=(#W>0 and W[math[ZM(43047)](1,#W)])or nil}U=u[ZM(44539)]end if U[ZM(43365)]then f=U[ZM(43365)]end end if u[ZM(43160)][ZM(43502)]==ZM(43620)then f=u[ZM(43160)]:FindFirstChild(ZM(44746))end if a and(C and(f and not j[ZM(42723)]))then local U=C[ZM(43808)]local W=tick()local N=u[ZM(44423)]local P if N and W-N[ZM(44713)]<.1 then P=N[ZM(42666)]else P=NM[ZM(43112)][ZM(43775)](U,f)u[ZM(44423)]={[ZM(44713)]=W,[ZM(42666)]=P}end if not P and O then local I=f[ZM(44472)]-C[ZM(44472)]if I[ZM(43046)]>8 then P=f[ZM(44472)]-I[ZM(43189)]*6 end end if P then D=true t=f r=P K=I end end if f then W=f N=u[ZM(43160)]P=u m=I U=L end end NM[ZM(43940)]=D NM[ZM(43830)]=t NM[ZM(44172)]=r NM[ZM(44253)]=K NM[ZM(44643)]=W NM[ZM(42972)]=P NM[ZM(43998)]=m NM[ZM(44106)]=N if W and uM[ZM(43889)][ZM(43764)][ZM(43663)]==ZM(44719)then M[ZM(43808)]=CFrame[ZM(44272)](M[ZM(43808)][ZM(44472)],W[ZM(44472)])end local f=uM[ZM(44662)][ZM(43844)]if P and(P[ZM(44538)]and uM[ZM(43889)][ZM(44824)][ZM(43663)])then if tick()-DM[ZM(43666)]>.2 then local I={}for u,U in pairs(P[ZM(44538)])do if U[ZM(43502)]and U[ZM(44690)]then local u=U[ZM(43502)]..(ZM(44252)..U[ZM(44690)])I[u]=true f:Add(U[ZM(43502)],U[ZM(44690)])end end local u=N and N:FindFirstChildOfClass(ZM(43658))local U=u and u[ZM(43502)]or ZM(43954)I[ZM(44026)..U]=true f:Add(ZM(44823),U)for u,U in ipairs(f[ZM(43048)][ZM(43394)]:GetChildren())do if U:IsA(ZM(43015))and not I[U[ZM(43502)]]then f:UpdateArmor(U[ZM(43502)],nil,true)end end DM[ZM(43666)]=tick()end else f:ClearAll()end if uM[ZM(43889)][ZM(43401)][ZM(43663)]then if#q~=0 and Y[ZM(43160)]then for I,u in q do local U=u[2]local W=u[1]if not L or U<v then L=W v=U j=u[3]end end end local I=B:FindFirstChild(ZM(43560))and(B[ZM(43560)][ZM(44477)]:GetChildren())[1]local u=I and DM[ZM(43612)][I[ZM(43502)]]if Y[ZM(43160)]and(j and(u and(rawget(u,ZM(44823))and rawget(u[ZM(44823)],ZM(43540)))))then if j:IsA(ZM(43800))then j=j[ZM(43160)]end local U=Y[ZM(43160)]:FindFirstChild(ZM(44746))local W=u[ZM(44823)][ZM(43540)]local N=I:FindFirstChild(ZM(44823))and I[ZM(44823)]:FindFirstChild(ZM(44875))or I[ZM(44823)]:FindFirstChild(ZM(43309))local P=j:FindFirstChild(ZM(43001))local m=CFrame[ZM(44272)](U[ZM(44472)]+Vector3[ZM(44272)](0,3,0),P[ZM(44472)])if P and(((U[ZM(43808)][ZM(44511)]-P[ZM(43808)][ZM(44511)]))[ZM(42724)]<=uM[ZM(43889)][ZM(44619)][ZM(43663)]and tick()-aM>math[ZM(44420)](W,.45)*((.9+math[ZM(43047)]()*.25)))then aM=tick()task[ZM(43766)](function(...)local u=B:GetServerTimeNow()uM:Notify(ZM(43622)..(I[ZM(43502)]..ZM(43825)),1,uM[ZM(43889)][ZM(44526)][ZM(43663)][1])local W,D=pcall(function(...)eM(ZM(44368),ZM(44368),{u,I[ZM(43502)]})end)task[ZM(43860)]()local r=U[ZM(43808)]:PointToObjectSpace(N[ZM(44472)])local t=((Y[ZM(43160)][ZM(43001)][ZM(44472)]-P[ZM(44472)]))[ZM(43189)]if uM[ZM(43889)][ZM(44043)][ZM(43663)]and uM[ZM(43889)][ZM(42944)][ZM(44532)]then local u=Y[ZM(43160)]:FindFirstChild(I[ZM(43502)])N=u and u:FindFirstChild(ZM(43309))if not N then return end r=U[ZM(43808)]:PointToObjectSpace(N[ZM(44472)])/10 end if m and(P and(t and r))then local I,W=pcall(function(...)uM:Notify(ZM(44786)..(j[ZM(43502)]..(ZM(43782)..(tostring(math[ZM(44193)](((U[ZM(43808)][ZM(44511)]-P[ZM(43808)][ZM(44511)]))[ZM(42724)]))..ZM(43203)))),1,uM[ZM(43889)][ZM(44526)][ZM(43663)][1])if uM[ZM(43889)][ZM(44522)][ZM(43663)]then mM[ZM(44312)](P,P[ZM(44472)])end F[ZM(42982)]:Play()JM(u,{math[ZM(43047)](1,3);m,P,t,r;ZM(43278),ZM(44368),ZM(44368)})end)end end)end end end end),ZM(43462))local CM=WM[ZM(42855)](ZM(42737),LPH_NO_VIRTUALIZE(function(...)mM[ZM(44752)][ZM(42723)]=uM[ZM(43889)][ZM(44287)][ZM(43663)]if mM[ZM(44752)][ZM(42723)]then local I=uM[ZM(43889)][ZM(43528)][ZM(43663)]local u=uM[ZM(43889)][ZM(43307)][ZM(43663)]local U=uM[ZM(43889)][ZM(43416)][ZM(43663)]mM[ZM(44094)][ZM(44462)]=UDim2[ZM(44272)](0,u,0,I)mM[ZM(43410)][ZM(44462)]=UDim2[ZM(44272)](0,u,0,I)mM[ZM(43411)][ZM(44462)]=UDim2[ZM(44272)](0,I,0,u)mM[ZM(44630)][ZM(44462)]=UDim2[ZM(44272)](0,I,0,u)mM[ZM(44094)][ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,-U-I/2)mM[ZM(43410)][ZM(44472)]=UDim2[ZM(44272)](.5,0,.5,U+I/2)mM[ZM(44630)][ZM(44472)]=UDim2[ZM(44272)](.5,-U-I/2,.5,0)mM[ZM(43411)][ZM(44472)]=UDim2[ZM(44272)](.5,U+I/2,.5,0)DM:Tween(mM[ZM(44094)],TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(44864)],Enum[ZM(44424)][ZM(43875)]),{[ZM(43749)]=NM[ZM(44643)]and(uM[ZM(43889)][ZM(42764)][ZM(43663)]and uM[ZM(43889)][ZM(42850)][ZM(43663)][1])or uM[ZM(43889)][ZM(43904)][ZM(43663)][1]})DM:Tween(mM[ZM(43410)],TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(44864)],Enum[ZM(44424)][ZM(43875)]),{[ZM(43749)]=NM[ZM(44643)]and(uM[ZM(43889)][ZM(42764)][ZM(43663)]and uM[ZM(43889)][ZM(42850)][ZM(43663)][1])or uM[ZM(43889)][ZM(43904)][ZM(43663)][1]})DM:Tween(mM[ZM(44630)],TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(44864)],Enum[ZM(44424)][ZM(43875)]),{[ZM(43749)]=NM[ZM(44643)]and(uM[ZM(43889)][ZM(42764)][ZM(43663)]and uM[ZM(43889)][ZM(42850)][ZM(43663)][1])or uM[ZM(43889)][ZM(43904)][ZM(43663)][1]})DM:Tween(mM[ZM(43411)],TweenInfo[ZM(44272)](.15,Enum[ZM(44374)][ZM(44864)],Enum[ZM(44424)][ZM(43875)]),{[ZM(43749)]=NM[ZM(44643)]and(uM[ZM(43889)][ZM(42764)][ZM(43663)]and uM[ZM(43889)][ZM(42850)][ZM(43663)][1])or uM[ZM(43889)][ZM(43904)][ZM(43663)][1]})if uM[ZM(43889)][ZM(43944)][ZM(43663)]then mM[ZM(44752)][ZM(43320)]=mM[ZM(44752)][ZM(43320)]+.5 else mM[ZM(44752)][ZM(43320)]=0 end if uM[ZM(43889)][ZM(43669)][ZM(43663)]and NM[ZM(44643)]then local I,u=M:WorldToViewportPoint(NM[ZM(44643)][ZM(44472)])if u then DM:Tween(mM[ZM(44752)],TweenInfo[ZM(44272)](.05,Enum[ZM(44374)][ZM(44864)],Enum[ZM(44424)][ZM(43875)]),{[ZM(44472)]=UDim2[ZM(44272)](0,I[ZM(42847)],0,I[ZM(42838)])})end else local I=M[ZM(43469)]DM:Tween(mM[ZM(44752)],TweenInfo[ZM(44272)](.05,Enum[ZM(44374)][ZM(44864)],Enum[ZM(44424)][ZM(43875)]),{[ZM(44472)]=UDim2[ZM(44272)](0,I[ZM(42847)]/2,0,I[ZM(42838)]/2)})end end if uM[ZM(43889)][ZM(43431)][ZM(43663)]and tick()-cM>3 then cM=tick()local I=Y:GetAttribute(ZM(43926))or ZM(44368)local u=string[ZM(43122)](I,ZM(43916))if type(u)==ZM(43508)and u[1]then local I=u[1]:split(ZM(44019))local U=u[2]and u[2]:split(ZM(44019))or{}local W=I[1]or ZM(44368)local N=I[2]or ZM(42891)local P=U[1]or ZM(44368)local m=U[2]or ZM(42891)if uM[ZM(43889)][ZM(43771)..W]and uM[ZM(43889)][ZM(43771)..W][ZM(43663)]then local I=uM[ZM(43889)][ZM(44144)..W][ZM(43663)]local u=h[ZM(44046)]:FindFirstChild(W)if u and u:FindFirstChild(I)then N=I end end if uM[ZM(43889)][ZM(43771)..P]and uM[ZM(43889)][ZM(43771)..P][ZM(43663)]then local I=uM[ZM(43889)][ZM(44144)..P][ZM(43663)]local u=h[ZM(44046)]:FindFirstChild(P)if u and u:FindFirstChild(I)then m=I end end local D=ZM(44368)if W~=ZM(44368)then D=W..(ZM(44019)..N)end if P~=ZM(44368)then if W~=ZM(44368)then D=D..ZM(43916)end D=D..(P..(ZM(44019)..m))end if D~=ZM(42738)then Y:SetAttribute(ZM(43926),D)end end end for I,u in mM[ZM(44522)]do if not u[ZM(43961)]then continue end local U,W=M:WorldToViewportPoint(u[ZM(44472)])if not W then u[ZM(43961)][ZM(42723)]=false continue end u[ZM(43961)][ZM(44472)]=UDim2[ZM(44272)](0,U[ZM(42847)],0,U[ZM(42838)])u[ZM(43961)][ZM(42723)]=true end local I=Y[ZM(43160)]and Y[ZM(43160)]:FindFirstChild(ZM(44746))local u=I and(I[ZM(44472)]-Vector3[ZM(44272)](0,3,0))or Vector3[ZM(44272)](0,3,0)if I and(uM[ZM(43889)][ZM(43401)][ZM(43663)]and not uM[ZM(42806)])then local I=mM[ZM(42704)]local U=mM[ZM(43326)]local W=uM[ZM(43889)][ZM(44526)][ZM(43663)][1]local N=uM[ZM(43889)][ZM(44619)][ZM(43663)]for P=1,I,1 do local m=(((((P-1))/I))*math[ZM(44431)])*2 local D=(((P/I))*math[ZM(44431)])*2 local r=u+Vector3[ZM(44272)](math[ZM(43289)](m),0,math[ZM(43688)](m))*N local t=u+Vector3[ZM(44272)](math[ZM(43289)](D),0,math[ZM(43688)](D))*N local K,j=M:WorldToViewportPoint(r)local q,v=M:WorldToViewportPoint(t)local L=U[P]if j or v then L[ZM(42723)]=true;(L:FindFirstChildOfClass(ZM(43606)))[ZM(43659)]=W mM[ZM(44069)](L,0,Vector2[ZM(44272)](K[ZM(42847)],K[ZM(42838)]),Vector2[ZM(44272)](q[ZM(42847)],q[ZM(42838)]))else L[ZM(42723)]=false end end else for I=1,mM[ZM(42704)],1 do mM[ZM(43326)][I][ZM(42723)]=false end end if uM[ZM(43889)][ZM(44844)][ZM(43663)]then T[ZM(43880)]=uM[ZM(43889)][ZM(42735)][ZM(43663)]end end),ZM(42662))local fM=WM[ZM(42855)](ZM(44258),LPH_NO_VIRTUALIZE(function(...)local I=uM[ZM(43889)][ZM(43943)][ZM(43663)]local u=uM[ZM(43889)][ZM(44682)][ZM(44532)]local U=uM[ZM(43889)][ZM(44563)][ZM(43663)]local W=NM[ZM(43565)]local N=NM[ZM(44901)]if not u then mM[ZM(44886)][ZM(43984)]=true for P,m in NM[ZM(44848)][ZM(44501)]do local D=m[ZM(44379)]local r=m[ZM(43048)]local t=P if not t or not r or not r[ZM(43502)]then if r and r[ZM(43502)]then r[ZM(43502)]:Destroy()end continue end local K=D[ZM(43295)]local j=uM[ZM(43889)][ZM(43481)..K]local q=uM[ZM(43889)][K..ZM(43697)]if u or not j or not j[ZM(43663)]or not D[ZM(43887)](m)then r[ZM(43502)][ZM(42723)]=false continue end local v=D[ZM(43225)](m)if not v then r[ZM(43502)][ZM(42723)]=false continue end local L=D[ZM(42992)](m)if not L or L>q[ZM(43663)]then r[ZM(43502)][ZM(42723)]=false continue end local x,A=M:WorldToViewportPoint(v)if not A then r[ZM(43502)][ZM(42723)]=false continue end local i=D[ZM(43908)](m)local O=D[ZM(43815)](m)local e=D[ZM(44129)](m)r[ZM(43502)][ZM(43628)]=i r[ZM(43502)][ZM(43559)]=O r[ZM(43502)][ZM(44472)]=UDim2[ZM(44272)](0,x[ZM(42847)],0,x[ZM(42838)])r[ZM(43502)][ZM(43502)]=i r[ZM(43502)][ZM(42679)]=W r[ZM(43502)][ZM(43406)]=N r[ZM(43502)][ZM(42723)]=true if I then local I=mM[ZM(44858)](v)local u=math[ZM(42960)](I/U,0,1)r[ZM(43502)][ZM(44737)]=u r[ZM(43502)][ZM(43606)][ZM(44437)]=u else r[ZM(43502)][ZM(44737)]=e r[ZM(43502)][ZM(43606)][ZM(44437)]=e end end else mM[ZM(44886)][ZM(43984)]=false end end),ZM(42662))local zM=WM[ZM(42855)](ZM(44887),LPH_NO_VIRTUALIZE(function(...)local I=Y[ZM(43160)]local u=I and I:FindFirstChild(ZM(44746))local U=I and I:FindFirstChild(ZM(43137))if U and u then local W=uM[ZM(43889)][ZM(44507)]~=nil and uM[ZM(43889)][ZM(44507)][ZM(43663)]if(uM[ZM(43889)][ZM(44043)][ZM(43663)]and uM[ZM(43889)][ZM(42944)][ZM(44532)])or W then if W then Y[ZM(44453)]=14 Y[ZM(43022)]=6 else Y[ZM(44453)]=uM[ZM(43889)][ZM(44335)][ZM(43663)]Y[ZM(43022)]=uM[ZM(43889)][ZM(44335)][ZM(43663)]end Y[ZM(44840)]=Enum[ZM(44840)][ZM(44907)]if uM[ZM(43889)][ZM(42802)]and not uM[ZM(43889)][ZM(42802)][ZM(43663)]then local I=M[ZM(43808)][ZM(43662)]local W=-math[ZM(43580)](I[ZM(43467)],I[ZM(42847)])+math[ZM(43206)](-90)local N=CFrame[ZM(44272)](u[ZM(44472)])*CFrame[ZM(43982)](0,W,0)local P,m,D=N:ToOrientation()DM[ZM(43066)]=CFrame[ZM(44272)](N[ZM(44472)])*CFrame[ZM(43982)](0,m,0)u[ZM(43808)]=DM[ZM(43066)]U[ZM(43161)]=false end else Y[ZM(44840)]=Enum[ZM(44840)][ZM(43109)]if not((uM[ZM(43889)][ZM(42802)]and uM[ZM(43889)][ZM(42802)][ZM(43663)]))then U[ZM(43161)]=true end end if uM[ZM(43889)][ZM(42802)]and uM[ZM(43889)][ZM(42802)][ZM(43663)]then local I=M[ZM(43808)][ZM(43662)]local W=-math[ZM(43580)](I[ZM(43467)],I[ZM(42847)])+math[ZM(43206)](-90)if uM[ZM(43889)][ZM(44076)][ZM(43663)]==ZM(42731)then W=-math[ZM(43580)](I[ZM(43467)],I[ZM(42847)]+math[ZM(43206)](math[ZM(43047)](-180,120)))elseif uM[ZM(43889)][ZM(44076)][ZM(43663)]==ZM(43371)then local u=math[ZM(42960)](tonumber(uM[ZM(43889)][ZM(43523)]and uM[ZM(43889)][ZM(43523)][ZM(43663)])or 180,1,1440)W=-math[ZM(43580)](I[ZM(43467)],I[ZM(42847)])+math[ZM(43206)](((tick()*u))%360)elseif uM[ZM(43889)][ZM(44076)][ZM(43663)]==ZM(43273)then W=-math[ZM(43580)](I[ZM(43467)],I[ZM(42847)])+math[ZM(43206)](-90)end local N=math[ZM(43206)](uM[ZM(43889)][ZM(42703)][ZM(43663)])local P=CFrame[ZM(44272)](u[ZM(44472)])*CFrame[ZM(43982)](0,W+N,0)if(uM[ZM(43889)][ZM(44076)][ZM(43663)]==ZM(43739))and NM[ZM(44643)]then P=CFrame[ZM(44272)](u[ZM(44472)],NM[ZM(44643)][ZM(44472)])*CFrame[ZM(43982)](0,N,0)end local m,D,r=P:ToOrientation()DM[ZM(43066)]=CFrame[ZM(44272)](P[ZM(44472)])*CFrame[ZM(43982)](0,D,0)u[ZM(43808)]=DM[ZM(43066)]U[ZM(43161)]=false local t=uM[ZM(43889)][ZM(44342)][ZM(43663)]local K=uM[ZM(43889)][ZM(44652)][ZM(43663)]if K==ZM(43158)then t=.7 elseif K==ZM(44899)then t=-0.7 elseif K==ZM(44354)then t=math[ZM(43688)](tick()*3+math[ZM(43047)]()*.4)elseif K==ZM(42731)then t=math[ZM(43047)]()/10 end t=math[ZM(42960)](t,-0.7,.7)local j=Y[ZM(43160)]:FindFirstChild(ZM(42995))local q=j and j:FindFirstChild(ZM(43335))if q then q:FireServer(t,0)end else if Y[ZM(43160)]:FindFirstChild(ZM(42672))and not Y[ZM(43160)][ZM(42672)]:GetAttribute(ZM(42804))then U[ZM(43161)]=true end end if uM[ZM(43889)][ZM(42680)][ZM(43663)]then local I=U[ZM(44789)]local u=U[ZM(43664)]if tostring(u)~=ZM(44598)and n:IsKeyDown(Enum[ZM(42852)][ZM(43969)])then U[ZM(44789)]=true end end if DM[ZM(42955)]and(uM[ZM(43889)][ZM(43818)][ZM(43663)]and n:IsKeyDown(Enum[ZM(42852)][ZM(43025)]))then DM[ZM(42955)][ZM(44105)],DM[ZM(42955)][ZM(42903)],DM[ZM(42955)][ZM(43990)],DM[ZM(42955)][ZM(42872)]=false,false,false,false DM[ZM(42955)][ZM(44489)],DM[ZM(42955)][ZM(44269)]=true,true DM[ZM(42955)][ZM(43522)],DM[ZM(42955)][ZM(44137)]=false,false DM[ZM(42955)][ZM(42774)],DM[ZM(42955)][ZM(44809)]=false,false U[ZM(43343)]=19 if I:FindFirstChild(ZM(43898))then I[ZM(43898)]:SetAttribute(ZM(44555),true)I[ZM(43898)]:SetAttribute(ZM(43893),ZM(44489))end end local N=uM[ZM(43889)][ZM(43564)][ZM(43663)]and uM[ZM(43889)][ZM(43545)][ZM(43663)]if uM[ZM(43889)][ZM(42907)][ZM(43663)]and(uM[ZM(43889)][ZM(42879)][ZM(44532)]and not N)then task[ZM(43766)](function(...)if not DM[ZM(43194)]then DM[ZM(43194)]=tick()end DM[ZM(42707)]=true local I=M[ZM(43808)][ZM(43662)]local u=I if not DM[ZM(43110)]then DM[ZM(43110)]=U[ZM(44802)][ZM(43808)]end sethiddenproperty(U[ZM(44802)],ZM(43746),true)local W=Vector3[ZM(44272)](0,1,0)local N=Vector3[ZM(44272)](0,-1,0)local P=Vector3[ZM(44272)](0,0,0)local m=U[ZM(44802)][ZM(43808)]local D=n:IsKeyDown(Enum[ZM(42852)][ZM(43736)])local r=n:IsKeyDown(Enum[ZM(42852)][ZM(43293)])local t=n:IsKeyDown(119)local K=n:IsKeyDown(115)U[ZM(44802)][ZM(42932)]=true U[ZM(44802)][ZM(44865)]=P local j=(DM[ZM(42823)]*uM[ZM(43889)][ZM(43065)][ZM(43663)])*3 local q=(((((U[ZM(43263)]+((D and W or P)))+((r and N or P)))+((t and Vector3[ZM(44272)](0,u[ZM(42838)],0)or P)))+((K and Vector3[ZM(44272)](0,-u[ZM(42838)],0)or P))))*j m+=q local v=m[ZM(44511)]U[ZM(44802)][ZM(43808)]=CFrame[ZM(44272)](v,v+Vector3[ZM(44272)](I[ZM(42847)],0,I[ZM(43467)]))U[ZM(43161)]=false end)else DM[ZM(43194)]=nil if DM[ZM(42707)]then U[ZM(43161)]=true DM[ZM(42707)]=false sethiddenproperty(U[ZM(44802)],ZM(43746),false)for I,u in pairs(I:GetChildren())do if u:IsA(ZM(43712))then sethiddenproperty(u,ZM(43746),false)end end U[ZM(44802)][ZM(43808)]=DM[ZM(43110)]U[ZM(44802)][ZM(42932)]=false DM[ZM(43110)]=nil end end end end),ZM(43160))local RM=S[ZM(44074)]:Connect(LPH_NO_VIRTUALIZE(function(I,...)local u=Y[ZM(43160)]local U=u and u:FindFirstChild(ZM(44746))local W=u and u:FindFirstChild(ZM(43137))local N if W and U then if uM[ZM(43889)][ZM(43564)][ZM(43663)]and uM[ZM(43889)][ZM(43545)][ZM(44532)]then task[ZM(43766)](function(...)N=true if W and W[ZM(43845)]>0 then local u=(I*uM[ZM(43889)][ZM(44285)][ZM(43663)])*3 local N=W[ZM(43263)]if n:IsKeyDown(Enum[ZM(42852)][ZM(43736)])then N+=Vector3[ZM(44272)](0,1,0)end if n:IsKeyDown(Enum[ZM(42852)][ZM(42969)])then N+=Vector3[ZM(44272)](0,-1,0)end if n:IsKeyDown(119)then N+=Vector3[ZM(44272)](0,M[ZM(43808)][ZM(43662)][ZM(42838)],0)end if n:IsKeyDown(115)then N+=Vector3[ZM(44272)](0,-M[ZM(43808)][ZM(43662)][ZM(42838)],0)end local P=N*u local m=U[ZM(43808)][ZM(44472)]+P W[ZM(44154)]=false U[ZM(44865)]=Vector3[ZM(43992)]U[ZM(43808)]=CFrame[ZM(44272)](m,m+Vector3[ZM(44272)](M[ZM(43808)][ZM(43662)][ZM(42847)],0,M[ZM(43808)][ZM(43662)][ZM(43467)]))end end)end if uM[ZM(43889)][ZM(43457)][ZM(43663)]and N then local I=U[ZM(44472)]local W=B:Raycast(I,Vector3[ZM(44272)](0,-1000,0),DM[ZM(43426)])if W and W[ZM(43697)]>4 then task[ZM(43766)](function(...)local I=U[ZM(44865)]for I,u in u:GetChildren()do if u:IsA(ZM(43712))or u:IsA(ZM(44656))then u[ZM(44865)]=Vector3[ZM(44272)](0,-9999,0)end end S[ZM(44601)]:Wait()for u,U in u:GetChildren()do if U:IsA(ZM(43712))or U:IsA(ZM(44656))then U[ZM(44865)]=I end end end)end end if uM[ZM(43889)][ZM(42861)][ZM(43663)]and not N then local I=U[ZM(44472)]local W=B:Raycast(I,Vector3[ZM(44272)](0,-1000,0),DM[ZM(43426)])if W and W[ZM(43697)]>10 then task[ZM(43766)](function(...)local I=U[ZM(44865)]for I,u in u:GetChildren()do if u:IsA(ZM(43712))or u:IsA(ZM(44656))then u[ZM(44865)]=Vector3[ZM(44272)](0,9999,0)end end S[ZM(44601)]:Wait()for u,U in u:GetChildren()do if U:IsA(ZM(43712))or U:IsA(ZM(44656))then U[ZM(44865)]=I end end end)end end if uM[ZM(43889)][ZM(43430)]and uM[ZM(43889)][ZM(43430)][ZM(43663)]then W[ZM(43343)]=math[ZM(42960)](uM[ZM(43889)][ZM(44492)][ZM(43663)],4,100)DM[ZM(44817)]=true elseif DM[ZM(44817)]then DM[ZM(44817)]=nil W[ZM(43343)]=19 end if uM[ZM(43889)][ZM(44507)]and uM[ZM(43889)][ZM(44507)][ZM(43663)]then local I=math[ZM(42960)](uM[ZM(43889)][ZM(43188)]and uM[ZM(43889)][ZM(43188)][ZM(43663)]or 8,2,40)local W=RaycastParams[ZM(44272)]()W[ZM(43755)]=Enum[ZM(44716)][ZM(43058)]W[ZM(44098)]={u}local N=B:Raycast(Vector3[ZM(44272)](U[ZM(44472)][ZM(42847)],U[ZM(44472)][ZM(42838)]+500,U[ZM(44472)][ZM(43467)]),Vector3[ZM(44272)](0,-2000,0),W)local P=N and N[ZM(44472)][ZM(42838)]or(U[ZM(44472)][ZM(42838)]+I)U[ZM(43808)]=CFrame[ZM(44272)](U[ZM(44472)][ZM(42847)],P-I,U[ZM(44472)][ZM(43467)])*U[ZM(43320)]local m=DM[ZM(44297)]if not((m and m[ZM(43378)]))then m=Instance[ZM(44272)](ZM(43675))m[ZM(43502)]=ZM(43805)m[ZM(44462)]=Vector3[ZM(44272)](1,1,1)m[ZM(44437)]=1 m[ZM(42932)]=true m[ZM(44745)]=false m[ZM(42935)]=false m[ZM(44604)]=false m[ZM(42641)]=false m[ZM(43378)]=B DM[ZM(44297)]=m end m[ZM(43808)]=CFrame[ZM(44272)](U[ZM(44472)][ZM(42847)],P+3,U[ZM(44472)][ZM(43467)])if M[ZM(44717)]~=m then pcall(function(...)M[ZM(44717)]=m end)end elseif DM[ZM(44297)]then if M[ZM(44717)]==DM[ZM(44297)]then pcall(function(...)M[ZM(44717)]=W end)end DM[ZM(44297)]:Destroy()DM[ZM(44297)]=nil end end end))A(ZM(44669))S[ZM(44601)]:Connect(LPH_NO_VIRTUALIZE(function(I,...)DM[ZM(42823)]=I for I,u in WM[ZM(44355)]do local U=u:Run()end for I,u in WM[ZM(43462)]do local U=u:Run()end for I,u in WM[ZM(43160)]do local U=u:Run()end for I,u in WM[ZM(42662)]do local U=u:Run()end end))A(ZM(44525))local pM=h:FindFirstChild(ZM(44581))if not pM then pM=h:WaitForChild(ZM(44581),30)end if not h:FindFirstChild(ZM(42922))then local I=Instance[ZM(44272)](ZM(43342))I[ZM(43502)]=ZM(42922)I[ZM(43378)]=h end local HM=pM and((pM:FindFirstChild(ZM(44739))or pM:FindFirstChild(ZM(43486))))if pM and(pM:FindFirstChild(ZM(44795))and(pM:FindFirstChild(ZM(44597))and(HM and pM:FindFirstChild(ZM(43864)))))then local I=require(pM[ZM(44795)])local u=require(pM[ZM(44597)])local U=require(HM)local r=require(pM[ZM(43864)])local t=Instance[ZM(44272)](ZM(43855),h[ZM(42922)])local K=Instance[ZM(44272)](ZM(43855),h[ZM(42922)])K[ZM(44017)]:Connect(function(I,u,U,...)local W=(not U and uM[ZM(43889)][ZM(43541)][ZM(43663)][1])or uM[ZM(43889)][ZM(42851)][ZM(43663)][1]local N=Instance[ZM(44272)](ZM(43919),B)N[ZM(43502)]=ZM(43980)local function P(I,...)local u=Instance[ZM(44272)](ZM(43675))u[ZM(43502)]=ZM(43327)u[ZM(44462)]=Vector3[ZM(44272)](.0001,.0001,.0001)u[ZM(44472)]=I u[ZM(42932)]=true u[ZM(44745)]=false u[ZM(42935)]=false u[ZM(44437)]=1 u[ZM(43378)]=N return u end local m=P(I)local D=P(I)local r=Instance[ZM(44272)](ZM(43313),m)local t=Instance[ZM(44272)](ZM(43313),D)local K=Instance[ZM(44272)](ZM(44577))K[ZM(43502)]=ZM(44205)K[ZM(44065)]=r K[ZM(43707)]=t K[ZM(44883)]=true K[ZM(43659)]=ColorSequence[ZM(44272)]({ColorSequenceKeypoint[ZM(44272)](0,W),ColorSequenceKeypoint[ZM(44272)](.5,Color3[ZM(44272)](1,1,1)),ColorSequenceKeypoint[ZM(44272)](1,W)})K[ZM(43591)]=.3 K[ZM(44115)]=.3 K[ZM(44503)]=1 K[ZM(42868)]=0 K[ZM(44438)]=uM[ZM(43889)][ZM(44515)][ZM(43663)]K[ZM(44034)]=ZM(43442)K[ZM(43645)]=10 K[ZM(44394)]=Enum[ZM(44394)][ZM(44166)]K[ZM(43936)]=1 K[ZM(43378)]=N local j=uM[ZM(43889)][ZM(43792)][ZM(43663)]local q,v if j==ZM(43227)then K[ZM(44437)]=NumberSequence[ZM(44272)]({NumberSequenceKeypoint[ZM(44272)](0,0);NumberSequenceKeypoint[ZM(44272)](1,0)})K[ZM(44034)]=ZM(43779)K[ZM(43645)]=4 K[ZM(43936)]=10 K[ZM(43591)]=.5 K[ZM(44115)]=.5 local I=V:Create(K,TweenInfo[ZM(44272)](.6,Enum[ZM(44374)][ZM(42646)],Enum[ZM(44424)][ZM(42750)],2,true),{[ZM(43936)]=2})I:Play()elseif j==ZM(43549)then K[ZM(44034)]=ZM(43055)K[ZM(43645)]=20 K[ZM(43936)]=.9 K[ZM(44394)]=Enum[ZM(44394)][ZM(43651)]K[ZM(42868)]=1 K[ZM(44503)]=.25 K[ZM(43591)]=.5 K[ZM(44115)]=.5 q=K:Clone()q[ZM(43502)]=ZM(44629)q[ZM(43378)]=N q[ZM(44065)]=r q[ZM(43707)]=t v=K:Clone()v[ZM(43502)]=ZM(44723)v[ZM(43378)]=N v[ZM(44065)]=r v[ZM(43707)]=t end local L=30 local x=L/uM[ZM(43889)][ZM(43258)][ZM(43663)]local A=((u-I))[ZM(43046)]local i=((A/L))*x local O=V:Create(D,TweenInfo[ZM(44272)](i,Enum[ZM(44374)][ZM(44864)]),{[ZM(44472)]=u})O:Play()local e=V:Create(K,TweenInfo[ZM(44272)](.1,Enum[ZM(44374)][ZM(44680)],Enum[ZM(44424)][ZM(42750)],2,true),{[ZM(43591)]=.35,[ZM(44115)]=.35})e:Play()Delay(uM[ZM(43889)][ZM(44541)][ZM(43663)],function(...)local I=V:Create(K,TweenInfo[ZM(44272)](.5,Enum[ZM(44374)][ZM(42799)]),{[ZM(43591)]=0,[ZM(44115)]=0,[ZM(43936)]=0;[ZM(44438)]=0})I:Play()if q and v then local I=V:Create(q,TweenInfo[ZM(44272)](.5,Enum[ZM(44374)][ZM(42799)]),{[ZM(43591)]=0;[ZM(44115)]=0,[ZM(43936)]=0,[ZM(44438)]=0})local u=V:Create(v,TweenInfo[ZM(44272)](.5,Enum[ZM(44374)][ZM(42799)]),{[ZM(43591)]=0;[ZM(44115)]=0,[ZM(43936)]=0,[ZM(44438)]=0})I:Play()u:Play()end I[ZM(44259)]:Wait()N:Destroy()end)end)t[ZM(44017)]:Connect(LPH_NO_VIRTUALIZE(function(I,...)if uM[ZM(43889)][ZM(44522)][ZM(43663)]then local u=I[1]local U=I[2]local W=I[4]if W==Enum[ZM(43698)][ZM(43278)]then mM[ZM(44312)](u,U)end end end))local q=Instance[ZM(44272)](ZM(43855),h[ZM(42922)])q[ZM(44017)]:Connect(LPH_NO_VIRTUALIZE(function(I,u,...)local U=tick()local W=Instance[ZM(44272)](ZM(43675),g[ZM(42833)])W[ZM(44745)]=false W[ZM(42935)]=false W[ZM(44604)]=false W[ZM(44437)]=1 W[ZM(43808)]=u W[ZM(43502)]=I local N=Instance[ZM(44272)](ZM(42790),W)N[ZM(43502)]=ZM(44659)N[ZM(43663)]=U W:SetAttribute(ZM(44659),U)W:SetAttribute(ZM(44040),I)Delay(600,function(...)W:Destroy()end)if uM[ZM(43889)][ZM(43829)][ZM(43663)]then local U=u[ZM(44511)]local W=tostring(math[ZM(44193)](U[ZM(42847)]))..(ZM(43718)..(tostring(math[ZM(44193)](U[ZM(42838)]))..(ZM(43718)..tostring(math[ZM(44193)](U[ZM(43467)])))))uM:Notify(ZM(43415)..(I..(ZM(43968)..W)),10,uM[ZM(43889)][ZM(43215)][ZM(43663)][1])end end))local v=LPH_JIT_MAX(function(...)local u u=hookfunction(I[ZM(44200)],LPH_NO_UPVALUES(function(I,...)local U={...}do local I=U[1]if type(I)==ZM(43508)and(type(I[ZM(43939)])==ZM(44549)and I[ZM(43939)]>1)then DM[ZM(43030)]={[ZM(43223)]=I[ZM(43939)],[ZM(44364)]=tonumber(I[ZM(44638)])or 0;[ZM(44506)]=tonumber(I[ZM(43632)])or 1000}end end local N=B:FindFirstChild(ZM(43560))and B[ZM(43560)]:FindFirstChild(ZM(44477))local P=N and(N:GetChildren())[1]local r=P and P[ZM(43502)]or ZM(44368)local q=(r:lower()):find(ZM(43896),1,true)~=nil local v=uM[ZM(43889)][ZM(43946)]and uM[ZM(43889)][ZM(43946)][ZM(43663)]if q and not v then return u(I,...)end local L do local I,u=pcall(getcallingscript)if I and typeof(u)==ZM(43363)then local I=u[ZM(43502)]L=I:find(ZM(44153))~=nil or I:find(ZM(42948))~=nil else local I=debug[ZM(44338)]()L=I:find(ZM(44153))~=nil or I:find(ZM(42948))~=nil end end if type(U[1])==ZM(43508)and(L and(U[1][ZM(42829)]~=ZM(42718)and(U[1][ZM(42941)]~=ZM(43952)and not(tostring(U[1][ZM(42941)])):find(ZM(44534)))))then if v and NM[ZM(44643)]then local W=NM[ZM(44643)]local N=U[1][ZM(42941)]if type(N)==ZM(42725)and W[ZM(43378)]then local I=W[ZM(43808)][ZM(44511)]task[ZM(44676)](function(...)pcall(N,W,I,Vector3[ZM(44272)](0,1,0),Enum[ZM(43698)][ZM(43278)])end)end if q then return u(I,unpack(U))end end if type(debug[ZM(44097)])==ZM(42725)and type(debug[ZM(44767)])==ZM(42725)then local I I=U[1][ZM(42941)]U[1][ZM(42941)]=function(...)local u={...}t:Fire(u)return I(...)end local u,W,N={},0,nil local P,m=nil,0 for I=2,8,1 do local U,D=pcall(debug[ZM(44097)],I)if U and type(D)==ZM(43508)then local U,r,t=0,0,nil for I=1,120,1 do local u=rawget(D,I)local W=typeof(u)if W==ZM(43808)then U+=1 elseif W==ZM(43912)then r+=1 elseif W==ZM(43508)and(rawget(u,ZM(44378))and rawget(u,ZM(43171)))then t=u end end if t and U>=2 then u,W,N=D,I,t break end if not P and(U>=2 and r>=1)then P,m=D,I end end end if not N and P then u,W=P,m end if N and uM[ZM(43889)][ZM(42722)][ZM(43663)]then pcall(function(...)N[ZM(44378)]=function(...)return 0,0 end N[ZM(43171)]=function(...)return 0,0 end if type(N[ZM(43932)])==ZM(43508)then N[ZM(43932)][ZM(42847)]={0;0}N[ZM(43932)][ZM(42838)]={0,0}end end)end local D,r,K for I=1,80,1 do local U=rawget(u,I)local W=typeof(U)if W==ZM(43808)then if not D then D=I elseif not r then r=I end elseif W==ZM(43912)and not K then K=I end end local j=D and rawget(u,D)local q=r and rawget(u,r)local v=K and rawget(u,K)local L=q do local I=Y[ZM(43160)]and Y[ZM(43160)]:FindFirstChild(ZM(44746))if(j and((j[ZM(44511)]-M[ZM(43808)][ZM(44511)]))[ZM(43046)]>60)or(q and(I and((q[ZM(44511)]-I[ZM(43808)][ZM(44511)]))[ZM(43046)]>60))then j,q,v,L=nil,nil,nil,nil end end if typeof(j)~=ZM(43808)or typeof(q)~=ZM(43808)or typeof(v)~=ZM(43912)then j,q,v,L=nil,nil,nil,nil end if j and(v and(q and(L and(NM[ZM(44643)]and((uM[ZM(43889)][ZM(43764)][ZM(43663)]==ZM(44763)or NM[ZM(44172)]~=nil))))))then local I=NM[ZM(44643)][ZM(43808)][ZM(44511)]local u=j[ZM(44511)]if uM[ZM(43889)][ZM(44870)][ZM(43663)]then local u,W=U[1][ZM(43939)],U[1][ZM(44638)]local N=typeof(U[1][ZM(44472)])==ZM(43912)and U[1][ZM(44472)]or M[ZM(43808)][ZM(44472)]local P=((I-N))[ZM(43046)]local m=P/u local D=W*-B[ZM(44638)]local r=((-0.5*D)*m)*m if(tostring(r)):find(ZM(44180))then r=0 end I=I+Vector3[ZM(44272)](0,r,0)end local N=CFrame[ZM(44272)](u,I)local P=CFrame[ZM(44272)](q[ZM(44511)],I)local m=v-u local t=(CFrame[ZM(44272)](v,I))[ZM(44511)]if NM[ZM(44172)]then t=(CFrame[ZM(44272)](NM[ZM(44172)],I))[ZM(44511)]local U=u-v local W=q[ZM(44511)]-v local m=t+U local D=t+W N=CFrame[ZM(44272)](m,I)P=CFrame[ZM(44272)](D,I)end pcall(debug[ZM(44767)],W,D,N)pcall(debug[ZM(44767)],W,r,P)pcall(debug[ZM(44767)],W,K,t)end if uM[ZM(43889)][ZM(43456)][ZM(43663)]and uM[ZM(43889)][ZM(43419)][ZM(44532)]then local I=Y[ZM(43160)]and Y[ZM(43160)]:FindFirstChild(ZM(44746))if I then I[ZM(43808)]=E[ZM(44670)]end end end if uM[ZM(43889)][ZM(44870)][ZM(43663)]then U[1][ZM(43939)]=9000000000 end if(uM[ZM(43889)][ZM(43247)]and uM[ZM(43889)][ZM(43247)][ZM(43663)])or(uM[ZM(43889)][ZM(43268)]and uM[ZM(43889)][ZM(43268)][ZM(43663)])then U[1][ZM(43019)]=2 U[1][ZM(43045)]=j(U[1][ZM(43045)])if type(U[1][ZM(44773)])==ZM(42725)then local I=U[1][ZM(44773)]U[1][ZM(44773)]=function(u,...)if D(u)then return nil end local U=I(u)if U then return U end return u end end end if NM[ZM(44643)]and(NM[ZM(44643)][ZM(43378)]and((uM[ZM(43889)][ZM(43764)][ZM(43663)]==ZM(44763)or NM[ZM(44172)]~=nil)))then local I=NM[ZM(44643)]local u=I[ZM(43808)][ZM(44511)]do local U=I[ZM(43378)]and I[ZM(43378)]:FindFirstChildOfClass(ZM(43137))local W,N=pcall(DM[ZM(44794)],I,U)if W and typeof(N)==ZM(43912)then u=N end end local N=U[1][ZM(44472)]if typeof(N)~=ZM(43912)then N=M[ZM(43808)][ZM(44472)]end local P=NM[ZM(44172)]local D=(typeof(P)==ZM(43912)and P)or N local r=u do local W=tonumber(U[1][ZM(43939)])local N=tonumber(U[1][ZM(44638)])local P=uM[ZM(43889)][ZM(44870)]and uM[ZM(43889)][ZM(44870)][ZM(43663)]if not P and(type(W)==ZM(44549)and(W>1 and(type(N)==ZM(44549)and N>.01)))then local U=((u-D))[ZM(43046)]/W local P=(((.5*B[ZM(44638)])*N)*U)*U if(tostring(P)):find(ZM(44180))then P=0 end local m=tonumber(uM[ZM(43889)][ZM(43349)]and uM[ZM(43889)][ZM(43349)][ZM(43663)])or 1 r=u+Vector3[ZM(44272)](0,P*m,0)local t=tonumber(uM[ZM(43889)][ZM(43790)]and uM[ZM(43889)][ZM(43790)][ZM(43663)])or 1 if t>0 then local u=I[ZM(43378)]and I[ZM(43378)]:FindFirstChildOfClass(ZM(43137))local W,N=pcall(DM[ZM(43072)],I,u)if not W or typeof(N)~=ZM(43912)then local u=I[ZM(43378)]and I[ZM(43378)]:FindFirstChild(ZM(44746))N=(u and u[ZM(44781)])or I[ZM(44781)]end if typeof(N)==ZM(43912)then r+=(Vector3[ZM(44272)](N[ZM(42847)],N[ZM(42838)],N[ZM(43467)])*U)*t end end end end local t=uM[ZM(43889)][ZM(43247)]and uM[ZM(43889)][ZM(43247)][ZM(43663)]local K=uM[ZM(43889)][ZM(43268)]and uM[ZM(43889)][ZM(43268)][ZM(43663)]if m(D,u)or t or K then local I=r-D if I[ZM(43046)]>.05 then I=I[ZM(43189)]local W=((u-D))[ZM(43046)]local N=tonumber(U[1][ZM(43632)])if type(N)==ZM(44549)and N<W+100 then U[1][ZM(43632)]=W+100 end U[1][ZM(43893)]=I U[1][ZM(44626)]=I if typeof(P)==ZM(43912)then U[1][ZM(44472)]=P if U[1][ZM(43924)]then U[1][ZM(43924)]=P end end DM[ZM(44769)]=D end if not q and((uM[ZM(43889)][ZM(43772)]==nil or uM[ZM(43889)][ZM(43772)][ZM(43663)]))then W={[ZM(43987)]=u;[ZM(44310)]=NM[ZM(44172)],[ZM(44713)]=os[ZM(42638)]()}end end end end task[ZM(43766)](function(...)if uM[ZM(43889)][ZM(43876)][ZM(43663)]and((U[1][ZM(44472)]-M[ZM(43808)][ZM(44472)]))[ZM(43046)]<1200 then local I=(U[1][ZM(42829)]==ZM(42718)or U[1][ZM(42941)]==ZM(43952)or(tostring(U[1][ZM(42941)])):find(ZM(44534)))if I and not uM[ZM(43889)][ZM(44896)][ZM(43663)]then return end local u=B:Raycast(U[1][ZM(44472)],U[1][ZM(43893)]*U[1][ZM(43632)],DM[ZM(43426)])if u and u[ZM(44472)]then K:Fire(U[1][ZM(44472)],u[ZM(44472)],I)end end end)return u(I,unpack(U))end))A(ZM(43120))local v v=hookfunction(I[ZM(43224)],LPH_NO_UPVALUES(function(...)local I={...}local u=tostring(I[5])local U=I[2]task[ZM(43766)](function(...)q:Fire(u,U)end)return v(...)end))A(ZM(44707))local L L=hookfunction(U[ZM(43538)],LPH_NO_UPVALUES(function(I,...)local u={...}if not checkcaller()then local U=debug[ZM(44338)]()if U and(((U:find(ZM(44153))or U:find(ZM(42948))))and uM[ZM(43889)][ZM(44562)][ZM(43663)])then u[2]=u[2]*10 end if uM[ZM(43889)][ZM(43145)][ZM(43663)]then local u={L(I,...)}local U=u[1]local W=u[2]if not U or typeof(U)~=ZM(43363)then return unpack(u)end if not W or typeof(W)~=ZM(43912)then return unpack(u)end local N=U[ZM(43378)]if not N or(not N:IsA(ZM(43919)))then return unpack(u)end local P=N[ZM(43378)]if P and(((P[ZM(43502)]==ZM(44736)or P[ZM(43502)]==ZM(44618)))and P:IsA(ZM(43342)))then local I=N:FindFirstChild(ZM(43832))or N:FindFirstChild(ZM(43083))if I and(typeof(I)==ZM(43363)and(I:IsA(ZM(43919))and I[ZM(43166)]))then u[1]=I[ZM(43166)]return unpack(u)end end end end return L(I,unpack(u))end))A(ZM(43003))local x x=hookfunction(r[ZM(43789)],LPH_NO_UPVALUES(function(...)local I={...}if uM[ZM(43889)][ZM(44230)][ZM(43663)]and I[3]then return r:StopSound(I[3])end return x(...)end))local i i=hookfunction(r[ZM(43002)],LPH_NO_UPVALUES(function(...)local I={...}if uM[ZM(43889)][ZM(44230)][ZM(43663)]and(I[2]and I[2][ZM(43502)]==ZM(42913))then return r:StopSound(I[2])end return i(...)end))A(ZM(44107))if type(N)==ZM(43508)and type(N[ZM(43095)])==ZM(42725)then local I I=hookfunction(N[ZM(43095)],LPH_NO_UPVALUES(function(u,...)local U={...}local N=W if N and(typeof(N[ZM(43987)])==ZM(43912)and os[ZM(42638)]()-N[ZM(44713)]<.25)then local I=nil for u=#U,1,-1 do local W=U[u]if type(W)==ZM(43508)and(#W>=8 and(typeof(W[2])==ZM(43299)and(typeof(W[3])==ZM(43808)and(typeof(W[4])==ZM(43912)and(typeof(W[5])==ZM(43808)and typeof(W[8])==ZM(43912))))))then I=W break end end if I then local u=N[ZM(43987)]local U=N[ZM(44310)]local W=typeof(U)==ZM(43912)if W and((((U-u))[ZM(43046)]>30 or not m(U,u)))then W=false end local D=not m(I[3][ZM(44472)],u)if not((D and not W))then if W then local W=I[4]I[5]=P(U,u)*CFrame[ZM(44272)](-W)I[3]=CFrame[ZM(44272)](I[3][ZM(44472)],u)else I[3]=CFrame[ZM(44272)](I[3][ZM(44472)],u)I[5]=P(I[5][ZM(44472)],u)end I[8]=u end end end W=nil return I(u,unpack(U))end))A(ZM(42971))end A(ZM(44728))end)if(getgenv())[ZM(43074)]then v()end local L=LPH_JIT_MAX(function(...)DM[ZM(44418)]={}for I,U in getgc(false)do if type(U)~=ZM(42725)then continue end if not islclosure(U)then continue end if isexecutorclosure(U)then continue end if isfunctionhooked(U)then continue end local W=debug[ZM(44687)](U)local N=debug[ZM(42685)](U)local P=debug[ZM(44677)](U)local m=P[ZM(42825)]if m:find(ZM(44153))then if table[ZM(43851)](W,ZM(42691))then local I I=hookfunction(U,LPH_NO_UPVALUES(function(...)if uM[ZM(43889)][ZM(43450)][ZM(43663)]then return end return I(...)end))end if table[ZM(43851)](W,ZM(44025))then local I I=hookfunction(U,LPH_NO_UPVALUES(function(u,U,...)if uM[ZM(43889)][ZM(44624)][ZM(43663)]then u=Enum[ZM(44548)][ZM(43531)]U=Enum[ZM(44548)][ZM(43531)]end return I(u,U)end))end if W[20]==ZM(42690)then local I=debug[ZM(44187)](U,1)DM[ZM(44702)]=I end end if m:find(ZM(43016))then local I=debug[ZM(42685)](U)if type(I[1])==ZM(43508)and(type(I[2])==ZM(43508)and type(I[3])==ZM(43508))then local I I=hookfunction(U,LPH_NO_UPVALUES(function(...)local U,W,N=I(...)local P=type(U)==ZM(43508)and U[ZM(42693)]if P and uM[ZM(43889)][ZM(43431)][ZM(43663)]then for I,U in P do if type(U)~=ZM(43508)then continue end local W=U[ZM(43609)]and u[U[ZM(43609)]]if not((W and W[ZM(43502)]))then continue end local N=W[ZM(43502)]local P=uM[ZM(43889)][ZM(43771)..N]local m=uM[ZM(43889)][ZM(44144)..N]if P and(P[ZM(43663)]and m)then U[ZM(44690)]=m[ZM(43663)]else continue end end end return U,W,N end))end if W[1]==ZM(44375)and W[5]==ZM(42996)then if uM[ZM(43889)][ZM(42793)][ZM(43663)]then debug[ZM(44121)](U,19,0)debug[ZM(44121)](U,20,0)debug[ZM(44121)](U,21,0)end table[ZM(43063)](DM[ZM(44418)],U)end end if m:find(ZM(43898))then if table[ZM(43851)](W,ZM(44489))then if type(N[1])==ZM(43508)and((N[1][ZM(44489)]==false or N[1][ZM(44489)]==true))then DM[ZM(42955)]=debug[ZM(44187)](U,1)end end end if P[ZM(42825)]:find(ZM(43731))then if type(N[16])==ZM(42725)then local I=debug[ZM(44187)](U,16)DM[ZM(43716)]=I end end end repeat task[ZM(43860)]()until Y[ZM(43160)]~=nil local I=Y[ZM(43160)]local U=I:WaitForChild(ZM(43898),5)if U then(U:GetAttributeChangedSignal(ZM(44555))):Connect(function(...)if uM[ZM(43889)][ZM(43818)][ZM(43663)]and n:IsKeyDown(Enum[ZM(42852)][ZM(43025)])then U:SetAttribute(ZM(44555),true)end end);(U:GetAttributeChangedSignal(ZM(43893))):Connect(function(...)if uM[ZM(43889)][ZM(43818)][ZM(43663)]and n:IsKeyDown(Enum[ZM(42852)][ZM(43025)])then U:SetAttribute(ZM(43893),ZM(44489))end end)end end)repeat task[ZM(43860)]()until Y[ZM(43160)]L()Y[ZM(43332)]:Connect(function(...)task[ZM(43860)](3)L()end)end A(ZM(44578))do if(getgenv())[ZM(43074)]then local I=DM[ZM(43612)]or{}local u={[ZM(43128)]={};[ZM(44392)]={},[ZM(42659)]={},[ZM(42657)]={},[ZM(43719)]={}}local function U(...)for I,u in pairs(u[ZM(43128)])do pcall(function(...)I[ZM(44510)]=u end)end for I,u in pairs(u[ZM(44392)])do pcall(function(...)I[ZM(43657)]=u end)end for I,u in pairs(u[ZM(42659)])do pcall(function(...)I[ZM(43540)]=u end)end for I,u in pairs(u[ZM(42657)])do pcall(function(...)I[ZM(43437)]=u end)end local U=uM[ZM(43889)][ZM(42918)]and uM[ZM(43889)][ZM(42918)][ZM(43663)]or 1 local W=uM[ZM(43889)][ZM(43447)]and uM[ZM(43889)][ZM(43447)][ZM(43663)]or 1 local N=uM[ZM(43889)][ZM(42839)]and uM[ZM(43889)][ZM(42839)][ZM(43663)]or 1 local P=uM[ZM(43889)][ZM(44567)]and uM[ZM(43889)][ZM(44567)][ZM(43663)]or false local m=uM[ZM(43889)][ZM(43254)]and uM[ZM(43889)][ZM(43254)][ZM(43663)]or false if(getgenv())[ZM(44100)]==true then return end if U<=1.0001 and(W<=1.0001 and(not P and not m))then return end for I,D in pairs(I)do if type(D)==ZM(43508)and rawget(D,ZM(44823))then local r=D[ZM(44823)]if type(r)==ZM(43508)then local t=u[ZM(43128)][r]or rawget(r,ZM(44510))local K=u[ZM(44392)][r]or rawget(r,ZM(43657))if type(t)==ZM(44549)then u[ZM(43128)][r]=t pcall(function(...)r[ZM(44510)]=t*U end)end if type(K)==ZM(44549)then u[ZM(44392)][r]=K pcall(function(...)r[ZM(43657)]=K*W end)end local j=type(rawget(D,ZM(43459)))==ZM(43508)local v=q[I]or 1.3 local L=u[ZM(42659)][r]or rawget(r,ZM(43540))if type(L)==ZM(44549)then u[ZM(42659)][r]=L pcall(function(...)r[ZM(43540)]=P and(L/N)or(m and(j and(L/v)))or L end)end if m and j then local I=u[ZM(42657)][r]or rawget(r,ZM(43437))if type(I)==ZM(44549)then u[ZM(42657)][r]=I pcall(function(...)r[ZM(43437)]=I*v end)end end end end end end task[ZM(43766)](function(...)while true do pcall(U)task[ZM(43860)](3)end end)task[ZM(43766)](function(...)if(getgenv())[ZM(43213)]==true then return end local I=0 while true do I+=1 if I>12 then return end local U=0 for I,W in getgc(true)do if typeof(W)==ZM(42725)and not u[ZM(43719)][W]then local I,N=pcall(debug[ZM(44677)],W)if I and(N and N[ZM(43101)]==ZM(42644))then u[ZM(43719)][W]=true local I pcall(function(...)I=hookfunction(W,function(u,...)local U={I(u,...)}if u==ZM(43460)and(uM[ZM(43889)][ZM(42954)]and uM[ZM(43889)][ZM(42954)][ZM(43663)])then return{[ZM(42653)]=.015}end return table[ZM(44871)](U)end)end)U+=1 end end end if U>0 then break end task[ZM(43860)](5)end end)end end task[ZM(44860)](6,function(...)local function I(I,...)return I and ZM(44715)or ZM(44490)end pcall(function(...)local u=h:FindFirstChild(ZM(44581))~=nil local U={ZM(44168)..I((getgenv())[ZM(43074)]),ZM(43042)..I(u),ZM(44450)..I(DM[ZM(43612)]and next(DM[ZM(43612)])),ZM(43012)..I(type(N)==ZM(43508)and N[ZM(43095)])}local W=ZM(42952)..table[ZM(44753)](U,ZM(44695))print(ZM(44101)..W)if uM and uM[ZM(43828)]then uM:Notify(ZM(44101)..W,10,Color3[ZM(43744)](63,201,176))end end)end)end)(...)
+-- Burmalda.hook | rost alpha | cleaned NullWave-derived build
+-- Target: official rost alpha, PlaceId 13769775130; no PlaceId execution gate.
+-- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt and Volcano are live-untested. Xeno is unsupported.
+-- Access: private JNKIE keys; shared BETA and standalone Open Beta are removed.
+-- Removed: anti-dump, heartbeat, anti-spy, remote loaders and Force Hit.
+-- Silent Aim: GunBase.fire + FireServer + long-range Workspace Raycast; live proof remains executor-specific.
+-- Short melee/resource rays always pass through so trees and stones remain farmable.
+
+local _burmaldaEnv = getgenv and getgenv() or _G
+local _burmaldaKey = tostring(_burmaldaEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
+if tostring(_burmaldaEnv.PHOOKGATE or "") ~= "1347571535"
+	or _burmaldaKey == ""
+	or _burmaldaKey:upper() == "BETA"
+then
+	_burmaldaEnv.PHOOKGATE = nil
+	_burmaldaEnv.SCRIPT_KEY = nil
+	return
+end
+_burmaldaEnv.PHOOKGATE = nil
+_burmaldaEnv.SCRIPT_KEY = nil
+if _burmaldaEnv.BurmaldaRost and _burmaldaEnv.BurmaldaRost.Unload then
+	pcall(_burmaldaEnv.BurmaldaRost.Unload)
+end
+
+local executorName = "unknown"
+if type(identifyexecutor) == "function" then
+	local ok, name = pcall(identifyexecutor)
+	if ok and name ~= nil then executorName = tostring(name) end
+elseif type(getexecutorname) == "function" then
+	local ok, name = pcall(getexecutorname)
+	if ok and name ~= nil then executorName = tostring(name) end
+end
+-- Xeno support was removed by user request. Reject before Runtime, module
+-- require, Drawing, GUI or namecall initialization; Real is unaffected.
+if string.find(string.lower(executorName), "xeno", 1, true) then return end
+local Runtime = {
+	EnableCraftingIntegration = true,
+	Unloaded = false,
+	Cleanup = {},
+	Drawings = {},
+	Guis = {},
+	CraftingMenuOpen = false,
+	SilentPath = "GunBase.fire + FireServer + Workspace Raycast",
+	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt", "Volcano" },
+}
+_burmaldaEnv.BurmaldaRost = Runtime
+Runtime.ExecutorName = executorName
+Runtime.ModuleRequireMode = "standard"
+Runtime.ModuleRequirePolicy = "feature-lazy + success-cache + 2s-error-backoff"
+Runtime.ModuleRequireBackoffSeconds = 2
+Runtime.ModuleRequireCache = {}
+Runtime.ModuleRequireRetry = {}
+do
+	Runtime.RequireGameModule = function(module)
+		if not module then return nil, "module-missing" end
+
+		local cached = Runtime.ModuleRequireCache[module]
+		if cached ~= nil then
+			Runtime.LastModuleRequireError = nil
+			return cached, nil
+		end
+
+		-- A capability/context failure can otherwise be retried by several
+		-- independent features every frame. Keep the standard one-argument
+		-- require, but deduplicate successes and briefly back off failures.
+		local retry = Runtime.ModuleRequireRetry[module]
+		local now = os.clock()
+		if retry and now < retry.Until then
+			Runtime.LastModuleRequireError = retry.Error
+			return nil, retry.Error
+		end
+
+		local ok, result = pcall(require, module)
+		if not ok or result == nil then
+			local message = ok and "module-returned-nil" or tostring(result)
+			Runtime.LastModuleRequireError = message
+			Runtime.ModuleRequireRetry[module] = {
+				Until = now + Runtime.ModuleRequireBackoffSeconds,
+				Error = message,
+			}
+			return nil, message
+		end
+
+		Runtime.ModuleRequireCache[module] = result
+		Runtime.ModuleRequireRetry[module] = nil
+		Runtime.LastModuleRequireError = nil
+		return result, nil
+	end
+end
+local ProjectileCore, ProjectileSilent
+
+local function onCleanup(fn)
+	table.insert(Runtime.Cleanup, fn)
+end
+
+onCleanup(function()
+	table.clear(Runtime.ModuleRequireCache)
+	table.clear(Runtime.ModuleRequireRetry)
+end)
+
+local function trackDrawing(obj)
+	table.insert(Runtime.Drawings, obj)
+	return obj
+end
+
+local _drawingNew = Drawing.new
+local function newDrawing(kind)
+	return trackDrawing(_drawingNew(kind))
+end
+
+local _instanceNew = Instance.new
+local function newScreenGui(parent)
+	local gui = _instanceNew("ScreenGui")
+	if parent then gui.Parent = parent end
+	Runtime.Guis[gui] = true
+	return gui
+end
+
+local UIS = game:GetService("UserInputService")
+local TS = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+local Stats = game:GetService("Stats")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local LocalPlayer = Players.LocalPlayer
+local pGui = LocalPlayer:WaitForChild("PlayerGui")
+local Camera = workspace.CurrentCamera
+local originalMouseIconEnabled = UIS.MouseIconEnabled
+onCleanup(function() UIS.MouseIconEnabled = originalMouseIconEnabled end)
+
+if pGui:FindFirstChild("BurmaldaHook") then pGui.BurmaldaHook:Destroy() end
+if pGui:FindFirstChild("BurmaldaHookHUD") then pGui.BurmaldaHookHUD:Destroy() end
+
+local sg = newScreenGui()
+sg.Name = "BurmaldaHook"
+sg.IgnoreGuiInset = true
+sg.ResetOnSpawn = false
+sg.DisplayOrder = 999998
+sg.Parent = pGui
+
+local S = {
+	ESPEnabled     = false,
+	ESPRadius      = 500,
+	ESPBoxType     = "Normal",
+	ESPDist        = false,
+	ESPWeapon      = false,
+	ESPChams       = false,
+	ChamsFillTransparency = 0.5,
+	ChamsOutlineTransparency = 0.2,
+	Tracers        = false,
+	TracerOrigin   = 2,
+	Names          = false,
+
+	FOVCircle      = false,
+	FOV            = 120,
+	FOVFill        = false,
+	FOVFillTransparency = 0.85,
+	BoxFill        = false,
+	BoxFillTransparency = 0.7,
+	HPBar          = false,
+	HPBarSide      = 1,
+	HPHealthNumber = false,
+	HPDynamicColor = false,
+	SilentAim      = false,
+	MBFovMode      = "mobile",
+	MBHitChance    = 100,
+	MBVisibleOnly  = true,
+	MBUseFOV       = true,
+	Manipulation   = false,
+	MBMaxDist      = 500,
+	MBTargetPart   = 1,
+	MBPriority     = "distance",
+	SpeedRostAlpha = false,
+	HUDEnabled     = true,
+	SpeedRostValue = 30,
+	Spider         = false,
+	SpiderSpeed    = 20,
+	NoRecoil       = false,
+	NoRecoilMethod = 1,
+	LowPC          = false,
+	HighJump       = false,
+	HighJumpHeight = 100,
+
+	AutoFire       = false,
+	AutoFireDelay  = 0.05,
+	TargetHUD      = false,
+	HitLogsEnabled = false,
+	HitLogsDuration = 5,
+	HitLogsPosition = "Center",
+	HitmarkerEnabled = false,
+	HitmarkerSize  = 12,
+	HitmarkerThickness = 2,
+	HitmarkerDuration = 2.5,
+	DamageFXEnabled = false,
+	DamageFXStyle  = "Foam",
+	DamageFXCount  = 12,
+	DamageFXSpeed  = 20,
+	DamageFXSize   = 0.25,
+	DamageFXLifetime = 0.8,
+	DamageFXRainbow = false,
+	KillNotify     = false,
+	XRay           = false,
+	XRayTransparency = 0.5,
+	ToolOutline    = false,
+	CustomWater    = false,
+	WaterReflectance = 0.3,
+	SwimSpeed      = false,
+	SwimSpeedValue = 50,
+	CopterSpeed    = false,
+	CopterSpeedValue = 50,
+	NoFallDamage   = false,
+	NoJumpDelay    = false,
+	CopterFly      = false,
+	CopterFlySpeed = 100,
+}
+local SA_CurrentTarget = nil
+
+local AC      = Color3.fromRGB(255, 255, 255)
+local AC_ESP  = Color3.fromRGB(255, 255, 255)
+local AC_FOV  = Color3.fromRGB(255, 255, 255)
+local AC_FOV_TARGET = Color3.fromRGB(255, 0, 0)
+local AC_FOV_FILL = Color3.fromRGB(255, 255, 255)
+local AC_TR   = Color3.fromRGB(255, 255, 255)
+
+local AC_NAME = Color3.fromRGB(255, 255, 255)
+local AC_DIST = Color3.fromRGB(255, 255, 255)
+local AC_FILL = Color3.fromRGB(255, 255, 255)
+local AC_HP   = Color3.fromRGB(255, 255, 255)
+local AC_WEAPON = Color3.fromRGB(255, 255, 255)
+local AC_CHAMS = Color3.fromRGB(255, 255, 255)
+local AC_CHAMS_OUTLINE = Color3.fromRGB(255, 255, 255)
+Runtime.ExtraColors = {
+	Hitmarker = Color3.fromRGB(255, 255, 255),
+	HitmarkerKill = Color3.fromRGB(220, 80, 80),
+	HitLogs = Color3.fromRGB(176, 176, 209),
+	DamageFX = Color3.fromRGB(255, 255, 255),
+	ToolOutline = Color3.fromRGB(255, 255, 255),
+	Water = Color3.fromRGB(128, 128, 128),
+}
+local BK      = Color3.fromRGB(0, 0, 0)
+
+local _visParams = RaycastParams.new()
+_visParams.FilterType = Enum.RaycastFilterType.Exclude
+_visParams.IgnoreWater = true
+local _visCache = {}
+local _visCacheTime = {}
+local _VIS_TTL = 0.08
+local _visFilterList = {}
+local function isVisible(part, char)
+	local now = tick()
+	if _visCacheTime[part] and (now - _visCacheTime[part]) < _VIS_TTL then
+		return _visCache[part]
+	end
+	local myChar = LocalPlayer.Character
+	local currentCamera = workspace.CurrentCamera or Camera
+	if _visFilterList[1] ~= char or _visFilterList[2] ~= myChar or _visFilterList[3] ~= currentCamera then
+		_visFilterList[1] = char
+		_visFilterList[2] = myChar
+		_visFilterList[3] = currentCamera
+		_visParams.FilterDescendantsInstances = _visFilterList
+	end
+	local origin = currentCamera.CFrame.Position
+	local result = workspace:Raycast(origin, part.Position - origin, _visParams)
+	local vis = result == nil
+	_visCache[part] = vis
+	_visCacheTime[part] = now
+	return vis
+end
+
+local function isAimKeyHeld()
+	return UIS:IsMouseButtonPressed(Enum.UserInputType.MouseButton2)
+		or UIS:IsKeyDown(Enum.KeyCode.LeftAlt)
+end
+
+local PickupNotifEnabled = false
+
+local function createLogo(parent, size)
+	local logo = Instance.new("Frame")
+	logo.Size = UDim2.new(0, size, 0, size)
+	logo.AnchorPoint = Vector2.new(0.5, 0.5)
+	logo.Position = UDim2.new(0.5, 0, 0.5, 0)
+	logo.BackgroundTransparency = 1
+	logo.Rotation = 12
+	logo.Parent = parent
+	local function p(x, y, sx, sy, rot)
+		local f = Instance.new("Frame", logo)
+		f.AnchorPoint = Vector2.new(0.5, 0.5)
+		f.BackgroundColor3 = Color3.new(1,1,1)
+		f.BorderSizePixel = 0
+		f.Size = UDim2.new(0, (sx/32)*size, 0, (sy/32)*size)
+		f.Position = UDim2.new(0, (x/32)*size, 0, (y/32)*size)
+		f.Rotation = rot or 0
+		Instance.new("UICorner", f).CornerRadius = UDim.new(0, 1)
+	end
+	p(5, 20, 5, 22, 0)
+	p(27, 12, 5, 22, 0)
+	p(16, 16, 5, 34, -48)
+	return logo
+end
+
+local crosshairSettings = {
+	crosshairEnabled   = false,
+	crosshairType      = "Default",
+	crosshairSize      = 8,
+	crosshairThickness = 2,
+	crosshairGap       = 4,
+	crosshairLength    = 10,
+	crosshairColor     = Color3.fromRGB(255, 255, 255),
+	crosshairCenter    = true,
+	crosshairSpin      = false,
+	crosshairSpinSpeed = 2,
+	crosshairRainbow   = false,
+	crosshairDot       = false,
+	crosshairPulse     = false,
+	crosshairPulseSpeed = 3,
+	crosshairFollowAim = false,
+	crosshairFollowTarget = false,
+	crosshairFollowSmooth = 8,
+}
+
+local Crosshair = {
+	ScreenGui    = nil,
+	MainFrame    = nil,
+	Segments     = {},
+	Enabled      = false,
+	CurrentType  = nil,
+	Rotation     = 0,
+	RainbowHue   = 0,
+	PulseClock   = 0,
+	CurrentGap   = 4,
+	SmoothX      = nil,
+	SmoothY      = nil,
+	DotSegment   = nil,
+}
+
+local UserInputService = UIS
+
+local function chGetParent()
+	local p
+	pcall(function()
+		if gethui then p = gethui()
+		else p = game:GetService("CoreGui") end
+	end)
+	return p or LocalPlayer:WaitForChild("PlayerGui")
+end
+
+local function chCreateSegment(parent, size, pos, rotation)
+	local f = Instance.new("Frame")
+	f.BackgroundColor3 = crosshairSettings.crosshairColor
+	f.BorderSizePixel  = 0
+	f.Active           = false
+	f.Selectable       = false
+	f.AnchorPoint      = Vector2.new(0.5, 0.5)
+	f.Size             = size
+	f.Position         = pos
+	f.Rotation         = rotation or 0
+	f.Parent           = parent
+	return f
+end
+
+local function chClear()
+	if Crosshair.MainFrame then
+		Crosshair.MainFrame:Destroy()
+		Crosshair.MainFrame = nil
+	end
+	if Crosshair.DotSegment then
+		Crosshair.DotSegment:Destroy()
+		Crosshair.DotSegment = nil
+	end
+	Crosshair.Segments = {}
+	Crosshair.SmoothX, Crosshair.SmoothY = nil, nil
+end
+
+local function chInit()
+	if Crosshair.ScreenGui then return end
+	local sg2 = newScreenGui()
+	sg2.Name           = "BurmaldaHook_Crosshair"
+	sg2.DisplayOrder   = 99998
+	sg2.IgnoreGuiInset = true
+	sg2.ResetOnSpawn   = false
+	sg2.Parent         = chGetParent()
+	Crosshair.ScreenGui = sg2
+end
+
+local function chBuild(t, size, thick)
+	chClear()
+	Crosshair.CurrentType = t
+	Crosshair.Rotation    = 0
+	Crosshair.MainFrame = Instance.new("Frame")
+	Crosshair.MainFrame.BackgroundTransparency = 1
+	Crosshair.MainFrame.Size        = UDim2.new(0, 0, 0, 0)
+	Crosshair.MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+	Crosshair.MainFrame.Parent      = Crosshair.ScreenGui
+	if t == "Default" then
+		table.insert(Crosshair.Segments, chCreateSegment(Crosshair.MainFrame,
+			UDim2.new(0, thick, 0, size * 2), UDim2.new(0, 0, 0, 0)))
+		table.insert(Crosshair.Segments, chCreateSegment(Crosshair.MainFrame,
+			UDim2.new(0, size * 2, 0, thick), UDim2.new(0, 0, 0, 0)))
+	elseif t == "X" then
+		table.insert(Crosshair.Segments, chCreateSegment(Crosshair.MainFrame,
+			UDim2.new(0, thick, 0, size * 2.5), UDim2.new(0, 0, 0, 0), 45))
+		table.insert(Crosshair.Segments, chCreateSegment(Crosshair.MainFrame,
+			UDim2.new(0, thick, 0, size * 2.5), UDim2.new(0, 0, 0, 0), -45))
+	elseif t == "Dot" then
+		table.insert(Crosshair.Segments, chCreateSegment(Crosshair.MainFrame,
+			UDim2.new(0, thick * 2, 0, thick * 2), UDim2.new(0, 0, 0, 0)))
+		local r2 = Instance.new("UICorner")
+		r2.CornerRadius = UDim.new(0.5, 0)
+		r2.Parent = Crosshair.Segments[1]
+	elseif t == "Custom" then
+		local gap = crosshairSettings.crosshairGap
+		local len = crosshairSettings.crosshairLength
+
+		table.insert(Crosshair.Segments, chCreateSegment(Crosshair.MainFrame,
+			UDim2.new(0, thick, 0, len), UDim2.new(0, 0, 0, -(gap + len / 2))))
+
+		table.insert(Crosshair.Segments, chCreateSegment(Crosshair.MainFrame,
+			UDim2.new(0, thick, 0, len), UDim2.new(0, 0, 0, gap + len / 2)))
+
+		table.insert(Crosshair.Segments, chCreateSegment(Crosshair.MainFrame,
+			UDim2.new(0, len, 0, thick), UDim2.new(0, -(gap + len / 2), 0, 0)))
+
+		table.insert(Crosshair.Segments, chCreateSegment(Crosshair.MainFrame,
+			UDim2.new(0, len, 0, thick), UDim2.new(0, gap + len / 2, 0, 0)))
+	end
+end
+
+local crosshairConn = nil
+local function startCrosshair()
+	chInit()
+	if crosshairConn then crosshairConn:Disconnect(); crosshairConn = nil end
+	crosshairConn = RunService.RenderStepped:Connect(function(dt)
+		if Runtime.Unloaded then return end
+		if Runtime.CraftingMenuOpen then
+			UIS.MouseIconEnabled = true
+			return
+		end
+		if not crosshairSettings.crosshairEnabled then
+			if Crosshair.Enabled then
+				chClear()
+				Crosshair.Enabled = false
+			end
+			UIS.MouseIconEnabled = true
+			return
+		end
+		Crosshair.Enabled = true
+		local t2   = crosshairSettings.crosshairType
+		local size = crosshairSettings.crosshairSize
+		local thick= crosshairSettings.crosshairThickness
+		if not Crosshair.MainFrame or Crosshair.CurrentType ~= t2 then
+			chBuild(t2, size, thick)
+		end
+		local pos, followUsed = nil, false
+		local followPosition = nil
+		if crosshairSettings.crosshairFollowAim and SA_CurrentTarget then
+			followPosition = ProjectileSilent and ProjectileSilent.TargetPosition or SA_CurrentTarget.Position
+		elseif crosshairSettings.crosshairFollowTarget and SA_CurrentTarget then
+			followPosition = SA_CurrentTarget.Position
+		end
+		if followPosition then
+			local activeCamera = workspace.CurrentCamera or Camera
+			local projected, visible = activeCamera:WorldToViewportPoint(followPosition)
+			if visible and projected.Z > 0 then
+				pos = Vector2.new(projected.X, projected.Y)
+				followUsed = true
+				UIS.MouseIconEnabled = false
+			end
+		end
+		if not pos and crosshairSettings.crosshairCenter then
+			UIS.MouseIconEnabled = true
+			local ss2 = Camera.ViewportSize
+			pos = Vector2.new(ss2.X / 2, ss2.Y / 2)
+		elseif not pos then
+			UIS.MouseIconEnabled = false
+			pos = UIS:GetMouseLocation()
+		end
+		if followUsed then
+			if not Crosshair.SmoothX then Crosshair.SmoothX, Crosshair.SmoothY = pos.X, pos.Y end
+			local alpha = 1 - math.exp(-math.max(0, dt or 0) * math.clamp(crosshairSettings.crosshairFollowSmooth, 1, 20))
+			Crosshair.SmoothX += (pos.X - Crosshair.SmoothX) * alpha
+			Crosshair.SmoothY += (pos.Y - Crosshair.SmoothY) * alpha
+			pos = Vector2.new(Crosshair.SmoothX, Crosshair.SmoothY)
+		else
+			Crosshair.SmoothX, Crosshair.SmoothY = nil, nil
+		end
+		if Crosshair.MainFrame.Position ~= UDim2.new(0, pos.X, 0, pos.Y) then
+			Crosshair.MainFrame.Position = UDim2.new(0, pos.X, 0, pos.Y)
+		end
+		Crosshair.PulseClock += dt or 0
+		if crosshairSettings.crosshairSpin then
+			Crosshair.Rotation = (Crosshair.Rotation + crosshairSettings.crosshairSpinSpeed * dt * 60) % 360
+			Crosshair.MainFrame.Rotation = Crosshair.Rotation
+		else
+			Crosshair.MainFrame.Rotation = 0
+		end
+		local col
+		if crosshairSettings.crosshairRainbow then
+			Crosshair.RainbowHue = (Crosshair.RainbowHue + dt * 0.3) % 1
+			col = Color3.fromHSV(Crosshair.RainbowHue, 1, 1)
+		else
+			col = crosshairSettings.crosshairColor
+		end
+		local gap = crosshairSettings.crosshairGap
+		if crosshairSettings.crosshairPulse then
+			gap += math.sin(Crosshair.PulseClock * crosshairSettings.crosshairPulseSpeed) * math.max(gap * 0.4, 2)
+		end
+		Crosshair.CurrentGap = gap
+		if crosshairSettings.crosshairDot then
+			if not Crosshair.DotSegment then
+				local dot = Instance.new("Frame")
+				dot.Name = "CenterDot"
+				dot.AnchorPoint = Vector2.new(0.5, 0.5)
+				dot.Size = UDim2.new(0, 2, 0, 2)
+				dot.BorderSizePixel = 0
+				dot.Parent = Crosshair.ScreenGui
+				Instance.new("UICorner", dot).CornerRadius = UDim.new(0.5, 0)
+				Crosshair.DotSegment = dot
+			end
+			Crosshair.DotSegment.Visible = true
+			Crosshair.DotSegment.Position = UDim2.new(0, pos.X, 0, pos.Y)
+			Crosshair.DotSegment.BackgroundColor3 = col
+		elseif Crosshair.DotSegment then
+			Crosshair.DotSegment:Destroy()
+			Crosshair.DotSegment = nil
+		end
+		for idx, seg in ipairs(Crosshair.Segments) do
+			seg.BackgroundColor3 = col
+			if t2 == "Default" then
+				if seg.Size.X.Offset > seg.Size.Y.Offset then
+					seg.Size = UDim2.new(0, size * 2, 0, thick)
+				else
+					seg.Size = UDim2.new(0, thick, 0, size * 2)
+				end
+			elseif t2 == "X" then
+				seg.Size = UDim2.new(0, thick, 0, size * 2.5)
+			elseif t2 == "Dot" then
+				seg.Size = UDim2.new(0, thick * 2, 0, thick * 2)
+			elseif t2 == "Custom" then
+				local len = crosshairSettings.crosshairLength
+				if idx == 1 then
+					seg.Size = UDim2.new(0, thick, 0, len)
+					seg.Position = UDim2.new(0, 0, 0, -(gap + len / 2))
+				elseif idx == 2 then
+					seg.Size = UDim2.new(0, thick, 0, len)
+					seg.Position = UDim2.new(0, 0, 0, gap + len / 2)
+				elseif idx == 3 then
+					seg.Size = UDim2.new(0, len, 0, thick)
+					seg.Position = UDim2.new(0, -(gap + len / 2), 0, 0)
+				elseif idx == 4 then
+					seg.Size = UDim2.new(0, len, 0, thick)
+					seg.Position = UDim2.new(0, gap + len / 2, 0, 0)
+				end
+			end
+		end
+	end)
+end
+startCrosshair()
+onCleanup(function()
+	crosshairSettings.crosshairEnabled = false
+	if crosshairConn then crosshairConn:Disconnect(); crosshairConn = nil end
+	chClear()
+	Crosshair.Enabled = false
+end)
+
+-- Shared Burmalda.hook stats HUD. UI-only: no game-specific logic or assets.
+-- The brand row intentionally has no left Logo/ImageLabel. The HUD is owned by
+-- its caller's ScreenGui and remains visible when the main menu is hidden.
+local function createBurmaldaStatsHud(options)
+	options = options or {}
+	local parent = assert(options.Parent, "Stats HUD parent is required")
+	local world = options.Workspace or workspace
+	local player = options.LocalPlayer
+	local statsService = options.Stats
+	local destroyed = false
+	local isActive = options.IsActive or function() return true end
+
+	local root = Instance.new("Frame", parent)
+	root.Name = "BurmaldaStatsHUD"
+	root.Size = UDim2.new(1, 0, 1, 0)
+	root.BackgroundTransparency = 1
+	root.BorderSizePixel = 0
+	root.Visible = options.Visible ~= false
+
+	local camera = world and world.CurrentCamera
+	local scaleValue = camera and camera.ViewportSize.X >= 1024 and 1.5 or 1
+
+	local function bar(name, barParent, height)
+		local frame = Instance.new("Frame", barParent)
+		frame.Name = name
+		frame.Size = UDim2.new(0, 0, 0, height)
+		frame.AutomaticSize = Enum.AutomaticSize.X
+		frame.BackgroundColor3 = Color3.fromRGB(8, 8, 8)
+		frame.BackgroundTransparency = 0.08
+		frame.BorderSizePixel = 0
+		local rounded = Instance.new("UICorner", frame)
+		rounded.CornerRadius = UDim.new(0, 6)
+		local stroke = Instance.new("UIStroke", frame)
+		stroke.Transparency = 0.92
+		local padding = Instance.new("UIPadding", frame)
+		padding.PaddingLeft = UDim.new(0, 8)
+		padding.PaddingRight = UDim.new(0, 8)
+		local layout = Instance.new("UIListLayout", frame)
+		layout.FillDirection = Enum.FillDirection.Horizontal
+		layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+		layout.VerticalAlignment = Enum.VerticalAlignment.Center
+		layout.Padding = UDim.new(0, 6)
+		return frame
+	end
+
+	local function section(parent, iconId, text, iconSize, textSize)
+		local holder = Instance.new("Frame", parent)
+		holder.BackgroundTransparency = 1
+		holder.Size = UDim2.new(0, 0, 1, 0)
+		holder.AutomaticSize = Enum.AutomaticSize.X
+		holder.BorderSizePixel = 0
+		local layout = Instance.new("UIListLayout", holder)
+		layout.FillDirection = Enum.FillDirection.Horizontal
+		layout.VerticalAlignment = Enum.VerticalAlignment.Center
+		layout.Padding = UDim.new(0, iconId and 4 or 0)
+		if iconId then
+			local icon = Instance.new("ImageLabel", holder)
+			icon.Name = "MetricIcon"
+			icon.Size = UDim2.new(0, iconSize or 14, 0, iconSize or 14)
+			icon.BackgroundTransparency = 1
+			icon.BorderSizePixel = 0
+			icon.Image = "rbxassetid://" .. tostring(iconId)
+		end
+		local label = Instance.new("TextLabel", holder)
+		label.Name = iconId and "MetricText" or "BrandText"
+		label.Size = UDim2.new(0, 0, 1, 0)
+		label.AutomaticSize = Enum.AutomaticSize.X
+		label.BackgroundTransparency = 1
+		label.BorderSizePixel = 0
+		label.TextColor3 = Color3.fromRGB(255, 255, 255)
+		label.Font = iconId and Enum.Font.GothamBold or Enum.Font.GothamBold
+		label.TextSize = textSize or 12
+		label.Text = text
+		return label
+	end
+
+	local function separator(parent)
+		local line = Instance.new("Frame", parent)
+		line.Size = UDim2.new(0, 1, 0, 12)
+		line.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		line.BackgroundTransparency = 0.85
+		line.BorderSizePixel = 0
+	end
+
+	local mainBar = bar("MainBar", root, 22)
+	mainBar.Position = UDim2.new(0.5, 0, 0.015, 0)
+	mainBar.AnchorPoint = Vector2.new(0.5, 0)
+	local mainScale = Instance.new("UIScale", mainBar)
+	mainScale.Scale = scaleValue
+
+	-- No icon is created before this label: this is the requested logo-free HUD.
+	section(mainBar, nil, "Burmalda.hook", 0, 12)
+	separator(mainBar)
+	local fpsLabel = section(mainBar, "12096147158", "0 fps", 14, 12)
+	separator(mainBar)
+	local timeLabel = section(mainBar, "17824308575", "00:00:00", 14, 12)
+
+	local lowerHolder = Instance.new("Frame", root)
+	lowerHolder.Name = "LowerHolder"
+	lowerHolder.BackgroundTransparency = 1
+	lowerHolder.BorderSizePixel = 0
+	lowerHolder.Size = UDim2.new(0, 0, 0, 22 * scaleValue)
+	lowerHolder.AutomaticSize = Enum.AutomaticSize.X
+	lowerHolder.Position = UDim2.new(0.5, 0, 0.015, 22 * scaleValue + 4)
+	lowerHolder.AnchorPoint = Vector2.new(0.5, 0)
+	local lowerLayout = Instance.new("UIListLayout", lowerHolder)
+	lowerLayout.FillDirection = Enum.FillDirection.Horizontal
+	lowerLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	lowerLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	lowerLayout.Padding = UDim.new(0, 8)
+
+	local pingBar = bar("PingBar", lowerHolder, 22 * scaleValue)
+	local pingLabel = section(pingBar, "84895557744908", "0 ms", math.floor(14 * scaleValue), math.floor(12 * scaleValue))
+	local speedBar = bar("SpeedBar", lowerHolder, 22 * scaleValue)
+	local speedLabel = section(speedBar, "105442920358687", "0 studs/s", math.floor(12 * scaleValue), math.floor(12 * scaleValue))
+
+	local api = { Root = root, MainBar = mainBar, LowerHolder = lowerHolder }
+	function api.SetVisible(value)
+		if not destroyed then root.Visible = value == true end
+	end
+	function api.Destroy()
+		if destroyed then return end
+		destroyed = true
+		root:Destroy()
+	end
+
+	task.spawn(function()
+		while not destroyed and isActive() do
+			if root.Parent == nil then break end
+			local clockOk, clockText = pcall(function() return os.date("%H:%M:%S") end)
+			if clockOk then timeLabel.Text = clockText end
+
+			local fpsOk, fps = pcall(function() return world:GetRealPhysicsFPS() end)
+			fpsLabel.Text = tostring(fpsOk and math.floor(fps + 0.5) or 0) .. " fps"
+
+			local pingOk, ping = pcall(function()
+				return math.floor(statsService.Network.ServerStatsItem["Data Ping"]:GetValue())
+			end)
+			pingLabel.Text = tostring(pingOk and ping or 0) .. " ms"
+
+			local speed = 0
+			local character = player and player.Character
+			local rootPart = character and character:FindFirstChild("HumanoidRootPart")
+			if rootPart then
+				local velocity = rootPart.AssemblyLinearVelocity
+				speed = math.floor(Vector3.new(velocity.X, 0, velocity.Z).Magnitude + 0.5)
+			end
+			speedLabel.Text = tostring(speed) .. " studs/s"
+			task.wait(0.5)
+		end
+	end)
+
+	return api
+end
+
+
+local advGui = newScreenGui()
+advGui.Name = "BurmaldaHookStats"
+advGui.IgnoreGuiInset = true
+advGui.ResetOnSpawn = false
+advGui.DisplayOrder = 999999
+advGui.Parent = pGui
+local _isLargeScreen = Camera.ViewportSize.X >= 1024
+
+-- Keep the second-screen stats HUD independent from menu visibility.
+-- Its brand row has no left Logo/ImageLabel; metric icons remain as in the reference.
+local statsHud = createBurmaldaStatsHud({
+	Parent = advGui,
+	Workspace = workspace,
+	LocalPlayer = LocalPlayer,
+	Stats = Stats,
+	Visible = S.HUDEnabled == true,
+	IsActive = function() return not Runtime.Unloaded end,
+})
+local function updateHUD() statsHud.SetVisible(S.HUDEnabled == true) end
+onCleanup(function() statsHud.Destroy() end)
+
+-- The floating opener keeps its existing drag behavior independently of the HUD.
+local function hudMakeDrag(gui)
+	local drag, dragInput, dragStart, startPosition
+	local connections = {}
+	local changedConnection = nil
+	table.insert(connections, gui.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			drag = true
+			dragStart = input.Position
+			startPosition = gui.Position
+			if changedConnection then changedConnection:Disconnect() end
+			changedConnection = input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					drag = false
+					if changedConnection then changedConnection:Disconnect(); changedConnection = nil end
+				end
+			end)
+		end
+	end))
+	table.insert(connections, gui.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end))
+	table.insert(connections, UIS.InputChanged:Connect(function(input)
+		if not Runtime.Unloaded and input == dragInput and drag then
+			local delta = input.Position - dragStart
+			gui.Position = UDim2.new(startPosition.X.Scale, startPosition.X.Offset + delta.X,
+				startPosition.Y.Scale, startPosition.Y.Offset + delta.Y)
+		end
+	end))
+	onCleanup(function()
+		drag = false
+		if changedConnection then pcall(function() changedConnection:Disconnect() end); changedConnection = nil end
+		for _, connection in ipairs(connections) do pcall(function() connection:Disconnect() end) end
+	end)
+end
+
+local openBtn = Instance.new("TextButton")
+openBtn.Name = "MenuBtn"
+openBtn.Text = ""
+openBtn.AutoButtonColor = false
+openBtn.Size = UDim2.new(0,32,0,32)
+openBtn.Position = UDim2.new(0,20,0,100)
+openBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+openBtn.BackgroundTransparency = 0.15
+openBtn.BorderSizePixel = 0
+openBtn.Active = true
+openBtn.Parent = sg
+Instance.new("UICorner",openBtn).CornerRadius = UDim.new(0,8)
+local btnIco = Instance.new("ImageLabel",openBtn)
+btnIco.Size = UDim2.new(1,-8,1,-8)
+btnIco.Position = UDim2.new(0.5,0,0.5,0)
+btnIco.AnchorPoint = Vector2.new(0.5,0.5)
+btnIco.BackgroundTransparency = 1
+btnIco.Image = "rbxassetid://110686514699024"
+btnIco.ScaleType = Enum.ScaleType.Fit
+hudMakeDrag(openBtn)
+Runtime.StartClosed = true
+
+-- Burmalda.hook | local port of the supplied patapim/bred UI structure.
+-- Source geometry: Window 621x542, Pages 30px, two scrolling columns,
+-- Section topbar 25px, content (8,35), controls gap 6px, bottom padding 8px.
+-- No external UI library, logo asset, glow asset or runtime HTTP dependency.
+-- Only the gameplay/adapter API escapes this implementation scope. Keeping
+-- helper locals inside the do-block avoids the Luau 200-register limit when
+-- the menu is embedded into an already large game client.
+local Theme, UIAnimations, main, mainStroke, mainScale, baseMenuScale
+local tabs, tabFrames, tabButtons, activeFrame
+local _fFS, _fDD, sectionContents, columnSections
+local getTab, smartCol, getSection, defaultSectionName, selectTab, createFeature
+local addBind, addSlider, addDropdown, addColor
+local setMenuAccent, sourceText, sourceStroke, sourceGradient
+local toggleMenu, menuOpen
+do
+Theme = {
+	Background = Color3.fromRGB(8, 8, 8),
+	Inline = Color3.fromRGB(12, 12, 12),
+	Element = Color3.fromRGB(19, 19, 19),
+	Border = Color3.fromRGB(40, 40, 40),
+	Text = Color3.fromRGB(242, 242, 242),
+	SubText = Color3.fromRGB(150, 150, 150),
+	Accent = Color3.fromRGB(255, 255, 255),
+}
+UIAnimations = true
+local SOURCE_WINDOW_WIDTH, SOURCE_WINDOW_HEIGHT = 621, 542
+local SOURCE_PAGE_HEIGHT, SOURCE_SECTION_GAP = 30, 12
+local SOURCE_SECTION_TOPBAR, SOURCE_CONTROL_GAP = 25, 6
+
+main = Instance.new("Frame", sg)
+main.Name = "Main"
+main.AnchorPoint = Vector2.new(0.5, 0.5)
+main.Position = UDim2.new(0.5, 0, 0.5, 0)
+main.Size = UDim2.new(0, SOURCE_WINDOW_WIDTH, 0, SOURCE_WINDOW_HEIGHT)
+main.BackgroundColor3 = Theme.Background
+main.BorderSizePixel = 2
+main.ClipsDescendants = true
+mainStroke = Instance.new("UIStroke", main)
+mainStroke.Name = "BurmaldaAccent"
+mainStroke.Color = Theme.Accent
+mainStroke.Thickness = 1
+mainStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+do
+	local mainStrokeGradient = Instance.new("UIGradient", mainStroke)
+	mainStrokeGradient.Rotation = 90
+	mainStrokeGradient.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, 0),
+		NumberSequenceKeypoint.new(0.696, 0.275),
+		NumberSequenceKeypoint.new(0.84, 0.575),
+		NumberSequenceKeypoint.new(1, 1),
+	})
+	local inlineWindow = Instance.new("Frame", main)
+	inlineWindow.Name = "Inline"
+	inlineWindow.Position = UDim2.new(0, 1, 0, 1)
+	inlineWindow.Size = UDim2.new(1, -2, 1, -2)
+	inlineWindow.BackgroundTransparency = 1
+	inlineWindow.BorderSizePixel = 0
+	local inlineStroke = Instance.new("UIStroke", inlineWindow)
+	inlineStroke.Color = Color3.fromRGB(0, 0, 0)
+	inlineStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+end
+
+mainScale = Instance.new("UIScale", main)
+baseMenuScale = _isLargeScreen and 1 or 0.82
+mainScale.Scale = baseMenuScale
+
+local header = Instance.new("Frame", main:FindFirstChild("Inline"))
+header.Name = "Header"
+header.Size = UDim2.new(1, 0, 0, 39)
+header.BackgroundTransparency = 1
+local title = Instance.new("TextLabel", header)
+title.Name = "Title"
+title.BackgroundTransparency = 1
+title.Position = UDim2.new(0, 8, 0, 10)
+title.Size = UDim2.new(1, -16, 0, 15)
+title.Font = Enum.Font.Gotham
+title.Text = "Burmalda.hook"
+title.TextSize = 14
+title.TextColor3 = Theme.Text
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.TextYAlignment = Enum.TextYAlignment.Center
+
+local contentShell = Instance.new("Frame", main:FindFirstChild("Inline"))
+contentShell.Name = "ContentShell"
+contentShell.Position = UDim2.new(0, 7, 0, 39)
+contentShell.Size = UDim2.new(1, -14, 1, -46)
+contentShell.BackgroundTransparency = 1
+contentShell.BorderSizePixel = 0
+contentShell.ClipsDescendants = true
+local contentStroke = Instance.new("UIStroke", contentShell)
+contentStroke.Color = Theme.Border
+contentStroke.Thickness = 1
+contentStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+local pages = Instance.new("Frame", contentShell)
+pages.Name = "Pages"
+pages.Size = UDim2.new(1, 0, 0, SOURCE_PAGE_HEIGHT)
+pages.BackgroundTransparency = 1
+local pagesLayout = Instance.new("UIListLayout", pages)
+pagesLayout.FillDirection = Enum.FillDirection.Horizontal
+pagesLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+pagesLayout.Padding = UDim.new(0, 1)
+pagesLayout.SortOrder = Enum.SortOrder.LayoutOrder
+local tabsHolder = Instance.new("Frame", contentShell)
+tabsHolder.Name = "Tabs"
+tabsHolder.Position = UDim2.new(0, 0, 0, 35)
+tabsHolder.Size = UDim2.new(1, 0, 1, -35)
+tabsHolder.BackgroundTransparency = 1
+
+local tabNames = Runtime.TabNames or {"COMBAT", "VISUALS", "MOVEMENT", "MISC", "CONFIG"}
+tabs = tabNames
+tabFrames, tabButtons = {}, {}
+local tabUnderlines, tabColumns = {}, {}
+columnSections, sectionContents = {}, {}
+local columnTabs = {}
+local featureRecords = {}
+_fFS, _fDD = {}, {}
+Runtime.BindApis = {}
+local openPopups = {}
+
+local function connectUI(signal, fn)
+	local connection = signal:Connect(fn)
+	onCleanup(function() pcall(function() connection:Disconnect() end) end)
+	return connection
+end
+
+local function uiTween(object, info, props)
+	if UIAnimations then return TS:Create(object, info, props) end
+	for key, value in pairs(props) do object[key] = value end
+	return {Play = function() end}
+end
+
+function sourceStroke(parent, color)
+	local stroke = Instance.new("UIStroke", parent)
+	stroke.Color = color or Theme.Border
+	stroke.Thickness = 1
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	return stroke
+end
+
+function sourceGradient(parent, rotation, bottom)
+	local gradient = Instance.new("UIGradient", parent)
+	gradient.Rotation = rotation or 90
+	gradient.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255), bottom or Color3.fromRGB(205, 205, 205))
+	return gradient
+end
+
+function sourceText(parent, text, size, color)
+	local label = Instance.new("TextLabel", parent)
+	label.BackgroundTransparency = 1
+	label.BorderSizePixel = 0
+	label.Font = Enum.Font.Gotham
+	label.Text = tostring(text or "")
+	label.TextSize = 14
+	label.TextColor3 = color or Theme.Text
+	label.TextXAlignment = Enum.TextXAlignment.Left
+	label.TextYAlignment = Enum.TextYAlignment.Center
+	label.Size = size or UDim2.new(1, 0, 0, 15)
+	return label
+end
+
+local function hidePopups()
+	for popup in pairs(openPopups) do popup.Visible = false end
+end
+
+function setMenuAccent(color)
+	Theme.Accent = color
+	local function recolor(root)
+		for _, object in pairs(root:GetDescendants()) do
+			if object.Name == "BurmaldaAccent" then
+				if object:IsA("UIStroke") then object.Color = color
+				elseif object:IsA("TextLabel") or object:IsA("TextButton") then object.TextColor3 = color
+				else object.BackgroundColor3 = color end
+			end
+		end
+	end
+	recolor(sg)
+	pcall(function() recolor(openBtn) end)
+end
+
+local function makeColumn(page, tabName, right)
+	local column = Instance.new("ScrollingFrame", page)
+	column.Name = right and "Right" or "Left"
+	column.Size = UDim2.new(0, 100, 0, 100)
+	column.Active = true
+	column.BackgroundTransparency = 1
+	column.BorderSizePixel = 0
+	column.CanvasSize = UDim2.new(0, 0, 0, 0)
+	column.AutomaticCanvasSize = Enum.AutomaticSize.Y
+	column.ScrollBarThickness = 0
+	column.ScrollBarImageColor3 = Theme.Border
+	column.ScrollingDirection = Enum.ScrollingDirection.Y
+	column.ElasticBehavior = Enum.ElasticBehavior.Never
+	local padding = Instance.new("UIPadding", column)
+	padding.PaddingTop = UDim.new(0, 5)
+	padding.PaddingBottom = UDim.new(0, 8)
+	padding.PaddingRight = UDim.new(0, 8)
+	padding.PaddingLeft = UDim.new(0, 8)
+	local layout = Instance.new("UIListLayout", column)
+	layout.Padding = UDim.new(0, SOURCE_SECTION_GAP)
+	layout.SortOrder = Enum.SortOrder.LayoutOrder
+	columnSections[column] = {}
+	columnTabs[column] = tabName
+	return column
+end
+
+for index, name in ipairs(tabNames) do
+	local button = Instance.new("TextButton", pages)
+	button.Name = name .. "Tab"
+	button.LayoutOrder = index
+	button.Size = UDim2.new(0, 0, 1, 0)
+	button.BackgroundColor3 = Theme.Inline
+	button.BackgroundTransparency = 1
+	button.BorderSizePixel = 0
+	button.AutoButtonColor = false
+	button.Font = Enum.Font.Gotham
+	button.Text = name
+	button.TextSize = 14
+	button.TextColor3 = Theme.SubText
+	sourceStroke(button)
+	local underline = Instance.new("Frame", button)
+	underline.Name = "BurmaldaAccent"
+	underline.AnchorPoint = Vector2.new(0, 0)
+	underline.Position = UDim2.new(0, 0, 0, 0)
+	underline.Size = UDim2.new(1, 0, 0, 1)
+	underline.BackgroundColor3 = Theme.Accent
+	underline.BorderSizePixel = 0
+	underline.Visible = false
+	tabButtons[name], tabUnderlines[name] = button, underline
+
+	local page = Instance.new("Frame", tabsHolder)
+	page.Name = name
+	page.Size = UDim2.new(1, 0, 1, 0)
+	page.BackgroundTransparency = 1
+	page.Visible = false
+	local pageLayout = Instance.new("UIListLayout", page)
+	pageLayout.FillDirection = Enum.FillDirection.Horizontal
+	pageLayout.HorizontalFlex = Enum.UIFlexAlignment.Fill
+	pageLayout.VerticalFlex = Enum.UIFlexAlignment.Fill
+	pageLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	local left = makeColumn(page, name, false)
+	local right = makeColumn(page, name, true)
+	tabFrames[name] = page
+	tabColumns[name] = {left, right}
+end
+tabFrames.VISUAL = tabFrames.VISUALS
+tabFrames.ESP = tabFrames.VISUALS
+tabFrames.HUD = tabFrames.MISC
+tabFrames.SETTINGS = tabFrames.CONFIG
+-- Keep feature-column aliases in sync with page aliases. Without these,
+-- getTab("ESP")/getTab("HUD") silently fell back to CONFIG.
+tabColumns.VISUAL = tabColumns.VISUALS
+tabColumns.ESP = tabColumns.VISUALS
+tabColumns.HUD = tabColumns.MISC
+tabColumns.SETTINGS = tabColumns.CONFIG
+
+local function canonicalTabName(name)
+	if name == "VISUAL" or name == "ESP" then return "VISUALS" end
+	if name == "HUD" then return "MISC" end
+	if name == "SETTINGS" then return "CONFIG" end
+	return name
+end
+
+local currentTab = "COMBAT"
+activeFrame = tabFrames.COMBAT
+function selectTab(name)
+	name = canonicalTabName(name)
+	if not tabFrames[name] then return end
+	currentTab = name
+	activeFrame = tabFrames[name]
+	for _, tabName in ipairs(tabNames) do
+		tabFrames[tabName].Visible = tabName == name
+	end
+	for tabName, button in pairs(tabButtons) do
+		local selected = tabName == name
+		button.TextColor3 = selected and Theme.Text or Theme.SubText
+		button.BackgroundColor3 = Theme.Inline
+		button.BackgroundTransparency = 1
+		tabUnderlines[tabName].Visible = selected
+	end
+	if Runtime.OnTabChanged then Runtime.OnTabChanged(name) end
+end
+for name, button in pairs(tabButtons) do
+	button.MouseButton1Click:Connect(function() selectTab(name) end)
+end
+selectTab("COMBAT")
+
+function smartCol(left, right)
+	if type(left) == "string" then
+		local name = canonicalTabName(left)
+		local columns = tabColumns[name] or tabColumns.CONFIG
+		left, right = columns[1], columns[2]
+	end
+	if (left.AbsoluteSize.Y + 40) < right.AbsoluteSize.Y then return left end
+	return right
+end
+function getTab(name)
+	name = canonicalTabName(name)
+	local columns = tabColumns[name] or tabColumns.CONFIG
+	return columns[1], columns[2], smartCol
+end
+
+local gunFeatures = {
+	["No Recoil"] = true, ["Auto Fire"] = true, ["Rapid Fire"] = true,
+	["Full Auto"] = true, ["Melee Mods"] = true, ["Hitbox Expander"] = true,
+	["No Spread"] = true, ["Always Shoot"] = true, ["No Slowdown"] = true,
+	["Force Headshots"] = true,
+}
+local worldFeatures = {
+	["Custom FOV"] = true, ["Night Mode"] = true, ["Night Vision"] = true, ["Low PC"] = true,
+	["Third Person"] = true, ["Stretch Resolution"] = true, ["Jump Circles"] = true,
+	["Fullbright"] = true, ["No Decoration"] = true, ["Sky Color"] = true,
+	["Skybox"] = true, ["Delete Spikes"] = true, ["Delete Leaves"] = true,
+	["Custom Models"] = true, ["Custom Fog"] = true, ["Custom Water"] = true,
+	["Custom Hand Position"] = true, ["X-Ray"] = true, ["Remove Fog"] = true,
+	["Remove Grass"] = true, ["Remove Shadows"] = true,
+}
+local resourceFeatures = {
+	["Resource ESP"] = true, ["Resource Boxes"] = true, ["Resource Names"] = true,
+	["Resource Distance"] = true, ["Cloth"] = true, ["Iron"] = true,
+	["Sulfur"] = true, ["Stone"] = true, ["Body Bag"] = true,
+}
+local projectileFeatures = {
+	["Aim All Projectiles"] = true, ["Extend Throws"] = true,
+}
+local interfaceFeatures = {
+	["Menu Accent"] = true, ["UI Animations"] = true,
+}
+
+function defaultSectionName(parent, featureName)
+	local existing = sectionContents[parent]
+	if existing then return existing.Name end
+	local tabName = columnTabs[parent] or "MISC"
+	if tabName == "COMBAT" then
+		return gunFeatures[featureName] and "Gun Mods" or "Aimbot"
+	elseif tabName == "VISUALS" then
+		if resourceFeatures[featureName] then return "Resources" end
+		return worldFeatures[featureName] and "World" or "Players"
+	elseif tabName == "MOVEMENT" then
+		return projectileFeatures[featureName] and "Projectiles" or "Movement"
+	elseif tabName == "MISC" then
+		return "Misc"
+	elseif tabName == "WORLD" then
+		return "World"
+	elseif tabName == "CONFIG" then
+		return interfaceFeatures[featureName] and "Interface" or "Configs"
+	end
+	return "Misc"
+end
+
+function getSection(parent, sectionName)
+	local existingContent = sectionContents[parent]
+	if existingContent and (not sectionName or existingContent.Name == sectionName) then
+		return existingContent
+	end
+	local column = existingContent and existingContent.Column or parent
+	if not columnSections[column] then
+		error("Burmalda source sections require a page column or section content", 2)
+	end
+	sectionName = sectionName or defaultSectionName(column, "")
+	if columnSections[column][sectionName] then return columnSections[column][sectionName] end
+
+	local section = Instance.new("Frame", column)
+	section.Name = sectionName
+	section.Size = UDim2.new(1, 0, 0, 0)
+	section.AutomaticSize = Enum.AutomaticSize.Y
+	section.BackgroundColor3 = Theme.Inline
+	section.BorderSizePixel = 0
+	sourceStroke(section)
+	local bottomPadding = Instance.new("UIPadding", section)
+	bottomPadding.PaddingBottom = UDim.new(0, 8)
+
+	local topbar = Instance.new("Frame", section)
+	topbar.Name = "Topbar"
+	topbar.Size = UDim2.new(1, 0, 0, SOURCE_SECTION_TOPBAR)
+	topbar.BackgroundColor3 = Theme.Inline
+	topbar.BorderSizePixel = 0
+	sourceStroke(topbar)
+	sourceGradient(topbar, 90, Color3.fromRGB(165, 165, 165))
+	local liner = Instance.new("Frame", topbar)
+	liner.Name = "BurmaldaAccent"
+	liner.Size = UDim2.new(0, 1, 1, 0)
+	liner.BackgroundColor3 = Theme.Accent
+	liner.BorderSizePixel = 0
+	sourceGradient(liner, 90, Color3.fromRGB(171, 171, 171))
+	local sectionTitle = sourceText(topbar, sectionName, UDim2.new(0, 0, 0, 15))
+	sectionTitle.Name = "Title"
+	sectionTitle.Position = UDim2.new(0, 8, 0.5, -1)
+	sectionTitle.AnchorPoint = Vector2.new(0, 0.5)
+	sectionTitle.AutomaticSize = Enum.AutomaticSize.X
+
+	local content = Instance.new("Frame", section)
+	content.Name = "Content"
+	content.Position = UDim2.new(0, 8, 0, 35)
+	content.Size = UDim2.new(1, -16, 0, 0)
+	content.AutomaticSize = Enum.AutomaticSize.Y
+	content.BackgroundTransparency = 1
+	local contentLayout = Instance.new("UIListLayout", content)
+	contentLayout.Padding = UDim.new(0, SOURCE_CONTROL_GAP)
+	contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+	local record = {Name = sectionName, Frame = section, Content = content, Column = column}
+	columnSections[column][sectionName] = record
+	sectionContents[content] = record
+	return record
+end
+
+function createFeature(parent, name, default, callback, hasSettings)
+	local section = getSection(parent, defaultSectionName(parent, name))
+	local toggle = Instance.new("TextButton", section.Content)
+	toggle.Name = name
+	toggle.Size = UDim2.new(1, 0, 0, 15)
+	toggle.BackgroundTransparency = 1
+	toggle.BorderSizePixel = 0
+	toggle.AutoButtonColor = false
+	toggle.Text = ""
+
+	local indicator = Instance.new("Frame", toggle)
+	indicator.Name = "Indicator"
+	indicator.AnchorPoint = Vector2.new(0, 0.5)
+	indicator.Position = UDim2.new(0, 0, 0.5, 0)
+	indicator.Size = UDim2.new(0, 12, 0, 12)
+	indicator.BackgroundColor3 = Theme.Element
+	indicator.BorderSizePixel = 0
+	sourceStroke(indicator)
+	local inline = Instance.new("Frame", indicator)
+	inline.Name = "BurmaldaAccent"
+	inline.AnchorPoint = Vector2.new(0.5, 0.5)
+	inline.Position = UDim2.new(0.5, 0, 0.5, 0)
+	inline.Size = UDim2.new(1, -2, 1, -2)
+	inline.BackgroundColor3 = Theme.Accent
+	inline.BorderSizePixel = 0
+	inline.Visible = default == true
+
+	local label = sourceText(toggle, name, UDim2.new(0, 0, 0, 15))
+	label.Name = "Label"
+	label.AutomaticSize = Enum.AutomaticSize.X
+	label.AnchorPoint = Vector2.new(0, 0.5)
+	label.Position = UDim2.new(0, 20, 0.5, 0)
+	local subElements = Instance.new("Frame", toggle)
+	subElements.Name = "SubElements"
+	subElements.AnchorPoint = Vector2.new(1, 0)
+	subElements.Position = UDim2.new(1, 0, 0, 0)
+	subElements.Size = UDim2.new(0, 0, 1, 0)
+	subElements.AutomaticSize = Enum.AutomaticSize.X
+	subElements.BackgroundTransparency = 1
+	local subLayout = Instance.new("UIListLayout", subElements)
+	subLayout.FillDirection = Enum.FillDirection.Horizontal
+	subLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+	subLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+	subLayout.Padding = UDim.new(0, 8)
+	subLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+	local editor = Instance.new("Frame", section.Content)
+	editor.Name = name .. "_Settings"
+	editor.Size = UDim2.new(1, 0, 0, 0)
+	editor.AutomaticSize = Enum.AutomaticSize.Y
+	editor.BackgroundTransparency = 1
+	editor.Visible = false
+	local editorLayout = Instance.new("UIListLayout", editor)
+	editorLayout.Padding = UDim.new(0, SOURCE_CONTROL_GAP)
+	editorLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	featureRecords[editor] = {
+		Name = name, Toggle = toggle, SubElements = subElements,
+		Section = section, Column = section.Column,
+	}
+
+	local state = default == true
+	local function visual()
+		inline.Visible = state
+		label.TextTransparency = state and 0 or 0.4
+	end
+	_fFS[name] = function(value)
+		state = value == true
+		visual()
+		Runtime.LastFeatureName = name
+		Runtime.LastFeatureState = state
+		if callback and not Runtime.Unloaded then callback(state) end
+	end
+	toggle.MouseButton1Click:Connect(function() _fFS[name](not state) end)
+	visual()
+	if callback and not Runtime.Unloaded then callback(state) end
+	return editor
+end
+
+-- The source library places sub-elements on the toggle row; there are no card arrows.
+_fDD.RegisterEditor = function() end
+
+function addBind(p, name, def, onPress, onChanged)
+	_fDD.RegisterEditor(p)
+	local record = featureRecords[p]
+	local parent = record and record.SubElements or p
+	local button = Instance.new("TextButton", parent)
+	button.Name = name
+	button.Size = UDim2.new(0, 0, 0, 15)
+	button.AutomaticSize = Enum.AutomaticSize.X
+	button.BackgroundColor3 = Theme.Element
+	button.BorderSizePixel = 0
+	button.AutoButtonColor = false
+	button.Font = Enum.Font.Gotham
+	button.TextSize = 14
+	button.TextColor3 = Theme.SubText
+	button.Text = "[" .. tostring(def or "None") .. "]"
+	sourceStroke(button)
+	local padding = Instance.new("UIPadding", button)
+	padding.PaddingLeft = UDim.new(0, 8)
+	padding.PaddingRight = UDim.new(0, 8)
+
+	local boundKey, boundMouse, picking = nil, nil, false
+	local pressConn, captureConn
+	local function keyName()
+		if boundKey then return boundKey.Name end
+		if boundMouse then return boundMouse == Enum.UserInputType.MouseButton1 and "LMB" or "RMB" end
+		return "None"
+	end
+	local function installPress(ignoreInput)
+		if pressConn then pressConn:Disconnect(); pressConn = nil end
+		if not (boundKey or boundMouse) then return end
+		pressConn = connectUI(UIS.InputBegan, function(input, gameProcessed)
+			if gameProcessed or picking or input == ignoreInput then return end
+			if (boundKey and input.KeyCode == boundKey) or (boundMouse and input.UserInputType == boundMouse) then
+				if onPress then onPress() end
+			end
+		end)
+	end
+	local api = {}
+	function api.Get() return keyName() end
+	function api.Set(value, ignoreInput)
+		value = value or "None"
+		boundKey, boundMouse = nil, nil
+		if value == "LMB" or value == "RMB" then
+			boundMouse = value == "LMB" and Enum.UserInputType.MouseButton1 or Enum.UserInputType.MouseButton2
+		elseif value ~= "None" then
+			boundKey = Enum.KeyCode[value]
+		end
+		button.Text = "[" .. value .. "]"
+		installPress(ignoreInput)
+		if onChanged then onChanged(api.Get()) end
+	end
+	button.MouseButton1Click:Connect(function()
+		if picking then return end
+		picking = true
+		button.Text = "[...]"
+		if captureConn then captureConn:Disconnect() end
+		captureConn = connectUI(UIS.InputBegan, function(input, gameProcessed)
+			if gameProcessed then return end
+			if input.UserInputType == Enum.UserInputType.Keyboard then
+				if input.KeyCode == Enum.KeyCode.Escape then api.Set("None", input)
+				else api.Set(input.KeyCode.Name, input) end
+				picking = false
+				if captureConn then captureConn:Disconnect(); captureConn = nil end
+			elseif input.UserInputType == Enum.UserInputType.MouseButton1
+				or input.UserInputType == Enum.UserInputType.MouseButton2 then
+				api.Set(input.UserInputType == Enum.UserInputType.MouseButton1 and "LMB" or "RMB", input)
+				picking = false
+				if captureConn then captureConn:Disconnect(); captureConn = nil end
+			end
+		end)
+	end)
+	if def and def ~= "None" then api.Set(def) end
+	local featureRecord = featureRecords[p]
+	Runtime.BindApis[featureRecord and featureRecord.Name or name] = api
+	return api
+end
+
+function addSlider(p, name, min, max, def, callback)
+	_fDD.RegisterEditor(p)
+	p.Visible = true
+	local row = Instance.new("Frame", p)
+	row.Name = name
+	row.Size = UDim2.new(1, 0, 0, 35)
+	row.BackgroundTransparency = 1
+	local label = sourceText(row, name, UDim2.new(1, -55, 0, 15))
+	label.Position = UDim2.new(0, 0, 0, 0)
+	local valueLabel = sourceText(row, tostring(def), UDim2.new(0, 55, 0, 15), Theme.SubText)
+	valueLabel.AnchorPoint = Vector2.new(1, 0)
+	valueLabel.Position = UDim2.new(1, 0, 0, 0)
+	valueLabel.TextXAlignment = Enum.TextXAlignment.Right
+	local bar = Instance.new("TextButton", row)
+	bar.Name = "Bar"
+	bar.AnchorPoint = Vector2.new(0, 1)
+	bar.Position = UDim2.new(0, 0, 1, 0)
+	bar.Size = UDim2.new(1, 0, 0, 12)
+	bar.BackgroundColor3 = Theme.Element
+	bar.BorderSizePixel = 0
+	bar.AutoButtonColor = false
+	bar.Text = ""
+	sourceStroke(bar)
+	local fill = Instance.new("Frame", bar)
+	fill.Name = "BurmaldaAccent"
+	fill.Position = UDim2.new(0, 1, 0, 1)
+	fill.Size = UDim2.new((def - min) / math.max(1, max - min), -2, 1, -2)
+	fill.BackgroundColor3 = Theme.Accent
+	fill.BorderSizePixel = 0
+
+	local dragging = false
+	local function setValue(value, silent)
+		local integer = math.clamp(math.floor(tonumber(value)), min, max)
+		valueLabel.Text = tostring(integer)
+		fill.Size = UDim2.new((integer - min) / math.max(1, max - min), -2, 1, -2)
+		if not silent and callback then callback(integer) end
+	end
+	local function update(input)
+		local ratio = math.clamp((input.Position.X - bar.AbsolutePosition.X) / math.max(1, bar.AbsoluteSize.X), 0, 1)
+		setValue(min + (max - min) * ratio)
+	end
+	connectUI(bar.InputBegan, function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			update(input)
+		end
+	end)
+	connectUI(UIS.InputEnded, function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then dragging = false end
+	end)
+	connectUI(UIS.InputChanged, function(input)
+		if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then update(input) end
+	end)
+	return setValue
+end
+
+function addDropdown(p, name, options, defIdx, callback)
+	-- On/Off options are ordinary buttons. Keep their string values and setter
+	-- registry so existing configs and programmatic controls remain compatible.
+	local onValue, offValue
+	if #options == 2 then
+		for _, value in ipairs(options) do
+			if type(value) == "string" then
+				local lower = string.lower(value)
+				if lower == "on" then onValue = value
+				elseif lower == "off" then offValue = value end
+			end
+		end
+		if not onValue or not offValue then onValue, offValue = nil, nil end
+	end
+	if onValue and offValue then
+		_fDD.RegisterEditor(p)
+		p.Visible = true
+		local currentValue = options[defIdx] == onValue and onValue or offValue
+		local row = Instance.new("Frame", p)
+		row.Name = name
+		row.Size = UDim2.new(1, 0, 0, 20)
+		row.BackgroundTransparency = 1
+		local button = Instance.new("TextButton", row)
+		button.Name = "BooleanToggle"
+		button.Size = UDim2.fromScale(1, 1)
+		button.BackgroundColor3 = Theme.Element
+		button.BackgroundTransparency = 0
+		button.BorderSizePixel = 0
+		button.AutoButtonColor = false
+		button.Text = ""
+		sourceStroke(button)
+		local label = sourceText(button, name, UDim2.new(1, -50, 0, 20))
+		label.Name = "Label"
+		label.Position = UDim2.fromOffset(5, 0)
+		label.TextTransparency = currentValue == onValue and 0 or 0.4
+		local stateLabel = sourceText(button, currentValue, UDim2.fromOffset(40, 20), Theme.SubText)
+		stateLabel.Name = "State"
+		stateLabel.AnchorPoint = Vector2.new(1, 0)
+		stateLabel.Position = UDim2.new(1, -5, 0, 0)
+		stateLabel.TextXAlignment = Enum.TextXAlignment.Right
+		stateLabel.TextSize = 12
+		local function setValue(value, silent)
+			if type(value) == "boolean" then
+				currentValue = value and onValue or offValue
+			elseif type(value) == "string" and string.lower(value) == "on" then
+				currentValue = onValue
+			else
+				currentValue = offValue
+			end
+			local enabled = currentValue == onValue
+			label.TextTransparency = enabled and 0 or 0.4
+			stateLabel.Text = currentValue
+			stateLabel.TextColor3 = enabled and Theme.Text or Theme.SubText
+			if not silent and callback then callback(currentValue) end
+		end
+		button.MouseButton1Click:Connect(function() setValue(currentValue ~= onValue) end)
+		local key = p.Name ~= "" and (p.Name .. "_" .. name) or name
+		_fDD[key] = setValue
+		return setValue
+	end
+
+	_fDD.RegisterEditor(p)
+	p.Visible = true
+	local row = Instance.new("Frame", p)
+	row.Name = name
+	row.Size = UDim2.new(1, 0, 0, 45)
+	row.BackgroundTransparency = 1
+	local label = sourceText(row, name, UDim2.new(1, 0, 0, 15))
+	local button = Instance.new("TextButton", row)
+	button.Name = "Dropdown"
+	button.AnchorPoint = Vector2.new(0, 1)
+	button.Position = UDim2.new(0, 0, 1, 0)
+	button.Size = UDim2.new(1, 0, 0, 20)
+	button.BackgroundColor3 = Theme.Element
+	button.BorderSizePixel = 0
+	button.AutoButtonColor = false
+	button.Text = ""
+	sourceStroke(button)
+	local valueLabel = sourceText(button, options[defIdx] or options[1] or "", UDim2.new(1, -24, 0, 15), Theme.SubText)
+	valueLabel.Position = UDim2.new(0, 4, 0.5, 0)
+	valueLabel.AnchorPoint = Vector2.new(0, 0.5)
+	valueLabel.TextSize = 12
+	local arrow = sourceText(button, "▾", UDim2.new(0, 14, 0, 15), Theme.SubText)
+	arrow.AnchorPoint = Vector2.new(1, 0.5)
+	arrow.Position = UDim2.new(1, -5, 0.5, 0)
+	arrow.TextXAlignment = Enum.TextXAlignment.Right
+	arrow.TextSize = 10
+
+	local OPTION_HEIGHT, OPTION_GAP, MAX_POPUP_HEIGHT = 18, 2, 132
+	local searchable = #options > 6
+	local listTop = searchable and 23 or 4
+	local popupWidth = 180
+	local popup = Instance.new("Frame", sg)
+	popup.Name = "DropdownPopup"
+	popup.Size = UDim2.new(0, popupWidth, 0, 46)
+	popup.BackgroundColor3 = Theme.Inline
+	popup.BorderSizePixel = 0
+	popup.Visible = false
+	popup.ZIndex = 20
+	sourceStroke(popup)
+	openPopups[popup] = true
+	local search = Instance.new("TextBox", popup)
+	search.Position = UDim2.new(0, 4, 0, 4)
+	search.Size = UDim2.new(1, -8, 0, 15)
+	search.BackgroundTransparency = 1
+	search.BorderSizePixel = 0
+	search.Font = Enum.Font.Gotham
+	search.TextSize = 12
+	search.TextColor3 = Theme.Text
+	search.PlaceholderColor3 = Theme.SubText
+	search.PlaceholderText = "Search.."
+	search.Text = ""
+	search.ClearTextOnFocus = false
+	search.Visible = searchable
+	search.ZIndex = 21
+	local list = Instance.new("ScrollingFrame", popup)
+	list.Position = UDim2.new(0, 4, 0, listTop)
+	list.Size = UDim2.new(1, -8, 0, 38)
+	list.BackgroundTransparency = 1
+	list.BorderSizePixel = 0
+	list.CanvasSize = UDim2.new(0, 0, 0, 0)
+	list.AutomaticCanvasSize = Enum.AutomaticSize.Y
+	list.ScrollBarThickness = 2
+	list.ScrollBarImageColor3 = Theme.Border
+	list.ZIndex = 21
+	local listLayout = Instance.new("UIListLayout", list)
+	listLayout.Padding = UDim.new(0, OPTION_GAP)
+	listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+	local currentValue = options[defIdx] or options[1]
+	local optionButtons = {}
+	local function updatePopupSize(visibleCount)
+		local contentHeight = math.max(OPTION_HEIGHT,
+			visibleCount * OPTION_HEIGHT + math.max(0, visibleCount - 1) * OPTION_GAP)
+		local height = math.min(MAX_POPUP_HEIGHT, listTop + contentHeight + 4)
+		popup.Size = UDim2.new(0, popupWidth, 0, height)
+		list.Size = UDim2.new(1, -8, 0, height - listTop - 4)
+	end
+	local function refreshOptions()
+		local filter = string.lower(search.Text or "")
+		local visibleCount = 0
+		for _, entry in ipairs(optionButtons) do
+			local visible = filter == "" or string.find(string.lower(entry.Value), filter, 1, true) ~= nil
+			local selected = entry.Value == tostring(currentValue)
+			entry.Button.Visible = visible
+			entry.Button.BackgroundTransparency = selected and 0 or 1
+			entry.Button.TextColor3 = selected and Theme.Text or Theme.SubText
+			entry.Liner.Visible = selected
+			if visible then visibleCount += 1 end
+		end
+		updatePopupSize(visibleCount)
+	end
+	local function setValue(value, silent)
+		currentValue = value
+		valueLabel.Text = tostring(value)
+		popup.Visible = false
+		refreshOptions()
+		if not silent and callback then callback(value) end
+	end
+	for order, option in ipairs(options) do
+		local optionButton = Instance.new("TextButton", list)
+		optionButton.LayoutOrder = order
+		optionButton.Size = UDim2.new(1, 0, 0, OPTION_HEIGHT)
+		optionButton.BackgroundColor3 = Theme.Element
+		optionButton.BackgroundTransparency = 1
+		optionButton.BorderSizePixel = 0
+		optionButton.AutoButtonColor = false
+		optionButton.Font = Enum.Font.Gotham
+		optionButton.TextSize = 12
+		optionButton.TextColor3 = Theme.SubText
+		optionButton.TextXAlignment = Enum.TextXAlignment.Left
+		optionButton.Text = tostring(option)
+		optionButton.ZIndex = 22
+		local padding = Instance.new("UIPadding", optionButton)
+		padding.PaddingLeft = UDim.new(0, 7)
+		padding.PaddingRight = UDim.new(0, 4)
+		local liner = Instance.new("Frame", optionButton)
+		liner.Name = "BurmaldaAccent"
+		liner.Size = UDim2.new(0, 1, 1, 0)
+		liner.BackgroundColor3 = Theme.Accent
+		liner.BorderSizePixel = 0
+		liner.Visible = false
+		liner.ZIndex = 23
+		optionButtons[#optionButtons + 1] = {Button = optionButton, Liner = liner, Value = tostring(option)}
+		optionButton.MouseButton1Click:Connect(function() setValue(option) end)
+	end
+	search:GetPropertyChangedSignal("Text"):Connect(refreshOptions)
+	button.MouseButton1Click:Connect(function()
+		if popup.Visible then popup.Visible = false return end
+		hidePopups()
+		local position = button.AbsolutePosition
+		popupWidth = math.max(120, button.AbsoluteSize.X)
+		popup.Position = UDim2.new(0, position.X, 0, position.Y + 20)
+		refreshOptions()
+		popup.Visible = true
+	end)
+	refreshOptions()
+	local key = p.Name ~= "" and (p.Name .. "_" .. name) or name
+	_fDD[key] = setValue
+	return setValue
+end
+
+function addColor(p, name, callback, defaultColor)
+	_fDD.RegisterEditor(p)
+	local record = featureRecords[p]
+	local parent = record and record.SubElements or p
+	local swatch = Instance.new("TextButton", parent)
+	swatch.Name = name
+	swatch.Size = UDim2.new(0, 15, 0, 15)
+	swatch.BackgroundColor3 = defaultColor or Color3.new(1, 1, 1)
+	swatch.BorderSizePixel = 0
+	swatch.AutoButtonColor = false
+	swatch.Text = ""
+	sourceStroke(swatch)
+	sourceGradient(swatch, 90, Color3.fromRGB(152, 152, 152))
+
+	local popup = Instance.new("Frame", sg)
+	popup.Name = "ColorpickerPopup"
+	popup.Size = UDim2.new(0, 232, 0, 265)
+	popup.BackgroundColor3 = Theme.Inline
+	popup.BorderSizePixel = 2
+	popup.Visible = false
+	popup.ZIndex = 20
+	sourceStroke(popup)
+	openPopups[popup] = true
+	local heading = sourceText(popup, name, UDim2.new(1, -16, 0, 15))
+	heading.Position = UDim2.new(0, 8, 0, 8)
+	heading.ZIndex = 21
+	local palette = Instance.new("Frame", popup)
+	palette.Position = UDim2.new(0, 8, 0, 31)
+	palette.Size = UDim2.new(1, -16, 0, 144)
+	palette.BackgroundColor3 = Theme.Element
+	palette.BorderSizePixel = 0
+	palette.ZIndex = 21
+	local hue = Instance.new("Frame", palette)
+	hue.Size = UDim2.new(1, 0, 1, 0)
+	hue.BackgroundColor3 = Color3.new(1, 1, 1)
+	hue.BorderSizePixel = 0
+	hue.ZIndex = 21
+	local hueGradient = Instance.new("UIGradient", hue)
+	hueGradient.Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+		ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 255, 0)),
+		ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 255, 0)),
+		ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),
+		ColorSequenceKeypoint.new(0.67, Color3.fromRGB(0, 0, 255)),
+		ColorSequenceKeypoint.new(0.83, Color3.fromRGB(255, 0, 255)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0)),
+	})
+	local currentColor = defaultColor or Color3.new(1, 1, 1)
+	local function setColor(color, silent)
+		currentColor = color
+		swatch.BackgroundColor3 = color
+		if not silent and callback then callback(color) end
+	end
+	for row = 0, 5 do
+		for column = 0, 17 do
+			local cell = Instance.new("TextButton", palette)
+			cell.Size = UDim2.new(1 / 18, 0, 1 / 6, 0)
+			cell.Position = UDim2.new(column / 18, 0, row / 6, 0)
+			cell.BorderSizePixel = 0
+			cell.Text = ""
+			cell.ZIndex = 23
+			local h = column / 18
+			local v = 1 - row / 7
+			cell.BackgroundColor3 = Color3.fromHSV(h, 0.85, v)
+			cell.MouseButton1Click:Connect(function() setColor(cell.BackgroundColor3) end)
+		end
+	end
+	local hexBox = Instance.new("TextBox", popup)
+	hexBox.Position = UDim2.new(0, 8, 0, 187)
+	hexBox.Size = UDim2.new(1, -16, 0, 20)
+	hexBox.BackgroundColor3 = Theme.Element
+	hexBox.BorderSizePixel = 0
+	hexBox.Font = Enum.Font.Gotham
+	hexBox.TextSize = 14
+	hexBox.TextColor3 = Theme.Text
+	hexBox.PlaceholderText = "#FFFFFF"
+	hexBox.Text = ""
+	hexBox.ZIndex = 21
+	sourceStroke(hexBox)
+	hexBox.FocusLost:Connect(function()
+		local value = hexBox.Text:gsub("#", "")
+		if #value == 6 then
+			local r, g, b = tonumber(value:sub(1, 2), 16), tonumber(value:sub(3, 4), 16), tonumber(value:sub(5, 6), 16)
+			if r and g and b then setColor(Color3.fromRGB(r, g, b)) end
+		end
+	end)
+	local applyButton = Instance.new("TextButton", popup)
+	applyButton.Position = UDim2.new(0, 8, 1, -35)
+	applyButton.Size = UDim2.new(1, -16, 0, 20)
+	applyButton.BackgroundColor3 = Theme.Element
+	applyButton.BorderSizePixel = 0
+	applyButton.Font = Enum.Font.Gotham
+	applyButton.TextSize = 14
+	applyButton.TextColor3 = Theme.Text
+	applyButton.Text = "Apply"
+	applyButton.ZIndex = 21
+	sourceStroke(applyButton)
+	applyButton.MouseButton1Click:Connect(function()
+		setColor(currentColor)
+		popup.Visible = false
+	end)
+	swatch.MouseButton1Click:Connect(function()
+		if popup.Visible then popup.Visible = false return end
+		hidePopups()
+		local position = swatch.AbsolutePosition
+		popup.Position = UDim2.new(0, math.max(0, position.X - 217), 0, position.Y + 18)
+		popup.Visible = true
+	end)
+	return setColor
+end
+
+menuOpen = true
+main.Visible = true
+openBtn.Visible = false
+
+function toggleMenu(viaSHIFT)
+	menuOpen = not menuOpen
+	hidePopups()
+	if menuOpen then
+		main.Visible = true
+		openBtn.Visible = false
+		if UIAnimations then
+			main.BackgroundTransparency = 0.3
+			mainScale.Scale = baseMenuScale * 0.94
+			uiTween(main, TweenInfo.new(0.18), {BackgroundTransparency = 0}):Play()
+			uiTween(mainScale, TweenInfo.new(0.18, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Scale = baseMenuScale}):Play()
+		else
+			main.BackgroundTransparency = 0
+			mainScale.Scale = baseMenuScale
+		end
+	else
+		main.Visible = false
+		openBtn.Visible = true
+	end
+end
+connectUI(openBtn.MouseButton1Click, function() toggleMenu() end)
+connectUI(UIS.InputBegan, function(input, gameProcessed)
+	if gameProcessed or Runtime.Unloaded then return end
+	if input.KeyCode == Enum.KeyCode.RightShift then toggleMenu(true) end
+end)
+
+-- The game's crafting UI is PlayerGui.Main.Crafting. It owns input while open;
+-- our GUI enabled states and previous menu visibility are restored on close.
+local craftingOpen, craftingChecking, craftRestoreMenu = false, false, false
+local craftGuiStates = {}
+local function craftingIsOpen()
+	local mainGui = pGui and pGui:FindFirstChild("Main")
+	local crafting = mainGui and mainGui:FindFirstChild("Crafting")
+	return crafting ~= nil and crafting.Visible == true
+end
+local function updateCrafting()
+	if Runtime.Unloaded then return end
+	local open = craftingIsOpen()
+	local changed = open ~= craftingOpen
+	if changed then
+		craftingOpen = open
+		Runtime.CraftingMenuOpen = open
+		if open then
+			craftRestoreMenu = menuOpen
+			if menuOpen then toggleMenu() end
+		else
+			for gui, enabled in pairs(craftGuiStates) do
+				pcall(function() gui.Enabled = enabled end)
+			end
+			table.clear(craftGuiStates)
+			if craftRestoreMenu and not menuOpen then toggleMenu() end
+			craftRestoreMenu = false
+		end
+	end
+	if open then
+		for gui in pairs(Runtime.Guis) do
+			if craftGuiStates[gui] == nil then craftGuiStates[gui] = gui.Enabled ~= false end
+			pcall(function() gui.Enabled = false end)
+		end
+	end
+end
+Runtime.UpdateCraftingMenu = updateCrafting
+local function checkCrafting()
+	if craftingChecking then return end
+	craftingChecking = true
+	task.defer(function()
+		craftingChecking = false
+		updateCrafting()
+	end)
+end
+do
+	-- Never block the rest of the client on optional game UI. The old nested
+	-- WaitForChild(..., 10) calls made the already-visible menu appear ready
+	-- while every feature below this fragment was still waiting. Discover the
+	-- current hierarchy immediately and attach late Main/Crafting descendants
+	-- through events instead.
+	local mainChildConnection, craftingConnection
+	local function disconnectOwned(connection)
+		if connection then pcall(function() connection:Disconnect() end) end
+	end
+	local function bindCrafting(crafting)
+		disconnectOwned(craftingConnection)
+		craftingConnection = nil
+		if crafting then
+			craftingConnection = connectUI(crafting:GetPropertyChangedSignal("Visible"), checkCrafting)
+		end
+		checkCrafting()
+	end
+	local function bindMain(mainGui)
+		disconnectOwned(mainChildConnection)
+		mainChildConnection = nil
+		if mainGui then
+			mainChildConnection = connectUI(mainGui.ChildAdded, function(child)
+				if child.Name == "Crafting" then bindCrafting(child) end
+			end)
+			bindCrafting(mainGui:FindFirstChild("Crafting"))
+		else
+			bindCrafting(nil)
+		end
+	end
+	connectUI(pGui.ChildAdded, function(child)
+		if child.Name == "Main" then bindMain(child) end
+	end)
+	bindMain(pGui and pGui:FindFirstChild("Main"))
+	onCleanup(function()
+		disconnectOwned(mainChildConnection)
+		disconnectOwned(craftingConnection)
+		mainChildConnection, craftingConnection = nil, nil
+	end)
+	updateCrafting()
+end
+
+-- Drag the source window by its 39px title bar.
+do
+	local dragging, dragInput, dragStart, startPos = false, nil, nil, nil
+	local function finishDrag() dragging = false end
+	connectUI(header.InputBegan, function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = main.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then finishDrag() end
+			end)
+		end
+	end)
+	connectUI(header.InputChanged, function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then dragInput = input end
+	end)
+	connectUI(UIS.InputChanged, function(input)
+		if input == dragInput and dragging then
+			local delta = input.Position - dragStart
+			main.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		end
+	end)
+	connectUI(UIS.InputEnded, function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then finishDrag() end
+	end)
+end
+
+-- The reference window is resizeable; preserve its 621x542 minimum.
+do
+	local resize = Instance.new("TextButton", main)
+	resize.Name = "Resize"
+	resize.AnchorPoint = Vector2.new(1, 1)
+	resize.Position = UDim2.new(1, 0, 1, 0)
+	resize.Size = UDim2.new(0, 12, 0, 12)
+	resize.BackgroundTransparency = 1
+	resize.Text = ""
+	resize.ZIndex = 10
+	local resizing, startInput, startSize = false, nil, nil
+	connectUI(resize.InputBegan, function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			resizing = true
+			startInput = input.Position
+			startSize = main.Size
+		end
+	end)
+	connectUI(UIS.InputChanged, function(input)
+		if resizing and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+			local delta = input.Position - startInput
+			main.Size = UDim2.new(0, math.max(SOURCE_WINDOW_WIDTH, startSize.X.Offset + delta.X), 0,
+				math.max(SOURCE_WINDOW_HEIGHT, startSize.Y.Offset + delta.Y))
+		end
+	end)
+	connectUI(UIS.InputEnded, function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then resizing = false end
+	end)
+end
+
+onCleanup(function()
+	Runtime.Unloaded = true
+	hidePopups()
+end)
+
+if Runtime.StartClosed and menuOpen then toggleMenu() end
+end
+
+
+local recoilMod = nil
+
+local function setupNoRecoil(enabled)
+	if enabled then
+		if not recoilMod then
+			local gun = ReplicatedStorage:WaitForChild("Gun", 10)
+			local scripts = gun and gun:WaitForChild("Scripts", 10)
+			local module = scripts and scripts:WaitForChild("RecoilHandler", 10) or nil
+			local loaded, err = Runtime.RequireGameModule(module)
+			if type(loaded) == "table" then
+				recoilMod = loaded
+			else
+				Runtime.NoRecoilError = err or "RecoilHandler did not return a table"
+			end
+		end
+
+		if recoilMod and type(recoilMod.nextStep) == "function" and type(recoilMod.setRecoilMultiplier) == "function" then
+			if not recoilMod._o_nS then
+				recoilMod._o_nS = recoilMod.nextStep
+			end
+			if not recoilMod._o_sRM then
+				recoilMod._o_sRM = recoilMod.setRecoilMultiplier
+			end
+
+			recoilMod.nextStep = function() end
+			recoilMod.setRecoilMultiplier = function() end
+			Runtime.NoRecoilError = nil
+			S.NoRecoil = true
+			return true
+		end
+		Runtime.NoRecoilError = Runtime.NoRecoilError or "RecoilHandler methods are unavailable"
+		S.NoRecoil = false
+		return false
+	else
+		if recoilMod then
+			if recoilMod._o_nS then
+				recoilMod.nextStep = recoilMod._o_nS
+				recoilMod._o_nS = nil
+			end
+			if recoilMod._o_sRM then
+				recoilMod.setRecoilMultiplier = recoilMod._o_sRM
+				recoilMod._o_sRM = nil
+			end
+		end
+		S.NoRecoil = false
+		return true
+	end
+end
+onCleanup(function() setupNoRecoil(false) end)
+
+local JumpStunSettings = { Enabled = false, Height = 100 }
+
+local jumpRequestConnection = UIS.JumpRequest:Connect(function()
+	if Runtime.Unloaded or not JumpStunSettings.Enabled then return end
+	local root = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+	if root then
+		root.AssemblyLinearVelocity = Vector3.new(
+			root.AssemblyLinearVelocity.X,
+			JumpStunSettings.Height,
+			root.AssemblyLinearVelocity.Z
+		)
+	end
+end)
+onCleanup(function()
+	JumpStunSettings.Enabled = false
+	if jumpRequestConnection then jumpRequestConnection:Disconnect(); jumpRequestConnection = nil end
+end)
+
+S.MBTargetLine = false
+S.MBTargetLineColor = Color3.fromRGB(255, 255, 255)
+
+do
+	local lc, rc = getTab("COMBAT")
+
+	local mbSet = createFeature(lc, "Silent Aim", false, function(v)
+		S.SilentAim = v
+		if v and ProjectileSilent and not ProjectileSilent.Installed.GunBase and type(ProjectileSilent.Refresh) == "function" then
+			local ok, err = pcall(ProjectileSilent.Refresh)
+			if ok then Runtime.SilentError = nil else Runtime.SilentError = tostring(err) end
+		end
+		-- FOV Circle, Fill and Target Line are independent drawing controls.
+		-- Do not restore a stale snapshot when Silent is toggled.
+	end)
+	addSlider(mbSet, "FOV", 10, 500, 120, function(v) S.FOV = v end)
+	addSlider(mbSet, "Hit Chance", 0, 100, 100, function(v) S.MBHitChance = v end)
+	addSlider(mbSet, "Max Dist", 50, 3000, 500, function(v) S.MBMaxDist = v end)
+	addDropdown(mbSet, "Target Part", {"HeadHitbox", "Head", "HumanoidRootPart", "Random"}, 1, function(v)
+		if v == "HeadHitbox" then S.MBTargetPart = 1
+		elseif v == "Head" then S.MBTargetPart = 2
+		elseif v == "HumanoidRootPart" then S.MBTargetPart = 3
+		else S.MBTargetPart = 4 end
+	end)
+	addDropdown(mbSet, "Use FOV Filter", {"Off", "On"}, 2, function(v) S.MBUseFOV = v == "On" end)
+	addDropdown(mbSet, "Visible Check", {"Off", "On"}, 2, function(v) S.MBVisibleOnly = v == "On" end)
+	addDropdown(mbSet, "Manipulation", {"Off", "On"}, 1, function(v) S.Manipulation = v == "On" end)
+	addDropdown(mbSet, "Target Priority", {"Distance", "HP"}, 1, function(v)
+		S.MBPriority = v == "HP" and "hp" or "distance"
+	end)
+	addDropdown(mbSet, "FOV Mode", {"mobile", "pc"}, 1, function(v) S.MBFovMode = v end)
+	addDropdown(mbSet, "FOV Circle", {"Off", "On"}, 1, function(v) S.FOVCircle = v == "On" end)
+	addColor(mbSet, "FOV Color", function(c) AC_FOV = c end)
+	addColor(mbSet, "Target Color", function(c) AC_FOV_TARGET = c end)
+	addDropdown(mbSet, "FOV Fill", {"Off", "On"}, 1, function(v) S.FOVFill = v == "On" end)
+	addSlider(mbSet, "Fill Alpha", 1, 9, 8, function(v) S.FOVFillTransparency = v / 10 end)
+	addColor(mbSet, "Fill Color", function(c) AC_FOV_FILL = c end)
+	local _forceTargetLineDD = addDropdown(mbSet, "Target Line", {"Off", "On"}, 1, function(v)
+		local on = v == "On"
+		if on and S.Tracers then
+			if _fFS["Tracers"] then _fFS["Tracers"](false) end
+		end
+		S.MBTargetLine = on
+	end)
+	_fDD["TargetLine"] = _forceTargetLineDD
+	addColor(mbSet, "Line Color", function(c) S.MBTargetLineColor = c end)
+	addBind(mbSet, "Toggle Bind", "None", function()
+		if _fFS["Silent Aim"] then _fFS["Silent Aim"](not S.SilentAim) end
+	end)
+
+	local noRecoilSet = createFeature(rc, "No Recoil", false, function(v)
+		S.NoRecoil = v
+		local applied = setupNoRecoil(v)
+		if v and not applied and _fFS["No Recoil"] then
+			_fFS["No Recoil"](false)
+		end
+	end, false)
+	addBind(noRecoilSet, "Toggle Bind", "None", function()
+		_fFS["No Recoil"](not S.NoRecoil)
+	end)
+
+end
+
+do
+	local lc, rc = getTab("ESP")
+
+	local espSet = createFeature(lc, "ESP", false, function(v) S.ESPEnabled = v end)
+	addSlider(espSet, "Radius", 50, 1000, 500, function(v) S.ESPRadius = v end)
+	addDropdown(espSet, "Box Type", {"Normal", "Corner"}, 1, function(v) S.ESPBoxType = v end)
+	addColor(espSet, "Box Color", function(c) AC_ESP = c end)
+	addDropdown(espSet, "Box Fill", {"Off", "On"}, 1, function(v) S.BoxFill = v == "On" end)
+	addSlider(espSet, "Fill Alpha", 1, 9, 7, function(v) S.BoxFillTransparency = v / 10 end)
+	addColor(espSet, "Fill Color", function(c) AC_FILL = c end)
+
+	local tracerSet = createFeature(lc, "Tracers", false, function(v)
+		S.Tracers = v
+		if v and S.MBTargetLine then
+			S.MBTargetLine = false
+			-- сбрасываем дропдаун Target Line визуально в меню
+			if _fDD["TargetLine"] then _fDD["TargetLine"]("Off", true) end
+		end
+	end)
+	addDropdown(tracerSet, "Origin", {"Top", "Bottom", "Center"}, 2, function(v)
+		if v == "Top" then S.TracerOrigin = 1
+		elseif v == "Bottom" then S.TracerOrigin = 2
+		else S.TracerOrigin = 3 end
+	end)
+	addColor(tracerSet, "Color", function(c) AC_TR = c end)
+
+	local hpSet = createFeature(rc, "HP Bar", false, function(v) S.HPBar = v end)
+	addDropdown(hpSet, "Position", {"Side", "Top"}, 1, function(v)
+		S.HPBarSide = v == "Side" and 1 or 2
+	end)
+	addDropdown(hpSet, "Health Number", {"Off", "On"}, 1, function(v) S.HPHealthNumber = v == "On" end)
+	addDropdown(hpSet, "Dynamic Color", {"Off", "On"}, 1, function(v) S.HPDynamicColor = v == "On" end)
+	addColor(hpSet, "Color", function(c) AC_HP = c end)
+
+	local namesSet = createFeature(rc, "Names", false, function(v) S.Names = v end)
+	addColor(namesSet, "Color", function(c) AC_NAME = c end)
+
+	local distSet = createFeature(lc, "Distance", false, function(v) S.ESPDist = v end)
+	addColor(distSet, "Color", function(c) AC_DIST = c end)
+
+	local weaponSet = createFeature(lc, "Weapon", false, function(v) S.ESPWeapon = v end)
+	addColor(weaponSet, "Color", function(c) AC_WEAPON = c end)
+
+	local chamsSet = createFeature(rc, "Chams", false, function(v) S.ESPChams = v end)
+	addColor(chamsSet, "Fill Color", function(c) AC_CHAMS = c end)
+	addColor(chamsSet, "Outline Color", function(c) AC_CHAMS_OUTLINE = c end)
+	addSlider(chamsSet, "Fill Alpha", 0, 9, 5, function(v) S.ChamsFillTransparency = v / 10 end)
+	addSlider(chamsSet, "Outline Alpha", 0, 9, 2, function(v) S.ChamsOutlineTransparency = v / 10 end)
+end
+
+do
+	local lc, rc = getTab("MOVEMENT")
+
+	local speedSet = createFeature(lc, "Speed", false, function(v)
+		S.SpeedRostAlpha = v
+	end)
+	addSlider(speedSet, "Value", 0, 60, 30, function(v) S.SpeedRostValue = v end)
+	addBind(speedSet, "Toggle Bind", "None", function()
+		if _fFS["Speed"] then _fFS["Speed"](not S.SpeedRostAlpha) end
+	end)
+
+	local hjSet = createFeature(lc, "High Jump", false, function(v)
+		S.HighJump = v
+		JumpStunSettings.Enabled = v
+	end)
+	addSlider(hjSet, "Height", 1, 200, 100, function(v)
+		S.HighJumpHeight = v
+		JumpStunSettings.Height = v
+	end)
+	addBind(hjSet, "Toggle Bind", "None", function()
+		if _fFS["High Jump"] then _fFS["High Jump"](not S.HighJump) end
+	end)
+
+	local spiderSet = createFeature(rc, "Spider", false, function(v) S.Spider = v end)
+	addSlider(spiderSet, "Speed", 5, 60, 20, function(v) S.SpiderSpeed = v end)
+	addBind(spiderSet, "Toggle Bind", "None", function()
+		if _fFS["Spider"] then _fFS["Spider"](not S.Spider) end
+	end)
+
+end
+
+local HitSoundSettings = {
+	Enabled = false,
+	SoundId = "rbxassetid://8935436941",
+	Volume  = 2,
+	OriginalSounds = setmetatable({}, {__mode = "k"}),
+	PlayedConnections = setmetatable({}, {__mode = "k"}),
+}
+local HitSoundIDs
+
+do
+	local lc, rc = getTab("MISC")
+
+	HitSoundIDs = {
+		["None"] = "",
+		["Pop"] = "rbxassetid://8935436941",
+		["Neverlose"] = "rbxassetid://6607598351",
+		["Bat"] = "rbxassetid://99362374452374",
+		["Tink"] = "rbxassetid://134428986251283",
+		["Blum"] = "rbxassetid://79105299046226",
+		["Skeet"] = "rbxassetid://83717596220569",
+		["Sonic checkpoint"] = "rbxassetid://6817150445",
+		["Sonic.exe laugh"] = "rbxassetid://18379039436",
+		["Windows XP Error"] = "rbxassetid://9066167010",
+		["Minecraft Hit"] = "rbxassetid://8766809464",
+		["one sit nn dog"] = "rbxassetid://7380502345",
+		["Door Bell"] = "rbxassetid://131845870598154",
+		["Duck"] = "rbxassetid://1139819274",
+		["Mgs"] = "rbxassetid://81845122657643",
+		["Money"] = "rbxassetid://3020841054",
+		["Fart"] = "rbxassetid://4809574295",
+		["Meow"] = "rbxassetid://7148585764",
+		["byebye"] = "rbxassetid://70888261086432",
+	}
+
+	local _hsLastPlayTime = setmetatable({}, {__mode = "k"})
+	local _HS_COOLDOWN = 0.5
+
+	local function applyHitSound(snd)
+		if not snd or not snd.Parent then return end
+		if not HitSoundSettings.OriginalSounds[snd] then
+			HitSoundSettings.OriginalSounds[snd] = {SoundId = snd.SoundId, Volume = snd.Volume}
+		end
+		if HitSoundSettings.SoundId ~= "" then
+			snd.SoundId = HitSoundSettings.SoundId
+		else
+			snd.SoundId = HitSoundSettings.OriginalSounds[snd].SoundId
+		end
+		snd.Volume  = HitSoundSettings.Volume
+
+		-- Anti-spam: keep ownership of every Played connection. The old
+		-- attribute-only guard leaked callbacks and blocked clean reinitialization.
+		local playedConnection = HitSoundSettings.PlayedConnections[snd]
+		if not playedConnection or not playedConnection.Connected then
+			snd:SetAttribute("_burmalda_hs_hooked", true)
+			HitSoundSettings.PlayedConnections[snd] = snd.Played:Connect(function()
+				if Runtime.Unloaded or not HitSoundSettings.Enabled then return end
+				local now = tick()
+				local last = _hsLastPlayTime[snd] or 0
+				if (now - last) < _HS_COOLDOWN then
+					snd:Stop()
+				else
+					_hsLastPlayTime[snd] = now
+				end
+			end)
+		end
+	end
+
+	local function restoreHitSound(snd)
+		if not snd or not snd.Parent then return end
+		local orig = HitSoundSettings.OriginalSounds[snd]
+		if orig then
+			snd.SoundId = orig.SoundId
+			snd.Volume  = orig.Volume
+		end
+	end
+
+	local function applyHSTool(tool)
+		if not tool or not tool:IsA("Tool") then return end
+		task.spawn(function()
+			local ba = tool:FindFirstChild("BodyAttach") or tool:WaitForChild("BodyAttach", 5)
+			if not ba then return end
+			for _, sName in ipairs({"HitClient", "HeadShotClient", "HitCharacterClient"}) do
+				local s = ba:FindFirstChild(sName)
+				if s and s:IsA("Sound") then
+					if HitSoundSettings.Enabled then applyHitSound(s)
+					else restoreHitSound(s) end
+				end
+			end
+		end)
+	end
+
+	local _hsConns = {}
+	local function hookHSContainers()
+
+		for _, c in ipairs(_hsConns) do c:Disconnect() end
+		_hsConns = {}
+
+		local char    = LocalPlayer.Character
+		local backpack = LocalPlayer:FindFirstChild("Backpack")
+
+		local function hookContainer(container)
+			if not container then return end
+
+			for _, item in ipairs(container:GetChildren()) do
+				applyHSTool(item)
+			end
+
+			table.insert(_hsConns, container.ChildAdded:Connect(function(child)
+				task.delay(0.15, function() applyHSTool(child) end)
+			end))
+		end
+
+		hookContainer(char)
+		hookContainer(backpack)
+	end
+
+	-- Refresh existing sounds immediately; disabling must not wait for a spawned task.
+	local function refreshSounds()
+		local char    = LocalPlayer.Character
+		local backpack = LocalPlayer:FindFirstChild("Backpack")
+		local function refreshContainer(container)
+			if not container then return end
+			for _, item in ipairs(container:GetChildren()) do
+				if item:IsA("Tool") then
+					local ba = item:FindFirstChild("BodyAttach")
+					if ba then
+						for _, sName in ipairs({"HitClient", "HeadShotClient", "HitCharacterClient"}) do
+							local s = ba:FindFirstChild(sName)
+						if s and s:IsA("Sound") then
+							if HitSoundSettings.Enabled then applyHitSound(s) else restoreHitSound(s) end
+						end
+						end
+					end
+				end
+			end
+		end
+		refreshContainer(char)
+		refreshContainer(backpack)
+	end
+
+	local _hsSoundDebounce = false
+	local function debouncedRefresh()
+		if _hsSoundDebounce then return end
+		_hsSoundDebounce = true
+		task.defer(function()
+			refreshSounds()
+			_hsSoundDebounce = false
+		end)
+	end
+
+	local hsSet = createFeature(lc, "Hit Sound", false, function(v)
+		HitSoundSettings.Enabled = v
+		if v then
+			refreshSounds()
+			task.defer(hookHSContainers)
+		else
+			refreshSounds()
+			hookHSContainers()
+		end
+	end)
+
+	addDropdown(hsSet, "Sound", {"Pop", "Neverlose", "Bat", "Tink", "Blum", "None", "Skeet", "Sonic checkpoint", "Sonic.exe laugh", "Windows XP Error", "Minecraft Hit", "one sit nn dog", "Door Bell", "Duck", "Mgs", "Money", "Fart", "Meow", "byebye"}, 1, function(v)
+		HitSoundSettings.SoundId = HitSoundIDs[v] or ""
+		if HitSoundSettings.Enabled then debouncedRefresh() end
+	end)
+
+	addSlider(hsSet, "Volume", 1, 10, 2, function(v)
+		HitSoundSettings.Volume = v
+		if HitSoundSettings.Enabled then debouncedRefresh() end
+	end)
+
+	local _hsLifecycleConns = {}
+	table.insert(_hsLifecycleConns, LocalPlayer.CharacterAdded:Connect(function()
+		task.delay(0.3, function() if not Runtime.Unloaded then hookHSContainers() end end)
+	end))
+
+	table.insert(_hsLifecycleConns, LocalPlayer.CharacterRemoving:Connect(function()
+		for _, c in ipairs(_hsConns) do pcall(function() c:Disconnect() end) end
+		_hsConns = {}
+	end))
+
+	if LocalPlayer.Character then
+		task.delay(0.3, function() if not Runtime.Unloaded then hookHSContainers() end end)
+	end
+
+	task.spawn(function()
+		while true do
+		if Runtime.Unloaded then break end
+			task.wait(2)
+			if HitSoundSettings.Enabled then
+				refreshSounds()
+			end
+		end
+	end)
+	onCleanup(function()
+		HitSoundSettings.Enabled = false
+		for snd in pairs(HitSoundSettings.OriginalSounds) do
+			pcall(restoreHitSound, snd)
+		end
+		for snd, conn in pairs(HitSoundSettings.PlayedConnections) do
+			pcall(function() conn:Disconnect() end)
+			pcall(function()
+				if snd:GetAttribute("_burmalda_hs_hooked") ~= nil then
+					snd:SetAttribute("_burmalda_hs_hooked", nil)
+				end
+			end)
+			_hsLastPlayTime[snd] = nil
+		end
+		table.clear(HitSoundSettings.PlayedConnections)
+		table.clear(HitSoundSettings.OriginalSounds)
+		for _, conn in ipairs(_hsConns) do pcall(function() conn:Disconnect() end) end
+		for _, conn in ipairs(_hsLifecycleConns) do pcall(function() conn:Disconnect() end) end
+		_hsConns = {}
+		_hsLifecycleConns = {}
+	end)
+end
+
+local HotbarSettings = {
+	enabled   = false,
+	maxFOV    = 180,
+}
+
+local HotbarUI = {
+	frame = nil,
+	icons = {},
+	initialized = false,
+}
+
+local CustomIcons = {}
+
+local function hotbarGetParent()
+	local p
+	pcall(function()
+		if gethui then p = gethui()
+		else p = game:GetService("CoreGui") end
+	end)
+	return p or LocalPlayer:WaitForChild("PlayerGui")
+end
+
+local function hotbarInit()
+	if HotbarUI.initialized then return end
+	local sg = newScreenGui()
+	sg.Name = "BurmaldaHook_Hotbar"
+	sg.IgnoreGuiInset = true
+	sg.ResetOnSpawn = false
+	sg.Parent = hotbarGetParent()
+
+	local main = Instance.new("Frame")
+	main.BackgroundColor3 = Color3.fromRGB(8, 8, 8)
+	main.BackgroundTransparency = 0.08
+	main.BorderSizePixel = 0
+	local _hbPC = Camera.ViewportSize.X >= 1024
+	-- чуть меньше отступ снизу на PC, иконки тоже меньше
+	main.Position = UDim2.new(0.5, 0, 1, _hbPC and -80 or -56)
+	main.AnchorPoint = Vector2.new(0.5, 1)
+	main.Visible = false
+	main.Parent = sg
+	Instance.new("UICorner", main).CornerRadius = UDim.new(0, 6)
+
+	local list = Instance.new("UIListLayout")
+	list.FillDirection = Enum.FillDirection.Horizontal
+	list.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	list.VerticalAlignment = Enum.VerticalAlignment.Center
+	list.Padding = UDim.new(0, 4)
+	list.Parent = main
+
+	local pad = Instance.new("UIPadding", main)
+	pad.PaddingLeft  = UDim.new(0, 6)
+	pad.PaddingRight = UDim.new(0, 6)
+
+	for i = 1, 6 do
+		local icon = Instance.new("ImageLabel")
+		local _ipc = Camera.ViewportSize.X >= 1024
+		-- на PC иконки 40px вместо 60px — выглядят как телефонная версия но крупнее
+		icon.Size = UDim2.new(0, _ipc and 40 or 24, 0, _ipc and 40 or 24)
+		icon.BackgroundColor3 = Color3.fromRGB(8, 8, 8)
+		icon.BackgroundTransparency = 0.3
+		icon.BorderSizePixel = 0
+		icon.ScaleType = Enum.ScaleType.Fit
+		icon.Visible = false
+		icon.Parent = main
+		Instance.new("UICorner", icon).CornerRadius = UDim.new(0, 4)
+
+		HotbarUI.icons[i] = {slot = icon, icon = icon}
+	end
+
+	HotbarUI.frame = main
+	HotbarUI.initialized = true
+end
+
+local function hotbarGetTarget()
+	local closest, lastDist = nil, HotbarSettings.maxFOV
+	local center = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+	for _, p in pairs(Players:GetPlayers()) do
+		if p ~= LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+			local pos, onScreen = Camera:WorldToViewportPoint(p.Character.HumanoidRootPart.Position)
+			if onScreen then
+				local dist = (Vector2.new(pos.X, pos.Y) - center).Magnitude
+				if dist < lastDist then
+					lastDist = dist
+					closest = p
+				end
+			end
+		end
+	end
+	return closest
+end
+
+local function hotbarGetItems(player)
+	local items = {}
+	local char = player.Character
+	if not char then return items end
+	local function collectTools(parent)
+		for _, obj in pairs(parent:GetChildren()) do
+			if obj:IsA("Tool") and #items < 6 then
+				local id = (obj.TextureId ~= "") and obj.TextureId or CustomIcons[obj.Name]
+				if id then table.insert(items, id) end
+			end
+		end
+	end
+	collectTools(char)
+	if player:FindFirstChild("Backpack") then collectTools(player.Backpack) end
+	for _, obj in pairs(char:GetChildren()) do
+		if obj:IsA("Accessory") and #items < 6 then
+			local id = CustomIcons[obj.Name]
+			if id then table.insert(items, id) end
+		end
+	end
+	return items
+end
+
+task.spawn(function()
+	while task.wait(0.1) do
+		if Runtime.Unloaded then break end
+		if not HotbarSettings.enabled then
+			if HotbarUI.frame then HotbarUI.frame.Visible = false end
+			continue
+		end
+		if not HotbarUI.initialized then hotbarInit() end
+		local target = hotbarGetTarget()
+		if target then
+			local foundItems = hotbarGetItems(target)
+			local count = #foundItems
+			if count > 0 then
+				HotbarUI.frame.Visible = true
+				local _fpc = Camera.ViewportSize.X >= 1024
+				local _isz = _fpc and 40 or 24
+				local _igap = _fpc and 8 or 4
+				HotbarUI.frame.Size = UDim2.new(0, (count * _isz) + ((count - 1) * _igap) + 12, 0, _fpc and 56 or 36)
+				for i = 1, 6 do
+					local slot = HotbarUI.icons[i].slot
+					local icon = HotbarUI.icons[i].icon
+					if i <= count then
+						slot.Visible = true
+						icon.Image = foundItems[i]
+					else
+						slot.Visible = false
+					end
+				end
+			else
+				HotbarUI.frame.Visible = false
+			end
+		else
+			HotbarUI.frame.Visible = false
+		end
+	end
+end)
+
+do
+	local lc, rc = getTab("HUD")
+
+	local wmSet = createFeature(lc, "HUD", true, function(v)
+		S.HUDEnabled = v
+		updateHUD()
+	end, false)
+
+	createFeature(lc, "Hotbar Overlay", false, function(v)
+		HotbarSettings.enabled = v
+		hotbarInit()
+	end, false)
+
+	local chSet = createFeature(rc, "Crosshair", false, function(v)
+		crosshairSettings.crosshairEnabled = v
+	end)
+	local chTypeDD = addDropdown(chSet, "Type", {"Default", "X", "Dot", "Custom"}, 1, function(v)
+		crosshairSettings.crosshairType = v
+		chBuild(v, crosshairSettings.crosshairSize, crosshairSettings.crosshairThickness)
+	end)
+	addDropdown(chSet, "Mode", {"mobile", "pc"}, 1, function(v)
+		crosshairSettings.crosshairCenter = v == "mobile"
+		if v == "pc" then
+			-- скрываем системный курсор, прицел рисуется поверх
+			UIS.MouseIconEnabled = false
+		else
+			UIS.MouseIconEnabled = true
+		end
+	end)
+	addSlider(chSet, "Size", 2, 30, 8, function(v) crosshairSettings.crosshairSize = v end)
+	addSlider(chSet, "Thickness", 1, 8, 2, function(v) crosshairSettings.crosshairThickness = v end)
+	addSlider(chSet, "Length", 4, 40, 10, function(v)
+		crosshairSettings.crosshairLength = v
+		if crosshairSettings.crosshairType == "Custom" then
+			chBuild("Custom", crosshairSettings.crosshairSize, crosshairSettings.crosshairThickness)
+		end
+	end)
+	addSlider(chSet, "Gap", 0, 20, 4, function(v)
+		crosshairSettings.crosshairGap = v
+		if crosshairSettings.crosshairType == "Custom" then
+			chBuild("Custom", crosshairSettings.crosshairSize, crosshairSettings.crosshairThickness)
+		end
+	end)
+	addColor(chSet, "Color", function(c) crosshairSettings.crosshairColor = c end)
+	addDropdown(chSet, "Spin", {"Off", "On"}, 1, function(v) crosshairSettings.crosshairSpin = v == "On" end)
+	addSlider(chSet, "Spin Speed", -360, 360, 2, function(v) crosshairSettings.crosshairSpinSpeed = v end)
+	addDropdown(chSet, "Rainbow", {"Off", "On"}, 1, function(v) crosshairSettings.crosshairRainbow = v == "On" end)
+	addDropdown(chSet, "Dot", {"Off", "On"}, 1, function(v) crosshairSettings.crosshairDot = v == "On" end)
+	addDropdown(chSet, "Pulse", {"Off", "On"}, 1, function(v) crosshairSettings.crosshairPulse = v == "On" end)
+	addSlider(chSet, "Pulse Speed", 5, 100, 30, function(v) crosshairSettings.crosshairPulseSpeed = v / 10 end)
+	addDropdown(chSet, "Follow Aim Point", {"Off", "On"}, 1, function(v) crosshairSettings.crosshairFollowAim = v == "On" end)
+	addDropdown(chSet, "Follow Target", {"Off", "On"}, 1, function(v) crosshairSettings.crosshairFollowTarget = v == "On" end)
+	addSlider(chSet, "Follow Smoothness", 1, 20, 8, function(v) crosshairSettings.crosshairFollowSmooth = v end)
+
+	createFeature(rc, "Pickup Notifications", false, function(v)
+		PickupNotifEnabled = v
+	end, false)
+end
+
+local customModelsEnabled = false
+local glassColor          = Color3.fromRGB(255, 255, 255)
+local glassTransparency   = 0.4
+local glassMaterial       = Enum.Material.Glass
+
+local fogEnabled = false
+local fogColor   = Color3.fromRGB(0, 0, 0)
+local fogDensity = 0.6
+local _fogDirty  = false
+
+local fovLockEnabled = false
+local targetFOV      = 90
+local fovControlled, fovBaseline = false, nil
+local nvEnabled = false
+local handPosEnabled = false
+local ViewmodelConfig = { X = 0, Y = 0, Z = 0 }
+
+local _Lighting = game:GetService("Lighting")
+local fogAtm    = nil
+local _origFogColor, _origFogEnd, _origFogStart, _origClockTime, _origBrightness, _origOutdoorAmbient
+
+local function applyFogSettings()
+	if not fogAtm then return end
+	fogAtm.Color   = fogColor
+	fogAtm.Decay   = fogColor
+	fogAtm.Density = fogDensity
+	fogAtm.Haze    = 10
+	_Lighting.ClockTime      = 0
+	_Lighting.Brightness     = 0
+	_Lighting.OutdoorAmbient = fogColor
+	_Lighting.FogColor       = fogColor
+	_Lighting.FogEnd         = 150
+	_Lighting.FogStart       = 0
+	_fogDirty = false
+end
+
+local function enableFog()
+	if fogAtm and fogAtm.Parent then
+		applyFogSettings()
+		return
+	end
+	if fogAtm then fogAtm:Destroy(); fogAtm = nil end
+	if not _origFogColor then
+		_origFogColor       = _Lighting.FogColor
+		_origFogEnd         = _Lighting.FogEnd
+		_origFogStart       = _Lighting.FogStart
+		_origClockTime      = _Lighting.ClockTime
+		_origBrightness     = _Lighting.Brightness
+		_origOutdoorAmbient = _Lighting.OutdoorAmbient
+	end
+	fogAtm = Instance.new("Atmosphere", _Lighting)
+	fogAtm.Name = "BurmaldaHookAtmosphere"
+	applyFogSettings()
+end
+
+local function disableFog()
+	if fogAtm then fogAtm:Destroy(); fogAtm = nil end
+	if _origFogColor then
+		_Lighting.FogColor       = _origFogColor
+		_Lighting.FogEnd         = _origFogEnd
+		_Lighting.FogStart       = _origFogStart
+		_Lighting.ClockTime      = _origClockTime
+		_Lighting.Brightness     = _origBrightness
+		_Lighting.OutdoorAmbient = _origOutdoorAmbient
+	end
+	_origFogColor, _origFogEnd, _origFogStart = nil, nil, nil
+	_origClockTime, _origBrightness, _origOutdoorAmbient = nil, nil, nil
+end
+onCleanup(function() fogEnabled = false; disableFog() end)
+
+do
+	local lc, rc = getTab("CONFIG")
+	createFeature(lc, "Unload Burmalda.hook", false, function(v)
+		if v and Runtime.Unload then task.defer(Runtime.Unload) end
+	end, false)
+	local accentSet = createFeature(lc, "Menu Accent", true, function() end)
+	addColor(accentSet, "Accent Color", function(c) setMenuAccent(c) end, Theme.Accent)
+	addDropdown(accentSet, "Preset", {"White", "Silver", "Graphite", "Blue"}, 1, function(v)
+		if v == "White" then setMenuAccent(Color3.fromRGB(255, 255, 255))
+		elseif v == "Silver" then setMenuAccent(Color3.fromRGB(190, 190, 190))
+		elseif v == "Graphite" then setMenuAccent(Color3.fromRGB(105, 105, 105))
+		else setMenuAccent(Color3.fromRGB(0, 82, 255)) end
+	end)
+	createFeature(lc, "UI Animations", true, function(v) UIAnimations = v end, false)
+	local HS     = game:GetService("HttpService")
+	local FOLDER = "burmalda_rost_config"
+
+	pcall(function() if not isfolder(FOLDER) then makefolder(FOLDER) end end)
+
+	local function c2t(c) return {r=math.floor(c.R*255),g=math.floor(c.G*255),b=math.floor(c.B*255)} end
+	local function t2c(t) return Color3.fromRGB(t.r,t.g,t.b) end
+
+	local function buildConfig()
+		local cfg = {}
+
+		for k,v in pairs(S) do cfg["S_"..k] = v end
+
+		local cols = {AC_ESP=AC_ESP,AC_FOV=AC_FOV,AC_FOV_TARGET=AC_FOV_TARGET,AC_FOV_FILL=AC_FOV_FILL,
+			AC_TR=AC_TR,AC_NAME=AC_NAME,AC_DIST=AC_DIST,
+			AC_FILL=AC_FILL,AC_HP=AC_HP,AC_WEAPON=AC_WEAPON,
+			AC_CHAMS=AC_CHAMS,AC_CHAMS_OUTLINE=AC_CHAMS_OUTLINE}
+		for k,v in pairs(cols) do cfg[k] = c2t(v) end
+		for name, color in pairs(Runtime.ExtraColors) do cfg["AC_EXTRA_"..name] = c2t(color) end
+
+		cfg["CH_enabled"]   = crosshairSettings.crosshairEnabled
+		cfg["CH_type"]      = crosshairSettings.crosshairType
+		cfg["CH_size"]      = crosshairSettings.crosshairSize
+		cfg["CH_thickness"] = crosshairSettings.crosshairThickness
+		cfg["CH_gap"]       = crosshairSettings.crosshairGap
+		cfg["CH_length"]    = crosshairSettings.crosshairLength
+		cfg["CH_center"]    = crosshairSettings.crosshairCenter
+		cfg["CH_spin"]      = crosshairSettings.crosshairSpin
+		cfg["CH_spinSpeed"] = crosshairSettings.crosshairSpinSpeed
+		cfg["CH_rainbow"]   = crosshairSettings.crosshairRainbow
+		cfg["CH_dot"]       = crosshairSettings.crosshairDot
+		cfg["CH_pulse"]     = crosshairSettings.crosshairPulse
+		cfg["CH_pulseSpeed"] = crosshairSettings.crosshairPulseSpeed
+		cfg["CH_followAim"] = crosshairSettings.crosshairFollowAim
+		cfg["CH_followTarget"] = crosshairSettings.crosshairFollowTarget
+		cfg["CH_followSmooth"] = crosshairSettings.crosshairFollowSmooth
+		cfg["CH_color"]     = c2t(crosshairSettings.crosshairColor)
+
+		cfg["HS_enabled"] = HitSoundSettings.Enabled
+		cfg["HS_soundId"] = HitSoundSettings.SoundId
+		cfg["HS_volume"]  = HitSoundSettings.Volume
+
+		cfg["FG_enabled"] = fogEnabled
+		cfg["FG_color"]   = c2t(fogColor)
+		cfg["FG_density"] = fogDensity
+
+		cfg["CFOV_enabled"] = fovLockEnabled
+		cfg["CFOV_value"]   = targetFOV
+		cfg["NV_enabled"]   = nvEnabled
+		cfg["HP_enabled"]   = handPosEnabled
+		cfg["HP_x"]         = ViewmodelConfig.X
+		cfg["HP_y"]         = ViewmodelConfig.Y
+		cfg["HP_z"]         = ViewmodelConfig.Z
+		cfg["Binds"]        = {}
+		for featureName, api in pairs(Runtime.BindApis or {}) do
+			if api and api.Get then cfg.Binds[featureName] = api.Get() end
+		end
+
+		cfg["CM_enabled"]      = customModelsEnabled
+		cfg["CM_color"]        = c2t(glassColor)
+		cfg["CM_transparency"] = glassTransparency
+		cfg["CM_material"]     = glassMaterial.Name or tostring(glassMaterial)
+
+		cfg["HB_enabled"] = HotbarSettings.enabled
+
+		cfg["PN_enabled"] = PickupNotifEnabled
+		cfg["UI_accent"] = c2t(Theme.Accent)
+		cfg["UI_animations"] = UIAnimations
+		return HS:JSONEncode(cfg)
+	end
+
+	local function applyConfig(str)
+		local ok, cfg = pcall(HS.JSONDecode, HS, str)
+		if not ok or type(cfg) ~= "table" then return false end
+		local requestedNV, requestedHand = nvEnabled, handPosEnabled
+
+		for k in pairs(S) do
+			if cfg["S_"..k] ~= nil then S[k] = cfg["S_"..k] end
+		end
+
+		if cfg.AC_ESP      then AC_ESP      = t2c(cfg.AC_ESP)      end
+		if cfg.AC_FOV      then AC_FOV      = t2c(cfg.AC_FOV)      end
+		if cfg.AC_FOV_TARGET then AC_FOV_TARGET = t2c(cfg.AC_FOV_TARGET) end
+		if cfg.AC_FOV_FILL then AC_FOV_FILL = t2c(cfg.AC_FOV_FILL) end
+		if cfg.AC_TR       then AC_TR       = t2c(cfg.AC_TR)       end
+		if cfg.AC_NAME     then AC_NAME     = t2c(cfg.AC_NAME)     end
+		if cfg.AC_DIST     then AC_DIST     = t2c(cfg.AC_DIST)     end
+		if cfg.AC_FILL     then AC_FILL     = t2c(cfg.AC_FILL)     end
+		if cfg.AC_HP       then AC_HP       = t2c(cfg.AC_HP)       end
+		if cfg.AC_WEAPON   then AC_WEAPON   = t2c(cfg.AC_WEAPON)   end
+		if cfg.AC_CHAMS    then AC_CHAMS    = t2c(cfg.AC_CHAMS)    end
+		if cfg.AC_CHAMS_OUTLINE then AC_CHAMS_OUTLINE = t2c(cfg.AC_CHAMS_OUTLINE) end
+		for name in pairs(Runtime.ExtraColors) do
+			local key = "AC_EXTRA_"..name
+			if cfg[key] then Runtime.ExtraColors[name] = t2c(cfg[key]) end
+		end
+
+		if cfg.CH_enabled   ~= nil then crosshairSettings.crosshairEnabled   = cfg.CH_enabled   end
+		if cfg.CH_type      ~= nil then crosshairSettings.crosshairType      = cfg.CH_type      end
+		if cfg.CH_size      ~= nil then crosshairSettings.crosshairSize      = cfg.CH_size      end
+		if cfg.CH_thickness ~= nil then crosshairSettings.crosshairThickness = cfg.CH_thickness end
+		if cfg.CH_gap       ~= nil then crosshairSettings.crosshairGap       = cfg.CH_gap       end
+		if cfg.CH_length    ~= nil then crosshairSettings.crosshairLength    = cfg.CH_length    end
+		if cfg.CH_center    ~= nil then crosshairSettings.crosshairCenter    = cfg.CH_center    end
+		if cfg.CH_spin      ~= nil then crosshairSettings.crosshairSpin      = cfg.CH_spin      end
+		if cfg.CH_spinSpeed ~= nil then crosshairSettings.crosshairSpinSpeed = cfg.CH_spinSpeed end
+		if cfg.CH_rainbow   ~= nil then crosshairSettings.crosshairRainbow   = cfg.CH_rainbow   end
+		if cfg.CH_dot       ~= nil then crosshairSettings.crosshairDot       = cfg.CH_dot       end
+		if cfg.CH_pulse     ~= nil then crosshairSettings.crosshairPulse     = cfg.CH_pulse     end
+		if cfg.CH_pulseSpeed ~= nil then crosshairSettings.crosshairPulseSpeed = cfg.CH_pulseSpeed end
+		if cfg.CH_followAim ~= nil then crosshairSettings.crosshairFollowAim = cfg.CH_followAim end
+		if cfg.CH_followTarget ~= nil then crosshairSettings.crosshairFollowTarget = cfg.CH_followTarget end
+		if cfg.CH_followSmooth ~= nil then crosshairSettings.crosshairFollowSmooth = cfg.CH_followSmooth end
+		if cfg.CH_color     ~= nil then crosshairSettings.crosshairColor     = t2c(cfg.CH_color) end
+
+		if cfg.HS_enabled ~= nil then HitSoundSettings.Enabled = cfg.HS_enabled end
+		if cfg.HS_soundId ~= nil then HitSoundSettings.SoundId = cfg.HS_soundId end
+		if cfg.HS_volume  ~= nil then HitSoundSettings.Volume  = cfg.HS_volume  end
+
+		if cfg.FG_enabled ~= nil then fogEnabled = cfg.FG_enabled end
+		if cfg.FG_color   ~= nil then fogColor   = t2c(cfg.FG_color) end
+		if cfg.FG_density ~= nil then fogDensity = cfg.FG_density end
+
+		if cfg.CFOV_enabled ~= nil then fovLockEnabled = cfg.CFOV_enabled end
+		if cfg.CFOV_value   ~= nil then targetFOV      = cfg.CFOV_value   end
+		if cfg.NV_enabled   ~= nil then requestedNV    = cfg.NV_enabled    end
+		if cfg.HP_enabled   ~= nil then requestedHand  = cfg.HP_enabled    end
+		if type(cfg.HP_x) == "number" then ViewmodelConfig.X = cfg.HP_x end
+		if type(cfg.HP_y) == "number" then ViewmodelConfig.Y = cfg.HP_y end
+		if type(cfg.HP_z) == "number" then ViewmodelConfig.Z = cfg.HP_z end
+
+		if cfg.CM_enabled      ~= nil then customModelsEnabled = cfg.CM_enabled      end
+		if cfg.CM_color        ~= nil then glassColor          = t2c(cfg.CM_color)   end
+		if cfg.CM_transparency ~= nil then glassTransparency   = cfg.CM_transparency end
+		if cfg.CM_material     ~= nil then
+			local mats = {Glass=Enum.Material.Glass, Neon=Enum.Material.Neon,
+				ForceField=Enum.Material.ForceField, SmoothPlastic=Enum.Material.SmoothPlastic}
+			-- Current configs store EnumItem.Name. Accept the previous
+			-- tostring(Enum.Material.*) representation as well.
+			local materialName = tostring(cfg.CM_material):match("([^.]+)$")
+			glassMaterial = mats[materialName] or Enum.Material.Glass
+		end
+
+		if cfg.HB_enabled ~= nil then HotbarSettings.enabled = cfg.HB_enabled end
+		if cfg.PN_enabled ~= nil then PickupNotifEnabled      = cfg.PN_enabled end
+		if cfg.UI_accent then setMenuAccent(t2c(cfg.UI_accent)) end
+		if cfg.UI_animations ~= nil then UIAnimations = cfg.UI_animations end
+
+		local function applyToggle(name, state)
+			if _fFS[name] then _fFS[name](state) end
+		end
+
+		applyToggle("Silent Aim",            S.SilentAim)
+		applyToggle("No Recoil",             S.NoRecoil)
+
+		applyToggle("ESP",                   S.ESPEnabled)
+		applyToggle("Tracers",               S.Tracers)
+		applyToggle("HP Bar",                S.HPBar)
+		applyToggle("Names",                 S.Names)
+		applyToggle("Distance",              S.ESPDist)
+		applyToggle("Weapon",                S.ESPWeapon)
+		applyToggle("Chams",                 S.ESPChams)
+
+		applyToggle("Speed",                 S.SpeedRostAlpha)
+		applyToggle("High Jump",             S.HighJump)
+		applyToggle("Spider",                S.Spider)
+		applyToggle("Auto Fire",             S.AutoFire)
+		applyToggle("Target HUD",            S.TargetHUD)
+		applyToggle("Hit Logs",              S.HitLogsEnabled)
+		applyToggle("Hitmarker",             S.HitmarkerEnabled)
+		applyToggle("Damage FX",             S.DamageFXEnabled)
+		applyToggle("Kill Notify",           S.KillNotify)
+		applyToggle("X-Ray",                 S.XRay)
+		applyToggle("Tool Outline",          S.ToolOutline)
+		applyToggle("Custom Water",          S.CustomWater)
+		applyToggle("Swim Speed",            S.SwimSpeed)
+		applyToggle("Copter Speed",          S.CopterSpeed)
+		applyToggle("No Fall Damage",        S.NoFallDamage)
+		applyToggle("No Jump Delay",         S.NoJumpDelay)
+		applyToggle("Copter Fly",            S.CopterFly)
+		applyToggle("Rapid Fire",            S.RapidFire)
+		applyToggle("Full Auto",             S.FullAuto)
+		applyToggle("Melee Mods",            S.MeleeMods)
+		applyToggle("Hitbox Expander",       S.HitboxExpander)
+		applyToggle("Reload Indicator",      S.ReloadIndicator)
+		applyToggle("Bullet Tracers",        S.BulletTracers)
+		applyToggle("Third Person",          S.ThirdPerson)
+		applyToggle("Stretch Resolution",    S.Stretch)
+		applyToggle("Jump Circles",          S.JumpCircles)
+		applyToggle("Fullbright",            S.Fullbright)
+		applyToggle("No Decoration",         S.NoDecoration)
+		applyToggle("Sky Color",             S.SkyColorEnabled)
+		applyToggle("Skybox",                S.SkyboxEnabled)
+		applyToggle("Delete Spikes",         S.DeleteSpikes)
+		applyToggle("Delete Leaves",         S.DeleteLeaves)
+		applyToggle("Kill Sound",            S.KillSound)
+
+		applyToggle("Hit Sound",             HitSoundSettings.Enabled)
+
+		applyToggle("HUD",                   S.HUDEnabled)
+		applyToggle("Hotbar Overlay",        HotbarSettings.enabled)
+		applyToggle("Crosshair",             crosshairSettings.crosshairEnabled)
+		applyToggle("Pickup Notifications",  PickupNotifEnabled)
+
+		applyToggle("Custom Models",         customModelsEnabled)
+		applyToggle("Custom Fog",            fogEnabled)
+		applyToggle("Custom FOV",            fovLockEnabled)
+		applyToggle("Night Vision",          requestedNV)
+		applyToggle("Custom Hand Position",  requestedHand)
+		applyToggle("Low PC",                S.LowPC)
+		applyToggle("UI Animations",         UIAnimations)
+
+		if fovLockEnabled and targetFOV then Camera.FieldOfView = targetFOV end
+		if type(cfg.Binds) == "table" then
+			for featureName, value in pairs(cfg.Binds) do
+				local api = Runtime.BindApis and Runtime.BindApis[featureName]
+				if api and api.Set and type(value) == "string" then api.Set(value) end
+			end
+		end
+
+		-- Gameplay/settings tables are the source of truth. Refresh every
+		-- dropdown after loading, including old configs without saved UI state.
+		-- Silent setters cannot call back and overwrite the loaded settings.
+		local function syncDropdown(feature, name, value)
+			local setter = _fDD[feature .. "_Settings_" .. name]
+			if setter and value ~= nil then setter(value, true) end
+		end
+		local function onOff(value) return value and "On" or "Off" end
+		syncDropdown("Silent Aim", "Target Part", ({"HeadHitbox", "Head", "HumanoidRootPart", "Random"})[S.MBTargetPart] or "HeadHitbox")
+		syncDropdown("Silent Aim", "Use FOV Filter", onOff(S.MBUseFOV))
+		syncDropdown("Silent Aim", "Visible Check", onOff(S.MBVisibleOnly))
+		syncDropdown("Silent Aim", "Manipulation", onOff(S.Manipulation))
+		syncDropdown("Silent Aim", "Target Priority", S.MBPriority == "hp" and "HP" or "Distance")
+		syncDropdown("Silent Aim", "FOV Mode", S.MBFovMode or "mobile")
+		syncDropdown("Silent Aim", "FOV Circle", onOff(S.FOVCircle))
+		syncDropdown("Silent Aim", "FOV Fill", onOff(S.FOVFill))
+		syncDropdown("Silent Aim", "Target Line", onOff(S.MBTargetLine))
+		syncDropdown("ESP", "Box Type", S.ESPBoxType or "Normal")
+		syncDropdown("ESP", "Box Fill", onOff(S.BoxFill))
+		syncDropdown("Tracers", "Origin", ({"Top", "Bottom", "Center"})[S.TracerOrigin] or "Bottom")
+		syncDropdown("HP Bar", "Position", S.HPBarSide == 2 and "Top" or "Side")
+		syncDropdown("HP Bar", "Health Number", onOff(S.HPHealthNumber))
+		syncDropdown("HP Bar", "Dynamic Color", onOff(S.HPDynamicColor))
+		local hitSoundName
+		for name, id in pairs(HitSoundIDs) do
+			if id == HitSoundSettings.SoundId then hitSoundName = name break end
+		end
+		syncDropdown("Hit Sound", "Sound", hitSoundName)
+		syncDropdown("Crosshair", "Type", crosshairSettings.crosshairType or "Default")
+		syncDropdown("Crosshair", "Mode", crosshairSettings.crosshairCenter and "mobile" or "pc")
+		syncDropdown("Crosshair", "Spin", onOff(crosshairSettings.crosshairSpin))
+		syncDropdown("Crosshair", "Rainbow", onOff(crosshairSettings.crosshairRainbow))
+		syncDropdown("Crosshair", "Dot", onOff(crosshairSettings.crosshairDot))
+		syncDropdown("Crosshair", "Pulse", onOff(crosshairSettings.crosshairPulse))
+		syncDropdown("Crosshair", "Follow Aim Point", onOff(crosshairSettings.crosshairFollowAim))
+		syncDropdown("Crosshair", "Follow Target", onOff(crosshairSettings.crosshairFollowTarget))
+		syncDropdown("Hit Logs", "Position", S.HitLogsPosition)
+		syncDropdown("Damage FX", "Style", S.DamageFXStyle)
+		syncDropdown("Damage FX", "Rainbow", onOff(S.DamageFXRainbow))
+		syncDropdown("Custom Models", "Material", glassMaterial and glassMaterial.Name)
+		syncDropdown("Bullet Tracers", "Texture", S.BulletTracerStyle)
+		syncDropdown("Skybox", "Preset", S.SkyboxChoice)
+		syncDropdown("Kill Sound", "Sound", S.KillSoundChoice)
+		local accentPreset
+		local accentColors = {
+			Blue = Color3.fromRGB(0, 82, 255), White = Color3.fromRGB(255, 255, 255),
+			Silver = Color3.fromRGB(190, 190, 190), Graphite = Color3.fromRGB(105, 105, 105),
+		}
+		for name, color in pairs(accentColors) do
+			if Theme.Accent == color then accentPreset = name break end
+		end
+		syncDropdown("Menu Accent", "Preset", accentPreset)
+
+		return true
+	end
+
+	local function saveToFile(name)
+		local ok = false
+		pcall(function() writefile(FOLDER.."/"..name..".cfg", buildConfig()); ok = true end)
+		return ok
+	end
+	local function loadFromFile(name)
+		local str
+		pcall(function() str = readfile(FOLDER.."/"..name..".cfg") end)
+		return str and applyConfig(str)
+	end
+	local function listFiles()
+		local out = {}
+		pcall(function()
+			for _,f in ipairs(listfiles(FOLDER)) do
+				local n = f:match("([^/\\]+)%.cfg$")
+				if n then table.insert(out, n) end
+			end
+		end)
+		return out
+	end
+	local function deleteFile(name)
+		pcall(function() delfile(FOLDER.."/"..name..".cfg") end)
+	end
+
+	local HUD_BG = Theme.Element
+	local HUD_BT = 0
+	local HUD_ST = 0
+	local HUD_R  = 0
+
+	local function mkCorner(p)
+		if not p:FindFirstChildOfClass("UICorner") then
+			local corner = Instance.new("UICorner", p)
+			corner.CornerRadius = UDim.new(0, 5)
+		end
+	end
+	local function mkStroke(p)
+		sourceStroke(p)
+	end
+	local function mkBtn(parent, txt, w, h)
+		local b = Instance.new("TextButton", parent)
+		b.Size = w and UDim2.new(0, w, 0, h or 22) or UDim2.new(1, 0, 0, h or 22)
+		b.BackgroundColor3 = HUD_BG
+		b.BackgroundTransparency = HUD_BT
+		b.BorderSizePixel = 0
+		b.Text = txt
+		b.TextColor3 = Color3.new(1,1,1)
+		b.Font = Enum.Font.GothamMedium
+		b.TextSize = 12
+		b.AutoButtonColor = false
+		mkCorner(b); mkStroke(b)
+		b.MouseButton1Click:Connect(function()
+			TS:Create(b, TweenInfo.new(0.08), {BackgroundTransparency = 0}):Play()
+			task.delay(0.15, function()
+				TS:Create(b, TweenInfo.new(0.12), {BackgroundTransparency = HUD_BT}):Play()
+			end)
+		end)
+		return b
+	end
+
+	-- Configuration files live in real source sections on the fifth page.
+	lc, rc = getTab("CONFIG")
+	lc = getSection(lc, "Configs").Content
+	rc = getSection(rc, "Saved Configs").Content
+	local inputF = Instance.new("Frame", lc)
+	inputF.Size = UDim2.new(1, 0, 0, 45)
+	inputF.BackgroundColor3 = HUD_BG
+	inputF.BackgroundTransparency = HUD_BT
+	inputF.BorderSizePixel = 0
+	mkCorner(inputF); mkStroke(inputF)
+	local inputLabel = sourceText(inputF, "Config Name", UDim2.new(1, 0, 0, 15), Theme.SubText)
+	inputLabel.Position = UDim2.new(0, 8, 0, 4)
+	local iPad = Instance.new("UIPadding", inputF)
+	iPad.PaddingLeft = UDim.new(0, 8); iPad.PaddingRight = UDim.new(0, 8)
+	local tb = Instance.new("TextBox", inputF)
+	tb.Position = UDim2.new(0, 0, 0, 25)
+	tb.Size = UDim2.new(1, 0, 0, 20)
+	tb.BackgroundTransparency = 1
+	tb.Text = ""; tb.PlaceholderText = "config name..."
+	tb.Font = Enum.Font.Gotham; tb.TextSize = 12
+	tb.TextColor3 = Color3.new(1,1,1)
+	tb.PlaceholderColor3 = Color3.fromRGB(70,70,70)
+	tb.ClearTextOnFocus = false
+	tb.TextXAlignment = Enum.TextXAlignment.Center
+
+	local rowF = Instance.new("Frame", lc)
+	rowF.Size = UDim2.new(1, 0, 0, 20)
+	rowF.BackgroundTransparency = 1
+	local rowL = Instance.new("UIListLayout", rowF)
+	rowL.FillDirection = Enum.FillDirection.Horizontal
+	rowL.Padding = UDim.new(0, 4)
+
+	local btnSave  = mkBtn(rowF, "Save")
+	btnSave.Size   = UDim2.new(1/3, -3, 1, 0)
+	local btnLoad2 = mkBtn(rowF, "Load")
+	btnLoad2.Size  = UDim2.new(1/3, -3, 1, 0)
+	local btnDel   = mkBtn(rowF, "Delete")
+	btnDel.Size    = UDim2.new(1/3, -3, 1, 0)
+
+	local listFrame = Instance.new("Frame", rc)
+	listFrame.Size = UDim2.new(1, 0, 0, 0)
+	listFrame.AutomaticSize = Enum.AutomaticSize.Y
+	listFrame.BackgroundTransparency = 1
+	local listLayout = Instance.new("UIListLayout", listFrame)
+	listLayout.Padding = UDim.new(0, 4)
+
+	local emptyLbl = Instance.new("TextLabel", listFrame)
+	emptyLbl.Text = "No saved configs"
+	emptyLbl.Font = Enum.Font.Gotham; emptyLbl.TextSize = 12
+	emptyLbl.TextColor3 = Color3.fromRGB(60,60,60)
+	emptyLbl.BackgroundTransparency = 1
+	emptyLbl.Size = UDim2.new(1, 0, 0, 26)
+	emptyLbl.TextXAlignment = Enum.TextXAlignment.Center
+
+	local function refreshList()
+		for _, ch in ipairs(listFrame:GetChildren()) do
+			if ch ~= listLayout and ch ~= emptyLbl then ch:Destroy() end
+		end
+		local files = listFiles()
+		emptyLbl.Visible = #files == 0
+		for _, cfgName in ipairs(files) do
+			local row = Instance.new("Frame", listFrame)
+			row.Size = UDim2.new(1, 0, 0, 26)
+			row.BackgroundColor3 = HUD_BG
+			row.BackgroundTransparency = HUD_BT
+			row.BorderSizePixel = 0
+			mkCorner(row); mkStroke(row)
+
+			local rPad = Instance.new("UIPadding", row)
+			rPad.PaddingLeft = UDim.new(0, 8); rPad.PaddingRight = UDim.new(0, 5)
+			local rL = Instance.new("UIListLayout", row)
+			rL.FillDirection = Enum.FillDirection.Horizontal
+			rL.VerticalAlignment = Enum.VerticalAlignment.Center
+			rL.Padding = UDim.new(0, 4)
+
+			local nLbl = Instance.new("TextLabel", row)
+			nLbl.Text = cfgName
+			nLbl.Font = Enum.Font.Gotham; nLbl.TextSize = 14
+			nLbl.TextColor3 = Color3.new(1,1,1)
+			nLbl.BackgroundTransparency = 1
+			nLbl.Size = UDim2.new(1, -76, 1, 0)
+			nLbl.TextXAlignment = Enum.TextXAlignment.Left
+			nLbl.TextTruncate = Enum.TextTruncate.AtEnd
+
+			local bLd = mkBtn(row, "Load", 34, 18)
+			local bDl = mkBtn(row, "Del",  34, 18)
+
+			bLd.MouseButton1Click:Connect(function()
+				loadFromFile(cfgName)
+			end)
+			bDl.MouseButton1Click:Connect(function()
+				deleteFile(cfgName); refreshList()
+			end)
+		end
+	end
+
+	refreshList()
+
+	local function cleanName(raw)
+		return raw:gsub("[^%w%-_]","_"):sub(1, 24)
+	end
+
+	btnSave.MouseButton1Click:Connect(function()
+		local name = cleanName(tb.Text)
+		if name == "" then return end
+		local ok = saveToFile(name)
+		if not ok then
+			pcall(function() setclipboard(buildConfig()) end)
+		end
+		refreshList()
+	end)
+
+	btnLoad2.MouseButton1Click:Connect(function()
+		local name = cleanName(tb.Text)
+		if name == "" then return end
+		loadFromFile(name)
+	end)
+
+	btnDel.MouseButton1Click:Connect(function()
+		local name = cleanName(tb.Text)
+		if name == "" then return end
+		deleteFile(name); refreshList()
+	end)
+end
+
+do
+	local lc, rc = getTab("VISUAL")
+
+	local customModelOriginals = {}
+	local function applyGlassEffect(part)
+		if not part:IsA("BasePart") or part.Transparency >= 0.9 then return end
+		if not customModelOriginals[part] then
+			customModelOriginals[part] = {
+				Color = part.Color,
+				Material = part.Material,
+				Transparency = part.Transparency,
+				Reflectance = part.Reflectance,
+				CastShadow = part.CastShadow,
+				TextureID = part:IsA("MeshPart") and part.TextureID or nil,
+			}
+		end
+		local original = customModelOriginals[part]
+		if original.TextureID ~= nil then pcall(function() part.TextureID = "" end) end
+		part.Color = glassColor
+		part.Material = glassMaterial
+		part.Transparency = glassTransparency
+		part.Reflectance = 0.3
+		part.CastShadow = false
+	end
+
+	local function restoreCustomModels()
+		for part, original in pairs(customModelOriginals) do
+			if part and part.Parent then
+				pcall(function()
+					part.Color = original.Color
+					part.Material = original.Material
+					part.Transparency = original.Transparency
+					part.Reflectance = original.Reflectance
+					part.CastShadow = original.CastShadow
+					if original.TextureID ~= nil then part.TextureID = original.TextureID end
+				end)
+			end
+		end
+		table.clear(customModelOriginals)
+	end
+	onCleanup(restoreCustomModels)
+
+	local function scanForWeapons()
+		if Runtime.Unloaded or not customModelsEnabled then return end
+		local camera = workspace.CurrentCamera
+		if camera then
+			for _, obj in pairs(camera:GetChildren()) do
+				if obj:IsA("Model") or obj:IsA("Part") or obj:IsA("MeshPart") then
+					pcall(function() applyGlassEffect(obj) end)
+					for _, descendant in pairs(obj:GetDescendants()) do
+						pcall(function() applyGlassEffect(descendant) end)
+					end
+				end
+			end
+		end
+		local char = LocalPlayer.Character
+		if char then
+			local tool = char:FindFirstChildOfClass("Tool")
+			if tool then
+				for _, descendant in pairs(tool:GetDescendants()) do
+					pcall(function() applyGlassEffect(descendant) end)
+				end
+			end
+		end
+	end
+
+	local _cmLastChar = nil
+	local _cmChildConnection = nil
+	local function connectCMChar(char)
+		if Runtime.Unloaded or not char then return end
+		if _cmLastChar == char and _cmChildConnection then return end
+		if _cmChildConnection then _cmChildConnection:Disconnect(); _cmChildConnection = nil end
+		_cmLastChar = char
+		pcall(scanForWeapons)
+		_cmChildConnection = char.ChildAdded:Connect(function(child)
+			if not Runtime.Unloaded and customModelsEnabled and (child:IsA("Tool") or child:IsA("Model")) then
+				task.delay(0.05, function() if not Runtime.Unloaded then pcall(scanForWeapons) end end)
+			end
+		end)
+	end
+	local _cmAddedConnection = LocalPlayer.CharacterAdded:Connect(connectCMChar)
+	if LocalPlayer.Character then connectCMChar(LocalPlayer.Character) end
+	onCleanup(function()
+		customModelsEnabled = false
+		if _cmChildConnection then _cmChildConnection:Disconnect(); _cmChildConnection = nil end
+		if _cmAddedConnection then _cmAddedConnection:Disconnect(); _cmAddedConnection = nil end
+		_cmLastChar = nil
+	end)
+
+	local cmSet = createFeature(lc, "Custom Models", false, function(v)
+		customModelsEnabled = v
+		if v then pcall(scanForWeapons) else restoreCustomModels() end
+	end)
+
+	addColor(cmSet, "Glass Color", function(c)
+		glassColor = c
+	end)
+
+	addDropdown(cmSet, "Material", {"Glass", "Neon", "ForceField", "SmoothPlastic"}, 1, function(v)
+		if v == "Glass" then glassMaterial = Enum.Material.Glass
+		elseif v == "Neon" then glassMaterial = Enum.Material.Neon
+		elseif v == "ForceField" then glassMaterial = Enum.Material.ForceField
+		else glassMaterial = Enum.Material.SmoothPlastic end
+	end)
+
+	addSlider(cmSet, "Transparency", 0, 9, 4, function(v)
+		glassTransparency = v / 10
+	end)
+
+	addBind(cmSet, "Toggle Bind", "None", function()
+		if _fFS["Custom Models"] then _fFS["Custom Models"](not customModelsEnabled) end
+	end)
+
+	local fogSet = createFeature(lc, "Custom Fog", false, function(v)
+		if v and S.Fullbright and _fFS["Fullbright"] then _fFS["Fullbright"](false) end
+		fogEnabled = v
+		if v then enableFog() else disableFog() end
+	end)
+	addColor(fogSet, "Fog Color", function(c)
+		fogColor = c
+		if fogEnabled then applyFogSettings() end
+	end)
+	addSlider(fogSet, "Density", 0, 10, 6, function(v)
+		fogDensity = v / 10
+		if fogEnabled then applyFogSettings() end
+	end)
+
+	local function restoreFOV()
+		if fovControlled and fovBaseline ~= nil then Camera.FieldOfView = fovBaseline end
+		fovControlled, fovBaseline = false, nil
+	end
+	local function setFOVLock(enabled)
+		if enabled then
+			if not fovControlled then fovBaseline = Camera.FieldOfView end
+			fovControlled = true
+			fovLockEnabled = true
+			Camera.FieldOfView = targetFOV
+		else
+			fovLockEnabled = false
+			restoreFOV()
+		end
+	end
+
+	-- FOV: только собственный RenderStep hook; Camera:Interpolate не блокируется
+	RunService:BindToRenderStep("BurmaldaHookFOV", Enum.RenderPriority.First.Value, function()
+		if Runtime.Unloaded or not fovLockEnabled or not fovControlled then return end
+		Camera.FieldOfView = targetFOV
+	end)
+	onCleanup(function()
+		fovLockEnabled = false
+		RunService:UnbindFromRenderStep("BurmaldaHookFOV")
+		restoreFOV()
+	end)
+
+	-- Доп. хук на изменение свойства
+	local fovChangedConnection = Camera:GetPropertyChangedSignal("FieldOfView"):Connect(function()
+		if not Runtime.Unloaded and fovLockEnabled and fovControlled and Camera.FieldOfView ~= targetFOV then
+			Camera.FieldOfView = targetFOV
+		end
+	end)
+	onCleanup(function()
+		fovLockEnabled = false
+		if fovChangedConnection then fovChangedConnection:Disconnect(); fovChangedConnection = nil end
+	end)
+
+	local fovLockSet = createFeature(rc, "Custom FOV", false, function(v)
+		setFOVLock(v)
+	end)
+	addSlider(fovLockSet, "FOV Value", 30, 120, 90, function(v)
+		targetFOV = v
+	end)
+	addBind(fovLockSet, "Toggle Bind", "None", function()
+		if _fFS["Custom FOV"] then _fFS["Custom FOV"](not fovLockEnabled) end
+	end)
+
+	nvEnabled = false
+	local _nvOrig = {}
+
+	local function enableNV()
+		if _nvOrig.ClockTime == nil then
+			_nvOrig.Brightness     = _Lighting.Brightness
+			_nvOrig.Ambient        = _Lighting.Ambient
+			_nvOrig.OutdoorAmbient = _Lighting.OutdoorAmbient
+			_nvOrig.ClockTime      = _Lighting.ClockTime
+		end
+		_Lighting.Brightness     = 5
+		_Lighting.Ambient        = Color3.fromRGB(180, 180, 180)
+		_Lighting.OutdoorAmbient = Color3.fromRGB(160, 160, 160)
+		_Lighting.ClockTime      = 14
+	end
+
+	local function disableNV()
+		if _nvOrig.Brightness ~= nil then
+			_Lighting.Brightness     = _nvOrig.Brightness
+			_Lighting.Ambient        = _nvOrig.Ambient
+			_Lighting.OutdoorAmbient = _nvOrig.OutdoorAmbient
+			_Lighting.ClockTime      = _nvOrig.ClockTime
+			_nvOrig = {}
+		end
+	end
+
+	onCleanup(function() nvEnabled = false; disableNV() end)
+	local nvSet = createFeature(rc, "Night Vision", false, function(v)
+		if v and S.Fullbright and _fFS["Fullbright"] then _fFS["Fullbright"](false) end
+		nvEnabled = v
+		if v then
+			if fogEnabled then disableFog() end
+			enableNV()
+		else
+			disableNV()
+			if fogEnabled then enableFog() end
+		end
+	end, false)
+
+	-- Low PC: reversible rendering reductions only; no game objects are destroyed.
+	do
+		local state = { Backups = {}, Connections = {} }
+		Runtime.LowPCState = state
+
+		local function setProperty(object, key, value)
+			if not object then return end
+			local saved = state.Backups[object]
+			if not saved then
+				saved = {}
+				state.Backups[object] = saved
+			end
+			if saved[key] == nil then
+				local ok, original = pcall(function() return object[key] end)
+				if not ok or original == nil then return end
+				saved[key] = original
+			end
+			pcall(function() object[key] = value end)
+		end
+
+		local function isDecorative(object)
+			local current = object
+			for _ = 1, 6 do
+				if not current then break end
+				if current.ClassName == "Tool" then return false end
+				local name = string.lower(tostring(current.Name))
+				if string.find(name, "grass", 1, true)
+					or string.find(name, "leav", 1, true)
+					or string.find(name, "foliage", 1, true)
+					or string.find(name, "bush", 1, true)
+					or string.find(name, "shrub", 1, true)
+					or string.find(name, "fern", 1, true)
+					or string.find(name, "flower", 1, true)
+					or string.find(name, "reed", 1, true)
+					or string.find(name, "cloud", 1, true) then
+					return true
+				end
+				current = current.Parent
+			end
+			return false
+		end
+
+		local function applyObject(object)
+			local className = object.ClassName
+			if className == "ParticleEmitter" or className == "Trail" or className == "Beam"
+				or className == "Smoke" or className == "Fire" or className == "Sparkles"
+				or className == "Clouds"
+				or className == "BloomEffect" or className == "BlurEffect"
+				or className == "SunRaysEffect" or className == "DepthOfFieldEffect"
+				or className == "ColorCorrectionEffect" then
+				setProperty(object, "Enabled", false)
+			end
+			if className == "Atmosphere" then
+				setProperty(object, "Density", 0)
+				setProperty(object, "Haze", 0)
+				setProperty(object, "Glare", 0)
+			end
+			if isDecorative(object) then
+				if object:IsA("BasePart") then
+					setProperty(object, "LocalTransparencyModifier", 1)
+					setProperty(object, "Transparency", 1)
+					setProperty(object, "CastShadow", false)
+				elseif className == "Decal" or className == "Texture" then
+					setProperty(object, "Transparency", 1)
+				elseif className == "SpecialMesh" then
+					setProperty(object, "TextureId", "")
+				end
+			end
+		end
+
+		local scanId = 0
+		local function applyLowPC()
+			setProperty(_Lighting, "GlobalShadows", false)
+			local terrain = workspace:FindFirstChildOfClass("Terrain")
+			if terrain then
+				setProperty(terrain, "WaterWaveSize", 0)
+				setProperty(terrain, "WaterWaveSpeed", 0)
+				setProperty(terrain, "Decoration", false)
+			end
+			local ok, rendering = pcall(function() return settings().Rendering end)
+			if ok and rendering then setProperty(rendering, "QualityLevel", Enum.QualityLevel.Level01) end
+			scanId += 1
+			local currentScan = scanId
+			local stack = {}
+			local function push(root)
+				local children = root:GetChildren()
+				if #children > 0 then stack[#stack + 1] = {children = children, index = 1} end
+			end
+			push(workspace)
+			push(_Lighting)
+			local function step()
+				if currentScan ~= scanId or not S.LowPC or Runtime.Unloaded then return end
+				local processed = 0
+				while #stack > 0 and processed < 250 do
+					local frame = stack[#stack]
+					local object = frame.children[frame.index]
+					frame.index += 1
+					if object then
+						applyObject(object)
+						processed += 1
+						local children = object:GetChildren()
+						if #children > 0 then stack[#stack + 1] = {children = children, index = 1} end
+					else
+						table.remove(stack)
+					end
+				end
+				if #stack > 0 then task.delay(0.01, step) end
+			end
+			step()
+		end
+
+		local function disconnectLowPC()
+			scanId += 1
+			for _, connection in ipairs(state.Connections) do pcall(function() connection:Disconnect() end) end
+			table.clear(state.Connections)
+		end
+
+		local function restoreLowPC()
+			disconnectLowPC()
+			for object, saved in pairs(state.Backups) do
+				for key, value in pairs(saved) do
+					pcall(function() object[key] = value end)
+				end
+			end
+			table.clear(state.Backups)
+		end
+
+		createFeature(rc, "Low PC", false, function(v)
+			if v and S.Fullbright and _fFS["Fullbright"] then _fFS["Fullbright"](false) end
+			S.LowPC = v
+			if v then
+				if #state.Connections == 0 then
+					table.insert(state.Connections, workspace.DescendantAdded:Connect(function(object)
+						if S.LowPC then applyObject(object) end
+					end))
+					table.insert(state.Connections, _Lighting.DescendantAdded:Connect(function(object)
+						if S.LowPC then applyObject(object) end
+					end))
+				end
+				applyLowPC()
+			else
+				restoreLowPC()
+			end
+		end, false)
+		onCleanup(function()
+			S.LowPC = false
+			restoreLowPC()
+		end)
+	end
+
+	-- Custom Hand Position
+	ViewmodelConfig = { X = 0, Y = 0, Z = 0 }
+	handPosEnabled = false
+	local handPosConn = nil
+	local handPosLastVM = nil
+	local handPosLastWritten = nil
+	local handPosBase = nil
+	local handPosHasApplied = false
+
+	local function restoreHandPosition()
+		if handPosHasApplied and handPosLastVM and handPosLastVM.Parent then
+			pcall(function()
+				local current = handPosLastVM:GetPivot()
+				-- Remove our offset only while the model is still at the exact
+				-- pivot we wrote. If the game already supplied a fresh pivot,
+				-- applying the inverse would move the game's new baseline.
+				if handPosLastWritten and handPosBase and current == handPosLastWritten then
+					handPosLastVM:PivotTo(handPosBase)
+				end
+			end)
+		end
+		handPosHasApplied = false
+		handPosLastWritten = nil
+		handPosBase = nil
+	end
+
+	local function getViewmodel()
+		for _, obj in ipairs(Camera:GetChildren()) do
+			if obj:IsA("Model") and (obj.Name:lower():find("view") or obj.Name:lower():find("arm") or obj.Name:lower():find("hand")) then
+				return obj
+			end
+		end
+		for _, obj in ipairs(workspace:GetChildren()) do
+			if obj:IsA("Model") and obj.Name:lower():find("viewmodel") then
+				return obj
+			end
+		end
+		return nil
+	end
+
+	local function startHandPos()
+		if handPosConn then handPosConn:Disconnect(); handPosConn = nil end
+		handPosConn = RunService.RenderStepped:Connect(function()
+			if Runtime.Unloaded then return end
+			local vm = getViewmodel()
+			if vm ~= handPosLastVM then
+				restoreHandPosition()
+				handPosLastVM = vm
+			end
+			if handPosEnabled and vm then
+				local desired = CFrame.new(ViewmodelConfig.X, ViewmodelConfig.Y, ViewmodelConfig.Z)
+				local current = vm:GetPivot()
+				local base = current
+				-- Persistent viewmodels need de-accumulation; game-reset
+				-- viewmodels are already a fresh base and must not be inverted.
+				if handPosHasApplied and handPosLastWritten and handPosBase and current == handPosLastWritten then
+					base = handPosBase
+				end
+				local written = base * desired
+				vm:PivotTo(written)
+				handPosLastWritten = written
+				handPosBase = base
+				handPosHasApplied = true
+			elseif handPosHasApplied then
+				restoreHandPosition()
+			end
+		end)
+	end
+	startHandPos()
+	onCleanup(function()
+		handPosEnabled = false
+		restoreHandPosition()
+		if handPosConn then handPosConn:Disconnect(); handPosConn = nil end
+		handPosLastVM = nil
+	end)
+
+	local handSet = createFeature(lc, "Custom Hand Position", false, function(v)
+		handPosEnabled = v
+		if not v then
+			restoreHandPosition()
+			ViewmodelConfig.X = 0
+			ViewmodelConfig.Y = 0
+			ViewmodelConfig.Z = 0
+		end
+	end)
+	addSlider(handSet, "X (Лево/Право)", -50, 50, 0, function(v)
+		ViewmodelConfig.X = v / 10
+	end)
+	addSlider(handSet, "Y (Низ/Верх)", -50, 50, 0, function(v)
+		ViewmodelConfig.Y = v / 10
+	end)
+	addSlider(handSet, "Z (Назад/Вперёд)", -50, 50, 0, function(v)
+		ViewmodelConfig.Z = v / 10
+	end)
+
+end
+
+do
+	local NA = Color3.fromRGB(255,255,255)
+	local NB = Color3.fromRGB(0,0,0)
+	local NT = 2.5
+	Runtime.PickupSeen = {}
+
+	local nGui = newScreenGui(pGui)
+	nGui.Name = "BurmaldaHookPickup"; nGui.DisplayOrder = 9999; nGui.ResetOnSpawn = false
+
+	local cont = Instance.new("Frame",nGui)
+	local _isPC = Camera.ViewportSize.X >= 1024
+	cont.Size = UDim2.new(0, _isPC and 440 or 220, 0.9, 0)
+	cont.Position = UDim2.new(1,-10,1,-10)
+	cont.AnchorPoint = Vector2.new(1,1)
+	cont.BackgroundTransparency = 1
+	local cList = Instance.new("UIListLayout",cont)
+	cList.VerticalAlignment = Enum.VerticalAlignment.Bottom
+	cList.HorizontalAlignment = Enum.HorizontalAlignment.Right
+	cList.Padding = UDim.new(0,3)
+
+	local function notify(msg)
+		if not PickupNotifEnabled then return end
+		local f = Instance.new("Frame",cont)
+		f.BackgroundColor3 = NB; f.BackgroundTransparency = 1
+		f.AutomaticSize = Enum.AutomaticSize.XY; f.ClipsDescendants = true
+		Instance.new("UICorner",f).CornerRadius = UDim.new(0,4)
+		local c = Instance.new("Frame",f)
+		c.BackgroundTransparency = 1; c.AutomaticSize = Enum.AutomaticSize.XY
+		local cl = Instance.new("UIListLayout",c)
+		cl.FillDirection = Enum.FillDirection.Horizontal
+		cl.VerticalAlignment = Enum.VerticalAlignment.Center; cl.Padding = UDim.new(0,4)
+		local cp = Instance.new("UIPadding",c)
+		cp.PaddingLeft=UDim.new(0,8);cp.PaddingRight=UDim.new(0,8)
+		cp.PaddingTop=UDim.new(0,3);cp.PaddingBottom=UDim.new(0,3)
+		local ico = Instance.new("ImageLabel",c)
+		local _ps = Camera.ViewportSize.X >= 1024
+		ico.Size=UDim2.new(0,_ps and 26 or 13,0,_ps and 26 or 13);ico.BackgroundTransparency=1
+		ico.Image="rbxassetid://17824303745";ico.ImageTransparency=1
+		local sep = Instance.new("TextLabel",c)
+		sep.BackgroundTransparency=1;sep.TextColor3=NA;sep.TextTransparency=1
+		local _pts = Camera.ViewportSize.X >= 1024
+		sep.Font=Enum.Font.GothamBold;sep.TextSize=_pts and 20 or 10;sep.Text="|";sep.Size=UDim2.new(0,_pts and 12 or 6,0,_pts and 24 or 12)
+		local txt = Instance.new("TextLabel",c)
+		txt.BackgroundTransparency=1;txt.TextColor3=NA;txt.TextTransparency=1
+		txt.Font=Enum.Font.GothamBold;txt.TextSize=Camera.ViewportSize.X >= 1024 and 20 or 10
+		txt.Text=msg;txt.AutomaticSize=Enum.AutomaticSize.XY
+		local bar = Instance.new("Frame",f)
+		bar.Size=UDim2.new(1,0,0,1);bar.Position=UDim2.new(0,0,1,0)
+		bar.AnchorPoint=Vector2.new(0,1);bar.BackgroundColor3=NA;bar.BorderSizePixel=0
+		f.Position=UDim2.new(0,30,0,0)
+		TS:Create(f,TweenInfo.new(0.25),{Position=UDim2.new(0,0,0,0),BackgroundTransparency=0.25}):Play()
+		TS:Create(ico,TweenInfo.new(0.25),{ImageTransparency=0}):Play()
+		TS:Create(sep,TweenInfo.new(0.25),{TextTransparency=0}):Play()
+		TS:Create(txt,TweenInfo.new(0.25),{TextTransparency=0}):Play()
+		local bt = TS:Create(bar,TweenInfo.new(NT),{Size=UDim2.new(0,0,0,1)})
+		task.delay(0.2,function() bt:Play() end)
+		bt.Completed:Connect(function()
+			local o=TS:Create(f,TweenInfo.new(0.25),{Position=UDim2.new(1,20,0,0),BackgroundTransparency=1})
+			o:Play(); o.Completed:Connect(function() f:Destroy() end)
+		end)
+	end
+
+	task.spawn(function()
+		while true do
+		if Runtime.Unloaded then break end
+			if PickupNotifEnabled then
+				local ai = pGui:FindFirstChild("AddInfo")
+				if ai then
+
+					for _,ch in ipairs(ai:GetChildren()) do
+						if ch:IsA("TextLabel") and ch.Name=="Example" then
+							local text = ch.Text
+							if text == "" then
+								Runtime.PickupSeen[ch] = nil
+							elseif Runtime.PickupSeen[ch] ~= text then
+								Runtime.PickupSeen[ch] = text
+								notify(text)
+							end
+						end
+					end
+				end
+			end
+			task.wait(0.1)
+		end
+	end)
+end
+
+local circleFill = newDrawing("Circle")
+circleFill.Radius = S.FOV
+circleFill.Thickness = 0
+circleFill.NumSides = 64
+circleFill.Color = AC_FOV_FILL
+circleFill.Transparency = S.FOVFillTransparency
+circleFill.Filled = true
+circleFill.Visible = false
+circleFill.Position = Vector2.new(Camera.ViewportSize.X * 0.5, Camera.ViewportSize.Y * 0.5)
+pcall(function() circleFill.ZIndex = 1 end)
+
+local circle = newDrawing("Circle")
+circle.Radius = S.FOV
+circle.Thickness = 1
+circle.NumSides = 64
+circle.Color = AC_FOV
+circle.Transparency = 1
+circle.Filled = false
+circle.Visible = S.FOVCircle
+circle.Position = circleFill.Position
+pcall(function() circle.ZIndex = 2 end)
+
+local TargetLine = newDrawing("Line")
+TargetLine.Visible = false
+TargetLine.Color = S.MBTargetLineColor
+TargetLine.Thickness = 1
+TargetLine.Transparency = 1
+pcall(function() TargetLine.ZIndex = 3 end)
+
+-- ESP v2: Velocity-inspired Drawing renderer with owned Highlight cleanup.
+-- No external fonts, assets, HTTP, loaders or camera writes.
+
+local ESPBoxes, TracerObjs, NameObjs, DistObjs = {}, {}, {}, {}
+local ESPCorners, ESPFills, HPBars = {}, {}, {}
+local WeaponObjs, HPTextObjs, ChamsObjs = {}, {}, {}
+-- SA_CurrentTarget is declared in main.lua before Crosshair, ESP and extra HUD consumers.
+local _espLastUpdate = 0
+local espConnection
+
+do
+local function initializeESP()
+local ESPCoreGui = game:GetService("CoreGui")
+
+local function removeDrawing(object)
+	if object then pcall(function() object:Remove() end) end
+end
+
+local function hideCorners(player)
+	for _, line in ipairs(ESPCorners[player] or {}) do line.Visible = false end
+end
+
+local function hideESP2D(player)
+	if ESPBoxes[player] then ESPBoxes[player].Visible = false end
+	if ESPFills[player] then ESPFills[player].Visible = false end
+	hideCorners(player)
+	if TracerObjs[player] then
+		TracerObjs[player][1].Visible = false
+		TracerObjs[player][2].Visible = false
+	end
+	if NameObjs[player] then NameObjs[player].Visible = false end
+	if DistObjs[player] then DistObjs[player].Visible = false end
+	if WeaponObjs[player] then WeaponObjs[player].Visible = false end
+	if HPBars[player] then
+		HPBars[player].bg.Visible = false
+		HPBars[player].fg.Visible = false
+	end
+	if HPTextObjs[player] then HPTextObjs[player].Visible = false end
+end
+
+local function destroyChams(player)
+	local highlight = ChamsObjs[player]
+	ChamsObjs[player] = nil
+	if highlight then pcall(function() highlight:Destroy() end) end
+end
+
+local function destroyAllChams()
+	for player in pairs(ChamsObjs) do destroyChams(player) end
+end
+
+local function removeESP(player)
+	hideESP2D(player)
+	destroyChams(player)
+	removeDrawing(ESPBoxes[player])
+	removeDrawing(ESPFills[player])
+	removeDrawing(NameObjs[player])
+	removeDrawing(DistObjs[player])
+	removeDrawing(WeaponObjs[player])
+	removeDrawing(HPTextObjs[player])
+	if TracerObjs[player] then
+		for _, line in ipairs(TracerObjs[player]) do removeDrawing(line) end
+	end
+	if HPBars[player] then
+		removeDrawing(HPBars[player].bg)
+		removeDrawing(HPBars[player].fg)
+	end
+	for _, line in ipairs(ESPCorners[player] or {}) do removeDrawing(line) end
+	ESPBoxes[player] = nil
+	ESPFills[player] = nil
+	ESPCorners[player] = nil
+	TracerObjs[player] = nil
+	NameObjs[player] = nil
+	DistObjs[player] = nil
+	WeaponObjs[player] = nil
+	HPTextObjs[player] = nil
+	HPBars[player] = nil
+end
+
+local function createESP(player)
+	if Runtime.Unloaded or player == LocalPlayer or ESPBoxes[player] then return end
+	local box = newDrawing("Square")
+	box.Color = AC_ESP
+	box.Thickness = 1
+	box.Filled = false
+	box.Transparency = 1
+	box.Visible = false
+
+	local fill = newDrawing("Square")
+	fill.Color = AC_FILL
+	fill.Thickness = 0
+	fill.Filled = true
+	fill.Transparency = S.BoxFillTransparency
+	fill.Visible = false
+
+	local corners = {}
+	for index = 1, 8 do
+		local line = newDrawing("Line")
+		line.Color = AC_ESP
+		line.Thickness = 1
+		line.Transparency = 1
+		line.Visible = false
+		corners[index] = line
+	end
+
+	local tracer = newDrawing("Line")
+	tracer.Color = AC_TR
+	tracer.Thickness = 1
+	tracer.Transparency = 1
+	tracer.Visible = false
+	local tracerOutline = newDrawing("Line")
+	tracerOutline.Color = Color3.fromRGB(0, 0, 0)
+	tracerOutline.Thickness = 3
+	tracerOutline.Transparency = 1
+	tracerOutline.Visible = false
+
+	local name = newDrawing("Text")
+	name.Size = 12
+	name.Center = true
+	name.Outline = true
+	name.Color = AC_NAME
+	name.Transparency = 1
+	name.Visible = false
+
+	local distance = newDrawing("Text")
+	distance.Size = 11
+	distance.Center = true
+	distance.Outline = true
+	distance.Color = AC_DIST
+	distance.Transparency = 1
+	distance.Visible = false
+
+	local weapon = newDrawing("Text")
+	weapon.Size = 11
+	weapon.Center = true
+	weapon.Outline = true
+	weapon.Color = AC_WEAPON
+	weapon.Transparency = 1
+	weapon.Visible = false
+
+	local hpBg = newDrawing("Square")
+	hpBg.Filled = true
+	hpBg.Color = Color3.fromRGB(0, 0, 0)
+	hpBg.Transparency = 0.5
+	hpBg.Visible = false
+	local hpFg = newDrawing("Square")
+	hpFg.Filled = true
+	hpFg.Color = AC_HP
+	hpFg.Transparency = 1
+	hpFg.Visible = false
+
+	local hpText = newDrawing("Text")
+	hpText.Size = 10
+	hpText.Center = true
+	hpText.Outline = true
+	hpText.Color = AC_HP
+	hpText.Transparency = 1
+	hpText.Visible = false
+
+	ESPBoxes[player] = box
+	ESPFills[player] = fill
+	ESPCorners[player] = corners
+	TracerObjs[player] = {tracer, tracerOutline}
+	NameObjs[player] = name
+	DistObjs[player] = distance
+	WeaponObjs[player] = weapon
+	HPBars[player] = {bg = hpBg, fg = hpFg}
+	HPTextObjs[player] = hpText
+end
+
+local function updateChams(player, character)
+	if not S.ESPChams then
+		destroyChams(player)
+		return
+	end
+	local highlight = ChamsObjs[player]
+	if not highlight then
+		local ok, object = pcall(Instance.new, "Highlight")
+		if not ok or not object then return end
+		highlight = object
+		ChamsObjs[player] = highlight
+	end
+	pcall(function()
+		highlight.Name = "BurmaldaHookESP"
+		highlight.Adornee = character
+		highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+		highlight.FillColor = AC_CHAMS
+		highlight.OutlineColor = AC_CHAMS_OUTLINE
+		highlight.FillTransparency = S.ChamsFillTransparency
+		highlight.OutlineTransparency = S.ChamsOutlineTransparency
+		if highlight.Parent ~= ESPCoreGui then highlight.Parent = ESPCoreGui end
+		highlight.Enabled = true
+	end)
+end
+
+local function setCornerLine(player, index, ax, ay, bx, by, color)
+	local line = ESPCorners[player][index]
+	line.From = Vector2.new(ax, ay)
+	line.To = Vector2.new(bx, by)
+	line.Color = color
+	line.Visible = true
+end
+
+local function drawCornerBox(player, x, y, sx, sy, color)
+	local armX = math.max(3, math.min(12, sx * 0.35))
+	local armY = math.max(3, math.min(12, sy * 0.35))
+	setCornerLine(player, 1, x, y, x + armX, y, color)
+	setCornerLine(player, 2, x, y, x, y + armY, color)
+	setCornerLine(player, 3, x + sx - armX, y, x + sx, y, color)
+	setCornerLine(player, 4, x + sx, y, x + sx, y + armY, color)
+	setCornerLine(player, 5, x, y + sy, x + armX, y + sy, color)
+	setCornerLine(player, 6, x, y + sy - armY, x, y + sy, color)
+	setCornerLine(player, 7, x + sx - armX, y + sy, x + sx, y + sy, color)
+	setCornerLine(player, 8, x + sx, y + sy - armY, x + sx, y + sy, color)
+end
+
+local HP_LOW = Color3.fromRGB(255, 60, 60)
+local HP_MEDIUM = Color3.fromRGB(255, 193, 0)
+local HP_HIGH = Color3.fromRGB(80, 220, 100)
+local function getHealthColor(ratio)
+	if not S.HPDynamicColor then return AC_HP end
+	if ratio < 0.5 then return HP_LOW:Lerp(HP_MEDIUM, ratio * 2) end
+	return HP_MEDIUM:Lerp(HP_HIGH, (ratio - 0.5) * 2)
+end
+
+for _, player in ipairs(Players:GetPlayers()) do createESP(player) end
+local playerAddedConnection = Players.PlayerAdded:Connect(function(player)
+	if not Runtime.Unloaded then createESP(player) end
+end)
+local playerRemovingConnection = Players.PlayerRemoving:Connect(function(player)
+	if Runtime.Unloaded then return end
+	removeESP(player)
+	if player.Character then
+		local head = player.Character:FindFirstChild("Head")
+		if head then
+			_visCache[head] = nil
+			_visCacheTime[head] = nil
+		end
+	end
+end)
+onCleanup(function()
+	if playerAddedConnection then playerAddedConnection:Disconnect(); playerAddedConnection = nil end
+	if playerRemovingConnection then playerRemovingConnection:Disconnect(); playerRemovingConnection = nil end
+	destroyAllChams()
+	table.clear(_visCache)
+	table.clear(_visCacheTime)
+end)
+
+local function updateESPPlayer(player, box, context)
+	local screenSize = context.screenSize
+	local center = context.center
+	local cameraPosition = context.cameraPosition
+	local espEnabled = context.espEnabled
+	local tracersOn = context.tracersOn
+	local namesOn = context.namesOn
+	local hpBarOn = context.hpBarOn
+	local espRadius = context.espRadius
+		local character = player.Character
+		local root = character and character:FindFirstChild("HumanoidRootPart")
+		local humanoid = character and character:FindFirstChild("Humanoid")
+		if not root or not humanoid or humanoid.Health <= 0 then
+			hideESP2D(player)
+			destroyChams(player)
+			return
+		end
+
+		local rootPosition = root.Position
+		local distance3D = (cameraPosition - rootPosition).Magnitude
+		if distance3D > espRadius then
+			hideESP2D(player)
+			destroyChams(player)
+			return
+		end
+
+		updateChams(player, character)
+		local projected, onScreen = Camera:WorldToViewportPoint(rootPosition)
+		if not onScreen then
+			hideESP2D(player)
+			return
+		end
+		local screenPosition = Vector2.new(projected.X, projected.Y)
+		local top = Camera:WorldToViewportPoint(rootPosition + Vector3.new(0, 3, 0))
+		local bottom = Camera:WorldToViewportPoint(rootPosition - Vector3.new(0, 3, 0))
+		local sx = 8
+		local sy = 12
+		local x = screenPosition.X - sx * 0.5
+		local y = screenPosition.Y - sy * 0.5
+		if top and bottom then
+			sy = math.max(math.abs(top.Y - bottom.Y), 12)
+			sx = math.max(sy * 0.6, 8)
+			x = (top.X + bottom.X) * 0.5 - sx * 0.5
+			y = math.min(top.Y, bottom.Y)
+		end
+
+		if espEnabled then
+			local cornerStyle = S.ESPBoxType == "Corner"
+			box.Visible = not cornerStyle
+			box.Size = Vector2.new(sx, sy)
+			box.Position = Vector2.new(x, y)
+			box.Color = AC_ESP
+			if cornerStyle then
+				drawCornerBox(player, x, y, sx, sy, AC_ESP)
+			else
+				hideCorners(player)
+			end
+			local fill = ESPFills[player]
+			fill.Visible = S.BoxFill
+			if S.BoxFill then
+				fill.Size = Vector2.new(sx, sy)
+				fill.Position = Vector2.new(x, y)
+				fill.Color = AC_FILL
+				fill.Transparency = S.BoxFillTransparency
+			end
+		else
+			box.Visible = false
+			ESPFills[player].Visible = false
+			hideCorners(player)
+		end
+
+		if tracersOn then
+			local tracer = TracerObjs[player][1]
+			local fromY = S.TracerOrigin == 1 and 0 or S.TracerOrigin == 2 and screenSize.Y or center.Y
+			tracer.From = Vector2.new(center.X, fromY)
+			tracer.To = screenPosition
+			tracer.Color = AC_TR
+			tracer.Visible = true
+			TracerObjs[player][2].Visible = false
+		else
+			TracerObjs[player][1].Visible = false
+			TracerObjs[player][2].Visible = false
+		end
+
+		if namesOn then
+			NameObjs[player].Text = player.Name
+			NameObjs[player].Position = Vector2.new(x + sx * 0.5, y - 12)
+			NameObjs[player].Color = AC_NAME
+			NameObjs[player].Visible = true
+		else
+			NameObjs[player].Visible = false
+		end
+
+		if S.ESPDist then
+			DistObjs[player].Text = math.floor(distance3D + 0.5) .. " m"
+			DistObjs[player].Position = Vector2.new(x + sx * 0.5, y + sy + 4)
+			DistObjs[player].Color = AC_DIST
+			DistObjs[player].Visible = true
+		else
+			DistObjs[player].Visible = false
+		end
+
+		if S.ESPWeapon then
+			local tool = character:FindFirstChildOfClass("Tool")
+			WeaponObjs[player].Text = tool and tool.Name or "Unarmed"
+			WeaponObjs[player].Position = Vector2.new(x + sx * 0.5, y + sy + (S.ESPDist and 18 or 4))
+			WeaponObjs[player].Color = AC_WEAPON
+			WeaponObjs[player].Visible = true
+		else
+			WeaponObjs[player].Visible = false
+		end
+
+		if hpBarOn then
+			local ratio = humanoid.MaxHealth > 0 and math.clamp(humanoid.Health / humanoid.MaxHealth, 0, 1) or 0
+			local healthColor = getHealthColor(ratio)
+			local hpBg = HPBars[player].bg
+			local hpFg = HPBars[player].fg
+			local barWidth = 3
+			if S.HPBarSide == 1 then
+				local bx = x - barWidth - 3
+				hpBg.Size = Vector2.new(barWidth, sy)
+				hpBg.Position = Vector2.new(bx, y)
+				hpFg.Size = Vector2.new(barWidth, sy * ratio)
+				hpFg.Position = Vector2.new(bx, y + sy * (1 - ratio))
+				if S.HPHealthNumber then
+					HPTextObjs[player].Position = Vector2.new(bx - 10, y + sy * (1 - ratio))
+				end
+			else
+				local by = y - barWidth - 3
+				hpBg.Size = Vector2.new(sx, barWidth)
+				hpBg.Position = Vector2.new(x, by)
+				hpFg.Size = Vector2.new(sx * ratio, barWidth)
+				hpFg.Position = Vector2.new(x, by)
+				if S.HPHealthNumber then
+					HPTextObjs[player].Position = Vector2.new(x + sx * ratio, by - 7)
+				end
+			end
+			hpBg.Visible = true
+			hpFg.Color = healthColor
+			hpFg.Visible = true
+			HPTextObjs[player].Text = tostring(math.floor(humanoid.Health + 0.5))
+			HPTextObjs[player].Color = healthColor
+			HPTextObjs[player].Visible = S.HPHealthNumber
+		else
+			HPBars[player].bg.Visible = false
+			HPBars[player].fg.Visible = false
+			HPTextObjs[player].Visible = false
+		end
+	end
+
+local _ESP_INTERVAL = 1 / 30
+espConnection = RunService.RenderStepped:Connect(function()
+	if Runtime.Unloaded then return end
+	local now = tick()
+	local interval = S.LowPC and 0.1 or _ESP_INTERVAL
+	if now - _espLastUpdate < interval then return end
+	_espLastUpdate = now
+
+	local currentCamera = workspace.CurrentCamera
+	if currentCamera then Camera = currentCamera end
+	if not Camera then
+		circle.Visible = false
+		circleFill.Visible = false
+		TargetLine.Visible = false
+		for player in pairs(ESPBoxes) do hideESP2D(player) end
+		destroyAllChams()
+		return
+	end
+	local screenSize = Camera.ViewportSize
+	local center = Vector2.new(screenSize.X * 0.5, screenSize.Y * 0.5)
+	local cameraPosition = Camera.CFrame.Position
+	local fovPosition = S.MBFovMode == "pc" and UIS:GetMouseLocation() or center
+
+	if S.FOVCircle then
+		circle.Visible = true
+		circle.Transparency = 1
+		circle.Filled = false
+		circle.Position = fovPosition
+		circle.Radius = S.FOV
+		circle.Color = S.SilentAim and SA_CurrentTarget and AC_FOV_TARGET or AC_FOV
+		circleFill.Visible = S.FOVFill
+		circleFill.Position = fovPosition
+		circleFill.Radius = S.FOV
+		circleFill.Color = AC_FOV_FILL
+		circleFill.Transparency = S.FOVFillTransparency
+	else
+		circle.Visible = false
+		circleFill.Visible = false
+	end
+
+	if S.MBTargetLine and SA_CurrentTarget and SA_CurrentTarget.Parent then
+		local worldPosition = SA_CurrentTarget.Position
+		if S.SilentAim and ProjectileSilent and ProjectileSilent.TargetPart == SA_CurrentTarget
+			and typeof(ProjectileSilent.TargetPosition) == "Vector3" then
+			worldPosition = ProjectileSilent.TargetPosition
+		end
+		local targetPosition = Camera:WorldToViewportPoint(worldPosition)
+		TargetLine.From = fovPosition
+		TargetLine.To = Vector2.new(targetPosition.X, targetPosition.Y)
+		TargetLine.Color = S.MBTargetLineColor
+		TargetLine.Visible = true
+	else
+		TargetLine.Visible = false
+	end
+
+	local espEnabled = S.ESPEnabled
+	local tracersOn = S.Tracers
+	local namesOn = S.Names
+	local hpBarOn = S.HPBar
+	local espRadius = S.ESPRadius
+	local anyESP = espEnabled or tracersOn or namesOn or hpBarOn
+		or S.ESPDist or S.ESPWeapon or S.ESPChams
+	if not anyESP then
+		for player in pairs(ESPBoxes) do hideESP2D(player) end
+		destroyAllChams()
+		return
+	end
+
+	local context = {
+		screenSize = screenSize,
+		center = center,
+		cameraPosition = cameraPosition,
+		espEnabled = espEnabled,
+		tracersOn = tracersOn,
+		namesOn = namesOn,
+		hpBarOn = hpBarOn,
+		espRadius = espRadius,
+	}
+	Runtime.ESPLastError = nil
+	for player, box in pairs(ESPBoxes) do
+		local ok, err = pcall(updateESPPlayer, player, box, context)
+		if not ok then
+			hideESP2D(player)
+			destroyChams(player)
+			Runtime.ESPLastError = tostring(err)
+		end
+	end
+end)
+end
+initializeESP()
+end -- function-scoped ESP helpers; public state above remains available to runtime hooks.
+onCleanup(function()
+	if espConnection then espConnection:Disconnect() end
+end)
+
+
+-- Reference-compatible Silent Aim path for rost alpha.
+-- Normal shots always pass through unchanged. VFX.CreateProjectile and VectorUtil.FireRemote
+-- are intentionally not hooked: the previous experimental hooks could break hit registration.
+
+local projectileInitOK, projectileInitError = pcall(function()
+	ProjectileCore = {
+		Running = true,
+		GunBaseRedirecting = false,
+		Status = {
+			gunbase = false,
+			raycast = true,
+			calls = 0,
+			normalCalls = 0,
+			redirects = 0,
+			remoteCalls = 0,
+			remoteRedirects = 0,
+			fallbackSkips = 0,
+			nonCombatSkips = 0,
+			actionSkips = 0,
+			explosiveSkips = 0,
+			bufferWrites = 0,
+			target = "inactive",
+			visiblePointChecks = 0,
+			lastShotReason = "not-fired",
+		},
+	}
+	ProjectileSilent = {
+		TargetPart = nil,
+		TargetPosition = nil,
+		-- World-space offset from TargetPart.Position to the sampled visible point.
+		-- Namecall fallbacks apply it to the current Position without nested Roblox calls.
+		TargetOffset = nil,
+		TargetPlayer = nil,
+		TargetCharacter = nil,
+		TargetHumanoid = nil,
+		TargetVisible = false,
+		LastShotPart = nil,
+		LastShotAt = nil,
+		HeldTool = nil,
+		HeldToolName = "",
+		ExplosiveTool = false,
+		Installed = { GunBase = false },
+	}
+
+	-- Explosives/throwables must keep the game's original trajectory. This cache is
+	-- refreshed outside __namecall; the hook itself only reads these plain fields.
+	local function hasExplosiveName(name)
+		if type(name) ~= "string" then return false end
+		local lower = string.lower(name)
+		for _, pattern in ipairs({
+			"c4", "c%-4", "rocket", "rpg", "launcher", "grenade", "bomb",
+			"dynamite", "satchel", "explosive", "molotov", "landmine", "tnt",
+			"detonator", "detonate", "^ied", "^mine",
+		}) do
+			if string.find(lower, pattern) then return true end
+		end
+		return false
+	end
+	local function refreshHeldTool()
+		local character = LocalPlayer.Character
+		local tool = character and character:FindFirstChildOfClass("Tool")
+		local name = tool and tostring(tool.Name or "") or ""
+		ProjectileSilent.HeldTool = tool
+		ProjectileSilent.HeldToolName = name
+		ProjectileSilent.ExplosiveTool = hasExplosiveName(name)
+	end
+	ProjectileSilent.RefreshHeldTool = refreshHeldTool
+	ProjectileSilent.IsExplosiveContext = function(remote)
+		return ProjectileSilent.ExplosiveTool == true or hasExplosiveName(remote and remote.Name)
+	end
+
+	-- Namecall fallbacks are scoped to a real weapon action. Tool.Activated covers
+	-- executors where the GunBase module cannot be patched; GunBase.fire itself is
+	-- an independent proof. Arbitrary remotes/rays outside this window pass through.
+	local weaponActionAt, weaponActionTool, weaponActionProven = nil, nil, false
+	local weaponMouseHeld = false
+	local shotConnections, watchedTools = {}, setmetatable({}, {__mode = "k"})
+	local function trackShotConnection(connection)
+		if connection then table.insert(shotConnections, connection) end
+		return connection
+	end
+	local function noteWeaponAction(tool, proven)
+		refreshHeldTool()
+		tool = tool or ProjectileSilent.HeldTool
+		if tool and ProjectileSilent.ExplosiveTool then return end
+		weaponActionAt = os.clock()
+		weaponActionTool = tool
+		weaponActionProven = proven == true
+	end
+	ProjectileSilent.NoteWeaponAction = noteWeaponAction
+	local function hasWeaponAction()
+		if not ProjectileCore.Running or not S.SilentAim or Runtime.CraftingMenuOpen then return false end
+		-- Property/cached flags only: this function is safe inside __namecall.
+		if ProjectileSilent.ExplosiveTool then return false end
+		local now = os.clock()
+		local recent = weaponActionAt ~= nil and now - weaponActionAt >= 0 and now - weaponActionAt <= 0.35
+		local currentTool = ProjectileSilent.HeldTool
+		if recent and (weaponActionProven or weaponActionTool ~= nil) then return true end
+		-- Automatic weapons can keep firing after the single Activated event.
+		return currentTool ~= nil and weaponMouseHeld
+	end
+	ProjectileSilent.HasWeaponAction = hasWeaponAction
+	local function noteShot(target)
+		ProjectileSilent.LastShotPart = target
+		ProjectileSilent.LastShotAt = os.clock()
+	end
+	ProjectileSilent.NoteShot = noteShot
+	local function watchTool(tool)
+		if not tool or watchedTools[tool] or not tool:IsA("Tool") then return end
+		watchedTools[tool] = true
+		local ok, connection = pcall(function()
+			return tool.Activated:Connect(function() noteWeaponAction(tool, false) end)
+		end)
+		if ok then trackShotConnection(connection) end
+	end
+	local function watchCharacter(character)
+		if not character then return end
+		for _, child in ipairs(character:GetChildren()) do watchTool(child) end
+		trackShotConnection(character.ChildAdded:Connect(watchTool))
+	end
+	watchCharacter(LocalPlayer.Character)
+	trackShotConnection(LocalPlayer.CharacterAdded:Connect(watchCharacter))
+	trackShotConnection(UIS.InputBegan:Connect(function(input, gameProcessed)
+		if not gameProcessed and input.UserInputType == Enum.UserInputType.MouseButton1 then
+			weaponMouseHeld = true
+		end
+	end))
+	trackShotConnection(UIS.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 then weaponMouseHeld = false end
+	end))
+
+	local function clearTarget()
+		ProjectileSilent.TargetPart = nil
+		ProjectileSilent.TargetPosition = nil
+		ProjectileSilent.TargetOffset = nil
+		ProjectileSilent.TargetPlayer = nil
+		ProjectileSilent.TargetCharacter = nil
+		ProjectileSilent.TargetHumanoid = nil
+		ProjectileSilent.TargetVisible = false
+	end
+
+	local function setTarget(part, player, humanoid, position)
+		ProjectileSilent.TargetPart = part
+		ProjectileSilent.TargetPosition = position
+		ProjectileSilent.TargetOffset = part and position and (position - part.Position) or nil
+		ProjectileSilent.TargetPlayer = player
+		ProjectileSilent.TargetCharacter = player and player.Character or nil
+		ProjectileSilent.TargetHumanoid = humanoid
+		ProjectileSilent.TargetVisible = part ~= nil and position ~= nil
+	end
+
+	-- Random chooses a stable part per character instead of rerolling every 50 ms.
+	-- Explicit Head/HeadHitbox/HRP choices remain exact and share one resolver with HUD.
+	local randomPartCache = setmetatable({}, {__mode = "k"})
+	local function targetPartFor(character)
+		local function getPart(name)
+			local object = character:FindFirstChild(name)
+			if object and object:IsA("BasePart") then return object end
+			return nil
+		end
+		if S.MBTargetPart == 2 then
+			return getPart("Head") or getPart("HeadHitbox") or getPart("HumanoidRootPart")
+		end
+		if S.MBTargetPart == 3 then
+			return getPart("HumanoidRootPart") or getPart("HeadHitbox") or getPart("Head")
+		end
+		if S.MBTargetPart == 4 then
+			local cached = randomPartCache[character]
+			if cached and cached.Parent == character and cached:IsA("BasePart") then return cached end
+			local candidates = {}
+			for _, name in ipairs({"HeadHitbox", "Head", "HumanoidRootPart"}) do
+				local part = getPart(name)
+				if part then table.insert(candidates, part) end
+			end
+			if #candidates > 0 then
+				local selected = candidates[math.random(1, #candidates)]
+				randomPartCache[character] = selected
+				return selected
+			end
+			randomPartCache[character] = nil
+			return nil
+		end
+		return getPart("HeadHitbox") or getPart("Head") or getPart("HumanoidRootPart")
+	end
+	ProjectileSilent.ResolveTargetPart = targetPartFor
+
+	-- Visible Check keeps a real visible point without averaging different sample
+	-- subsets between frames. Centre is preferred; a partial-cover offset is reused
+	-- while it remains visible, so walking and shot-time revalidation do not jitter.
+	local visibleParams = RaycastParams.new()
+	visibleParams.FilterType = Enum.RaycastFilterType.Exclude
+	visibleParams.IgnoreWater = true
+	local ignoreCache, lastIgnoreRefresh = {}, -1000
+	local ignoredCamera, ignoredLocalCharacter = nil, nil
+	local testOffsets = {Vector3.new(0, 0, 0)}
+	for x = -1, 1, 2 do
+		for y = -1, 1, 2 do
+			for z = -1, 1, 2 do table.insert(testOffsets, Vector3.new(x * 0.5, y * 0.5, z * 0.5)) end
+		end
+	end
+	for _, offset in ipairs({
+		Vector3.new(0.5, 0, 0), Vector3.new(-0.5, 0, 0),
+		Vector3.new(0, 0.5, 0), Vector3.new(0, -0.5, 0),
+		Vector3.new(0, 0, 0.5), Vector3.new(0, 0, -0.5),
+	}) do table.insert(testOffsets, offset) end
+	local function isIgnoredDecoration(instance)
+		if instance.CanQuery == false then return true end
+		if not instance:IsA("BasePart") or instance.CanCollide ~= false then return false end
+		local current = instance
+		for _ = 1, 6 do
+			if not current then break end
+			if current.ClassName == "Tool" then return false end
+			local name = string.lower(tostring(current.Name))
+			if string.find(name, "grass", 1, true)
+				or string.find(name, "leav", 1, true)
+				or string.find(name, "foliage", 1, true)
+				or string.find(name, "bush", 1, true)
+				or string.find(name, "shrub", 1, true)
+				or string.find(name, "fern", 1, true)
+				or string.find(name, "flower", 1, true)
+				or string.find(name, "reed", 1, true)
+				or string.find(name, "cloud", 1, true) then
+				return true
+			end
+			current = current.Parent
+		end
+		return false
+	end
+	local function pointVisible(character, worldPoint, camera)
+		local now = os.clock()
+		local localCharacter = LocalPlayer.Character
+		if now - lastIgnoreRefresh >= 0.5 or ignoredCamera ~= camera or ignoredLocalCharacter ~= localCharacter then
+			lastIgnoreRefresh = now
+			ignoredCamera, ignoredLocalCharacter = camera, localCharacter
+			ignoreCache = {localCharacter, camera}
+			for _, player in ipairs(Players:GetPlayers()) do
+				if player.Character then table.insert(ignoreCache, player.Character) end
+			end
+		end
+		local origin = camera.CFrame.Position
+		local direction = worldPoint - origin
+		local added = 0
+		for _ = 1, 16 do
+			visibleParams.FilterDescendantsInstances = ignoreCache
+			local result = workspace:Raycast(origin, direction, visibleParams)
+			if not result then
+				for _ = 1, added do table.remove(ignoreCache) end
+				return true
+			end
+			local instance = result.Instance
+			if not instance then
+				for _ = 1, added do table.remove(ignoreCache) end
+				return false
+			end
+			if instance:IsDescendantOf(character) then
+				for _ = 1, added do table.remove(ignoreCache) end
+				return true
+			end
+			if not isIgnoredDecoration(instance) then
+				for _ = 1, added do table.remove(ignoreCache) end
+				return false
+			end
+			ignoreCache[#ignoreCache + 1] = instance
+			added += 1
+		end
+		for _ = 1, added do table.remove(ignoreCache) end
+		return false
+	end
+	local visibleOffsetCache = setmetatable({}, {__mode = "k"})
+	local function getVisiblePoint(part, character, camera)
+		if not part or not part:IsA("BasePart") then return nil end
+		ProjectileCore.Status.visiblePointChecks += 1
+		local centerOffset = testOffsets[1]
+		local centerPoint = part.CFrame:PointToWorldSpace(centerOffset * part.Size)
+		if pointVisible(character, centerPoint, camera) then
+			visibleOffsetCache[part] = centerOffset
+			return part.Position
+		end
+
+		local previousOffset = visibleOffsetCache[part]
+		if previousOffset and previousOffset ~= centerOffset then
+			local previousPoint = part.CFrame:PointToWorldSpace(previousOffset * part.Size)
+			if pointVisible(character, previousPoint, camera) then return previousPoint end
+		end
+		for index = 2, #testOffsets do
+			local offset = testOffsets[index]
+			if offset ~= previousOffset then
+				local worldPoint = part.CFrame:PointToWorldSpace(offset * part.Size)
+				if pointVisible(character, worldPoint, camera) then
+					visibleOffsetCache[part] = offset
+					return worldPoint
+				end
+			end
+		end
+		visibleOffsetCache[part] = nil
+		return nil
+	end
+
+	local function updateTarget()
+		refreshHeldTool()
+		if not ProjectileCore.Running or not S.SilentAim then
+			clearTarget()
+			ProjectileCore.Status.target = S.SilentAim and "starting" or "inactive"
+			return
+		end
+		local camera = workspace.CurrentCamera
+		if not camera then
+			clearTarget()
+			ProjectileCore.Status.target = "no-camera"
+			return
+		end
+		local viewport = camera.ViewportSize
+		local center = S.MBFovMode == "pc" and UIS:GetMouseLocation()
+			or Vector2.new(viewport.X * 0.5, viewport.Y * 0.5)
+		local localRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+		local worldOrigin = localRoot and localRoot.Position or camera.CFrame.Position
+		local bestPart, bestPlayer, bestPosition, bestHumanoid = nil, nil, nil, nil
+		local bestDistance, bestHP = math.huge, math.huge
+
+		for _, player in ipairs(Players:GetPlayers()) do
+			if player ~= LocalPlayer then
+				local character = player.Character
+				local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+				if character and humanoid and humanoid.Health > 0 then
+					local part = targetPartFor(character)
+					if part then
+						if (part.Position - worldOrigin).Magnitude > S.MBMaxDist then continue end
+						local targetPosition = part.Position
+						if S.MBVisibleOnly then
+							targetPosition = getVisiblePoint(part, character, camera)
+						end
+						if targetPosition then
+							local distance3D = (part.Position - worldOrigin).Magnitude
+							if distance3D <= S.MBMaxDist then
+								local projected, onScreen = camera:WorldToViewportPoint(targetPosition)
+								if onScreen and projected.Z > 0 then
+									local screenDistance = (Vector2.new(projected.X, projected.Y) - center).Magnitude
+									if not S.MBUseFOV or screenDistance <= S.FOV then
+										local hp = humanoid.Health
+										if S.MBPriority == "hp" then
+											if hp < bestHP or (hp == bestHP and screenDistance < bestDistance) then
+												bestPart, bestPlayer, bestPosition, bestHumanoid = part, player, targetPosition, humanoid
+												bestDistance, bestHP = screenDistance, hp
+											end
+										elseif screenDistance < bestDistance then
+											bestPart, bestPlayer, bestPosition, bestHumanoid = part, player, targetPosition, humanoid
+											bestDistance, bestHP = screenDistance, hp
+										end
+									end
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+
+		if bestPart then
+			setTarget(bestPart, bestPlayer, bestHumanoid, bestPosition)
+			ProjectileCore.Status.target = "ok"
+		else
+			clearTarget()
+			ProjectileCore.Status.target = "no-target"
+		end
+	end
+	ProjectileSilent.Update = updateTarget
+
+	-- GunBase.fire runs outside __namecall, so it can safely repeat the full live
+	-- Character/FOV/distance validation. Namecall fallbacks use the property-only cache.
+	local function getLiveTarget()
+		local target = ProjectileSilent.TargetPart
+		local character = ProjectileSilent.TargetCharacter
+		local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+		if not target or not target.Parent or not character or not humanoid or humanoid.Health <= 0
+			or not target:IsA("BasePart") or not target:IsDescendantOf(character) then
+			clearTarget()
+			ProjectileCore.Status.target = "stale"
+			return nil
+		end
+		local camera = workspace.CurrentCamera
+		if not camera then
+			clearTarget()
+			ProjectileCore.Status.target = "no-camera"
+			return nil
+		end
+		local localRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+		local worldOrigin = localRoot and localRoot.Position or camera.CFrame.Position
+		if (target.Position - worldOrigin).Magnitude > S.MBMaxDist then
+			clearTarget()
+			ProjectileCore.Status.target = "stale-distance"
+			return nil
+		end
+		local targetPosition = target.Position
+		if S.MBVisibleOnly then
+			-- Target selection runs every 50 ms, but a player can step behind a house
+			-- wall before the next shot. Revalidate at GunBase.fire time as well.
+			targetPosition = getVisiblePoint(target, character, camera)
+			if not targetPosition then
+				clearTarget()
+				ProjectileCore.Status.target = "stale-not-visible"
+				return nil
+			end
+		end
+		local projected, onScreen = camera:WorldToViewportPoint(targetPosition)
+		local viewport = camera.ViewportSize
+		local center = S.MBFovMode == "pc" and UIS:GetMouseLocation()
+			or Vector2.new(viewport.X * 0.5, viewport.Y * 0.5)
+		if not onScreen or projected.Z <= 0 or (S.MBUseFOV
+			and (Vector2.new(projected.X, projected.Y) - center).Magnitude > S.FOV) then
+			clearTarget()
+			ProjectileCore.Status.target = "stale-fov"
+			return nil
+		end
+		setTarget(target, ProjectileSilent.TargetPlayer, humanoid, targetPosition)
+		ProjectileCore.Status.target = "ok"
+		return target, targetPosition
+	end
+	ProjectileSilent.GetTarget = getLiveTarget
+
+	-- VOMAGLA uses this ModuleScript table assignment. It is easy to restore and does
+	-- not require hookfunction support from the executor.
+	local GunBase, originalFire, replacementFire = nil, nil, nil
+	local gunBaseWaitRunning = false
+	local function installGunBase(module)
+		if ProjectileSilent.Installed.GunBase then return true end
+		if not ProjectileCore.Running then return false end
+		-- Do not touch game ModuleScripts while the feature is opt-in/off.
+		-- This also avoids a startup require racing the game's own module context.
+		if not S.SilentAim then
+			ProjectileCore.Status.lastShotReason = "gunbase-standby"
+			return false
+		end
+		if not module then
+			local gun = ReplicatedStorage:FindFirstChild("Gun")
+			local scripts = gun and gun:FindFirstChild("Scripts")
+			module = scripts and scripts:FindFirstChild("GunBase")
+			module = module or ReplicatedStorage:FindFirstChild("GunBase", true)
+		end
+		if not module then
+			ProjectileCore.Status.lastShotReason = "gunbase-waiting"
+			if not gunBaseWaitRunning then
+				gunBaseWaitRunning = true
+				task.spawn(function()
+					local ok, waitedModule = pcall(function()
+						local gun = ReplicatedStorage:WaitForChild("Gun", 20)
+						local scripts = gun and gun:WaitForChild("Scripts", 20)
+						return scripts and scripts:WaitForChild("GunBase", 20) or nil
+					end)
+					gunBaseWaitRunning = false
+					if ok and waitedModule and ProjectileCore.Running and S.SilentAim then
+						installGunBase(waitedModule)
+					end
+				end)
+			end
+			return false
+		end
+		local loaded, requireError = Runtime.RequireGameModule(module)
+		if type(loaded) ~= "table" or type(loaded.fire) ~= "function" then
+			ProjectileCore.Status.lastShotReason = requireError or "gunbase-fire-missing"
+			return false
+		end
+		GunBase = loaded
+		originalFire = GunBase.fire
+
+		replacementFire = function(self, ...)
+			if not ProjectileCore.Running then
+				return originalFire(self, ...)
+			end
+			ProjectileCore.Status.calls += 1
+			noteWeaponAction(nil, true)
+			if not S.SilentAim or Runtime.CraftingMenuOpen then
+				ProjectileCore.Status.normalCalls += 1
+				ProjectileCore.Status.lastShotReason = Runtime.CraftingMenuOpen and "crafting-menu-original" or "silent-inactive-original"
+				return originalFire(self, ...)
+			end
+			refreshHeldTool()
+			if ProjectileSilent.ExplosiveTool then
+				ProjectileCore.Status.explosiveSkips += 1
+				ProjectileCore.Status.lastShotReason = "explosive-original"
+				return originalFire(self, ...)
+			end
+			local target, livePosition = getLiveTarget()
+			if not target then
+				ProjectileCore.Status.lastShotReason = ProjectileCore.Status.target == "stale-not-visible"
+					and "wall-original" or "no-target-original"
+				return originalFire(self, ...)
+			end
+			if math.random(1, 100) > S.MBHitChance then
+				ProjectileCore.Status.lastShotReason = "gunbase-hit-chance-original"
+				return originalFire(self, ...)
+			end
+
+			local args = table.pack(...)
+			local targetPosition = livePosition or target.Position
+			local patched = false
+			for index = 1, args.n do
+				local value = args[index]
+				if typeof(value) == "Vector3" and not patched then
+					args[index] = targetPosition
+					patched = true
+				elseif typeof(value) == "buffer" and not patched and type(buffer) == "table" and type(buffer.writef32) == "function" then
+					local writeOK = pcall(function()
+						buffer.writef32(value, 4, targetPosition.X)
+						buffer.writef32(value, 8, targetPosition.Y)
+						buffer.writef32(value, 12, targetPosition.Z)
+					end)
+					if writeOK then
+						patched = true
+						ProjectileCore.Status.bufferWrites += 1
+					end
+				end
+			end
+			if not patched then
+				ProjectileCore.Status.lastShotReason = "args-unmatched-original"
+				return originalFire(self, unpack(args, 1, args.n))
+			end
+
+			ProjectileCore.Status.redirects += 1
+			ProjectileCore.Status.lastShotReason = "gunbase-redirected"
+			noteShot(target)
+			-- GunBase owns this exact shot. A synchronous FireServer/Raycast made by
+			-- originalFire is a fallback only and must not rewrite it a second time.
+			local previousGunBaseShot = ProjectileCore.GunBaseRedirecting
+			ProjectileCore.GunBaseRedirecting = true
+			local results = table.pack(pcall(originalFire, self, unpack(args, 1, args.n)))
+			ProjectileCore.GunBaseRedirecting = previousGunBaseShot
+			if not results[1] then error(results[2], 0) end
+			return unpack(results, 2, results.n)
+		end
+
+		local assigned = pcall(function() GunBase.fire = replacementFire end)
+		if not assigned or GunBase.fire ~= replacementFire then
+			ProjectileCore.Status.lastShotReason = "gunbase-assign-failed"
+			GunBase, originalFire, replacementFire = nil, nil, nil
+			return false
+		end
+		ProjectileSilent.Installed.GunBase = true
+		ProjectileCore.Status.gunbase = true
+		ProjectileCore.Status.lastShotReason = "gunbase-ready"
+		return true
+	end
+	ProjectileSilent.Refresh = installGunBase
+	refreshHeldTool()
+
+	onCleanup(function()
+		clearTarget()
+		ProjectileSilent.LastShotPart = nil
+		ProjectileSilent.LastShotAt = nil
+		weaponActionAt, weaponActionTool = nil, nil
+		weaponMouseHeld = false
+		for index = #shotConnections, 1, -1 do
+			pcall(function() shotConnections[index]:Disconnect() end)
+		end
+		table.clear(shotConnections)
+		ProjectileCore.GunBaseRedirecting = false
+		if GunBase and originalFire and GunBase.fire == replacementFire then
+			pcall(function() GunBase.fire = originalFire end)
+		end
+		ProjectileSilent.Installed.GunBase = false
+		ProjectileCore.Status.gunbase = false
+	end)
+
+	Runtime.Projectile = ProjectileSilent
+	Runtime.ProjectileStatus = ProjectileCore.Status
+	Runtime.ProjectilePath = "GunBase.fire + FireServer + Workspace Raycast"
+	Runtime.SilentPath = Runtime.ProjectilePath
+	Runtime.GetSilentStatus = function()
+		local status = ProjectileCore.Status
+		local hasNamecall = Runtime.NamecallPath ~= nil and Runtime.NamecallPath ~= "unavailable"
+		return {
+			path = Runtime.ProjectilePath,
+			executor = Runtime.ExecutorName,
+			moduleRequireMode = Runtime.ModuleRequireMode,
+			moduleRequireError = Runtime.LastModuleRequireError,
+			namecall = Runtime.NamecallPath or "pending",
+			namecallError = Runtime.NamecallError,
+			silentError = Runtime.SilentError,
+			enabled = S.SilentAim,
+			available = status.gunbase or hasNamecall,
+			gunbase = status.gunbase,
+			fireserver = hasNamecall,
+			raycast = hasNamecall,
+			calls = status.calls,
+			normalCalls = status.normalCalls,
+			redirects = status.redirects,
+			remoteCalls = status.remoteCalls,
+			remoteRedirects = status.remoteRedirects,
+			fallbackSkips = status.fallbackSkips,
+			nonCombatSkips = status.nonCombatSkips,
+			actionSkips = status.actionSkips,
+			explosiveSkips = status.explosiveSkips,
+			heldTool = ProjectileSilent.HeldToolName,
+			gunbaseOwnsShot = ProjectileCore.GunBaseRedirecting == true,
+			bufferWrites = status.bufferWrites,
+			target = status.target,
+			targetPart = ProjectileSilent.TargetPart and ProjectileSilent.TargetPart.Name or nil,
+			targetVisible = ProjectileSilent.TargetVisible == true,
+			targetPosition = ProjectileSilent.TargetPosition,
+			targetOffset = ProjectileSilent.TargetOffset,
+			visualTargetMatches = SA_CurrentTarget == ProjectileSilent.TargetPart,
+			targetError = Runtime.LastTargetError,
+			visiblePointChecks = status.visiblePointChecks,
+			lastShotReason = status.lastShotReason,
+		}
+	end
+end)
+
+if not projectileInitOK then
+	Runtime.ProjectileError = tostring(projectileInitError)
+	ProjectileCore = nil
+	ProjectileSilent = nil
+end
+
+
+if not Runtime.GetSilentStatus then
+	Runtime.GetSilentStatus = function()
+		return {
+			path = Runtime.SilentPath,
+			executor = Runtime.ExecutorName,
+			moduleRequireMode = Runtime.ModuleRequireMode,
+			moduleRequireError = Runtime.LastModuleRequireError,
+			namecall = Runtime.NamecallPath or "pending",
+			namecallError = Runtime.NamecallError,
+			gunbase = false,
+			fireserver = Runtime.NamecallPath ~= "unavailable",
+			raycast = Runtime.NamecallPath ~= "unavailable",
+			error = Runtime.ProjectileError,
+		}
+	end
+end
+
+-- Additional rost-alpha features adapted from the saved VOMAGLA reference.
+-- Owned objects only: no remote loaders, camera writes, hitbox expansion or world deletion.
+
+Runtime.ExtraFeatures = {
+	Status = { autoFireCalls = 0, damageEvents = 0 },
+}
+
+do
+local function initializeExtraFeatures()
+local ExtraFeatures = Runtime.ExtraFeatures
+local extraConnections = {}
+local function connect(signal, callback)
+	local connection = signal:Connect(callback)
+	table.insert(extraConnections, connection)
+	return connection
+end
+local function destroyObject(object)
+	if object then pcall(function() object:Destroy() end) end
+end
+
+-- Shared monochrome GUI for Target HUD and hit/kill logs.
+local extraGui = newScreenGui()
+extraGui.Name = "BurmaldaHookExtra"
+extraGui.ResetOnSpawn = false
+extraGui.IgnoreGuiInset = true
+extraGui.DisplayOrder = 999997
+extraGui.Parent = pGui
+
+local targetFrame = Instance.new("Frame")
+targetFrame.Name = "TargetHUD"
+targetFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+targetFrame.Position = UDim2.new(0.5, 0, 0.84, 0)
+targetFrame.Size = UDim2.new(0, 300, 0, 92)
+targetFrame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+targetFrame.BackgroundTransparency = 0.08
+targetFrame.BorderSizePixel = 0
+targetFrame.Visible = false
+targetFrame.Parent = extraGui
+Instance.new("UICorner", targetFrame).CornerRadius = UDim.new(0, 4)
+local targetStroke = Instance.new("UIStroke")
+targetStroke.Color = Color3.fromRGB(52, 52, 52)
+targetStroke.Parent = targetFrame
+
+local function makeText(parent, text, position, size, textSize, color)
+	local label = Instance.new("TextLabel")
+	label.BackgroundTransparency = 1
+	label.BorderSizePixel = 0
+	label.Position = position
+	label.Size = size
+	label.Text = text or ""
+	label.TextColor3 = color or Color3.fromRGB(242, 242, 242)
+	label.Font = Enum.Font.Gotham
+	label.TextSize = textSize or 11
+	label.TextXAlignment = Enum.TextXAlignment.Left
+	label.Parent = parent
+	return label
+end
+
+local targetName = makeText(targetFrame, "", UDim2.new(0, 14, 0, 8), UDim2.new(1, -28, 0, 22), 16)
+targetName.Font = Enum.Font.GothamBold
+local targetDistance = makeText(targetFrame, "", UDim2.new(0, 14, 0, 32), UDim2.new(1, -28, 0, 17), 11, Color3.fromRGB(190, 190, 190))
+local targetWeapon = makeText(targetFrame, "", UDim2.new(0, 14, 0, 51), UDim2.new(1, -28, 0, 16), 10, Color3.fromRGB(135, 135, 135))
+local targetHealthBack = Instance.new("Frame")
+targetHealthBack.Position = UDim2.new(0, 14, 1, -15)
+targetHealthBack.Size = UDim2.new(1, -28, 0, 5)
+targetHealthBack.BackgroundColor3 = Color3.fromRGB(28, 28, 28)
+targetHealthBack.BorderSizePixel = 0
+targetHealthBack.Parent = targetFrame
+local targetHealthFill = Instance.new("Frame")
+targetHealthFill.Size = UDim2.new(1, 0, 1, 0)
+targetHealthFill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+targetHealthFill.BorderSizePixel = 0
+targetHealthFill.Parent = targetHealthBack
+
+local logHolder = Instance.new("Frame")
+logHolder.Name = "HitLogs"
+logHolder.AnchorPoint = Vector2.new(0.5, 0)
+logHolder.Position = UDim2.new(0.5, 0, 0.61, 0)
+logHolder.Size = UDim2.new(0, 560, 0, 120)
+logHolder.BackgroundTransparency = 1
+logHolder.Parent = extraGui
+local logLayout = Instance.new("UIListLayout")
+logLayout.Padding = UDim.new(0, 3)
+logLayout.SortOrder = Enum.SortOrder.LayoutOrder
+logLayout.Parent = logHolder
+local function updateLogPosition()
+	local position = S.HitLogsPosition
+	if position == "Left" then
+		logHolder.AnchorPoint = Vector2.new(0, 0.5)
+		logHolder.Position = UDim2.new(0, 18, 0.5, 0)
+		logLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+	elseif position == "Top" then
+		logHolder.AnchorPoint = Vector2.new(0.5, 0)
+		logHolder.Position = UDim2.new(0.5, 0, 0, 78)
+		logLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	elseif position == "LeftTop" then
+		logHolder.AnchorPoint = Vector2.new(0, 0)
+		logHolder.Position = UDim2.new(0, 18, 0, 78)
+		logLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+	else
+		logHolder.AnchorPoint = Vector2.new(0.5, 0)
+		logHolder.Position = UDim2.new(0.5, 0, 0.62, 0)
+		logLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+	end
+end
+updateLogPosition()
+ExtraFeatures.ApplyHitLogPosition = updateLogPosition
+ExtraFeatures.GetLogHolder = function() return logHolder end
+
+local logEntries, logOrder = {}, 0
+local function removeLog(label)
+	for index, entry in ipairs(logEntries) do
+		if entry == label then table.remove(logEntries, index) break end
+	end
+	destroyObject(label)
+end
+local function pushLog(text)
+	if Runtime.Unloaded then return end
+	logOrder += 1
+	local label = makeText(logHolder, tostring(text), UDim2.new(), UDim2.new(1, 0, 0, 18), 12)
+	label.Font = Enum.Font.Code
+	label.TextColor3 = Runtime.ExtraColors.HitLogs
+	label.LayoutOrder = -logOrder
+	label.TextStrokeTransparency = 0.5
+	table.insert(logEntries, label)
+	while #logEntries > 5 do removeLog(logEntries[1]) end
+	task.delay(math.max(1, S.HitLogsDuration), function()
+		if label.Parent then removeLog(label) end
+	end)
+end
+local function clearLogs()
+	for _, label in ipairs(logEntries) do destroyObject(label) end
+	table.clear(logEntries)
+end
+ExtraFeatures.PushLog = pushLog
+ExtraFeatures.ClearLogs = clearLogs
+ExtraFeatures.GetLogCount = function() return #logEntries end
+ExtraFeatures.ShowHitLog = function(playerName, partName, damage, health)
+	if not S.HitLogsEnabled then return end
+	pushLog("[ Burmalda.hook ] Hit " .. tostring(playerName) .. " / " .. tostring(partName)
+		.. " / " .. tostring(damage) .. " damage / " .. tostring(health) .. " HP")
+end
+
+-- World-positioned Drawing hitmarkers.
+local hitmarkers = {}
+local markerDirections = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}}
+local function clearHitmarkers()
+	for _, marker in ipairs(hitmarkers) do
+		for _, line in ipairs(marker.lines) do pcall(function() line:Remove() end) end
+	end
+	table.clear(hitmarkers)
+end
+local function spawnHitmarker(worldPosition, isKill)
+	if Runtime.Unloaded or not S.HitmarkerEnabled or not worldPosition then return end
+	local lines = {}
+	for index = 1, 4 do
+		local line = newDrawing("Line")
+		line.Visible = false
+		line.Thickness = S.HitmarkerThickness
+		line.ZIndex = 5
+		lines[index] = line
+	end
+	table.insert(hitmarkers, {position = worldPosition, born = os.clock(), kill = isKill == true, lines = lines})
+end
+local function updateHitmarkers()
+	local now = os.clock()
+	for index = #hitmarkers, 1, -1 do
+		local marker = hitmarkers[index]
+		local age = now - marker.born
+		if age > S.HitmarkerDuration then
+			for _, line in ipairs(marker.lines) do pcall(function() line:Remove() end) end
+			table.remove(hitmarkers, index)
+		else
+			local projected, visible = Camera:WorldToViewportPoint(marker.position)
+			for lineIndex, line in ipairs(marker.lines) do
+				local direction = markerDirections[lineIndex]
+				line.Visible = S.HitmarkerEnabled and visible == true
+				line.Transparency = math.clamp(1 - age / math.max(0.01, S.HitmarkerDuration), 0, 1)
+				line.Color = marker.kill and Runtime.ExtraColors.HitmarkerKill or Runtime.ExtraColors.Hitmarker
+				line.Thickness = S.HitmarkerThickness
+				line.From = Vector2.new(projected.X + direction[1] * S.HitmarkerSize * 0.3, projected.Y + direction[2] * S.HitmarkerSize * 0.3)
+				line.To = Vector2.new(projected.X + direction[1] * S.HitmarkerSize, projected.Y + direction[2] * S.HitmarkerSize)
+			end
+		end
+	end
+end
+ExtraFeatures.SpawnHitmarker = spawnHitmarker
+ExtraFeatures.ClearHitmarkers = clearHitmarkers
+ExtraFeatures.GetHitmarkerCount = function() return #hitmarkers end
+
+-- Lightweight owned damage particles; all instances are destroyed on cleanup.
+local Debris = game:GetService("Debris")
+local damageParts = {}
+local damageTextures = {
+	Foam = "rbxassetid://8297030850",
+	Crescents = "rbxassetid://12509373457",
+	Residue = "rbxassetid://4509687978",
+	Electric = "rbxassetid://10547286472",
+}
+local function spawnDamageFX(worldPosition)
+	if Runtime.Unloaded or not S.DamageFXEnabled or not worldPosition then return end
+	local part = Instance.new("Part")
+	part.Name = "BurmaldaHookDamageFX"
+	part.Size = Vector3.new(0.2, 0.2, 0.2)
+	part.Transparency = 1
+	part.Anchored = true
+	part.CanCollide = false
+	part.CanQuery = false
+	part.CanTouch = false
+	part.CastShadow = false
+	part.Position = worldPosition + Vector3.new(0, 1, 0)
+	part.Parent = workspace
+	local attachment = Instance.new("Attachment")
+	attachment.Parent = part
+	local emitter = Instance.new("ParticleEmitter")
+	emitter.Enabled = false
+	emitter.Rate = 0
+	emitter.Texture = damageTextures[S.DamageFXStyle] or damageTextures.Foam
+	local particleColor = Runtime.ExtraColors.DamageFX
+	if S.DamageFXRainbow then particleColor = Color3.fromHSV((os.clock() * 0.5) % 1, 1, 1) end
+	emitter.Color = ColorSequence.new(particleColor)
+	emitter.Lifetime = NumberRange.new(S.DamageFXLifetime)
+	emitter.Speed = NumberRange.new(S.DamageFXSpeed)
+	emitter.Size = NumberSequence.new(S.DamageFXSize)
+	emitter.SpreadAngle = Vector2.new(180, 180)
+	emitter.LightEmission = 0.5
+	emitter.Parent = attachment
+	pcall(function() emitter:Emit(math.max(1, math.floor(S.DamageFXCount))) end)
+	table.insert(damageParts, part)
+	while #damageParts > 24 do destroyObject(table.remove(damageParts, 1)) end
+	if Debris and Debris.AddItem then
+		pcall(function() Debris:AddItem(part, math.max(1, S.DamageFXLifetime + 0.5)) end)
+	else
+		task.delay(math.max(1, S.DamageFXLifetime + 0.5), function() destroyObject(part) end)
+	end
+	return part
+end
+local function clearDamageFX()
+	for _, part in ipairs(damageParts) do destroyObject(part) end
+	table.clear(damageParts)
+end
+ExtraFeatures.SpawnDamageFX = spawnDamageFX
+ExtraFeatures.ClearDamageFX = clearDamageFX
+ExtraFeatures.GetDamageFXCount = function()
+	local count = 0
+	for _, part in ipairs(damageParts) do if part.Parent then count += 1 end end
+	return count
+end
+
+-- X-Ray affects only the reference's twig building parts and restores transparency.
+local xrayCache = {}
+local xrayNames = {"TwigWall", "SoloTwigFrame", "TrigTwigRoof", "TwigFrame", "TwigWindow", "TwigRoof"}
+local function isXRayPart(object)
+	if not object:IsA("BasePart") then return false end
+	for _, keyword in ipairs(xrayNames) do
+		if string.find(object.Name, keyword, 1, true) then return true end
+	end
+	return false
+end
+local function registerXRay(object)
+	if not isXRayPart(object) or xrayCache[object] then return end
+	xrayCache[object] = object.Transparency
+	object.Transparency = S.XRayTransparency
+end
+local function scanXRay()
+	if not S.XRay then return end
+	for _, object in ipairs(workspace:GetDescendants()) do registerXRay(object) end
+end
+local function restoreXRay()
+	for object, transparency in pairs(xrayCache) do
+		if object and object.Parent then pcall(function() object.Transparency = transparency end) end
+	end
+	table.clear(xrayCache)
+end
+local function setXRay(enabled)
+	S.XRay = enabled
+	if enabled then scanXRay() else restoreXRay() end
+end
+ExtraFeatures.ScanXRay = scanXRay
+ExtraFeatures.SetXRay = setXRay
+connect(workspace.DescendantAdded, function(object)
+	if S.XRay and not Runtime.Unloaded then pcall(registerXRay, object) end
+end)
+
+-- Custom Terrain water with original-value restoration.
+local terrain = workspace.Terrain or workspace:FindFirstChildOfClass("Terrain")
+local waterOriginal = nil
+local function applyWater()
+	if not terrain then return end
+	terrain.WaterColor = Runtime.ExtraColors.Water
+	terrain.WaterReflectance = S.WaterReflectance
+end
+local function restoreWater()
+	if terrain and waterOriginal then
+		pcall(function()
+			terrain.WaterColor = waterOriginal.Color
+			terrain.WaterReflectance = waterOriginal.Reflectance
+		end)
+	end
+	waterOriginal = nil
+end
+local function setWater(enabled)
+	S.CustomWater = enabled
+	if enabled then
+		if terrain and not waterOriginal then
+			waterOriginal = {Color = terrain.WaterColor, Reflectance = terrain.WaterReflectance}
+		end
+		applyWater()
+	else
+		restoreWater()
+	end
+end
+ExtraFeatures.SetWater = setWater
+ExtraFeatures.ApplyWater = applyWater
+
+-- Local Backpack/equipped Tool outlines, never global workspace Highlights.
+local toolHighlights = {}
+local function clearToolOutline()
+	for _, highlight in pairs(toolHighlights) do destroyObject(highlight) end
+	table.clear(toolHighlights)
+end
+local function updateToolOutline()
+	if not S.ToolOutline or Runtime.Unloaded then clearToolOutline() return end
+	local seen = {}
+	local character = LocalPlayer.Character
+	local backpack = LocalPlayer:FindFirstChild("Backpack")
+	local containers = {}
+	if character then table.insert(containers, character) end
+	if backpack then table.insert(containers, backpack) end
+	for _, container in ipairs(containers) do
+		if container then
+			for _, tool in ipairs(container:GetChildren()) do
+				if tool:IsA("Tool") then
+					seen[tool] = true
+					local highlight = toolHighlights[tool]
+					if not highlight then
+						highlight = Instance.new("Highlight")
+						highlight.Name = "BurmaldaHookToolOutline"
+						highlight.Parent = tool
+						toolHighlights[tool] = highlight
+					end
+					highlight.Adornee = tool
+					highlight.FillTransparency = 1
+					highlight.OutlineTransparency = 0
+					highlight.OutlineColor = Runtime.ExtraColors.ToolOutline
+					highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+					highlight.Enabled = true
+				end
+			end
+		end
+	end
+	for tool, highlight in pairs(toolHighlights) do
+		if not seen[tool] then
+			destroyObject(highlight)
+			toolHighlights[tool] = nil
+		end
+	end
+end
+ExtraFeatures.UpdateToolOutline = updateToolOutline
+ExtraFeatures.GetToolOutline = function(tool) return toolHighlights[tool] end
+
+-- Auto Fire uses input only when Silent Aim already has a target and both our menu and game crafting are closed.
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local lastAutoFire = -1000
+local function fireAutoClick()
+	if type(mouse1click) == "function" then
+		local ok = pcall(mouse1click)
+		if ok then ExtraFeatures.Status.autoFireCalls += 1 end
+		return
+	end
+	if not VirtualInputManager then return end
+	local viewport = Camera.ViewportSize
+	local x, y = viewport.X * 0.5, viewport.Y * 0.5
+	local ok = pcall(function()
+		VirtualInputManager:SendMouseButtonEvent(x, y, 0, true, game, 0)
+	end)
+	if ok then
+		ExtraFeatures.Status.autoFireCalls += 1
+		task.defer(function()
+			pcall(function() VirtualInputManager:SendMouseButtonEvent(x, y, 0, false, game, 0) end)
+		end)
+	end
+end
+local function updateAutoFire()
+	if not S.AutoFire or not S.SilentAim or menuOpen or Runtime.CraftingMenuOpen then return end
+	local target = SA_CurrentTarget
+	local character = LocalPlayer.Character
+	local tool = character and character:FindFirstChildOfClass("Tool")
+	if not target or not target.Parent or not tool then return end
+	local now = os.clock()
+	if now - lastAutoFire < math.max(0.01, S.AutoFireDelay) then return end
+	lastAutoFire = now
+	fireAutoClick()
+end
+
+-- Movement additions. All physics helpers are owned and removed when no longer needed.
+local noFallParams = RaycastParams.new()
+noFallParams.FilterType = Enum.RaycastFilterType.Exclude
+local swimVelocity = nil
+local flyVelocity, flyGyro, flySeat, flyHumanoid, flyOldAutoRotate = nil, nil, nil, nil, nil
+local function destroySwim()
+	destroyObject(swimVelocity)
+	swimVelocity = nil
+end
+local function destroyFly()
+	destroyObject(flyVelocity)
+	destroyObject(flyGyro)
+	flyVelocity, flyGyro, flySeat = nil, nil, nil
+	if flyHumanoid and flyOldAutoRotate ~= nil then
+		pcall(function() flyHumanoid.AutoRotate = flyOldAutoRotate end)
+	end
+	flyHumanoid, flyOldAutoRotate = nil, nil
+end
+local function ensureFly(humanoid, seat)
+	if flyVelocity and flySeat == seat and flyVelocity.Parent == seat then return end
+	destroyFly()
+	flySeat, flyHumanoid = seat, humanoid
+	flyOldAutoRotate = humanoid.AutoRotate
+	humanoid.AutoRotate = false
+	flyVelocity = Instance.new("BodyVelocity")
+	flyVelocity.Name = "BurmaldaHookCopterFly"
+	flyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+	flyVelocity.Velocity = Vector3.new()
+	flyVelocity.Parent = seat
+	flyGyro = Instance.new("BodyGyro")
+	flyGyro.Name = "BurmaldaHookCopterGyro"
+	flyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+	flyGyro.P = 9000
+	flyGyro.CFrame = seat.CFrame
+	flyGyro.Parent = seat
+end
+local function updateFly(humanoid)
+	local seat = humanoid.SeatPart
+	if not seat then destroyFly() return end
+	ensureFly(humanoid, seat)
+	humanoid.Sit = true
+	local cameraCF = (workspace.CurrentCamera or Camera).CFrame
+	local look = cameraCF.LookVector
+	local right = cameraCF.RightVector or Vector3.new(-look.Z, 0, look.X)
+	local movement = Vector3.new()
+	if UIS:IsKeyDown(Enum.KeyCode.W) then movement += look end
+	if UIS:IsKeyDown(Enum.KeyCode.S) then movement -= look end
+	if UIS:IsKeyDown(Enum.KeyCode.D) then movement += right end
+	if UIS:IsKeyDown(Enum.KeyCode.A) then movement -= right end
+	local vertical = 0
+	if UIS:IsKeyDown(Enum.KeyCode.LeftShift) or UIS:IsKeyDown(Enum.KeyCode.RightShift) then vertical = 1 end
+	if UIS:IsKeyDown(Enum.KeyCode.LeftControl) or UIS:IsKeyDown(Enum.KeyCode.RightControl) then vertical = -1 end
+	if movement.Magnitude > 0 or vertical ~= 0 then
+		flyVelocity.Velocity = (movement + Vector3.new(0, vertical, 0)).Unit * S.CopterFlySpeed
+	else
+		flyVelocity.Velocity = Vector3.new()
+	end
+	flyGyro.CFrame = cameraCF
+end
+ExtraFeatures.GetFlyObjects = function() return flyVelocity, flyGyro end
+
+local toolScanElapsed = 0
+local function physicsStep(dt)
+	if Runtime.Unloaded then return end
+	updateAutoFire()
+	local character = LocalPlayer.Character
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	if not root or not humanoid or humanoid.Health <= 0 then
+		destroySwim()
+		destroyFly()
+		return
+	end
+
+	if S.CopterSpeed and not S.CopterFly and humanoid.Sit and humanoid.MoveDirection.Magnitude > 0 then
+		local direction = humanoid.MoveDirection
+		local velocity = root.AssemblyLinearVelocity
+		root.AssemblyLinearVelocity = Vector3.new(direction.X * S.CopterSpeedValue, velocity.Y, direction.Z * S.CopterSpeedValue)
+	end
+
+	local state = humanoid.GetState and humanoid:GetState() or nil
+	if S.SwimSpeed and state == Enum.HumanoidStateType.Swimming then
+		if not swimVelocity or swimVelocity.Parent ~= root then
+			destroySwim()
+			swimVelocity = Instance.new("BodyVelocity")
+			swimVelocity.Name = "BurmaldaHookSwim"
+			swimVelocity.MaxForce = Vector3.new(1e5, 1e5, 1e5)
+			swimVelocity.Parent = root
+		end
+		swimVelocity.Velocity = humanoid.MoveDirection * S.SwimSpeedValue
+	else
+		destroySwim()
+	end
+
+	if S.NoFallDamage and root.AssemblyLinearVelocity.Y < -55 then
+		noFallParams.FilterDescendantsInstances = {character}
+		local result = workspace:Raycast(root.Position, Vector3.new(0, -10, 0), noFallParams)
+		if result then
+			local velocity = root.AssemblyLinearVelocity
+			root.AssemblyLinearVelocity = Vector3.new(velocity.X, -2, velocity.Z)
+		end
+	end
+
+	if S.CopterFly then updateFly(humanoid) else destroyFly() end
+	toolScanElapsed += dt or 0
+	if toolScanElapsed >= 0.5 then
+		toolScanElapsed = 0
+		updateToolOutline()
+	end
+end
+ExtraFeatures.Physics = physicsStep
+
+local lastJumpRequest = -1000
+connect(UIS.JumpRequest, function()
+	if Runtime.Unloaded or not S.NoJumpDelay then return end
+	local now = os.clock()
+	if now - lastJumpRequest < 0.1 then return end
+	local character = LocalPlayer.Character
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	if not humanoid or humanoid.Health <= 0 then return end
+	local state = humanoid.GetState and humanoid:GetState() or nil
+	if state == Enum.HumanoidStateType.Freefall or state == Enum.HumanoidStateType.Flying then return end
+	lastJumpRequest = now
+	humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+end)
+
+-- Damage/death tracking for visual feedback. It never modifies health or remotes.
+local trackedCharacters, humanoidStates = {}, {}
+local recentTargets, lastHits = {}, {}
+local function isOurDamage(player, _character)
+	local seen = recentTargets[player]
+	return seen ~= nil and os.clock() - seen >= 0 and os.clock() - seen <= 2
+end
+local function onDamaged(player, character, damage, newHealth)
+	if damage <= 0.05 or not isOurDamage(player, character) then return end
+	local shotPart = ProjectileSilent and ProjectileSilent.LastShotPart
+	local part = shotPart and shotPart.Parent == character and shotPart
+		or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head") or character:FindFirstChild("HumanoidRootPart")
+	if not part then return end
+	lastHits[player] = os.clock()
+	ExtraFeatures.Status.damageEvents += 1
+	ExtraFeatures.ShowHitLog(player.DisplayName or player.Name, part.Name, math.floor(damage + 0.5), math.floor(newHealth + 0.5))
+	spawnHitmarker(part.Position, false)
+	spawnDamageFX(part.Position)
+end
+local function attachHumanoid(player, character, humanoid)
+	if humanoidStates[humanoid] then return end
+	humanoidStates[humanoid] = {health = humanoid.Health}
+	connect(humanoid.HealthChanged, function(newHealth)
+		local state = humanoidStates[humanoid]
+		local previous = state and state.health or newHealth
+		if state then state.health = newHealth end
+		if newHealth < previous then onDamaged(player, character, previous - newHealth, newHealth) end
+	end)
+	connect(humanoid.Died, function()
+		if S.KillNotify and not Runtime.Unloaded then
+			pushLog("[ Burmalda.hook ] " .. tostring(player.DisplayName or player.Name) .. " died")
+		end
+		local hitTime = lastHits[player]
+		if hitTime and os.clock() - hitTime <= 5 then
+			if Runtime.VomaglaFeatures and Runtime.VomaglaFeatures.PlayKillSound then Runtime.VomaglaFeatures.PlayKillSound() end
+			local root = character and character:FindFirstChild("HumanoidRootPart")
+			if root then spawnHitmarker(root.Position, true) end
+		end
+		lastHits[player] = nil
+	end)
+end
+local function trackCharacter(player, character)
+	if not character or trackedCharacters[character] then return end
+	trackedCharacters[character] = true
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	if humanoid then attachHumanoid(player, character, humanoid) end
+	connect(character.ChildAdded, function(child)
+		if child:IsA("Humanoid") then attachHumanoid(player, character, child) end
+	end)
+end
+local function trackPlayer(player)
+	if player == LocalPlayer then return end
+	if player.Character then trackCharacter(player, player.Character) end
+	connect(player.CharacterAdded, function(character) trackCharacter(player, character) end)
+end
+for _, player in ipairs(Players:GetPlayers()) do trackPlayer(player) end
+connect(Players.PlayerAdded, trackPlayer)
+connect(Players.PlayerRemoving, function(player)
+	recentTargets[player] = nil
+	lastHits[player] = nil
+end)
+
+local function updateRecentTarget()
+	local target = ProjectileSilent and ProjectileSilent.LastShotPart
+	local shotAt = ProjectileSilent and ProjectileSilent.LastShotAt
+	local character = target and target.Parent
+	if not character or type(shotAt) ~= "number" then return end
+	local age = os.clock() - shotAt
+	if age < 0 or age > 2 then return end
+	local ok, player = pcall(Players.GetPlayerFromCharacter, Players, character)
+	if ok and player then recentTargets[player] = shotAt end
+end
+local function updateTargetHUD()
+	local target = SA_CurrentTarget
+	local character = target and target.Parent
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	local root = character and character:FindFirstChild("HumanoidRootPart")
+	if not S.TargetHUD or not character or not humanoid or not root or humanoid.Health <= 0 then
+		targetFrame.Visible = false
+		return
+	end
+	local ok, player = pcall(Players.GetPlayerFromCharacter, Players, character)
+	targetName.Text = ok and player and (player.DisplayName or player.Name) or character.Name
+	local localCharacter = LocalPlayer.Character
+	local localRoot = localCharacter and localCharacter:FindFirstChild("HumanoidRootPart")
+	targetDistance.Text = localRoot and string.format("Distance: %.1f m", (localRoot.Position - root.Position).Magnitude) or "Distance: —"
+	local tool = character:FindFirstChildOfClass("Tool")
+	targetWeapon.Text = tool and ("Holding: " .. tool.Name) or "Unarmed"
+	local ratio = humanoid.MaxHealth > 0 and math.clamp(humanoid.Health / humanoid.MaxHealth, 0, 1) or 0
+	targetHealthFill.Size = UDim2.new(ratio, 0, 1, 0)
+	targetFrame.Visible = true
+end
+local function visualUpdate(_)
+	if Runtime.Unloaded then return end
+	updateRecentTarget()
+	updateTargetHUD()
+	updateHitmarkers()
+	for index = #damageParts, 1, -1 do
+		if not damageParts[index].Parent then table.remove(damageParts, index) end
+	end
+end
+ExtraFeatures.Update = visualUpdate
+ExtraFeatures.GetTargetHUD = function()
+	return targetFrame, targetName, targetDistance, targetWeapon, targetHealthFill
+end
+
+-- Existing monochrome widget API; no reference UI or external assets are imported.
+do
+	local autoSet = createFeature(smartCol("COMBAT"), "Auto Fire", false, function(v) S.AutoFire = v end)
+	addSlider(autoSet, "Fire Delay", 1, 50, 5, function(v) S.AutoFireDelay = v / 100 end)
+end
+do
+	local hudSet = createFeature(smartCol("COMBAT"), "Target HUD", false, function(v) S.TargetHUD = v end)
+	local logsSet = createFeature(smartCol("COMBAT"), "Hit Logs", false, function(v) S.HitLogsEnabled = v end)
+	addDropdown(logsSet, "Position", {"Center", "Left", "Top", "LeftTop"}, 1, function(v) S.HitLogsPosition = v; updateLogPosition() end)
+	addSlider(logsSet, "Duration", 1, 15, 5, function(v) S.HitLogsDuration = v end)
+	addColor(logsSet, "Log Color", function(c) Runtime.ExtraColors.HitLogs = c end)
+	local markerSet = createFeature(smartCol("COMBAT"), "Hitmarker", false, function(v) S.HitmarkerEnabled = v end)
+	addSlider(markerSet, "Size", 5, 40, 12, function(v) S.HitmarkerSize = v end)
+	addSlider(markerSet, "Thickness", 1, 5, 2, function(v) S.HitmarkerThickness = v end)
+	addSlider(markerSet, "Duration", 5, 60, 25, function(v) S.HitmarkerDuration = v / 10 end)
+	addColor(markerSet, "Color", function(c) Runtime.ExtraColors.Hitmarker = c end)
+	addColor(markerSet, "Kill Color", function(c) Runtime.ExtraColors.HitmarkerKill = c end)
+	local damageSet = createFeature(smartCol("COMBAT"), "Damage FX", false, function(v) S.DamageFXEnabled = v end)
+	addDropdown(damageSet, "Style", {"Foam", "Crescents", "Residue", "Electric"}, 1, function(v) S.DamageFXStyle = v end)
+	addSlider(damageSet, "Count", 1, 60, 12, function(v) S.DamageFXCount = v end)
+	addSlider(damageSet, "Speed", 5, 60, 20, function(v) S.DamageFXSpeed = v end)
+	addSlider(damageSet, "Size", 5, 100, 25, function(v) S.DamageFXSize = v / 100 end)
+	addSlider(damageSet, "Lifetime", 2, 40, 8, function(v) S.DamageFXLifetime = v / 10 end)
+	addDropdown(damageSet, "Rainbow", {"Off", "On"}, 1, function(v) S.DamageFXRainbow = v == "On" end)
+	addColor(damageSet, "Color", function(c) Runtime.ExtraColors.DamageFX = c end)
+	local toolSet = createFeature(smartCol("VISUALS"), "Tool Outline", false, function(v) S.ToolOutline = v end)
+	addColor(toolSet, "Outline Color", function(c) Runtime.ExtraColors.ToolOutline = c; if S.ToolOutline then updateToolOutline() end end)
+	local outlineSet = createFeature(smartCol("VISUALS"), "X-Ray", false, function(v) setXRay(v) end)
+	addSlider(outlineSet, "Transparency", 0, 9, 5, function(v)
+		S.XRayTransparency = v / 10
+		if S.XRay then for object in pairs(xrayCache) do if object.Parent then object.Transparency = S.XRayTransparency end end end
+	end)
+	local waterSet = createFeature(smartCol("VISUALS"), "Custom Water", false, function(v) setWater(v) end)
+	addColor(waterSet, "Water Color", function(c) Runtime.ExtraColors.Water = c; if S.CustomWater then applyWater() end end)
+	addSlider(waterSet, "Reflectance", 0, 10, 3, function(v) S.WaterReflectance = v / 10; if S.CustomWater then applyWater() end end)
+end
+do
+	createFeature(smartCol("MISC"), "Kill Notify", false, function(v) S.KillNotify = v end)
+end
+do
+	local swimSet = createFeature(smartCol("MOVEMENT"), "Swim Speed", false, function(v) S.SwimSpeed = v end)
+	addSlider(swimSet, "Value", 20, 200, 50, function(v) S.SwimSpeedValue = v end)
+	local copterSet = createFeature(smartCol("MOVEMENT"), "Copter Speed", false, function(v) S.CopterSpeed = v end)
+	addSlider(copterSet, "Value", 20, 100, 50, function(v) S.CopterSpeedValue = v end)
+	createFeature(smartCol("MOVEMENT"), "No Fall Damage", false, function(v) S.NoFallDamage = v end, false)
+	createFeature(smartCol("MOVEMENT"), "No Jump Delay", false, function(v) S.NoJumpDelay = v end, false)
+	local flySet = createFeature(smartCol("MOVEMENT"), "Copter Fly", false, function(v)
+		S.CopterFly = v
+		if not v then destroyFly() end
+	end)
+	addSlider(flySet, "Fly Speed", 50, 450, 100, function(v) S.CopterFlySpeed = v end)
+end
+
+Runtime.ExtraHeartbeat = RunService.Heartbeat:Connect(physicsStep)
+Runtime.ExtraRender = RunService.RenderStepped:Connect(visualUpdate)
+local function cleanup()
+	for _, connection in ipairs(extraConnections) do pcall(function() connection:Disconnect() end) end
+	table.clear(extraConnections)
+	if Runtime.ExtraHeartbeat then Runtime.ExtraHeartbeat:Disconnect() end
+	if Runtime.ExtraRender then Runtime.ExtraRender:Disconnect() end
+	clearLogs()
+	clearHitmarkers()
+	clearDamageFX()
+	restoreXRay()
+	restoreWater()
+	clearToolOutline()
+	destroySwim()
+	destroyFly()
+	targetFrame.Visible = false
+end
+ExtraFeatures.Cleanup = cleanup
+onCleanup(cleanup)
+end
+initializeExtraFeatures()
+end -- function-scoped helpers; ExtraFeatures is the public runtime/test surface.
+
+
+-- VOMAGLA gameplay features integrated into the existing Burmalda runtime/UI.
+-- No external menu, loader or second namecall hook is installed here.
+
+do
+local function initializeVomaglaFeatures()
+local M = {
+	Status = {
+		weaponCacheAvailable = false,
+		weaponScans = 0,
+		reloadHooked = false,
+		bulletTracers = 0,
+		killSoundCalls = 0,
+		lastKillSound = "",
+		lastStretch = nil,
+		gunTables = 0,
+		meleeTables = 0,
+		weaponCacheError = nil,
+		lastWeaponCacheAt = 0,
+	},
+	KillSoundState = { Times = {}, LastDouble = -1000 },
+	ReloadState = { Start = 0, Duration = 0, Active = false },
+}
+Runtime.VomaglaFeatures = M
+
+local defaults = {
+	RapidFire = false, RapidFireDelay = 0.02,
+	FullAuto = false,
+	MeleeMods = false, MeleeSpeed = 0.05, MeleeRange = 5,
+	ReloadIndicator = false,
+	BulletTracers = false, BulletTracerStyle = "Beam", BulletTracerWidth = 1.5,
+	BulletTracerTransparency = 0, BulletTracerLifetime = 0.5,
+	HitboxExpander = false, HitboxSize = 5, HitboxTransparency = 0.2,
+	ThirdPerson = false, ThirdPersonDistance = 10,
+	Stretch = false, StretchValue = 0.65,
+	Fullbright = false, NoDecoration = false,
+	SkyColorEnabled = false, SkyboxEnabled = false, SkyboxChoice = "Default",
+	JumpCircles = false, DeleteSpikes = false, DeleteLeaves = false,
+	KillSound = false, KillSoundVolume = 1, KillSoundChoice = "Random",
+}
+for key, value in pairs(defaults) do
+	if S[key] == nil then S[key] = value end
+end
+Runtime.ExtraColors.BulletTracer = Runtime.ExtraColors.BulletTracer or Color3.fromRGB(255, 255, 255)
+Runtime.ExtraColors.Hitbox = Runtime.ExtraColors.Hitbox or Color3.fromRGB(255, 0, 0)
+Runtime.ExtraColors.JumpCircle = Runtime.ExtraColors.JumpCircle or Color3.fromRGB(0, 170, 255)
+Runtime.ExtraColors.Sky = Runtime.ExtraColors.Sky or Color3.fromRGB(135, 200, 255)
+
+local moduleConnections = {}
+local function connect(signal, callback)
+	local connection = signal:Connect(callback)
+	table.insert(moduleConnections, connection)
+	return connection
+end
+local function destroyObject(object)
+	if object then pcall(function() object:Destroy() end) end
+end
+
+-- Gun/melee table mods. Original values are remembered per key and restored on Off/Unload.
+do
+	local gunCache, meleeCache = {}, {}
+	local gunOriginals, meleeOriginals = {}, {}
+	local cachesBuilt = false
+	local nextCacheRefresh = 0
+	local CACHE_REFRESH_SECONDS = 5
+
+	local function updateCacheStatus()
+		M.Status.gunTables = #gunCache
+		M.Status.meleeTables = #meleeCache
+		M.Status.lastWeaponCacheAt = os.clock()
+	end
+
+	local function saveOriginal(originals, object, key)
+		local properties = originals[object]
+		if not properties then
+			properties = {}
+			originals[object] = properties
+		end
+		if properties[key] == nil then properties[key] = { value = rawget(object, key) } end
+	end
+	local function restoreKeys(originals, keys)
+		for object, properties in pairs(originals) do
+			for _, key in ipairs(keys) do
+				local saved = properties[key]
+				if saved then
+					pcall(function() rawset(object, key, saved.value) end)
+					properties[key] = nil
+				end
+			end
+			if next(properties) == nil then originals[object] = nil end
+		end
+	end
+	local rapidKeys = {"FireDelay", "FireRate", "FiringOnCooldown"}
+	local autoKeys = {"FiringType", "FireMode", "Auto"}
+	local meleeKeys = {"UseDelay", "UseTime", "Range", "CharacterRange", "UsingOnCooldown"}
+
+	local function restoreAll()
+		restoreKeys(gunOriginals, rapidKeys)
+		restoreKeys(gunOriginals, autoKeys)
+		restoreKeys(meleeOriginals, meleeKeys)
+	end
+	local function rebuildCaches()
+		restoreAll()
+		table.clear(gunCache)
+		table.clear(meleeCache)
+		cachesBuilt = true
+		nextCacheRefresh = os.clock() + CACHE_REFRESH_SECONDS
+		M.Status.weaponScans += 1
+		M.Status.weaponCacheError = nil
+		M.Status.weaponCacheAvailable = type(getgc) == "function"
+		if not M.Status.weaponCacheAvailable then
+			M.Status.weaponCacheError = "getgc unavailable"
+			updateCacheStatus()
+			return
+		end
+		local ok, objects = pcall(getgc, true)
+		if not ok or type(objects) ~= "table" then
+			M.Status.weaponCacheError = "getgc failed: " .. tostring(objects)
+			updateCacheStatus()
+			return
+		end
+		for _, object in pairs(objects) do
+			if type(object) == "table" then
+				if rawget(object, "FireDelay") ~= nil and rawget(object, "FiringOnCooldown") ~= nil and rawget(object, "OwnerPlayer") ~= nil then
+					table.insert(gunCache, object)
+				end
+				if rawget(object, "UseDelay") ~= nil and rawget(object, "Range") ~= nil
+					and rawget(object, "UsingOnCooldown") ~= nil and rawget(object, "Destroyed") ~= true then
+					table.insert(meleeCache, object)
+				end
+			end
+		end
+		updateCacheStatus()
+	end
+	local function applyWeaponMods(forceRefresh)
+		local enabled = S.RapidFire or S.FullAuto or S.MeleeMods
+		if forceRefresh or (enabled and (not cachesBuilt or os.clock() >= nextCacheRefresh)) then
+			-- Gun tables can be created after the initial script scan. Re-scan on
+			-- enable and periodically while a weapon mod is active, not just on
+			-- Character.ChildAdded (which may already have happened). With every
+			-- weapon mod disabled, do not run an expensive getgc scan at startup.
+			rebuildCaches()
+		end
+		if S.RapidFire or S.FullAuto then
+			for _, object in ipairs(gunCache) do
+				pcall(function()
+					if S.RapidFire then
+						local speed = math.clamp(tonumber(S.RapidFireDelay) or 0.02, 0.01, 0.5)
+						for _, key in ipairs(rapidKeys) do saveOriginal(gunOriginals, object, key) end
+						rawset(object, "FireDelay", speed)
+						if rawget(object, "FireRate") ~= nil then rawset(object, "FireRate", math.floor(1 / speed)) end
+						rawset(object, "FiringOnCooldown", false)
+					end
+					if S.FullAuto then
+						for _, key in ipairs(autoKeys) do saveOriginal(gunOriginals, object, key) end
+						if rawget(object, "FiringType") ~= nil then rawset(object, "FiringType", 2) end
+						if rawget(object, "FireMode") ~= nil then rawset(object, "FireMode", "Auto") end
+						if rawget(object, "Auto") ~= nil then rawset(object, "Auto", true) end
+					end
+				end)
+			end
+		end
+		if S.MeleeMods then
+			local speed = math.clamp(tonumber(S.MeleeSpeed) or 0.05, 0.01, 0.5)
+			local range = math.clamp(tonumber(S.MeleeRange) or 5, 1, 20)
+			for _, object in ipairs(meleeCache) do
+				pcall(function()
+					if rawget(object, "Destroyed") == true then return end
+					for _, key in ipairs(meleeKeys) do saveOriginal(meleeOriginals, object, key) end
+					rawset(object, "UseDelay", speed)
+					rawset(object, "UseTime", speed)
+					rawset(object, "Range", range)
+					rawset(object, "CharacterRange", range)
+					rawset(object, "UsingOnCooldown", false)
+				end)
+			end
+		end
+	end
+	M.RebuildWeaponCaches = rebuildCaches
+	M.ApplyWeaponMods = applyWeaponMods
+	M.SetRapidFire = function(enabled)
+		S.RapidFire = enabled
+		if enabled then applyWeaponMods(true) else restoreKeys(gunOriginals, rapidKeys) end
+	end
+	M.SetFullAuto = function(enabled)
+		S.FullAuto = enabled
+		if enabled then applyWeaponMods(true) else restoreKeys(gunOriginals, autoKeys) end
+	end
+	M.SetMeleeMods = function(enabled)
+		S.MeleeMods = enabled
+		if enabled then applyWeaponMods(true) else restoreKeys(meleeOriginals, meleeKeys) end
+	end
+	M.GetWeaponCaches = function() return gunCache, meleeCache end
+	M.RestoreWeaponMods = restoreAll
+	local function watchCharacter(character)
+		cachesBuilt = false
+		if character then
+			connect(character.ChildAdded, function(child)
+				if child:IsA("Tool") then cachesBuilt = false end
+			end)
+		end
+	end
+	if LocalPlayer.Character then watchCharacter(LocalPlayer.Character) end
+	connect(LocalPlayer.CharacterAdded, function(character)
+		watchCharacter(character)
+		task.delay(0.15, function() if not Runtime.Unloaded then rebuildCaches() end end)
+	end)
+	local backpack = LocalPlayer:FindFirstChild("Backpack")
+	if backpack then
+		connect(backpack.ChildAdded, function(child)
+			if child:IsA("Tool") then cachesBuilt = false end
+		end)
+	end
+	-- Lazy startup: no getgc(true) until a weapon mod is enabled or the
+	-- diagnostics/explicit rebuild API is called. This keeps feature registration
+	-- independent of executor GC-scan latency.
+end
+
+-- Reload progress uses the same GunBase module table as Silent; only one reload method is wrapped.
+do
+	local reloadGui = newScreenGui()
+	reloadGui.Name = "BurmaldaHookReload"
+	reloadGui.ResetOnSpawn = false
+	reloadGui.IgnoreGuiInset = true
+	reloadGui.DisplayOrder = 999996
+	reloadGui.Parent = pGui
+	local holder = Instance.new("Frame", reloadGui)
+	holder.AnchorPoint = Vector2.new(0.5, 1)
+	holder.Position = UDim2.new(0.5, 0, 1, -80)
+	holder.Size = UDim2.new(0, 160, 0, 16)
+	holder.BackgroundTransparency = 1
+	holder.Visible = false
+	local background = Instance.new("Frame", holder)
+	background.Size = UDim2.new(1, 0, 0, 6)
+	background.Position = UDim2.new(0, 0, 0.5, -3)
+	background.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+	background.BorderSizePixel = 0
+	Instance.new("UICorner", background).CornerRadius = UDim.new(1, 0)
+	local fill = Instance.new("Frame", background)
+	fill.Size = UDim2.new(0, 0, 1, 0)
+	fill.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	fill.BorderSizePixel = 0
+	Instance.new("UICorner", fill).CornerRadius = UDim.new(1, 0)
+
+	local gunBase, originalReload, replacementReload, reloadName = nil, nil, nil, nil
+	local lastInstallAttempt = -1000
+	local function installReloadHook()
+		if M.Status.reloadHooked then return true end
+		lastInstallAttempt = os.clock()
+		local gun = ReplicatedStorage:FindFirstChild("Gun")
+		local scripts = gun and gun:FindFirstChild("Scripts")
+		local module = scripts and scripts:FindFirstChild("GunBase")
+		if not module then return false end
+		local loaded = Runtime.RequireGameModule(module)
+		if type(loaded) ~= "table" then return false end
+		for _, name in ipairs({"reload", "Reload", "startReload", "beginReload"}) do
+			if type(loaded[name]) == "function" then
+				gunBase, originalReload, reloadName = loaded, loaded[name], name
+				replacementReload = function(self, ...)
+					local duration = rawget(self, "ReloadTime") or rawget(self, "ReloadDuration")
+						or rawget(self, "reload_time") or rawget(self, "reloadTime") or 2
+					M.ReloadState.Start = os.clock()
+					M.ReloadState.Duration = tonumber(duration) or 2
+					M.ReloadState.Active = true
+					return originalReload(self, ...)
+				end
+				local assigned = pcall(function() gunBase[reloadName] = replacementReload end)
+				if assigned and gunBase[reloadName] == replacementReload then
+					M.Status.reloadHooked = true
+					return true
+				end
+				gunBase, originalReload, replacementReload, reloadName = nil, nil, nil, nil
+			end
+		end
+		return false
+	end
+	M.InstallReloadHook = installReloadHook
+	M.UpdateReload = function()
+		local state = M.ReloadState
+		if S.ReloadIndicator and not M.Status.reloadHooked and os.clock() - lastInstallAttempt > 2 then installReloadHook() end
+		if Runtime.Unloaded or not S.ReloadIndicator or not state.Active then
+			holder.Visible = false
+			return
+		end
+		local progress = (os.clock() - state.Start) / math.max(state.Duration, 0.01)
+		if progress >= 1 then
+			state.Active = false
+			holder.Visible = false
+			return
+		end
+		progress = math.clamp(progress, 0, 1)
+		holder.Visible = true
+		fill.Size = UDim2.new(progress, 0, 1, 0)
+		fill.BackgroundColor3 = Color3.fromRGB(math.floor(255 * (1 - progress) + 0.5), math.floor(180 + 75 * progress + 0.5), 50)
+	end
+	M.GetReloadObjects = function() return holder, fill end
+	M.CleanupReload = function()
+		M.ReloadState.Active = false
+		holder.Visible = false
+		if gunBase and originalReload and reloadName and gunBase[reloadName] == replacementReload then
+			pcall(function() gunBase[reloadName] = originalReload end)
+		end
+		M.Status.reloadHooked = false
+		destroyObject(reloadGui)
+	end
+	-- Install on the Reload Indicator toggle, not while the feature is off.
+end
+
+-- World bullet beams are fed by the existing Workspace Raycast namecall in main.lua.
+do
+	local active = {}
+	local textures = {
+		Beam = "rbxassetid://12781852245", Lightning = "rbxassetid://446111271",
+		Heartrate = "rbxassetid://5830549480", Chain = "rbxassetid://9632168658",
+		Glitch = "rbxassetid://8089467613", Swirl = "rbxassetid://5638168605",
+	}
+	local function clearTracers()
+		for _, tracer in ipairs(active) do destroyObject(tracer.part) end
+		table.clear(active)
+		M.Status.bulletTracers = 0
+	end
+	local function createTracer(startPosition, endPosition)
+		if Runtime.Unloaded or not S.BulletTracers or typeof(startPosition) ~= "Vector3" or typeof(endPosition) ~= "Vector3" then return end
+		local camera = workspace.CurrentCamera
+		if camera and (startPosition - camera.CFrame.Position).Magnitude < 4 then
+			startPosition = camera.CFrame.Position + camera.CFrame.LookVector * 2.5
+		end
+		local part = Instance.new("Part")
+		part.Name = "BurmaldaHookBulletTracer"
+		part.Anchored = true
+		part.CanCollide = false
+		part.CanQuery = false
+		part.CanTouch = false
+		part.Transparency = 1
+		part.Size = Vector3.new(0.1, 0.1, 0.1)
+		part.Parent = workspace
+		local attachment0 = Instance.new("Attachment", part)
+		attachment0.Name = "A0"
+		attachment0.WorldPosition = startPosition
+		local attachment1 = Instance.new("Attachment", part)
+		attachment1.Name = "A1"
+		attachment1.WorldPosition = endPosition
+		local beam = Instance.new("Beam", part)
+		beam.Name = "B"
+		beam.Attachment0 = attachment0
+		beam.Attachment1 = attachment1
+		beam.FaceCamera = true
+		beam.LightEmission = 1
+		beam.LightInfluence = 0
+		beam.TextureLength = 2
+		beam.TextureSpeed = 2
+		beam.Color = ColorSequence.new(Runtime.ExtraColors.BulletTracer)
+		beam.Transparency = NumberSequence.new(S.BulletTracerTransparency)
+		beam.Texture = textures[S.BulletTracerStyle] or textures.Beam
+		beam.Width0 = S.BulletTracerWidth
+		beam.Width1 = S.BulletTracerWidth
+		beam.Enabled = true
+		table.insert(active, {part = part, beam = beam, born = os.clock()})
+		while #active > 25 do destroyObject(table.remove(active, 1).part) end
+		M.Status.bulletTracers = #active
+		return part
+	end
+	M.RecordRaycast = function(origin, hitPosition)
+		if S.BulletTracers then return createTracer(origin, hitPosition) end
+	end
+	M.CreateBulletTracer = createTracer
+	M.UpdateBulletTracers = function()
+		for index = #active, 1, -1 do
+			local tracer = active[index]
+			local alpha = 1 - (os.clock() - tracer.born) / math.max(0.05, S.BulletTracerLifetime)
+			if not tracer.part.Parent or alpha <= 0 then
+				destroyObject(tracer.part)
+				table.remove(active, index)
+			else
+				tracer.beam.Transparency = NumberSequence.new(math.clamp(alpha * (1 - S.BulletTracerTransparency), 0, 1))
+			end
+		end
+		M.Status.bulletTracers = #active
+	end
+	M.GetBulletTracerCount = function() return #active end
+	M.ClearBulletTracers = clearTracers
+	M.SetBulletTracers = function(enabled)
+		S.BulletTracers = enabled
+		if not enabled then clearTracers() end
+	end
+end
+
+-- HeadHitbox expansion is limited to other players and always restores captured properties.
+do
+	local enlarged = {}
+	local elapsed = 0
+	local function restore(part)
+		local original = enlarged[part]
+		if not original then return end
+		if part and part.Parent then
+			pcall(function()
+				part.Size = original.Size
+				part.Color = original.Color
+				part.Transparency = original.Transparency
+				part.Material = original.Material
+			end)
+		end
+		enlarged[part] = nil
+	end
+	local function restoreAll()
+		for part in pairs(enlarged) do restore(part) end
+	end
+	local function updateHitboxes(dt)
+		if not S.HitboxExpander then
+			elapsed = 0
+			if next(enlarged) ~= nil then restoreAll() end
+			return
+		end
+		elapsed += dt or 0
+		if elapsed < 0.08 then return end
+		elapsed = 0
+		local seen = {}
+		for _, player in ipairs(Players:GetPlayers()) do
+			if player ~= LocalPlayer then
+				local character = player.Character
+				local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+				local part = character and character:FindFirstChild("HeadHitbox")
+				if part and humanoid and humanoid.Health > 0 and S.HitboxExpander then
+					seen[part] = true
+					if not enlarged[part] then
+						enlarged[part] = {Size = part.Size, Color = part.Color, Transparency = part.Transparency, Material = part.Material}
+					end
+					local original = enlarged[part]
+					part.Size = original.Size * S.HitboxSize
+					part.Color = Runtime.ExtraColors.Hitbox
+					part.Transparency = S.HitboxTransparency
+					part.Material = Enum.Material.Neon
+				end
+			end
+		end
+		for part in pairs(enlarged) do
+			if not seen[part] then restore(part) end
+		end
+	end
+	M.UpdateHitboxes = updateHitboxes
+	M.ApplyHitboxVisuals = function()
+		for part, original in pairs(enlarged) do
+			if part.Parent then
+				part.Size = original.Size * S.HitboxSize
+				part.Color = Runtime.ExtraColors.Hitbox
+				part.Transparency = S.HitboxTransparency
+			end
+		end
+	end
+	M.RestoreHitboxes = restoreAll
+	M.SetHitboxExpander = function(enabled)
+		S.HitboxExpander = enabled
+		if enabled then updateHitboxes(1) else restoreAll() end
+	end
+	M.GetHitboxCount = function()
+		local count = 0
+		for _ in pairs(enlarged) do count += 1 end
+		return count
+	end
+end
+
+-- Third Person and Stretch use the reference camera transforms; Off restores the last pre-transform frame.
+do
+	local thirdOriginal, stretchOriginal = nil, nil
+	local function disableThirdPerson()
+		local camera = workspace.CurrentCamera
+		if camera and thirdOriginal then pcall(function() camera.CFrame = thirdOriginal end) end
+		thirdOriginal = nil
+	end
+	local function disableStretch()
+		local camera = workspace.CurrentCamera
+		if camera and stretchOriginal then pcall(function() camera.CFrame = stretchOriginal end) end
+		stretchOriginal = nil
+		M.Status.lastStretch = nil
+	end
+	M.SetThirdPerson = function(enabled)
+		S.ThirdPerson = enabled
+		if not enabled then disableThirdPerson() end
+	end
+	M.SetStretch = function(enabled)
+		S.Stretch = enabled
+		if not enabled then disableStretch() end
+	end
+	M.UpdateCamera = function()
+		local camera = workspace.CurrentCamera
+		if not camera then return end
+		if S.ThirdPerson then
+			local character = LocalPlayer.Character
+			local root = character and character:FindFirstChild("HumanoidRootPart")
+			if root then
+				local original = camera.CFrame
+				thirdOriginal = original
+				camera.CFrame = CFrame.new(root.Position - original.LookVector * S.ThirdPersonDistance, root.Position)
+			end
+		else
+			thirdOriginal = nil
+		end
+		if S.Stretch then
+			local original = camera.CFrame
+			stretchOriginal = original
+			camera.CFrame = original * CFrame.new(0, 0, 0, 1, 0, 0, 0, S.StretchValue, 0, 0, 0, 1)
+			M.Status.lastStretch = S.StretchValue
+		else
+			stretchOriginal = nil
+			M.Status.lastStretch = nil
+		end
+	end
+	M.CleanupCamera = function()
+		disableStretch()
+		disableThirdPerson()
+	end
+end
+
+-- Fullbright, terrain decoration, sky tint and reversible Skybox property overrides.
+do
+	local fullbrightOriginal = nil
+	local function applyFullbright()
+		_Lighting.Brightness = 2
+		_Lighting.ClockTime = 14
+		_Lighting.FogEnd = 100000
+		_Lighting.GlobalShadows = false
+		_Lighting.Ambient = Color3.fromRGB(178, 178, 178)
+	end
+	M.SetFullbright = function(enabled)
+		S.Fullbright = enabled
+		if enabled then
+			if not fullbrightOriginal then
+				fullbrightOriginal = {Brightness = _Lighting.Brightness, ClockTime = _Lighting.ClockTime, FogEnd = _Lighting.FogEnd,
+					GlobalShadows = _Lighting.GlobalShadows, Ambient = _Lighting.Ambient}
+			end
+			applyFullbright()
+		elseif fullbrightOriginal then
+			for key, value in pairs(fullbrightOriginal) do pcall(function() _Lighting[key] = value end) end
+			fullbrightOriginal = nil
+		end
+	end
+	M.ApplyFullbright = function() if S.Fullbright then applyFullbright() end end
+
+	local terrain = workspace:FindFirstChildOfClass("Terrain")
+	local decorationOriginal = nil
+	M.SetNoDecoration = function(enabled)
+		S.NoDecoration = enabled
+		if not terrain then return end
+		if enabled then
+			if decorationOriginal == nil then decorationOriginal = terrain.Decoration end
+			if type(sethiddenproperty) == "function" then
+				pcall(sethiddenproperty, terrain, "Decoration", false)
+			else
+				pcall(function() terrain.Decoration = false end)
+			end
+		elseif decorationOriginal ~= nil then
+			pcall(function() terrain.Decoration = decorationOriginal end)
+			decorationOriginal = nil
+		end
+	end
+
+	local skyFx = nil
+	M.SetSkyColorEnabled = function(enabled)
+		S.SkyColorEnabled = enabled
+		if enabled then
+			if not skyFx then
+				skyFx = Instance.new("ColorCorrectionEffect")
+				skyFx.Name = "BurmaldaHookSky"
+				skyFx.Parent = _Lighting
+			end
+			skyFx.TintColor = Runtime.ExtraColors.Sky
+		else
+			destroyObject(skyFx)
+			skyFx = nil
+		end
+	end
+	M.ApplySkyColor = function() if skyFx then skyFx.TintColor = Runtime.ExtraColors.Sky end end
+	M.GetSkyEffect = function() return skyFx end
+
+	local skyData = {
+		["Blue Sky"] = {591058823, 591059876, 591058104, 591057861, 591057625, 591059642},
+		["Vaporwave"] = {1417494030, 1417494146, 1417494253, 1417494402, 1417494499, 1417494643},
+		["Redshift"] = {401664839, 401664862, 401664960, 401664881, 401664901, 401664936},
+		["Blaze"] = {150939022, 150939038, 150939047, 150939056, 150939063, 150939082},
+		["Among Us"] = {5752463190, 5752463190, 5752463190, 5752463190, 5752463190, 5752463190},
+		["Dark Night"] = {6285719338, 6285721078, 6285722964, 6285724682, 6285726335, 6285730635},
+		["Bright Pink"] = {271042516, 271077243, 271042556, 271042310, 271042467, 271077958},
+		["Purple Sky"] = {570557514, 570557775, 570557559, 570557620, 570557672, 570557727},
+		["Galaxy"] = {15125283003, 15125281008, 15125277539, 15125279325, 15125274388, 15125275800},
+		["Pinky Sky"] = {11427769401, 11427770685, 11427769401, 11427769401, 11427769401, 11427771954},
+		["Sky 2"] = {17279854976, 17279856318, 17279858447, 17279860360, 17279862234, 17279864507},
+		["Sky 3"] = {12064107, 12064152, 12064121, 12063984, 12064115, 12064131},
+	}
+	local skyNames = {"Default", "Blue Sky", "Vaporwave", "Redshift", "Blaze", "Among Us", "Dark Night", "Bright Pink", "Purple Sky", "Galaxy", "Pinky Sky", "Sky 2", "Sky 3"}
+	M.SkyboxNames = skyNames
+	local ownedSky, skyOriginal = nil, nil
+	local skyProperties = {"SkyboxBk", "SkyboxDn", "SkyboxFt", "SkyboxLf", "SkyboxRt", "SkyboxUp"}
+	local function restoreSkybox()
+		if ownedSky then
+			destroyObject(ownedSky)
+			ownedSky = nil
+		elseif skyOriginal and skyOriginal.Object and skyOriginal.Object.Parent then
+			for _, key in ipairs(skyProperties) do pcall(function() skyOriginal.Object[key] = skyOriginal[key] end) end
+		end
+		skyOriginal = nil
+	end
+	local function applySkybox()
+		restoreSkybox()
+		if not S.SkyboxEnabled or S.SkyboxChoice == "Default" or not skyData[S.SkyboxChoice] then return end
+		local sky = _Lighting:FindFirstChildOfClass("Sky")
+		if sky then
+			skyOriginal = {Object = sky}
+			for _, key in ipairs(skyProperties) do skyOriginal[key] = sky[key] end
+		else
+			sky = Instance.new("Sky")
+			sky.Name = "BurmaldaHookSkybox"
+			sky.Parent = _Lighting
+			ownedSky = sky
+		end
+		local data = skyData[S.SkyboxChoice]
+		for index, key in ipairs(skyProperties) do sky[key] = "rbxassetid://" .. tostring(data[index]) end
+	end
+	M.ApplySkybox = applySkybox
+	M.SetSkyboxEnabled = function(enabled)
+		S.SkyboxEnabled = enabled
+		applySkybox()
+	end
+	M.RestoreWorldVisuals = function()
+		M.SetFullbright(false)
+		M.SetNoDecoration(false)
+		M.SetSkyColorEnabled(false)
+		S.SkyboxEnabled = false
+		restoreSkybox()
+	end
+end
+
+-- Reference-style local removal of named spikes/leaves, including later descendants.
+do
+	local function matches(object)
+		return (S.DeleteSpikes and object.Name == "Spikes")
+			or (S.DeleteLeaves and (object.Name == "LeavesTop" or object.Name == "Leafs"))
+	end
+	local function scan()
+		if not S.DeleteSpikes and not S.DeleteLeaves then return end
+		for _, object in ipairs(workspace:GetDescendants()) do
+			if matches(object) then pcall(function() object:Destroy() end) end
+		end
+	end
+	connect(workspace.DescendantAdded, function(object)
+		if not Runtime.Unloaded and matches(object) then task.defer(function() pcall(function() object:Destroy() end) end) end
+	end)
+	M.ScanWorldRemovals = scan
+	M.SetDeleteSpikes = function(enabled) S.DeleteSpikes = enabled; if enabled then scan() end end
+	M.SetDeleteLeaves = function(enabled) S.DeleteLeaves = enabled; if enabled then scan() end end
+end
+
+-- Jump ring effects and kill/double-kill sounds use owned instances only.
+do
+	local jumpParts = {}
+	local function clearJumpParts()
+		for _, part in ipairs(jumpParts) do destroyObject(part) end
+		table.clear(jumpParts)
+	end
+	local function onJump(_, newState)
+		if newState ~= Enum.HumanoidStateType.Jumping or not S.JumpCircles or Runtime.Unloaded then return end
+		local character = LocalPlayer.Character
+		local root = character and character:FindFirstChild("HumanoidRootPart")
+		if not root then return end
+		local part = Instance.new("Part")
+		part.Name = "BurmaldaHookJumpCircle"
+		part.Anchored = true
+		part.CanCollide = false
+		part.CanQuery = false
+		part.CanTouch = false
+		part.Material = Enum.Material.Neon
+		part.Color = Runtime.ExtraColors.JumpCircle
+		part.CFrame = CFrame.new(root.Position - Vector3.new(0, 2.9, 0)) * CFrame.Angles(math.rad(90), 0, 0)
+		part.Parent = workspace
+		local mesh = Instance.new("SpecialMesh", part)
+		mesh.MeshId = "rbxassetid://3270017"
+		mesh.MeshType = Enum.MeshType.FileMesh
+		local tweenService = game:GetService("TweenService")
+		if tweenService and tweenService.Create then
+			pcall(function()
+				tweenService:Create(part, TweenInfo.new(0.4), {Transparency = 1}):Play()
+				tweenService:Create(mesh, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Scale = Vector3.new(8, 8, 0.2)}):Play()
+			end)
+		end
+		table.insert(jumpParts, part)
+		while #jumpParts > 12 do destroyObject(table.remove(jumpParts, 1)) end
+		task.delay(0.45, function() destroyObject(part) end)
+	end
+	local function attachCharacter(character)
+		local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+		if humanoid then connect(humanoid.StateChanged, onJump) end
+	end
+	if LocalPlayer.Character then attachCharacter(LocalPlayer.Character) end
+	connect(LocalPlayer.CharacterAdded, attachCharacter)
+	M.TriggerJumpCircle = onJump
+	M.GetJumpCircleCount = function()
+		local count = 0
+		for _, part in ipairs(jumpParts) do if part.Parent then count += 1 end end
+		return count
+	end
+	M.ClearJumpCircles = clearJumpParts
+	M.SetJumpCircles = function(enabled) S.JumpCircles = enabled; if not enabled then clearJumpParts() end end
+
+	local soundService = game:GetService("SoundService")
+	local sounds = {}
+	local killIds = {"6350854289", "132050044560917", "125662494668382", "130940311850179"}
+	local killNames = {"Random", "Sound 1", "Sound 2", "Sound 3", "Sound 4"}
+	M.KillSoundIds = killIds
+	M.KillSoundNames = killNames
+	local doubleId = "116907610084760"
+	local function clearSounds()
+		for _, sound in ipairs(sounds) do destroyObject(sound) end
+		table.clear(sounds)
+	end
+	M.PlayKillSound = function()
+		if not S.KillSound or Runtime.Unloaded then return end
+		local state = M.KillSoundState
+		local now = os.clock()
+		table.insert(state.Times, now)
+		for index = #state.Times, 1, -1 do if now - state.Times[index] > 10 then table.remove(state.Times, index) end end
+		local id
+		if #state.Times >= 2 and now - state.LastDouble > 1 then
+			id = doubleId
+			state.LastDouble = now
+		else
+			local choice = table.find(killNames, S.KillSoundChoice)
+			id = choice and choice > 1 and killIds[choice - 1] or killIds[math.random(1, #killIds)]
+		end
+		local sound = Instance.new("Sound")
+		sound.Name = "BurmaldaHookKillSound"
+		sound.Volume = S.KillSoundVolume
+		sound.SoundId = "rbxassetid://" .. id
+		sound.Parent = soundService or pGui
+		sound:Play()
+		table.insert(sounds, sound)
+		while #sounds > 12 do destroyObject(table.remove(sounds, 1)) end
+		M.Status.killSoundCalls += 1
+		M.Status.lastKillSound = sound.SoundId
+		task.delay(6, function() destroyObject(sound) end)
+		return sound
+	end
+	M.ClearKillSounds = clearSounds
+	M.SetKillSound = function(enabled) S.KillSound = enabled; if not enabled then clearSounds() end end
+end
+
+-- Menu registration reuses our feature rows and editors; no VOMAGLA UI is loaded.
+local function column(tabName, right)
+	local left, rightColumn = getTab(tabName)
+	return right and rightColumn or left
+end
+local rapidSet = createFeature(column("COMBAT", true), "Rapid Fire", false, function(v) M.SetRapidFire(v) end)
+addSlider(rapidSet, "Fire Delay", 1, 50, 2, function(v) S.RapidFireDelay = v / 100 end)
+createFeature(column("COMBAT", true), "Full Auto", false, function(v) M.SetFullAuto(v) end, false)
+local meleeSet = createFeature(column("COMBAT", true), "Melee Mods", false, function(v) M.SetMeleeMods(v) end)
+addSlider(meleeSet, "Melee Speed", 1, 50, 5, function(v) S.MeleeSpeed = v / 100 end)
+addSlider(meleeSet, "Melee Range", 1, 20, 5, function(v) S.MeleeRange = v end)
+local hitboxSet = createFeature(column("COMBAT", true), "Hitbox Expander", false, function(v) M.SetHitboxExpander(v) end)
+addSlider(hitboxSet, "Size Multiplier", 50, 205, 50, function(v) S.HitboxSize = v / 10; M.ApplyHitboxVisuals() end)
+addSlider(hitboxSet, "Transparency", 0, 10, 2, function(v) S.HitboxTransparency = v / 10; M.ApplyHitboxVisuals() end)
+addColor(hitboxSet, "Color", function(color) Runtime.ExtraColors.Hitbox = color; M.ApplyHitboxVisuals() end)
+
+createFeature(column("COMBAT", true), "Reload Indicator", false, function(v)
+	S.ReloadIndicator = v
+	if v then M.InstallReloadHook() end
+	M.UpdateReload()
+end, false)
+local bulletSet = createFeature(column("COMBAT", true), "Bullet Tracers", false, function(v) M.SetBulletTracers(v) end)
+addDropdown(bulletSet, "Texture", {"Beam", "Lightning", "Heartrate", "Chain", "Glitch", "Swirl"}, 1, function(v) S.BulletTracerStyle = v end)
+addSlider(bulletSet, "Width", 1, 50, 15, function(v) S.BulletTracerWidth = v / 10 end)
+addSlider(bulletSet, "Transparency", 0, 10, 0, function(v) S.BulletTracerTransparency = v / 10 end)
+addSlider(bulletSet, "Life Time", 1, 30, 5, function(v) S.BulletTracerLifetime = v / 10 end)
+addColor(bulletSet, "Color", function(color) Runtime.ExtraColors.BulletTracer = color end)
+local thirdSet = createFeature(column("VISUALS", true), "Third Person", false, function(v) M.SetThirdPerson(v) end)
+addSlider(thirdSet, "Camera Distance", 5, 50, 10, function(v) S.ThirdPersonDistance = v end)
+local stretchSet = createFeature(column("VISUALS", true), "Stretch Resolution", false, function(v) M.SetStretch(v) end)
+addSlider(stretchSet, "Stretch Amount", 30, 100, 65, function(v) S.StretchValue = v / 100 end)
+local jumpSet = createFeature(column("VISUALS", true), "Jump Circles", false, function(v) M.SetJumpCircles(v) end)
+addColor(jumpSet, "Circle Color", function(color) Runtime.ExtraColors.JumpCircle = color end)
+
+createFeature(column("VISUALS", false), "Fullbright", false, function(v)
+	if v then
+		if _fFS["Night Vision"] then _fFS["Night Vision"](false) end
+		if fogEnabled and _fFS["Custom Fog"] then _fFS["Custom Fog"](false) end
+		if S.LowPC and _fFS["Low PC"] then _fFS["Low PC"](false) end
+	end
+	M.SetFullbright(v)
+end, false)
+createFeature(column("VISUALS", false), "No Decoration", false, function(v) M.SetNoDecoration(v) end, false)
+local skyColorSet = createFeature(column("VISUALS", false), "Sky Color", false, function(v) M.SetSkyColorEnabled(v) end)
+addColor(skyColorSet, "Tint", function(color) Runtime.ExtraColors.Sky = color; M.ApplySkyColor() end)
+local skyboxSet = createFeature(column("VISUALS", false), "Skybox", false, function(v) M.SetSkyboxEnabled(v) end)
+addDropdown(skyboxSet, "Preset", M.SkyboxNames, 1, function(v) S.SkyboxChoice = v; M.ApplySkybox() end)
+createFeature(column("VISUALS", false), "Delete Spikes", false, function(v) M.SetDeleteSpikes(v) end, false)
+createFeature(column("VISUALS", false), "Delete Leaves", false, function(v) M.SetDeleteLeaves(v) end, false)
+local killSoundSet = createFeature(column("MISC", true), "Kill Sound", false, function(v) M.SetKillSound(v) end)
+addDropdown(killSoundSet, "Sound", M.KillSoundNames, 1, function(v) S.KillSoundChoice = v end)
+addSlider(killSoundSet, "Kill Volume", 0, 50, 10, function(v) S.KillSoundVolume = v / 10 end)
+
+M.Heartbeat = function(dt)
+	if Runtime.Unloaded then return end
+	M.ApplyWeaponMods()
+	M.UpdateReload()
+	M.UpdateBulletTracers()
+	M.UpdateHitboxes(dt)
+	M.ApplyFullbright()
+end
+M.Render = function()
+	if not Runtime.Unloaded then M.UpdateCamera() end
+end
+M.HeartbeatConnection = RunService.Heartbeat:Connect(M.Heartbeat)
+M.RenderConnection = RunService.RenderStepped:Connect(M.Render)
+
+local function cleanup()
+	if M.HeartbeatConnection then pcall(function() M.HeartbeatConnection:Disconnect() end) end
+	if M.RenderConnection then pcall(function() M.RenderConnection:Disconnect() end) end
+	for _, connection in ipairs(moduleConnections) do pcall(function() connection:Disconnect() end) end
+	table.clear(moduleConnections)
+	M.RestoreWeaponMods()
+	M.CleanupReload()
+	M.ClearBulletTracers()
+	M.RestoreHitboxes()
+	M.CleanupCamera()
+	M.RestoreWorldVisuals()
+	M.ClearJumpCircles()
+	M.ClearKillSounds()
+end
+M.Cleanup = cleanup
+onCleanup(cleanup)
+end
+initializeVomaglaFeatures()
+end -- function-scoped locals keep the combined loader below Luau's register limit.
+
+
+-- One coordinator owns the target consumed by shots, FOV color, Target HUD,
+-- snapline and Auto Fire. The legacy scanner is used only for a Target Line
+-- while Silent is disabled; it can no longer override an empty Silent target.
+local function updateSharedTarget()
+	if ProjectileSilent then
+		local ok, err = pcall(ProjectileSilent.Update)
+		Runtime.LastTargetError = ok and nil or tostring(err)
+		if not ok then
+			SA_CurrentTarget = nil
+			return
+		end
+	end
+	if S.SilentAim and ProjectileSilent then
+		SA_CurrentTarget = ProjectileSilent.TargetVisible and ProjectileSilent.TargetPart or nil
+		return
+	end
+	if not S.MBTargetLine then
+		SA_CurrentTarget = nil
+		return
+	end
+
+	local target = nil
+	local shortestDistance = S.MBUseFOV and S.FOV or math.huge
+	local lowestHP = math.huge
+	local currentCamera = workspace.CurrentCamera or Camera
+	local camPos2 = currentCamera.CFrame.Position
+	local vp = currentCamera.ViewportSize
+	local center = S.MBFovMode == "pc"
+		and UIS:GetMouseLocation()
+		or Vector2.new(vp.X * 0.5, vp.Y * 0.5)
+	local priority = S.MBPriority
+	local candidates = {}
+	for _, player in ipairs(Players:GetPlayers()) do
+		if player == LocalPlayer then continue end
+		local character = player.Character
+		if not character then continue end
+		local root
+		if ProjectileSilent and ProjectileSilent.ResolveTargetPart then
+			root = ProjectileSilent.ResolveTargetPart(character)
+		elseif S.MBTargetPart == 2 then
+			root = character:FindFirstChild("Head") or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("HumanoidRootPart")
+		elseif S.MBTargetPart == 3 then
+			root = character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head")
+		elseif S.MBTargetPart == 4 then
+			local randomParts = {}
+			for _, name in ipairs({"HeadHitbox", "Head", "HumanoidRootPart"}) do
+				local part = character:FindFirstChild(name)
+				if part then table.insert(randomParts, part) end
+			end
+			root = #randomParts > 0 and randomParts[math.random(1, #randomParts)] or nil
+		else
+			root = character:FindFirstChild("HeadHitbox") or character:FindFirstChild("Head") or character:FindFirstChild("HumanoidRootPart")
+		end
+		local humanoid = character:FindFirstChildOfClass("Humanoid")
+		if not root or not humanoid or humanoid.Health <= 0 then continue end
+		if (root.Position - camPos2).Magnitude > S.MBMaxDist then continue end
+		if S.MBVisibleOnly and not isVisible(root, character) then continue end
+		local projected, onScreen = currentCamera:WorldToViewportPoint(root.Position)
+		if onScreen and projected.Z > 0 then
+			local distance = (Vector2.new(projected.X, projected.Y) - center).Magnitude
+			if not S.MBUseFOV or distance <= S.FOV then
+				table.insert(candidates, {root = root, hum = humanoid, dist = distance})
+			end
+		end
+	end
+
+	if priority == "hp" then
+		for _, candidate in ipairs(candidates) do
+			local hp = candidate.hum.Health
+			if hp < lowestHP or (hp == lowestHP and candidate.dist < shortestDistance) then
+				lowestHP = hp
+				shortestDistance = candidate.dist
+				target = candidate.root
+			end
+		end
+	else
+		for _, candidate in ipairs(candidates) do
+			if candidate.dist < shortestDistance then
+				shortestDistance = candidate.dist
+				target = candidate.root
+			end
+		end
+	end
+	SA_CurrentTarget = target
+end
+Runtime.UpdateSharedTarget = updateSharedTarget
+onCleanup(function()
+	Runtime.UpdateSharedTarget = nil
+	SA_CurrentTarget = nil
+end)
+
+task.spawn(function()
+	while task.wait(S.LowPC and 0.1 or 0.05) do
+		if Runtime.Unloaded then break end
+		updateSharedTarget()
+	end
+end)
+
+local speedRostConn = nil
+local function startSpeedRost()
+	if speedRostConn then speedRostConn:Disconnect(); speedRostConn = nil end
+	speedRostConn = RunService.Heartbeat:Connect(function()
+		if Runtime.Unloaded or not S.SpeedRostAlpha then return end
+		local char = LocalPlayer.Character
+		local hum = char and char:FindFirstChildOfClass("Humanoid")
+		local root = char and char:FindFirstChild("HumanoidRootPart")
+		if not hum or not root or hum.Health <= 0 then return end
+		local direction = hum.MoveDirection
+		if direction.Magnitude <= 0 then return end
+		-- VOMAGLA's working Speed path: horizontal physics velocity, preserving Y.
+		-- WalkSpeed and camera are never rewritten; Off simply stops further writes.
+		local velocity = root.AssemblyLinearVelocity
+		local speed = math.clamp(tonumber(S.SpeedRostValue) or 30, 0, 60)
+		root.AssemblyLinearVelocity = Vector3.new(direction.X * speed, velocity.Y, direction.Z * speed)
+	end)
+	onCleanup(function()
+		if speedRostConn then speedRostConn:Disconnect(); speedRostConn = nil end
+	end)
+end
+startSpeedRost()
+
+local spiderConn = nil
+local spiderParams = RaycastParams.new()
+spiderParams.FilterType = Enum.RaycastFilterType.Exclude
+local _spiderOffsets = {Vector3.new(0,-1.6,0), Vector3.new(0,0,0), Vector3.new(0,1.6,0)}
+
+local function startSpider()
+	if spiderConn then spiderConn:Disconnect(); spiderConn = nil end
+	local lastChar = nil
+	local climbTimer = 0
+	local pauseTimer = 0
+	local pauseActive = false
+	local noiseX, noiseZ = 0, 0
+	spiderConn = RunService.Heartbeat:Connect(function(dt)
+		if not S.Spider then return end
+		local char = LocalPlayer.Character
+		if not char then return end
+		local Root = char:FindFirstChild("HumanoidRootPart")
+		local Hum  = char:FindFirstChildOfClass("Humanoid")
+		if not Root or not Hum then return end
+		if char ~= lastChar then
+			spiderParams.FilterDescendantsInstances = {char}
+			lastChar = char; climbTimer = 0; pauseTimer = 0; pauseActive = false
+		end
+		if Hum.MoveDirection.Magnitude < 0.1 then return end
+		local look = Root.CFrame.LookVector
+		local flatX, flatZ = look.X, look.Z
+		local flatMag = math.sqrt(flatX*flatX + flatZ*flatZ)
+		if flatMag < 0.01 then return end
+		local scale = 1.25 / flatMag
+		local flatVec = Vector3.new(flatX * scale, 0, flatZ * scale)
+		local rootPos = Root.Position
+		local hitCount = 0
+		for i = 1, 3 do
+			local r = workspace:Raycast(rootPos + _spiderOffsets[i], flatVec, spiderParams)
+			if r and math.abs(r.Normal.Y) < 0.4 then hitCount = hitCount + 1 end
+		end
+		if hitCount >= 2 then
+			climbTimer = climbTimer + dt
+			pauseTimer = pauseTimer + dt
+			if pauseTimer >= 0.28 then
+				pauseTimer = 0; pauseActive = true
+				noiseX = (math.random() - 0.5) * 0.012
+				noiseZ = (math.random() - 0.5) * 0.012
+			end
+			if pauseActive then pauseActive = false; return end
+			local targetVY  = S.SpiderSpeed
+			local currentVY = Root.AssemblyLinearVelocity.Y
+			local smoothVY  = currentVY + (targetVY - currentVY) * math.min(dt * 10, 1)
+			Root.CFrame = CFrame.new(rootPos.X + noiseX, rootPos.Y, rootPos.Z + noiseZ) * CFrame.Angles(0, math.atan2(-look.X, -look.Z), 0)
+			Root.AssemblyLinearVelocity = Vector3.new(Root.AssemblyLinearVelocity.X, smoothVY, Root.AssemblyLinearVelocity.Z)
+		else
+			climbTimer = 0
+		end
+	end)
+end
+startSpider()
+
+do
+	local function installSilentNamecall()
+	local oldNamecall = nil
+	local restoreNamecall = nil
+	Runtime.NamecallPath = "pending"
+	Runtime.CallWorldRay = function(self, beamOrigin, ...)
+		local results = table.pack(oldNamecall(self, ...))
+		if S.BulletTracers and Runtime.VomaglaFeatures then
+			local hitPosition = nil
+			if typeof(results[1]) == "RaycastResult" then
+				hitPosition = results[1].Position
+			elseif typeof(results[2]) == "Vector3" then
+				hitPosition = results[2]
+			end
+			if hitPosition then Runtime.VomaglaFeatures.RecordRaycast(beamOrigin, hitPosition) end
+		end
+		return unpack(results, 1, results.n)
+	end
+	-- Opiumware can lose the outer namecall context when a hook performs another
+	-- Roblox method call. Keep this path like VOMAGLA's cached targetPos: property
+	-- reads only, with no GetTarget(), WorldToViewportPoint, FindFirstChild or IsA.
+	local function getCachedTarget()
+		if not ProjectileSilent then
+			local target = SA_CurrentTarget
+			if not target or not target.Parent then return nil end
+			return target, target.Position
+		end
+		local target = ProjectileSilent.TargetPart
+		local humanoid = ProjectileSilent.TargetHumanoid
+		if ProjectileSilent.TargetVisible ~= true then return nil end
+		if not target or not target.Parent or (humanoid and humanoid.Health <= 0) then
+			return nil
+		end
+		-- Keep the sampled offset, but follow target translation between 50 ms scans.
+		-- This remains property/vector-only: no nested GetTarget or Camera projection.
+		local targetPosition = target.Position
+		local targetOffset = ProjectileSilent.TargetOffset
+		if typeof(targetOffset) == "Vector3" then
+			if targetOffset.X ~= 0 or targetOffset.Y ~= 0 or targetOffset.Z ~= 0 then
+				targetPosition = targetPosition + targetOffset
+			end
+		elseif typeof(ProjectileSilent.TargetPosition) == "Vector3" then
+			targetPosition = ProjectileSilent.TargetPosition
+		end
+		return target, targetPosition
+	end
+
+	local function silentNamecall(self, ...)
+		local method = type(getnamecallmethod) == "function" and getnamecallmethod() or nil
+		local executorCall = checkcaller and checkcaller() or false
+		local worldRay = self == workspace and (method == "Raycast" or method == "FindPartOnRay" or method == "FindPartOnRayWithIgnoreList")
+		if Runtime.Unloaded then return oldNamecall(self, ...) end
+		if Runtime.CraftingMenuOpen then return oldNamecall(self, ...) end
+
+		if not S.SilentAim then
+			if worldRay and not executorCall and S.BulletTracers then
+				local args = {...}
+				local origin = method == "Raycast" and args[1] or (typeof(args[1]) == "Ray" and args[1].Origin or nil)
+				if typeof(origin) == "Vector3" then return Runtime.CallWorldRay(self, origin, ...) end
+			end
+			return oldNamecall(self, ...)
+		end
+
+		local gunbaseOwnsShot = ProjectileCore and ProjectileCore.GunBaseRedirecting == true
+		-- FireServer remains before checkcaller: original GunBase.fire can reach it synchronously.
+		if method == "FireServer" then
+			if gunbaseOwnsShot then
+				if ProjectileCore then ProjectileCore.Status.fallbackSkips += 1 end
+				return oldNamecall(self, ...)
+			end
+			-- C4/rocket/grenade placement and flight remotes often use the same
+			-- Vector3/CFrame shape as guns. Never retarget an explosive context.
+			if ProjectileSilent and ProjectileSilent.IsExplosiveContext(self) then
+				if ProjectileCore then
+					ProjectileCore.Status.explosiveSkips += 1
+					ProjectileCore.Status.lastShotReason = "explosive-remote-original"
+				end
+				return oldNamecall(self, ...)
+			end
+			if not ProjectileSilent or not ProjectileSilent.HasWeaponAction() then
+				if ProjectileCore then
+					ProjectileCore.Status.actionSkips += 1
+					ProjectileCore.Status.lastShotReason = "no-weapon-action-remote-original"
+				end
+				return oldNamecall(self, ...)
+			end
+			local target, targetPosition = getCachedTarget()
+			if not target then return oldNamecall(self, ...) end
+			if ProjectileCore then ProjectileCore.Status.remoteCalls += 1 end
+			if math.random(1, 100) > S.MBHitChance then
+				if ProjectileCore then ProjectileCore.Status.lastShotReason = "fireserver-hit-chance-original" end
+				return oldNamecall(self, ...)
+			end
+			local args = table.pack(...)
+			local patched = false
+			for index = 1, args.n do
+				local value = args[index]
+				if typeof(value) == "Vector3" then
+					args[index] = targetPosition
+					patched = true
+				elseif typeof(value) == "CFrame" then
+					args[index] = CFrame.new(targetPosition)
+					patched = true
+				end
+			end
+			if patched and ProjectileCore then
+				ProjectileCore.Status.remoteRedirects += 1
+				ProjectileCore.Status.lastShotReason = "fireserver-redirected"
+				ProjectileSilent.NoteShot(target)
+			end
+			return oldNamecall(self, unpack(args, 1, args.n))
+		end
+
+		if executorCall or not worldRay then return oldNamecall(self, ...) end
+		local args = {...}
+		local originalOrigin = nil
+		if method == "Raycast" then
+			if typeof(args[1]) ~= "Vector3" or typeof(args[2]) ~= "Vector3" then return oldNamecall(self, ...) end
+			originalOrigin = args[1]
+		else
+			if typeof(args[1]) ~= "Ray" then return oldNamecall(self, ...) end
+			originalOrigin = args[1].Origin
+		end
+		local castDistance = method == "Raycast" and args[2].Magnitude or args[1].Direction.Magnitude
+		if gunbaseOwnsShot then
+			if castDistance > 50 then
+				local target, targetPosition = getCachedTarget()
+				if target then
+					local origin = method == "Raycast" and args[1] or args[1].Origin
+					local direction = method == "Raycast" and args[2] or args[1].Direction
+					local delta = targetPosition - origin
+					local distance = delta.Magnitude
+					if distance > castDistance then
+						local alignment = (direction.X * delta.X + direction.Y * delta.Y + direction.Z * delta.Z) / (castDistance * distance)
+						if alignment >= 0.98 then
+							local extended = direction.Unit * distance
+							if method == "Raycast" then
+								args[2] = extended
+							else
+								args[1] = Ray.new(origin, extended)
+							end
+							return Runtime.CallWorldRay(self, originalOrigin, unpack(args))
+						end
+					end
+				end
+			end
+			if ProjectileCore then ProjectileCore.Status.fallbackSkips += 1 end
+			if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
+			return oldNamecall(self, ...)
+		end
+		if ProjectileSilent and ProjectileSilent.IsExplosiveContext(self) then
+			if ProjectileCore then
+				ProjectileCore.Status.explosiveSkips += 1
+				ProjectileCore.Status.lastShotReason = "explosive-ray-original"
+			end
+			return oldNamecall(self, ...)
+		end
+
+		-- VOMAGLA's distance guard is required here: ViewmodelController also uses
+		-- Workspace rays for short melee/resource checks (TreeX, NodeSpark, stones).
+		-- Never pull those interactions toward a selected player or draw gun tracers.
+		if castDistance <= 50 then
+			if ProjectileCore then
+				ProjectileCore.Status.nonCombatSkips += 1
+				ProjectileCore.Status.lastShotReason = "short-melee-resource-ray-original"
+			end
+			return oldNamecall(self, ...)
+		end
+		if not ProjectileSilent or not ProjectileSilent.HasWeaponAction() then
+			if ProjectileCore then
+				ProjectileCore.Status.actionSkips += 1
+				ProjectileCore.Status.lastShotReason = "no-weapon-action-ray-original"
+			end
+			return oldNamecall(self, ...)
+		end
+
+		local target, targetPosition = getCachedTarget()
+		if not target or math.random(1, 100) > S.MBHitChance then
+			if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
+			return oldNamecall(self, ...)
+		end
+
+		if method == "Raycast" then
+			local origin, direction = args[1], args[2]
+			local newOrigin = origin
+			if S.Manipulation and workspace.CurrentCamera then newOrigin = workspace.CurrentCamera.CFrame.Position end
+			local delta = targetPosition - newOrigin
+			if delta.Magnitude == 0 or castDistance == 0 then
+				if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
+				return oldNamecall(self, ...)
+			end
+			args[1] = newOrigin
+			args[2] = delta.Unit * math.max(castDistance, delta.Magnitude)
+			ProjectileSilent.NoteShot(target)
+			return Runtime.CallWorldRay(self, newOrigin, unpack(args))
+		end
+
+		local ray = args[1]
+		local delta = targetPosition - ray.Origin
+		if delta.Magnitude == 0 or castDistance == 0 then
+			if S.BulletTracers then return Runtime.CallWorldRay(self, originalOrigin, ...) end
+			return oldNamecall(self, ...)
+		end
+		args[1] = Ray.new(ray.Origin, delta.Unit * math.max(castDistance, delta.Magnitude))
+		ProjectileSilent.NoteShot(target)
+		return Runtime.CallWorldRay(self, ray.Origin, unpack(args))
+	end
+
+	local function makeNamecallClosure(callback)
+		if type(newcclosure) == "function" then
+			local ok, wrapped = pcall(newcclosure, callback)
+			if ok and type(wrapped) == "function" then return wrapped end
+		end
+		return callback
+	end
+	local wrappedNamecall = makeNamecallClosure(silentNamecall)
+
+	Runtime._InstallStandardNamecall = function()
+		if oldNamecall or type(hookmetamethod) ~= "function" then return end
+		local ok, original = pcall(hookmetamethod, game, "__namecall", wrappedNamecall)
+		if ok and type(original) == "function" then
+			oldNamecall = original
+			Runtime.NamecallPath = "hookmetamethod"
+			restoreNamecall = function()
+				pcall(hookmetamethod, game, "__namecall", original)
+			end
+		end
+	end
+	Runtime._InstallStandardNamecall()
+
+	-- Compatibility fallback for supported executors without hookmetamethod.
+	if not oldNamecall and type(getrawmetatable) == "function" then
+		local ok, mt = pcall(getrawmetatable, game)
+		if ok and type(mt) == "table" and type(mt.__namecall) == "function" then
+			local original = mt.__namecall
+			local wasReadonly = true
+			if type(isreadonly) == "function" then
+				pcall(function() wasReadonly = isreadonly(mt) end)
+			end
+			local function setMetaReadonly(value)
+				if type(setreadonly) == "function" then
+					pcall(setreadonly, mt, value)
+				elseif value and type(makereadonly) == "function" then
+					pcall(makereadonly, mt)
+				elseif not value and type(makewriteable) == "function" then
+					pcall(makewriteable, mt)
+				end
+			end
+			setMetaReadonly(false)
+			if pcall(function() mt.__namecall = wrappedNamecall end) and mt.__namecall == wrappedNamecall then
+				oldNamecall = original
+				Runtime.NamecallPath = "raw-metatable"
+				setMetaReadonly(wasReadonly)
+				restoreNamecall = function()
+					setMetaReadonly(false)
+					pcall(function() mt.__namecall = original end)
+					setMetaReadonly(wasReadonly)
+				end
+			else
+				pcall(function() mt.__namecall = original end)
+				setMetaReadonly(wasReadonly)
+			end
+		end
+	end
+	if not oldNamecall then
+		Runtime.NamecallPath = "unavailable"
+		Runtime.NamecallError = "No compatible __namecall hook; GunBase path remains active"
+	end
+	onCleanup(function()
+		if restoreNamecall then pcall(restoreNamecall) end
+		oldNamecall = nil
+		restoreNamecall = nil
+		Runtime._InstallStandardNamecall = nil
+		Runtime.CallWorldRay = nil
+	end)
+	end
+	installSilentNamecall()
+end
+
+function Runtime.Unload()
+	if Runtime.Unloaded then return end
+	Runtime.Unloaded = true
+	if ProjectileCore then ProjectileCore.Running = false end
+	for key, value in pairs(S) do
+		if type(value) == "boolean" then S[key] = false end
+	end
+	JumpStunSettings.Enabled = false
+	HitSoundSettings.Enabled = false
+	HotbarSettings.enabled = false
+	PickupNotifEnabled = false
+	customModelsEnabled = false
+	fogEnabled = false
+	fovLockEnabled = false
+	if spiderConn then spiderConn:Disconnect(); spiderConn = nil end
+	for index = #Runtime.Cleanup, 1, -1 do
+		pcall(Runtime.Cleanup[index])
+	end
+	for _, drawing in ipairs(Runtime.Drawings) do
+		pcall(function() drawing:Remove() end)
+	end
+	table.clear(Runtime.Drawings)
+	for gui in pairs(Runtime.Guis) do
+		pcall(function() gui:Destroy() end)
+	end
+	table.clear(Runtime.Guis)
+	if _burmaldaEnv.BurmaldaRost == Runtime then
+		_burmaldaEnv.BurmaldaRost = nil
+	end
+end
