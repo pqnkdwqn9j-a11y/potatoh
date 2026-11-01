@@ -1,3 +1,9 @@
+-- Burmalda.hook | rost alpha | direct development build (not for public distribution)
+local __burmaldaDirectEnv = getgenv and getgenv() or _G
+__burmaldaDirectEnv.PHOOKGATE = "1347571535"
+__burmaldaDirectEnv.SCRIPT_KEY = "DEV-INTERNAL"
+__burmaldaDirectEnv.BURMALDA_GAME = "rost alpha"
+
 -- Burmalda.hook | rost alpha | cleaned NullWave-derived build
 -- Target: official rost alpha, PlaceId 13769775130; no PlaceId execution gate.
 -- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt and Volcano are live-untested. Xeno is unsupported.
@@ -1125,25 +1131,83 @@ local resourceFeatures = {
 local projectileFeatures = {
 	["Aim All Projectiles"] = true, ["Extend Throws"] = true,
 }
+local aimVisualFeatures = {
+	["Target HUD"] = true, ["Hit Logs"] = true, ["Hitmarker"] = true,
+	["Damage FX"] = true, ["Reload Indicator"] = true, ["Bullet Tracers"] = true,
+	["FOV Circle"] = true, ["Dynamic FOV"] = true, ["Snapline"] = true,
+	["Target Indicator"] = true, ["Hitscan Indicator"] = true,
+}
+local cameraFeatures = {
+	["Custom FOV"] = true, ["Third Person"] = true, ["Stretch Resolution"] = true,
+	["Custom Hand Position"] = true, ["FOV Changer"] = true, ["Zoom"] = true,
+}
+local performanceFeatures = { ["Low PC"] = true, ["Performance Overlay"] = true }
+local effectFeatures = { ["Jump Circles"] = true, ["Tool Outline"] = true }
+local localFeatures = { ["Instant Loot"] = true, ["No Fall"] = true, ["Silent Walk"] = true }
+local diagnosticFeatures = { ["Print debug"] = true, ["Reset aim stats"] = true }
+local soundFeatures = { ["Hit Sound"] = true, ["Kill Sound"] = true, ["Kill Notify"] = true }
+local hudFeatures = {
+	["HUD"] = true, ["Hotbar Overlay"] = true, ["Crosshair"] = true,
+	["Pickup Notifications"] = true, ["Keybind List"] = true, ["Detection Notifier"] = true,
+}
 local interfaceFeatures = {
 	["Menu Accent"] = true, ["UI Animations"] = true,
 }
+
+-- UI-only organization: keep the original geometry and callbacks, but do not mix
+-- aiming, weapon mods, visual effects, world options and movement on one page.
+local featureTabOverrides = {
+	["Target HUD"] = "VISUALS", ["Hit Logs"] = "VISUALS",
+	["Hitmarker"] = "VISUALS", ["Damage FX"] = "VISUALS",
+	["Reload Indicator"] = "VISUALS", ["Bullet Tracers"] = "VISUALS",
+	["FOV Circle"] = "VISUALS", ["Dynamic FOV"] = "VISUALS",
+	["Snapline"] = "VISUALS", ["Target Indicator"] = "VISUALS",
+	["Hitscan Indicator"] = "VISUALS", ["FOV Changer"] = "VISUALS", ["Zoom"] = "VISUALS",
+	["Aim All Projectiles"] = "COMBAT", ["Extend Throws"] = "COMBAT",
+	["Night Mode"] = "MISC", ["Night Vision"] = "MISC", ["Low PC"] = "MISC",
+	["Fullbright"] = "MISC", ["No Decoration"] = "MISC", ["Sky Color"] = "MISC",
+	["Skybox"] = "MISC", ["Delete Spikes"] = "MISC", ["Delete Leaves"] = "MISC",
+	["Custom Models"] = "MISC", ["Custom Fog"] = "MISC", ["Custom Water"] = "MISC",
+	["X-Ray"] = "MISC", ["Remove Fog"] = "MISC", ["Remove Grass"] = "MISC",
+	["Remove Shadows"] = "MISC",
+}
+
+local function organizeFeatureParent(parent, featureName)
+	local currentTab = columnTabs[parent]
+	local targetTab = currentTab and featureTabOverrides[featureName]
+	if not targetTab then return parent end
+	if targetTab == "MISC" and not tabColumns.MISC and tabColumns.WORLD then targetTab = "WORLD" end
+	local targetColumns = tabColumns[targetTab]
+	if not targetColumns then return parent end
+	local currentColumns = tabColumns[currentTab]
+	if currentColumns and parent == currentColumns[2] then return targetColumns[2] end
+	return targetColumns[1]
+end
 
 function defaultSectionName(parent, featureName)
 	local existing = sectionContents[parent]
 	if existing then return existing.Name end
 	local tabName = columnTabs[parent] or "MISC"
 	if tabName == "COMBAT" then
+		if projectileFeatures[featureName] then return "Projectiles" end
 		return gunFeatures[featureName] and "Gun Mods" or "Aimbot"
 	elseif tabName == "VISUALS" then
 		if resourceFeatures[featureName] then return "Resources" end
+		if aimVisualFeatures[featureName] then return "Aim Visuals" end
+		if cameraFeatures[featureName] then return "Camera" end
+		if effectFeatures[featureName] then return "Effects" end
 		return worldFeatures[featureName] and "World" or "Players"
 	elseif tabName == "MOVEMENT" then
 		return projectileFeatures[featureName] and "Projectiles" or "Movement"
 	elseif tabName == "MISC" then
-		return "Misc"
+		if performanceFeatures[featureName] then return "Performance" end
+		if localFeatures[featureName] then return "Local" end
+		if diagnosticFeatures[featureName] or string.find(featureName, "Insert / RightShift", 1, true) then return "Diagnostics" end
+		if soundFeatures[featureName] then return "Sounds" end
+		if hudFeatures[featureName] then return "HUD" end
+		return worldFeatures[featureName] and "World" or "Misc"
 	elseif tabName == "WORLD" then
-		return "World"
+		return cameraFeatures[featureName] and "Camera" or "World"
 	elseif tabName == "CONFIG" then
 		return interfaceFeatures[featureName] and "Interface" or "Configs"
 	end
@@ -1208,6 +1272,7 @@ function getSection(parent, sectionName)
 end
 
 function createFeature(parent, name, default, callback, hasSettings)
+	parent = organizeFeatureParent(parent, name)
 	local section = getSection(parent, defaultSectionName(parent, name))
 	local toggle = Instance.new("TextButton", section.Content)
 	toggle.Name = name
