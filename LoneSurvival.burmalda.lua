@@ -4024,12 +4024,20 @@ end
       end
 
       local freecam = { active = false }
+      -- Kept only to remove stale bindings from the previous Freecam build.
       local freecamBindingName = "MG_LoneFreecam"
       local freecamActionName = "BurmaldaLoneFreecamMovement"
       local contextActionService = game:GetService("ContextActionService")
       movement.freecam = freecam
       movement.freecamBindingName = freecamBindingName
 
+      local function finiteNumber(value)
+        return type(value) == "number" and value == value
+          and value ~= math.huge and value ~= -math.huge
+      end
+      local function validVector(vector)
+        return vector and finiteNumber(vector.X) and finiteNumber(vector.Y) and finiteNumber(vector.Z)
+      end
       local function restoreFreecamMouse()
         if freecam.originalMouseBehavior ~= nil then
           pcall(function() UIS.MouseBehavior = freecam.originalMouseBehavior end)
@@ -4042,6 +4050,7 @@ end
       function movement.StopFreecam()
         if not freecam.active then return end
         freecam.active = false
+        -- Defensive migration cleanup; this build does not create either binding.
         pcall(function() runService:UnbindFromRenderStep(freecamBindingName) end)
         if contextActionService then
           pcall(function() contextActionService:UnbindAction(freecamActionName) end)
@@ -4064,6 +4073,7 @@ end
         freecam.originalCFrame = nil
         freecam.originalMouseBehavior = nil
         freecam.originalMouseIcon = nil
+        freecam.menuOpen = nil
       end
 
       function movement.UpdateFreecam(dt)
@@ -4080,14 +4090,22 @@ end
           return
         end
         if camera.CameraType ~= Enum.CameraType.Scriptable then
-          pcall(function() camera.CameraType = Enum.CameraType.Scriptable end)
+          camera.CameraType = Enum.CameraType.Scriptable
         end
 
         local menuIsOpen = menuOpen == true
-        pcall(function()
-          UIS.MouseBehavior = menuIsOpen and Enum.MouseBehavior.Default or Enum.MouseBehavior.LockCenter
-          UIS.MouseIconEnabled = menuIsOpen
-        end)
+        if freecam.menuOpen ~= menuIsOpen then
+          freecam.menuOpen = menuIsOpen
+          pcall(function()
+            UIS.MouseBehavior = menuIsOpen and Enum.MouseBehavior.Default or Enum.MouseBehavior.LockCenter
+            UIS.MouseIconEnabled = menuIsOpen
+          end)
+        end
+        if not finiteNumber(freecam.yaw) or not finiteNumber(freecam.pitch)
+          or not validVector(freecam.position) then
+          error("invalid Freecam state", 0)
+        end
+
         local rotation = CFrame.fromEulerAnglesYXZ(freecam.pitch, freecam.yaw, 0)
         if not menuIsOpen then
           local delta = Vector2.new(0, 0)
@@ -4095,9 +4113,11 @@ end
             local ok, value = pcall(function() return UIS:GetMouseDelta() end)
             if ok and typeof(value) == "Vector2" then delta = value end
           end
-          local sensitivity = (tonumber(cfg.Movement.FreecamSensitivity) or 0.2) * 0.01
-          freecam.yaw = freecam.yaw - delta.X * sensitivity
-          freecam.pitch = math.clamp(freecam.pitch - delta.Y * sensitivity, -1.45, 1.45)
+          local sensitivity = math.clamp(tonumber(cfg.Movement.FreecamSensitivity) or 0.2, 0.01, 1) * 0.01
+          local deltaX = finiteNumber(delta.X) and math.clamp(delta.X, -500, 500) or 0
+          local deltaY = finiteNumber(delta.Y) and math.clamp(delta.Y, -500, 500) or 0
+          freecam.yaw = freecam.yaw - deltaX * sensitivity
+          freecam.pitch = math.clamp(freecam.pitch - deltaY * sensitivity, -1.45, 1.45)
           rotation = CFrame.fromEulerAnglesYXZ(freecam.pitch, freecam.yaw, 0)
 
           local direction = Vector3.zero
@@ -4108,11 +4128,15 @@ end
           if UIS:IsKeyDown(Enum.KeyCode.Space) then direction = direction + Vector3.new(0, 1, 0) end
           if UIS:IsKeyDown(Enum.KeyCode.LeftControl) then direction = direction + Vector3.new(0, -1, 0) end
           if direction.Magnitude > 0 then
-            local speed = tonumber(cfg.Movement.FreecamSpeed) or 50
+            local speed = math.clamp(tonumber(cfg.Movement.FreecamSpeed) or 50, 1, 300)
             if UIS:IsKeyDown(Enum.KeyCode.LeftShift) then speed = speed * 3 end
-            local step = math.clamp(tonumber(dt) or 0, 0, 0.1)
+            local step = math.clamp(tonumber(dt) or 0, 0, 0.05)
             freecam.position = freecam.position + rotation:VectorToWorldSpace(direction.Unit) * speed * step
           end
+        end
+        if not validVector(freecam.position) or not finiteNumber(freecam.yaw)
+          or not finiteNumber(freecam.pitch) then
+          error("invalid Freecam transform", 0)
         end
         camera.CFrame = CFrame.new(freecam.position) * rotation
       end
@@ -4121,52 +4145,67 @@ end
         if freecam.active then return true end
         local camera = workspace.CurrentCamera
         if not camera then return false end
+        local position = camera.CFrame.Position
+        local look = camera.CFrame.LookVector
+        if not validVector(position) or not validVector(look) then
+          error("invalid camera CFrame", 0)
+        end
         freecam.camera = camera
         freecam.originalCameraType = camera.CameraType
         freecam.originalCameraSubject = camera.CameraSubject
         freecam.originalCFrame = camera.CFrame
         freecam.originalMouseBehavior = UIS.MouseBehavior
         freecam.originalMouseIcon = UIS.MouseIconEnabled
-        freecam.position = camera.CFrame.Position
-        local look = camera.CFrame.LookVector
-        freecam.yaw = math.atan2(-look.X, -look.Z)
+        freecam.position = position
+        freecam.yaw = math.abs(look.X) + math.abs(look.Z) > 1e-6
+          and math.atan2(-look.X, -look.Z) or 0
         freecam.pitch = math.asin(math.clamp(look.Y, -1, 1))
+        freecam.menuOpen = nil
         freecam.active = true
         camera.CameraType = Enum.CameraType.Scriptable
-        local cameraPriority = (tonumber(Enum.RenderPriority.Camera.Value) or 200) + 1
-        local bound, bindError = pcall(function()
-          runService:BindToRenderStep(freecamBindingName, cameraPriority, function(dt)
-            movement.UpdateFreecam(dt)
-          end)
-        end)
-        if not bound then
-          movement.StopFreecam()
-          mainGame.movementError = "Freecam: " .. tostring(bindError)
-          return false
-        end
-        if contextActionService then
-          pcall(function()
-            contextActionService:BindActionAtPriority(freecamActionName, function()
-              return Enum.ContextActionResult.Sink
-            end, false, Enum.ContextActionPriority.High.Value,
-              Enum.PlayerActions.CharacterForward, Enum.PlayerActions.CharacterBackward,
-              Enum.PlayerActions.CharacterLeft, Enum.PlayerActions.CharacterRight,
-              Enum.PlayerActions.CharacterJump)
-          end)
-        end
-        movement.UpdateFreecam(0)
         return true
       end
+
+      local function disableFreecamWithError(err)
+        cfg.Movement.Freecam = false
+        pcall(movement.StopFreecam)
+        mainGame.movementError = "Freecam disabled: " .. tostring(err)
+        if mainGame.Window and not mainGame.Window.Destroyed and featureStates.Freecam then
+          pcall(function() mainGame.Window:SetFeature("Freecam", false) end)
+        end
+        if type(warn) == "function" then pcall(warn, "[MainGame] " .. mainGame.movementError) end
+      end
+
+      local function freecamFrame(dt)
+        if not movement.Active or mainGame.unloaded then return end
+        if not cfg.Movement.Freecam then
+          if freecam.active then movement.StopFreecam() end
+          return
+        end
+        if not freecam.active then
+          local ok, started = pcall(movement.StartFreecam)
+          if not ok then
+            disableFreecamWithError(started)
+            return
+          end
+          if not started then return end
+        end
+        local ok, err = pcall(movement.UpdateFreecam, dt)
+        if not ok then disableFreecamWithError(err) end
+      end
+      movement.FreecamFrame = freecamFrame
 
       function movement.SetFreecam(enabled)
         cfg.Movement.Freecam = enabled == true
         if cfg.Movement.Freecam then
-          if not movement.StartFreecam() then cfg.Movement.Freecam = false end
+          freecamFrame(0)
         else
           movement.StopFreecam()
         end
         return cfg.Movement.Freecam
       end
+
+      trackConnection(runService.RenderStepped:Connect(freecamFrame))
 
       function movement.Unbind()
         if movement.humanoid then
