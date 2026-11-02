@@ -4073,6 +4073,8 @@ end
         freecam.originalCFrame = nil
         freecam.originalMouseBehavior = nil
         freecam.originalMouseIcon = nil
+        freecam.lookX = 0
+        freecam.lookY = 0
         freecam.menuOpen = nil
       end
 
@@ -4096,26 +4098,28 @@ end
         local menuIsOpen = menuOpen == true
         if freecam.menuOpen ~= menuIsOpen then
           freecam.menuOpen = menuIsOpen
+          freecam.lookX = 0
+          freecam.lookY = 0
           pcall(function()
-            UIS.MouseBehavior = menuIsOpen and Enum.MouseBehavior.Default or Enum.MouseBehavior.LockCenter
+            UIS.MouseBehavior = menuIsOpen and Enum.MouseBehavior.Default or Enum.MouseBehavior.LockCurrentPosition
             UIS.MouseIconEnabled = menuIsOpen
           end)
         end
         if not finiteNumber(freecam.yaw) or not finiteNumber(freecam.pitch)
-          or not validVector(freecam.position) then
+          or not validVector(freecam.position) or not finiteNumber(freecam.lookX or 0)
+          or not finiteNumber(freecam.lookY or 0) then
           error("invalid Freecam state", 0)
         end
 
         local rotation = CFrame.fromEulerAnglesYXZ(freecam.pitch, freecam.yaw, 0)
         if not menuIsOpen then
-          local delta = Vector2.new(0, 0)
-          if type(UIS.GetMouseDelta) == "function" then
-            local ok, value = pcall(function() return UIS:GetMouseDelta() end)
-            if ok and typeof(value) == "Vector2" then delta = value end
-          end
+          -- InputChanged supplies each mouse delta once. Never poll a sticky
+          -- GetMouseDelta value and reapply it on every rendered frame.
+          local deltaX = math.clamp(freecam.lookX or 0, -500, 500)
+          local deltaY = math.clamp(freecam.lookY or 0, -500, 500)
+          freecam.lookX = 0
+          freecam.lookY = 0
           local sensitivity = math.clamp(tonumber(cfg.Movement.FreecamSensitivity) or 0.2, 0.01, 1) * 0.01
-          local deltaX = finiteNumber(delta.X) and math.clamp(delta.X, -500, 500) or 0
-          local deltaY = finiteNumber(delta.Y) and math.clamp(delta.Y, -500, 500) or 0
           freecam.yaw = freecam.yaw - deltaX * sensitivity
           freecam.pitch = math.clamp(freecam.pitch - deltaY * sensitivity, -1.45, 1.45)
           rotation = CFrame.fromEulerAnglesYXZ(freecam.pitch, freecam.yaw, 0)
@@ -4160,6 +4164,8 @@ end
         freecam.yaw = math.abs(look.X) + math.abs(look.Z) > 1e-6
           and math.atan2(-look.X, -look.Z) or 0
         freecam.pitch = math.asin(math.clamp(look.Y, -1, 1))
+        freecam.lookX = 0
+        freecam.lookY = 0
         freecam.menuOpen = nil
         freecam.active = true
         camera.CameraType = Enum.CameraType.Scriptable
@@ -4175,6 +4181,29 @@ end
         end
         if type(warn) == "function" then pcall(warn, "[MainGame] " .. mainGame.movementError) end
       end
+
+      local function freecamInput(input)
+        if not freecam.active or not cfg.Movement.Freecam
+          or not movement.Active or mainGame.unloaded then return end
+        local ok, err = pcall(function()
+          if menuOpen == true or not input
+            or input.UserInputType ~= Enum.UserInputType.MouseMovement then return end
+          local delta = input.Delta
+          if delta == nil then return end
+          local deltaX = tonumber(delta.X)
+          local deltaY = tonumber(delta.Y)
+          if not finiteNumber(deltaX) or not finiteNumber(deltaY) then
+            error("invalid Freecam mouse delta", 0)
+          end
+          freecam.lookX = math.clamp((freecam.lookX or 0)
+            + math.clamp(deltaX, -500, 500), -500, 500)
+          freecam.lookY = math.clamp((freecam.lookY or 0)
+            + math.clamp(deltaY, -500, 500), -500, 500)
+        end)
+        if not ok then disableFreecamWithError(err) end
+      end
+      movement.FreecamInput = freecamInput
+      trackConnection(UIS.InputChanged:Connect(freecamInput))
 
       local function freecamFrame(dt)
         if not movement.Active or mainGame.unloaded then return end
