@@ -1,9 +1,3 @@
--- Burmalda.hook | Fust Survival | standalone development build
--- Release: 2026-11-01. Target PlaceId: 79862723087324.
--- No HTTP loader or external UI/ESP library.
--- Executors: Real, Opiumware, Madium, Potassium, Synapse Z, Volt, Volcano.
--- Xeno is unsupported. Live game validation is still required.
-
 local _fustEnv = getgenv and getgenv() or _G
 if _fustEnv.BurmaldaFust and _fustEnv.BurmaldaFust.Unload then
 	pcall(_fustEnv.BurmaldaFust.Unload)
@@ -230,9 +224,6 @@ sg.ResetOnSpawn = false
 sg.DisplayOrder = 999998
 sg.Parent = uiParent
 
--- Shared Burmalda.hook stats HUD. UI-only: no game-specific logic or assets.
--- The brand row intentionally has no left Logo/ImageLabel. The HUD is owned by
--- its caller's ScreenGui and remains visible when the main menu is hidden.
 local function createBurmaldaStatsHud(options)
 	options = options or {}
 	local parent = assert(options.Parent, "Stats HUD parent is required")
@@ -320,7 +311,6 @@ local function createBurmaldaStatsHud(options)
 	local mainScale = Instance.new("UIScale", mainBar)
 	mainScale.Scale = scaleValue
 
-	-- No icon is created before this label: this is the requested logo-free HUD.
 	section(mainBar, nil, "Burmalda.hook", 0, 12)
 	separator(mainBar)
 	local fpsLabel = section(mainBar, "12096147158", "0 fps", 14, 12)
@@ -384,7 +374,6 @@ local function createBurmaldaStatsHud(options)
 
 	return api
 end
-
 
 local advGui = newScreenGui()
 advGui.Name = "BurmaldaHookFustStats"
@@ -462,13 +451,6 @@ btnIco.ScaleType = Enum.ScaleType.Fit
 hudMakeDrag(openBtn)
 Runtime.StartClosed = true
 
--- Burmalda.hook | Fust Survival | local 621x542 UI; no external library.
--- Source geometry: Window 621x542, Pages 30px, two scrolling columns,
--- Section topbar 25px, content (8,35), controls gap 6px, bottom padding 8px.
--- No external UI library, logo asset, glow asset or runtime HTTP dependency.
--- Only the gameplay/adapter API escapes this implementation scope. Keeping
--- helper locals inside the do-block avoids the Luau 200-register limit when
--- the menu is embedded into an already large game client.
 local Theme, UIAnimations, main, mainStroke, mainScale, baseMenuScale
 local tabs, tabFrames, tabButtons, activeFrame
 local _fFS, _fDD, sectionContents, columnSections
@@ -711,8 +693,7 @@ tabFrames.VISUAL = tabFrames.VISUALS
 tabFrames.ESP = tabFrames.VISUALS
 tabFrames.HUD = tabFrames.MISC
 tabFrames.SETTINGS = tabFrames.CONFIG
--- Keep feature-column aliases in sync with page aliases. Without these,
--- getTab("ESP")/getTab("HUD") silently fell back to CONFIG.
+
 tabColumns.VISUAL = tabColumns.VISUALS
 tabColumns.ESP = tabColumns.VISUALS
 tabColumns.HUD = tabColumns.MISC
@@ -911,7 +892,6 @@ function createFeature(parent, name, default, callback, hasSettings)
 	return editor
 end
 
--- The source library places sub-elements on the toggle row; there are no card arrows.
 _fDD.RegisterEditor = function() end
 
 function addBind(p, name, def, onPress, onChanged)
@@ -1048,8 +1028,7 @@ function addSlider(p, name, min, max, def, callback)
 end
 
 function addDropdown(p, name, options, defIdx, callback)
-	-- On/Off options are ordinary buttons. Keep their string values and setter
-	-- registry so existing configs and programmatic controls remain compatible.
+
 	local onValue, offValue
 	if #options == 2 then
 		for _, value in ipairs(options) do
@@ -1392,7 +1371,6 @@ connectUI(UIS.InputBegan, function(input, gameProcessed)
 	if input.KeyCode == Enum.KeyCode.RightShift then toggleMenu(true) end
 end)
 
--- Drag the source window by its 39px title bar.
 do
 	local dragging, dragInput, dragStart, startPos = false, nil, nil, nil
 	local function finishDrag() dragging = false end
@@ -1420,7 +1398,6 @@ do
 	end)
 end
 
--- The reference window is resizeable; preserve its 621x542 minimum.
 do
 	local resize = Instance.new("TextButton", main)
 	resize.Name = "Resize"
@@ -2547,8 +2524,7 @@ do
 				Runtime.Diagnostics.SilentErrors = (Runtime.Diagnostics.SilentErrors or 0) + 1
 			end
 		end
-		-- Visuals observe the real Shoot/Fire payload. They never create a second
-		-- remote owner and use the rewritten direction only when Silent supplied it.
+
 		if visualShots then pcall(calamari.TraceShot, payload.origin, direction or payload.dir, 1000) end
 		if not S.SilentAim or not direction then return callOriginal(self, method, args) end
 		local rewritten = copyPayload(payload)
@@ -2600,8 +2576,7 @@ do
 		if not hookMode then return end
 		local mode, original, wrapped, mt = hookMode, oldNamecall, wrappedHook, hookMeta
 		hookMode, wrappedHook, hookMeta = nil, nil, nil
-		-- Keep the original closure referenced: if an executor refuses restore,
-		-- the stale hook must still pass every call through instead of returning nil.
+
 		oldNamecall = original
 		if mode == "hookmetamethod" and type(hookmetamethod) == "function" then
 			pcall(hookmetamethod, game, "__namecall", original)
@@ -3370,8 +3345,7 @@ do
 					control.Set(Colors[colorKey], true)
 					if colorKey == "Accent" then setMenuAccent(Colors.Accent) end
 				elseif control.Kind ~= "feature" and accepted[key] then
-					-- Editors own clamping and callback semantics; silent sync here could
-					-- leave a manually edited config different from the runtime value.
+
 					control.Set(S[key], false)
 				end
 			end
@@ -3546,9 +3520,7 @@ end
 
 do
 	local calamariFactory = (function()
--- Calamari-inspired visuals adapted for Burmalda.hook's local menu and lifecycle.
--- No external UI/ESP library, HTTP loader, gameplay module or projectile owner.
--- State is plain JSON-safe data (colors are RGB arrays) for every game's configs.
+
 local function createBurmaldaCalamariVisuals(options)
 	options = options or {}
 	local State = options.State or {}
@@ -3765,8 +3737,6 @@ local function destroy(object)
 	if object then pcall(function() object:Destroy() end) end
 end
 
--- Player ESP: the same gradient/fill/glow/health layout as Calamari, but pooled
--- and capped. The normal renderer remains independent and can stay enabled.
 local playerEntries = {}
 local targetCache, targetCacheAt = {}, 0
 local playerWasActive = false
@@ -4070,8 +4040,6 @@ local function updatePlayers(now)
 	API.Diagnostics.PlayerESP = rendered
 end
 
--- Calamari Misc ESP. Traversal is incremental and limited to known world roots;
--- adapters may add game-specific cached objects without another full workspace scan.
 local worldLabels = {}
 local worldEntries = {}
 local worldScan = {Active = false, Queue = {}, Index = 1, Working = {}, Seen = {}, Processed = 0}
@@ -4116,7 +4084,7 @@ local function beginWorldScan()
 			worldScan.Queue[#worldScan.Queue + 1] = {Object = folder, Depth = 0, MaxDepth = 3, Root = name}
 		end
 	end
-	-- Top-level Tools and named bags are Drops; root folders are not traversed twice.
+
 	if State.World.Categories.Drops.Enabled or State.World.Categories["Body Bag"].Enabled then
 		worldScan.Queue[#worldScan.Queue + 1] = {Object = workspace, Depth = 0, MaxDepth = 0, Root = "Workspace"}
 	end
@@ -4170,8 +4138,7 @@ local function worldPosition(object)
 	if ok and pivot and pivot.Position then return pivot.Position end
 	local primary = object.PrimaryPart
 	if primary and primary:IsA("BasePart") then return primary.Position end
-	-- A model can be supplied by a game adapter before its pivot is available.
-	-- Use an existing part as a read-only fallback; never move or mutate the model.
+
 	for _, child in ipairs(object:GetChildren()) do
 		if child:IsA("BasePart") then return child.Position end
 	end
@@ -4240,7 +4207,6 @@ local function updateWorld(now)
 	API.Diagnostics.WorldESP = index
 end
 
--- Gun/Arms materials, textures, Viewmodel Highlight and owned position offsets.
 local textures = {
 	Web = "rbxassetid://301464986", Swirl = "rbxassetid://8133639623",
 	Checkers = "rbxassetid://5790215150", CandyCane = "rbxassetid://6853532738",
@@ -4435,8 +4401,6 @@ local function updateViewmodels(now)
 	end
 end
 
--- Shot visuals use existing game events through API.Impact/TraceShot. They never
--- redirect a shot, install another Silent hook or change remote arguments.
 local activeEffects = {}
 local function ownEffect(object, lifetime)
 	if not object then return end
@@ -4564,8 +4528,6 @@ function API.TraceShot(origin, direction, maxDistance, ignore)
 	return result
 end
 
--- Lighting and optional Camera controls use per-property ownership. Off/Unload
--- restores only values still owned by this runtime; later game writes win.
 local ownedGroups = {}
 local createdLighting = {}
 local skyboxes = {
@@ -4816,8 +4778,7 @@ return createBurmaldaCalamariVisuals
 		if Runtime.CalamariVisuals == calamari then Runtime.CalamariVisuals = nil end
 	end)
 	local mountCalamari = (function()
--- Shared control layout for the local 621x542 Burmalda menu.
--- The host owns createFeature/addSlider/addDropdown/addColor/addBind/getTab/getSection.
+
 local function mountBurmaldaCalamariMenu(API, menuOptions)
 	menuOptions = menuOptions or {}
 	local function section(parent, name)
@@ -4984,7 +4945,6 @@ return mountBurmaldaCalamariMenu
 	end)()
 	mountCalamari(calamari, {Camera = "Full", Lighting = false})
 end
-
 
 function Runtime.Unload()
 	if Runtime.Unloaded then return end
