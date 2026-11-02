@@ -1,9 +1,3 @@
--- Burmalda.hook | rost alpha | direct development build (not for public distribution)
-local __burmaldaDirectEnv = getgenv and getgenv() or _G
-__burmaldaDirectEnv.PHOOKGATE = "1347571535"
-__burmaldaDirectEnv.SCRIPT_KEY = "DEV-INTERNAL"
-__burmaldaDirectEnv.BURMALDA_GAME = "rost alpha"
-
 -- Burmalda.hook | rost alpha | cleaned NullWave-derived build
 -- Target: official rost alpha, PlaceId 13769775130; no PlaceId execution gate.
 -- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt and Volcano are live-untested. Xeno is unsupported.
@@ -113,6 +107,17 @@ local _drawingNew = Drawing.new
 local function newDrawing(kind)
 	return trackDrawing(_drawingNew(kind))
 end
+local function removeDrawing(object)
+	if not object then return end
+	pcall(function() object:Remove() end)
+	for index = #Runtime.Drawings, 1, -1 do
+		if Runtime.Drawings[index] == object then
+			table.remove(Runtime.Drawings, index)
+			break
+		end
+	end
+end
+Runtime.RemoveDrawing = removeDrawing
 
 local _instanceNew = Instance.new
 local function newScreenGui(parent)
@@ -3757,7 +3762,7 @@ local function initializeESP()
 local ESPCoreGui = game:GetService("CoreGui")
 
 local function removeDrawing(object)
-	if object then pcall(function() object:Remove() end) end
+	Runtime.RemoveDrawing(object)
 end
 
 local function hideCorners(player)
@@ -5014,7 +5019,7 @@ local hitmarkers = {}
 local markerDirections = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}}
 local function clearHitmarkers()
 	for _, marker in ipairs(hitmarkers) do
-		for _, line in ipairs(marker.lines) do pcall(function() line:Remove() end) end
+		for _, line in ipairs(marker.lines) do Runtime.RemoveDrawing(line) end
 	end
 	table.clear(hitmarkers)
 end
@@ -5036,7 +5041,7 @@ local function updateHitmarkers()
 		local marker = hitmarkers[index]
 		local age = now - marker.born
 		if age > S.HitmarkerDuration then
-			for _, line in ipairs(marker.lines) do pcall(function() line:Remove() end) end
+			for _, line in ipairs(marker.lines) do Runtime.RemoveDrawing(line) end
 			table.remove(hitmarkers, index)
 		else
 			local projected, visible = Camera:WorldToViewportPoint(marker.position)
@@ -5390,6 +5395,53 @@ end)
 -- Damage/death tracking for visual feedback. It never modifies health or remotes.
 local trackedCharacters, humanoidStates = {}, {}
 local recentTargets, lastHits = {}, {}
+local characterConnections, playerConnections, playerCharacters = {}, {}, {}
+
+local function disconnectOwned(connection)
+	pcall(function() connection:Disconnect() end)
+	for index = #extraConnections, 1, -1 do
+		if extraConnections[index] == connection then
+			table.remove(extraConnections, index)
+			break
+		end
+	end
+end
+
+local function releaseConnections(connections)
+	if not connections then return end
+	for index = #connections, 1, -1 do
+		disconnectOwned(connections[index])
+		connections[index] = nil
+	end
+end
+
+local function connectOwned(signal, callback, connections)
+	local connection = connect(signal, callback)
+	table.insert(connections, connection)
+	return connection
+end
+
+local function releaseCharacter(character)
+	local connections = characterConnections[character]
+	if not connections then return end
+	characterConnections[character] = nil
+	trackedCharacters[character] = nil
+	releaseConnections(connections)
+	for humanoid, state in pairs(humanoidStates) do
+		if state.Character == character then humanoidStates[humanoid] = nil end
+	end
+end
+
+local function releasePlayer(player)
+	local character = playerCharacters[player]
+	if character then releaseCharacter(character) end
+	playerCharacters[player] = nil
+	releaseConnections(playerConnections[player])
+	playerConnections[player] = nil
+	recentTargets[player] = nil
+	lastHits[player] = nil
+end
+
 local function isOurDamage(player, _character)
 	local seen = recentTargets[player]
 	return seen ~= nil and os.clock() - seen >= 0 and os.clock() - seen <= 2
@@ -5407,15 +5459,16 @@ local function onDamaged(player, character, damage, newHealth)
 	spawnDamageFX(part.Position)
 end
 local function attachHumanoid(player, character, humanoid)
-	if humanoidStates[humanoid] then return end
-	humanoidStates[humanoid] = {health = humanoid.Health}
-	connect(humanoid.HealthChanged, function(newHealth)
+	local connections = characterConnections[character]
+	if not connections or humanoidStates[humanoid] then return end
+	humanoidStates[humanoid] = {health = humanoid.Health, Character = character}
+	connectOwned(humanoid.HealthChanged, function(newHealth)
 		local state = humanoidStates[humanoid]
 		local previous = state and state.health or newHealth
 		if state then state.health = newHealth end
 		if newHealth < previous then onDamaged(player, character, previous - newHealth, newHealth) end
-	end)
-	connect(humanoid.Died, function()
+	end, connections)
+	connectOwned(humanoid.Died, function()
 		if S.KillNotify and not Runtime.Unloaded then
 			pushLog("[ Burmalda.hook ] " .. tostring(player.DisplayName or player.Name) .. " died")
 		end
@@ -5426,28 +5479,48 @@ local function attachHumanoid(player, character, humanoid)
 			if root then spawnHitmarker(root.Position, true) end
 		end
 		lastHits[player] = nil
-	end)
+	end, connections)
 end
 local function trackCharacter(player, character)
 	if not character or trackedCharacters[character] then return end
+	local previous = playerCharacters[player]
+	if previous and previous ~= character then releaseCharacter(previous) end
 	trackedCharacters[character] = true
+	playerCharacters[player] = character
+	local connections = {}
+	characterConnections[character] = connections
 	local humanoid = character:FindFirstChildOfClass("Humanoid")
 	if humanoid then attachHumanoid(player, character, humanoid) end
-	connect(character.ChildAdded, function(child)
+	connectOwned(character.ChildAdded, function(child)
 		if child:IsA("Humanoid") then attachHumanoid(player, character, child) end
-	end)
+	end, connections)
 end
 local function trackPlayer(player)
-	if player == LocalPlayer then return end
+	if player == LocalPlayer or playerConnections[player] then return end
+	local connections = {}
+	playerConnections[player] = connections
 	if player.Character then trackCharacter(player, player.Character) end
-	connect(player.CharacterAdded, function(character) trackCharacter(player, character) end)
+	connectOwned(player.CharacterAdded, function(character) trackCharacter(player, character) end, connections)
+	connectOwned(player.CharacterRemoving, function(character)
+		releaseCharacter(character)
+		if playerCharacters[player] == character then playerCharacters[player] = nil end
+	end, connections)
 end
 for _, player in ipairs(Players:GetPlayers()) do trackPlayer(player) end
 connect(Players.PlayerAdded, trackPlayer)
-connect(Players.PlayerRemoving, function(player)
-	recentTargets[player] = nil
-	lastHits[player] = nil
-end)
+connect(Players.PlayerRemoving, releasePlayer)
+
+local function clearDamageTracking()
+	for player in pairs(playerConnections) do releasePlayer(player) end
+	for character in pairs(characterConnections) do releaseCharacter(character) end
+	table.clear(trackedCharacters)
+	table.clear(humanoidStates)
+	table.clear(characterConnections)
+	table.clear(playerConnections)
+	table.clear(playerCharacters)
+	table.clear(recentTargets)
+	table.clear(lastHits)
+end
 
 local function updateRecentTarget()
 	local target = ProjectileSilent and ProjectileSilent.LastShotPart
@@ -5549,6 +5622,7 @@ end
 Runtime.ExtraHeartbeat = RunService.Heartbeat:Connect(physicsStep)
 Runtime.ExtraRender = RunService.RenderStepped:Connect(visualUpdate)
 local function cleanup()
+	clearDamageTracking()
 	for _, connection in ipairs(extraConnections) do pcall(function() connection:Disconnect() end) end
 	table.clear(extraConnections)
 	if Runtime.ExtraHeartbeat then Runtime.ExtraHeartbeat:Disconnect() end
