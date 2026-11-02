@@ -2772,7 +2772,7 @@ end
 
 do
 	local Shared = Runtime.Shared
-	local Visuals = {Rigs = {}, Generation = 0, WorldLabels = {}, WorldIndex = 0, WorldClock = 0, Clock = 0}
+	local Visuals = {Rigs = {}, Generation = 0, WorldLabels = {}, WorldIndex = 0, WorldClock = 0, Clock = 0, PruneClock = 0}
 	Runtime.Visuals = Visuals
 
 	local playerOptions = {}
@@ -2806,6 +2806,7 @@ do
 			Name = textObject(),
 			Info = textObject(),
 			Seen = -1,
+			LastSeen = 0,
 		}
 		Visuals.Rigs[key] = entry
 		return entry
@@ -2814,6 +2815,29 @@ do
 	local function hide(entry)
 		for _, key in ipairs({"Box", "HealthBG", "Health", "Name", "Info"}) do
 			if entry[key] then entry[key].Visible = false end
+		end
+	end
+
+	local function pruneRigs()
+		local now = os.clock()
+		local removed = {}
+		for key, entry in pairs(Visuals.Rigs) do
+			local detached = typeof(key) == "Instance" and key.Parent == nil
+			if detached or now - (entry.LastSeen or 0) > 5 then
+				for _, field in ipairs({"Box", "HealthBG", "Health", "Name", "Info"}) do
+					local object = entry[field]
+					if object then
+						pcall(function() object:Remove() end)
+						removed[object] = true
+					end
+				end
+				Visuals.Rigs[key] = nil
+			end
+		end
+		if next(removed) then
+			for index = #Runtime.Drawings, 1, -1 do
+				if removed[Runtime.Drawings[index]] then table.remove(Runtime.Drawings, index) end
+			end
 		end
 	end
 
@@ -2840,6 +2864,7 @@ do
 		local top = math.min(topY, bottomY)
 		local entry = rigEntry(key)
 		entry.Seen = Visuals.Generation
+		entry.LastSeen = os.clock()
 		if entry.Box then
 			entry.Box.Visible = options.Box == true
 			entry.Box.Position = Vector2.new(left, top)
@@ -2885,6 +2910,7 @@ do
 			entry.Info.Size = options.TextSize
 			entry.Info.Color = options.Color
 		end
+		return true
 	end
 
 	local function worldLabel()
@@ -2954,8 +2980,9 @@ do
 					local root = Shared.Root(character)
 					local head = character and character:FindFirstChild("Head") or root
 					if character and humanoid and root and head and humanoid.Health > 0 then
-						renderRig(player, character, humanoid, root, head, player.DisplayName or player.Name, playerOptions)
-						renderedPlayers += 1
+						if renderRig(player, character, humanoid, root, head, player.DisplayName or player.Name, playerOptions) then
+							renderedPlayers += 1
+						end
 					end
 				end
 			end
@@ -2970,8 +2997,9 @@ do
 			npcOptions.TextSize = S.NPCTextSize
 			npcOptions.Color = Colors.NPC
 			for _, npc in ipairs(Runtime.Entities.NPCs) do
-				renderRig(npc.Model, npc.Model, npc.Humanoid, npc.Root, npc.Head, npc.Name, npcOptions)
-				renderedNPCs += 1
+				if renderRig(npc.Model, npc.Model, npc.Humanoid, npc.Root, npc.Head, npc.Name, npcOptions) then
+					renderedNPCs += 1
+				end
 			end
 			local heli = Runtime.Entities.Heli
 			if S.NPCHeli and heli then
@@ -2990,6 +3018,11 @@ do
 		end
 		for _, entry in pairs(Visuals.Rigs) do
 			if entry.Seen ~= Visuals.Generation then hide(entry) end
+		end
+		Visuals.PruneClock += step
+		if Visuals.PruneClock >= 1 then
+			Visuals.PruneClock = 0
+			pruneRigs()
 		end
 		Runtime.Diagnostics.PlayerESPCount = renderedPlayers
 		Runtime.Diagnostics.NPCESPCount = renderedNPCs
