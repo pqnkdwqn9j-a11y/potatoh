@@ -1,16 +1,7 @@
--- Burmalda.hook | rost alpha | direct development build (not for public distribution)
 local __burmaldaDirectEnv = getgenv and getgenv() or _G
 __burmaldaDirectEnv.PHOOKGATE = "1347571535"
 __burmaldaDirectEnv.SCRIPT_KEY = "DEV-INTERNAL"
 __burmaldaDirectEnv.BURMALDA_GAME = "rost alpha"
-
--- Burmalda.hook | rost alpha | cleaned NullWave-derived build
--- Target: official rost alpha, PlaceId 13769775130; no PlaceId execution gate.
--- Executors: Real, Opiumware, Madium, Potassium, Synapse Z; Volt and Volcano are live-untested. Xeno is unsupported.
--- Access: private JNKIE keys; shared BETA and standalone Open Beta are removed.
--- Removed: anti-dump, heartbeat, anti-spy, remote loaders and Force Hit.
--- Silent Aim: GunBase.fire + FireServer + long-range Workspace Raycast; live proof remains executor-specific.
--- Short melee/resource rays always pass through so trees and stones remain farmable.
 
 local _burmaldaEnv = getgenv and getgenv() or _G
 local _burmaldaKey = tostring(_burmaldaEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
@@ -36,8 +27,7 @@ elseif type(getexecutorname) == "function" then
 	local ok, name = pcall(getexecutorname)
 	if ok and name ~= nil then executorName = tostring(name) end
 end
--- Xeno support was removed by user request. Reject before Runtime, module
--- require, Drawing, GUI or namecall initialization; Real is unaffected.
+
 if string.find(string.lower(executorName), "xeno", 1, true) then return end
 local Runtime = {
 	EnableCraftingIntegration = true,
@@ -66,9 +56,6 @@ do
 			return cached, nil
 		end
 
-		-- A capability/context failure can otherwise be retried by several
-		-- independent features every frame. Keep the standard one-argument
-		-- require, but deduplicate successes and briefly back off failures.
 		local retry = Runtime.ModuleRequireRetry[module]
 		local now = os.clock()
 		if retry and now < retry.Until then
@@ -581,9 +568,6 @@ onCleanup(function()
 	Crosshair.Enabled = false
 end)
 
--- Shared Burmalda.hook stats HUD. UI-only: no game-specific logic or assets.
--- The brand row intentionally has no left Logo/ImageLabel. The HUD is owned by
--- its caller's ScreenGui and remains visible when the main menu is hidden.
 local function createBurmaldaStatsHud(options)
 	options = options or {}
 	local parent = assert(options.Parent, "Stats HUD parent is required")
@@ -671,7 +655,6 @@ local function createBurmaldaStatsHud(options)
 	local mainScale = Instance.new("UIScale", mainBar)
 	mainScale.Scale = scaleValue
 
-	-- No icon is created before this label: this is the requested logo-free HUD.
 	section(mainBar, nil, "Burmalda.hook", 0, 12)
 	separator(mainBar)
 	local fpsLabel = section(mainBar, "12096147158", "0 fps", 14, 12)
@@ -736,7 +719,6 @@ local function createBurmaldaStatsHud(options)
 	return api
 end
 
-
 local advGui = newScreenGui()
 advGui.Name = "BurmaldaHookStats"
 advGui.IgnoreGuiInset = true
@@ -745,8 +727,6 @@ advGui.DisplayOrder = 999999
 advGui.Parent = pGui
 local _isLargeScreen = Camera.ViewportSize.X >= 1024
 
--- Keep the second-screen stats HUD independent from menu visibility.
--- Its brand row has no left Logo/ImageLabel; metric icons remain as in the reference.
 local statsHud = createBurmaldaStatsHud({
 	Parent = advGui,
 	Workspace = workspace,
@@ -758,7 +738,6 @@ local statsHud = createBurmaldaStatsHud({
 local function updateHUD() statsHud.SetVisible(S.HUDEnabled == true) end
 onCleanup(function() statsHud.Destroy() end)
 
--- The floating opener keeps its existing drag behavior independently of the HUD.
 local function hudMakeDrag(gui)
 	local drag, dragInput, dragStart, startPosition
 	local connections = {}
@@ -818,13 +797,6 @@ btnIco.ScaleType = Enum.ScaleType.Fit
 hudMakeDrag(openBtn)
 Runtime.StartClosed = true
 
--- Burmalda.hook | local port of the supplied patapim/bred UI structure.
--- Source geometry: Window 621x542, Pages 30px, two scrolling columns,
--- Section topbar 25px, content (8,35), controls gap 6px, bottom padding 8px.
--- No external UI library, logo asset, glow asset or runtime HTTP dependency.
--- Only the gameplay/adapter API escapes this implementation scope. Keeping
--- helper locals inside the do-block avoids the Luau 200-register limit when
--- the menu is embedded into an already large game client.
 local Theme, UIAnimations, main, mainStroke, mainScale, baseMenuScale
 local tabs, tabFrames, tabButtons, activeFrame
 local _fFS, _fDD, sectionContents, columnSections
@@ -1067,8 +1039,7 @@ tabFrames.VISUAL = tabFrames.VISUALS
 tabFrames.ESP = tabFrames.VISUALS
 tabFrames.HUD = tabFrames.MISC
 tabFrames.SETTINGS = tabFrames.CONFIG
--- Keep feature-column aliases in sync with page aliases. Without these,
--- getTab("ESP")/getTab("HUD") silently fell back to CONFIG.
+
 tabColumns.VISUAL = tabColumns.VISUALS
 tabColumns.ESP = tabColumns.VISUALS
 tabColumns.HUD = tabColumns.MISC
@@ -1166,8 +1137,6 @@ local interfaceFeatures = {
 	["Menu Accent"] = true, ["UI Animations"] = true,
 }
 
--- UI-only organization: keep the original geometry and callbacks, but do not mix
--- aiming, weapon mods, visual effects, world options and movement on one page.
 local featureTabOverrides = {
 	["Target HUD"] = "VISUALS", ["Hit Logs"] = "VISUALS",
 	["Hitmarker"] = "VISUALS", ["Damage FX"] = "VISUALS",
@@ -1362,7 +1331,6 @@ function createFeature(parent, name, default, callback, hasSettings)
 	return editor
 end
 
--- The source library places sub-elements on the toggle row; there are no card arrows.
 _fDD.RegisterEditor = function() end
 
 function addBind(p, name, def, onPress, onChanged)
@@ -1499,8 +1467,7 @@ function addSlider(p, name, min, max, def, callback)
 end
 
 function addDropdown(p, name, options, defIdx, callback)
-	-- On/Off options are ordinary buttons. Keep their string values and setter
-	-- registry so existing configs and programmatic controls remain compatible.
+
 	local onValue, offValue
 	if #options == 2 then
 		for _, value in ipairs(options) do
@@ -1841,8 +1808,6 @@ connectUI(UIS.InputBegan, function(input, gameProcessed)
 	if input.KeyCode == Enum.KeyCode.RightShift then toggleMenu(true) end
 end)
 
--- The game's crafting UI is PlayerGui.Main.Crafting. It owns input while open;
--- our GUI enabled states and previous menu visibility are restored on close.
 local craftingOpen, craftingChecking, craftRestoreMenu = false, false, false
 local craftGuiStates = {}
 local function craftingIsOpen()
@@ -1886,11 +1851,7 @@ local function checkCrafting()
 	end)
 end
 do
-	-- Never block the rest of the client on optional game UI. The old nested
-	-- WaitForChild(..., 10) calls made the already-visible menu appear ready
-	-- while every feature below this fragment was still waiting. Discover the
-	-- current hierarchy immediately and attach late Main/Crafting descendants
-	-- through events instead.
+
 	local mainChildConnection, craftingConnection
 	local function disconnectOwned(connection)
 		if connection then pcall(function() connection:Disconnect() end) end
@@ -1927,7 +1888,6 @@ do
 	updateCrafting()
 end
 
--- Drag the source window by its 39px title bar.
 do
 	local dragging, dragInput, dragStart, startPos = false, nil, nil, nil
 	local function finishDrag() dragging = false end
@@ -1955,7 +1915,6 @@ do
 	end)
 end
 
--- The reference window is resizeable; preserve its 621x542 minimum.
 do
 	local resize = Instance.new("TextButton", main)
 	resize.Name = "Resize"
@@ -1992,7 +1951,6 @@ end)
 
 if Runtime.StartClosed and menuOpen then toggleMenu() end
 end
-
 
 local recoilMod = nil
 
@@ -2074,8 +2032,7 @@ do
 			local ok, err = pcall(ProjectileSilent.Refresh)
 			if ok then Runtime.SilentError = nil else Runtime.SilentError = tostring(err) end
 		end
-		-- FOV Circle, Fill and Target Line are independent drawing controls.
-		-- Do not restore a stale snapshot when Silent is toggled.
+
 	end)
 	addSlider(mbSet, "FOV", 10, 500, 120, function(v) S.FOV = v end)
 	addSlider(mbSet, "Hit Chance", 0, 100, 100, function(v) S.MBHitChance = v end)
@@ -2140,7 +2097,7 @@ do
 		S.Tracers = v
 		if v and S.MBTargetLine then
 			S.MBTargetLine = false
-			-- сбрасываем дропдаун Target Line визуально в меню
+
 			if _fDD["TargetLine"] then _fDD["TargetLine"]("Off", true) end
 		end
 	end)
@@ -2255,8 +2212,6 @@ do
 		end
 		snd.Volume  = HitSoundSettings.Volume
 
-		-- Anti-spam: keep ownership of every Played connection. The old
-		-- attribute-only guard leaked callbacks and blocked clean reinitialization.
 		local playedConnection = HitSoundSettings.PlayedConnections[snd]
 		if not playedConnection or not playedConnection.Connected then
 			snd:SetAttribute("_burmalda_hs_hooked", true)
@@ -2322,7 +2277,6 @@ do
 		hookContainer(backpack)
 	end
 
-	-- Refresh existing sounds immediately; disabling must not wait for a spawned task.
 	local function refreshSounds()
 		local char    = LocalPlayer.Character
 		local backpack = LocalPlayer:FindFirstChild("Backpack")
@@ -2458,7 +2412,7 @@ local function hotbarInit()
 	main.BackgroundTransparency = 0.08
 	main.BorderSizePixel = 0
 	local _hbPC = Camera.ViewportSize.X >= 1024
-	-- чуть меньше отступ снизу на PC, иконки тоже меньше
+
 	main.Position = UDim2.new(0.5, 0, 1, _hbPC and -80 or -56)
 	main.AnchorPoint = Vector2.new(0.5, 1)
 	main.Visible = false
@@ -2479,7 +2433,7 @@ local function hotbarInit()
 	for i = 1, 6 do
 		local icon = Instance.new("ImageLabel")
 		local _ipc = Camera.ViewportSize.X >= 1024
-		-- на PC иконки 40px вместо 60px — выглядят как телефонная версия но крупнее
+
 		icon.Size = UDim2.new(0, _ipc and 40 or 24, 0, _ipc and 40 or 24)
 		icon.BackgroundColor3 = Color3.fromRGB(8, 8, 8)
 		icon.BackgroundTransparency = 0.3
@@ -2597,7 +2551,7 @@ do
 	addDropdown(chSet, "Mode", {"mobile", "pc"}, 1, function(v)
 		crosshairSettings.crosshairCenter = v == "mobile"
 		if v == "pc" then
-			-- скрываем системный курсор, прицел рисуется поверх
+
 			UIS.MouseIconEnabled = false
 		else
 			UIS.MouseIconEnabled = true
@@ -2860,8 +2814,7 @@ do
 		if cfg.CM_material     ~= nil then
 			local mats = {Glass=Enum.Material.Glass, Neon=Enum.Material.Neon,
 				ForceField=Enum.Material.ForceField, SmoothPlastic=Enum.Material.SmoothPlastic}
-			-- Current configs store EnumItem.Name. Accept the previous
-			-- tostring(Enum.Material.*) representation as well.
+
 			local materialName = tostring(cfg.CM_material):match("([^.]+)$")
 			glassMaterial = mats[materialName] or Enum.Material.Glass
 		end
@@ -2943,9 +2896,6 @@ do
 			end
 		end
 
-		-- Gameplay/settings tables are the source of truth. Refresh every
-		-- dropdown after loading, including old configs without saved UI state.
-		-- Silent setters cannot call back and overwrite the loaded settings.
 		local function syncDropdown(feature, name, value)
 			local setter = _fDD[feature .. "_Settings_" .. name]
 			if setter and value ~= nil then setter(value, true) end
@@ -3058,7 +3008,6 @@ do
 		return b
 	end
 
-	-- Configuration files live in real source sections on the fifth page.
 	lc, rc = getTab("CONFIG")
 	lc = getSection(lc, "Configs").Content
 	rc = getSection(rc, "Saved Configs").Content
@@ -3326,7 +3275,6 @@ do
 		end
 	end
 
-	-- FOV: только собственный RenderStep hook; Camera:Interpolate не блокируется
 	RunService:BindToRenderStep("BurmaldaHookFOV", Enum.RenderPriority.First.Value, function()
 		if Runtime.Unloaded or not fovLockEnabled or not fovControlled then return end
 		Camera.FieldOfView = targetFOV
@@ -3337,7 +3285,6 @@ do
 		restoreFOV()
 	end)
 
-	-- Доп. хук на изменение свойства
 	local fovChangedConnection = Camera:GetPropertyChangedSignal("FieldOfView"):Connect(function()
 		if not Runtime.Unloaded and fovLockEnabled and fovControlled and Camera.FieldOfView ~= targetFOV then
 			Camera.FieldOfView = targetFOV
@@ -3397,7 +3344,6 @@ do
 		end
 	end, false)
 
-	-- Low PC: reversible rendering reductions only; no game objects are destroyed.
 	do
 		local state = { Backups = {}, Connections = {} }
 		Runtime.LowPCState = state
@@ -3547,7 +3493,6 @@ do
 		end)
 	end
 
-	-- Custom Hand Position
 	ViewmodelConfig = { X = 0, Y = 0, Z = 0 }
 	handPosEnabled = false
 	local handPosConn = nil
@@ -3560,9 +3505,7 @@ do
 		if handPosHasApplied and handPosLastVM and handPosLastVM.Parent then
 			pcall(function()
 				local current = handPosLastVM:GetPivot()
-				-- Remove our offset only while the model is still at the exact
-				-- pivot we wrote. If the game already supplied a fresh pivot,
-				-- applying the inverse would move the game's new baseline.
+
 				if handPosLastWritten and handPosBase and current == handPosLastWritten then
 					handPosLastVM:PivotTo(handPosBase)
 				end
@@ -3601,8 +3544,7 @@ do
 				local desired = CFrame.new(ViewmodelConfig.X, ViewmodelConfig.Y, ViewmodelConfig.Z)
 				local current = vm:GetPivot()
 				local base = current
-				-- Persistent viewmodels need de-accumulation; game-reset
-				-- viewmodels are already a fresh base and must not be inverted.
+
 				if handPosHasApplied and handPosLastWritten and handPosBase and current == handPosLastWritten then
 					base = handPosBase
 				end
@@ -3761,13 +3703,10 @@ TargetLine.Thickness = 1
 TargetLine.Transparency = 1
 pcall(function() TargetLine.ZIndex = 3 end)
 
--- ESP v2: Velocity-inspired Drawing renderer with owned Highlight cleanup.
--- No external fonts, assets, HTTP, loaders or camera writes.
-
 local ESPBoxes, TracerObjs, NameObjs, DistObjs = {}, {}, {}, {}
 local ESPCorners, ESPFills, HPBars = {}, {}, {}
 local WeaponObjs, HPTextObjs, ChamsObjs = {}, {}, {}
--- SA_CurrentTarget is declared in main.lua before Crosshair, ESP and extra HUD consumers.
+
 local _espLastUpdate = 0
 local espConnection
 
@@ -4248,15 +4187,10 @@ espConnection = RunService.RenderStepped:Connect(function()
 end)
 end
 initializeESP()
-end -- function-scoped ESP helpers; public state above remains available to runtime hooks.
+end
 onCleanup(function()
 	if espConnection then espConnection:Disconnect() end
 end)
-
-
--- Reference-compatible Silent Aim path for rost alpha.
--- Normal shots always pass through unchanged. VFX.CreateProjectile and VectorUtil.FireRemote
--- are intentionally not hooked: the previous experimental hooks could break hit registration.
 
 local projectileInitOK, projectileInitError = pcall(function()
 	ProjectileCore = {
@@ -4283,8 +4217,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 	ProjectileSilent = {
 		TargetPart = nil,
 		TargetPosition = nil,
-		-- World-space offset from TargetPart.Position to the sampled visible point.
-		-- Namecall fallbacks apply it to the current Position without nested Roblox calls.
+
 		TargetOffset = nil,
 		TargetPlayer = nil,
 		TargetCharacter = nil,
@@ -4298,8 +4231,6 @@ local projectileInitOK, projectileInitError = pcall(function()
 		Installed = { GunBase = false },
 	}
 
-	-- Explosives/throwables must keep the game's original trajectory. This cache is
-	-- refreshed outside __namecall; the hook itself only reads these plain fields.
 	local function hasExplosiveName(name)
 		if type(name) ~= "string" then return false end
 		local lower = string.lower(name)
@@ -4325,9 +4256,6 @@ local projectileInitOK, projectileInitError = pcall(function()
 		return ProjectileSilent.ExplosiveTool == true or hasExplosiveName(remote and remote.Name)
 	end
 
-	-- Namecall fallbacks are scoped to a real weapon action. Tool.Activated covers
-	-- executors where the GunBase module cannot be patched; GunBase.fire itself is
-	-- an independent proof. Arbitrary remotes/rays outside this window pass through.
 	local weaponActionAt, weaponActionTool, weaponActionProven = nil, nil, false
 	local weaponMouseHeld = false
 	local shotConnections, watchedTools = {}, setmetatable({}, {__mode = "k"})
@@ -4346,13 +4274,13 @@ local projectileInitOK, projectileInitError = pcall(function()
 	ProjectileSilent.NoteWeaponAction = noteWeaponAction
 	local function hasWeaponAction()
 		if not ProjectileCore.Running or not S.SilentAim or Runtime.CraftingMenuOpen then return false end
-		-- Property/cached flags only: this function is safe inside __namecall.
+
 		if ProjectileSilent.ExplosiveTool then return false end
 		local now = os.clock()
 		local recent = weaponActionAt ~= nil and now - weaponActionAt >= 0 and now - weaponActionAt <= 0.35
 		local currentTool = ProjectileSilent.HeldTool
 		if recent and (weaponActionProven or weaponActionTool ~= nil) then return true end
-		-- Automatic weapons can keep firing after the single Activated event.
+
 		return currentTool ~= nil and weaponMouseHeld
 	end
 	ProjectileSilent.HasWeaponAction = hasWeaponAction
@@ -4405,8 +4333,6 @@ local projectileInitOK, projectileInitError = pcall(function()
 		ProjectileSilent.TargetVisible = part ~= nil and position ~= nil
 	end
 
-	-- Random chooses a stable part per character instead of rerolling every 50 ms.
-	-- Explicit Head/HeadHitbox/HRP choices remain exact and share one resolver with HUD.
 	local randomPartCache = setmetatable({}, {__mode = "k"})
 	local function targetPartFor(character)
 		local function getPart(name)
@@ -4440,9 +4366,6 @@ local projectileInitOK, projectileInitError = pcall(function()
 	end
 	ProjectileSilent.ResolveTargetPart = targetPartFor
 
-	-- Visible Check keeps a real visible point without averaging different sample
-	-- subsets between frames. Centre is preferred; a partial-cover offset is reused
-	-- while it remains visible, so walking and shot-time revalidation do not jitter.
 	local visibleParams = RaycastParams.new()
 	visibleParams.FilterType = Enum.RaycastFilterType.Exclude
 	visibleParams.IgnoreWater = true
@@ -4621,8 +4544,6 @@ local projectileInitOK, projectileInitError = pcall(function()
 	end
 	ProjectileSilent.Update = updateTarget
 
-	-- GunBase.fire runs outside __namecall, so it can safely repeat the full live
-	-- Character/FOV/distance validation. Namecall fallbacks use the property-only cache.
 	local function getLiveTarget()
 		local target = ProjectileSilent.TargetPart
 		local character = ProjectileSilent.TargetCharacter
@@ -4648,8 +4569,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 		end
 		local targetPosition = target.Position
 		if S.MBVisibleOnly then
-			-- Target selection runs every 50 ms, but a player can step behind a house
-			-- wall before the next shot. Revalidate at GunBase.fire time as well.
+
 			targetPosition = getVisiblePoint(target, character, camera)
 			if not targetPosition then
 				clearTarget()
@@ -4673,15 +4593,12 @@ local projectileInitOK, projectileInitError = pcall(function()
 	end
 	ProjectileSilent.GetTarget = getLiveTarget
 
-	-- VOMAGLA uses this ModuleScript table assignment. It is easy to restore and does
-	-- not require hookfunction support from the executor.
 	local GunBase, originalFire, replacementFire = nil, nil, nil
 	local gunBaseWaitRunning = false
 	local function installGunBase(module)
 		if ProjectileSilent.Installed.GunBase then return true end
 		if not ProjectileCore.Running then return false end
-		-- Do not touch game ModuleScripts while the feature is opt-in/off.
-		-- This also avoids a startup require racing the game's own module context.
+
 		if not S.SilentAim then
 			ProjectileCore.Status.lastShotReason = "gunbase-standby"
 			return false
@@ -4774,8 +4691,7 @@ local projectileInitOK, projectileInitError = pcall(function()
 			ProjectileCore.Status.redirects += 1
 			ProjectileCore.Status.lastShotReason = "gunbase-redirected"
 			noteShot(target)
-			-- GunBase owns this exact shot. A synchronous FireServer/Raycast made by
-			-- originalFire is a fallback only and must not rewrite it a second time.
+
 			local previousGunBaseShot = ProjectileCore.GunBaseRedirecting
 			ProjectileCore.GunBaseRedirecting = true
 			local results = table.pack(pcall(originalFire, self, unpack(args, 1, args.n)))
@@ -4867,7 +4783,6 @@ if not projectileInitOK then
 	ProjectileSilent = nil
 end
 
-
 if not Runtime.GetSilentStatus then
 	Runtime.GetSilentStatus = function()
 		return {
@@ -4884,9 +4799,6 @@ if not Runtime.GetSilentStatus then
 		}
 	end
 end
-
--- Additional rost-alpha features adapted from the saved VOMAGLA reference.
--- Owned objects only: no remote loaders, camera writes, hitbox expansion or world deletion.
 
 Runtime.ExtraFeatures = {
 	Status = { autoFireCalls = 0, damageEvents = 0 },
@@ -4905,7 +4817,6 @@ local function destroyObject(object)
 	if object then pcall(function() object:Destroy() end) end
 end
 
--- Shared monochrome GUI for Target HUD and hit/kill logs.
 local extraGui = newScreenGui()
 extraGui.Name = "BurmaldaHookExtra"
 extraGui.ResetOnSpawn = false
@@ -5028,7 +4939,6 @@ ExtraFeatures.ShowHitLog = function(playerName, partName, damage, health)
 		.. " / " .. tostring(damage) .. " damage / " .. tostring(health) .. " HP")
 end
 
--- World-positioned Drawing hitmarkers.
 local hitmarkers = {}
 local markerDirections = {{1, 1}, {-1, 1}, {1, -1}, {-1, -1}}
 local function clearHitmarkers()
@@ -5075,7 +4985,6 @@ ExtraFeatures.SpawnHitmarker = spawnHitmarker
 ExtraFeatures.ClearHitmarkers = clearHitmarkers
 ExtraFeatures.GetHitmarkerCount = function() return #hitmarkers end
 
--- Lightweight owned damage particles; all instances are destroyed on cleanup.
 local Debris = game:GetService("Debris")
 local damageParts = {}
 local damageTextures = {
@@ -5134,7 +5043,6 @@ ExtraFeatures.GetDamageFXCount = function()
 	return count
 end
 
--- X-Ray affects only the reference's twig building parts and restores transparency.
 local xrayCache = {}
 local xrayNames = {"TwigWall", "SoloTwigFrame", "TrigTwigRoof", "TwigFrame", "TwigWindow", "TwigRoof"}
 local function isXRayPart(object)
@@ -5169,7 +5077,6 @@ connect(workspace.DescendantAdded, function(object)
 	if S.XRay and not Runtime.Unloaded then pcall(registerXRay, object) end
 end)
 
--- Custom Terrain water with original-value restoration.
 local terrain = workspace.Terrain or workspace:FindFirstChildOfClass("Terrain")
 local waterOriginal = nil
 local function applyWater()
@@ -5200,7 +5107,6 @@ end
 ExtraFeatures.SetWater = setWater
 ExtraFeatures.ApplyWater = applyWater
 
--- Local Backpack/equipped Tool outlines, never global workspace Highlights.
 local toolHighlights = {}
 local function clearToolOutline()
 	for _, highlight in pairs(toolHighlights) do destroyObject(highlight) end
@@ -5246,7 +5152,6 @@ end
 ExtraFeatures.UpdateToolOutline = updateToolOutline
 ExtraFeatures.GetToolOutline = function(tool) return toolHighlights[tool] end
 
--- Auto Fire uses input only when Silent Aim already has a target and both our menu and game crafting are closed.
 local VirtualInputManager = game:GetService("VirtualInputManager")
 local lastAutoFire = -1000
 local function fireAutoClick()
@@ -5280,7 +5185,6 @@ local function updateAutoFire()
 	fireAutoClick()
 end
 
--- Movement additions. All physics helpers are owned and removed when no longer needed.
 local noFallParams = RaycastParams.new()
 noFallParams.FilterType = Enum.RaycastFilterType.Exclude
 local swimVelocity = nil
@@ -5406,7 +5310,6 @@ connect(UIS.JumpRequest, function()
 	humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 end)
 
--- Damage/death tracking for visual feedback. It never modifies health or remotes.
 local trackedCharacters, humanoidStates = {}, {}
 local recentTargets, lastHits = {}, {}
 local characterConnections, playerConnections, playerCharacters = {}, {}, {}
@@ -5580,7 +5483,6 @@ ExtraFeatures.GetTargetHUD = function()
 	return targetFrame, targetName, targetDistance, targetWeapon, targetHealthFill
 end
 
--- Existing monochrome widget API; no reference UI or external assets are imported.
 do
 	local autoSet = createFeature(smartCol("COMBAT"), "Auto Fire", false, function(v) S.AutoFire = v end)
 	addSlider(autoSet, "Fire Delay", 1, 50, 5, function(v) S.AutoFireDelay = v / 100 end)
@@ -5655,11 +5557,7 @@ ExtraFeatures.Cleanup = cleanup
 onCleanup(cleanup)
 end
 initializeExtraFeatures()
-end -- function-scoped helpers; ExtraFeatures is the public runtime/test surface.
-
-
--- VOMAGLA gameplay features integrated into the existing Burmalda runtime/UI.
--- No external menu, loader or second namecall hook is installed here.
+end
 
 do
 local function initializeVomaglaFeatures()
@@ -5715,7 +5613,6 @@ local function destroyObject(object)
 	if object then pcall(function() object:Destroy() end) end
 end
 
--- Gun/melee table mods. Original values are remembered per key and restored on Off/Unload.
 do
 	local gunCache, meleeCache = {}, {}
 	local gunOriginals, meleeOriginals = {}, {}
@@ -5794,10 +5691,7 @@ do
 	local function applyWeaponMods(forceRefresh)
 		local enabled = S.RapidFire or S.FullAuto or S.MeleeMods
 		if forceRefresh or (enabled and (not cachesBuilt or os.clock() >= nextCacheRefresh)) then
-			-- Gun tables can be created after the initial script scan. Re-scan on
-			-- enable and periodically while a weapon mod is active, not just on
-			-- Character.ChildAdded (which may already have happened). With every
-			-- weapon mod disabled, do not run an expensive getgc scan at startup.
+
 			rebuildCaches()
 		end
 		if S.RapidFire or S.FullAuto then
@@ -5870,12 +5764,9 @@ do
 			if child:IsA("Tool") then cachesBuilt = false end
 		end)
 	end
-	-- Lazy startup: no getgc(true) until a weapon mod is enabled or the
-	-- diagnostics/explicit rebuild API is called. This keeps feature registration
-	-- independent of executor GC-scan latency.
+
 end
 
--- Reload progress uses the same GunBase module table as Silent; only one reload method is wrapped.
 do
 	local reloadGui = newScreenGui()
 	reloadGui.Name = "BurmaldaHookReload"
@@ -5962,10 +5853,9 @@ do
 		M.Status.reloadHooked = false
 		destroyObject(reloadGui)
 	end
-	-- Install on the Reload Indicator toggle, not while the feature is off.
+
 end
 
--- World bullet beams are fed by the existing Workspace Raycast namecall in main.lua.
 do
 	local active = {}
 	local textures = {
@@ -6044,7 +5934,6 @@ do
 	end
 end
 
--- HeadHitbox expansion is limited to other players and always restores captured properties.
 do
 	local enlarged = {}
 	local elapsed = 0
@@ -6118,7 +6007,6 @@ do
 	end
 end
 
--- Third Person and Stretch use the reference camera transforms; Off restores the last pre-transform frame.
 do
 	local thirdOriginal, stretchOriginal = nil, nil
 	local function disableThirdPerson()
@@ -6170,7 +6058,6 @@ do
 	end
 end
 
--- Fullbright, terrain decoration, sky tint and reversible Skybox property overrides.
 do
 	local fullbrightOriginal = nil
 	local function applyFullbright()
@@ -6288,7 +6175,6 @@ do
 	end
 end
 
--- Reference-style local removal of named spikes/leaves, including later descendants.
 do
 	local function matches(object)
 		return (S.DeleteSpikes and object.Name == "Spikes")
@@ -6308,7 +6194,6 @@ do
 	M.SetDeleteLeaves = function(enabled) S.DeleteLeaves = enabled; if enabled then scan() end end
 end
 
--- Jump ring effects and kill/double-kill sounds use owned instances only.
 do
 	local jumpParts = {}
 	local function clearJumpParts()
@@ -6401,7 +6286,6 @@ do
 	M.SetKillSound = function(enabled) S.KillSound = enabled; if not enabled then clearSounds() end end
 end
 
--- Menu registration reuses our feature rows and editors; no VOMAGLA UI is loaded.
 local function column(tabName, right)
 	local left, rightColumn = getTab(tabName)
 	return right and rightColumn or left
@@ -6486,14 +6370,11 @@ M.Cleanup = cleanup
 onCleanup(cleanup)
 end
 initializeVomaglaFeatures()
-end -- function-scoped locals keep the combined loader below Luau's register limit.
-
+end
 
 do
 	local calamariFactory = (function()
--- Calamari-inspired visuals adapted for Burmalda.hook's local menu and lifecycle.
--- No external UI/ESP library, HTTP loader, gameplay module or projectile owner.
--- State is plain JSON-safe data (colors are RGB arrays) for every game's configs.
+
 local function createBurmaldaCalamariVisuals(options)
 	options = options or {}
 	local State = options.State or {}
@@ -6710,8 +6591,6 @@ local function destroy(object)
 	if object then pcall(function() object:Destroy() end) end
 end
 
--- Player ESP: the same gradient/fill/glow/health layout as Calamari, but pooled
--- and capped. The normal renderer remains independent and can stay enabled.
 local playerEntries = {}
 local targetCache, targetCacheAt = {}, 0
 local playerWasActive = false
@@ -7015,8 +6894,6 @@ local function updatePlayers(now)
 	API.Diagnostics.PlayerESP = rendered
 end
 
--- Calamari Misc ESP. Traversal is incremental and limited to known world roots;
--- adapters may add game-specific cached objects without another full workspace scan.
 local worldLabels = {}
 local worldEntries = {}
 local worldScan = {Active = false, Queue = {}, Index = 1, Working = {}, Seen = {}, Processed = 0}
@@ -7061,7 +6938,7 @@ local function beginWorldScan()
 			worldScan.Queue[#worldScan.Queue + 1] = {Object = folder, Depth = 0, MaxDepth = 3, Root = name}
 		end
 	end
-	-- Top-level Tools and named bags are Drops; root folders are not traversed twice.
+
 	if State.World.Categories.Drops.Enabled or State.World.Categories["Body Bag"].Enabled then
 		worldScan.Queue[#worldScan.Queue + 1] = {Object = workspace, Depth = 0, MaxDepth = 0, Root = "Workspace"}
 	end
@@ -7115,8 +6992,7 @@ local function worldPosition(object)
 	if ok and pivot and pivot.Position then return pivot.Position end
 	local primary = object.PrimaryPart
 	if primary and primary:IsA("BasePart") then return primary.Position end
-	-- A model can be supplied by a game adapter before its pivot is available.
-	-- Use an existing part as a read-only fallback; never move or mutate the model.
+
 	for _, child in ipairs(object:GetChildren()) do
 		if child:IsA("BasePart") then return child.Position end
 	end
@@ -7185,7 +7061,6 @@ local function updateWorld(now)
 	API.Diagnostics.WorldESP = index
 end
 
--- Gun/Arms materials, textures, Viewmodel Highlight and owned position offsets.
 local textures = {
 	Web = "rbxassetid://301464986", Swirl = "rbxassetid://8133639623",
 	Checkers = "rbxassetid://5790215150", CandyCane = "rbxassetid://6853532738",
@@ -7380,8 +7255,6 @@ local function updateViewmodels(now)
 	end
 end
 
--- Shot visuals use existing game events through API.Impact/TraceShot. They never
--- redirect a shot, install another Silent hook or change remote arguments.
 local activeEffects = {}
 local function ownEffect(object, lifetime)
 	if not object then return end
@@ -7509,8 +7382,6 @@ function API.TraceShot(origin, direction, maxDistance, ignore)
 	return result
 end
 
--- Lighting and optional Camera controls use per-property ownership. Off/Unload
--- restores only values still owned by this runtime; later game writes win.
 local ownedGroups = {}
 local createdLighting = {}
 local skyboxes = {
@@ -7732,8 +7603,7 @@ return createBurmaldaCalamariVisuals
 		if Runtime.CalamariVisuals == calamari then Runtime.CalamariVisuals = nil end
 	end)
 	local mountCalamari = (function()
--- Shared control layout for the local 621x542 Burmalda menu.
--- The host owns createFeature/addSlider/addDropdown/addColor/addBind/getTab/getSection.
+
 local function mountBurmaldaCalamariMenu(API, menuOptions)
 	menuOptions = menuOptions or {}
 	local function section(parent, name)
@@ -7901,10 +7771,6 @@ return mountBurmaldaCalamariMenu
 	mountCalamari(calamari, {Camera = "None", Lighting = false})
 end
 
-
--- One coordinator owns the target consumed by shots, FOV color, Target HUD,
--- snapline and Auto Fire. The legacy scanner is used only for a Target Line
--- while Silent is disabled; it can no longer override an empty Silent target.
 local function updateSharedTarget()
 	if ProjectileSilent then
 		local ok, err = pcall(ProjectileSilent.Update)
@@ -8011,8 +7877,7 @@ local function startSpeedRost()
 		if not hum or not root or hum.Health <= 0 then return end
 		local direction = hum.MoveDirection
 		if direction.Magnitude <= 0 then return end
-		-- VOMAGLA's working Speed path: horizontal physics velocity, preserving Y.
-		-- WalkSpeed and camera are never rewritten; Off simply stops further writes.
+
 		local velocity = root.AssemblyLinearVelocity
 		local speed = math.clamp(tonumber(S.SpeedRostValue) or 30, 0, 60)
 		root.AssemblyLinearVelocity = Vector3.new(direction.X * speed, velocity.Y, direction.Z * speed)
@@ -8113,9 +7978,7 @@ do
 		end
 		return unpack(results, 1, results.n)
 	end
-	-- Opiumware can lose the outer namecall context when a hook performs another
-	-- Roblox method call. Keep this path like VOMAGLA's cached targetPos: property
-	-- reads only, with no GetTarget(), WorldToViewportPoint, FindFirstChild or IsA.
+
 	local function getCachedTarget()
 		if not ProjectileSilent then
 			local target = SA_CurrentTarget
@@ -8128,8 +7991,7 @@ do
 		if not target or not target.Parent or (humanoid and humanoid.Health <= 0) then
 			return nil
 		end
-		-- Keep the sampled offset, but follow target translation between 50 ms scans.
-		-- This remains property/vector-only: no nested GetTarget or Camera projection.
+
 		local targetPosition = target.Position
 		local targetOffset = ProjectileSilent.TargetOffset
 		if typeof(targetOffset) == "Vector3" then
@@ -8162,14 +8024,13 @@ do
 		end
 
 		local gunbaseOwnsShot = ProjectileCore and ProjectileCore.GunBaseRedirecting == true
-		-- FireServer remains before checkcaller: original GunBase.fire can reach it synchronously.
+
 		if method == "FireServer" then
 			if gunbaseOwnsShot then
 				if ProjectileCore then ProjectileCore.Status.fallbackSkips += 1 end
 				return oldNamecall(self, ...)
 			end
-			-- C4/rocket/grenade placement and flight remotes often use the same
-			-- Vector3/CFrame shape as guns. Never retarget an explosive context.
+
 			if ProjectileSilent and ProjectileSilent.IsExplosiveContext(self) then
 				if ProjectileCore then
 					ProjectileCore.Status.explosiveSkips += 1
@@ -8256,9 +8117,6 @@ do
 			return oldNamecall(self, ...)
 		end
 
-		-- VOMAGLA's distance guard is required here: ViewmodelController also uses
-		-- Workspace rays for short melee/resource checks (TreeX, NodeSpark, stones).
-		-- Never pull those interactions toward a selected player or draw gun tracers.
 		if castDistance <= 50 then
 			if ProjectileCore then
 				ProjectileCore.Status.nonCombatSkips += 1
@@ -8328,7 +8186,6 @@ do
 	end
 	Runtime._InstallStandardNamecall()
 
-	-- Compatibility fallback for supported executors without hookmetamethod.
 	if not oldNamecall and type(getrawmetatable) == "function" then
 		local ok, mt = pcall(getrawmetatable, game)
 		if ok and type(mt) == "table" and type(mt.__namecall) == "function" then
