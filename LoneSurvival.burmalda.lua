@@ -5325,6 +5325,11 @@ end
       end
 
       function state.SetSilentWalk(enabled)
+        enabled = enabled == true
+        local wasApplied = state.silentWalkApplied == true
+        -- Building the UI with an Off default must not touch the character or network.
+        if not enabled and not wasApplied then return end
+        state.silentWalkApplied = enabled
         local character = localPlayer.Character
         if character then pcall(function() character:SetAttribute("Crouching", enabled) end) end
         if enabled then
