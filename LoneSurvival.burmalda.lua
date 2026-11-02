@@ -1,17 +1,3 @@
--- Burmalda.hook | Lone Survival | private JNKIE payload gate
-local __burmaldaLoneEnv = getgenv and getgenv() or _G
-local __burmaldaLoneKey = tostring(__burmaldaLoneEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
-if tostring(__burmaldaLoneEnv.PHOOKGATE or "") ~= "1347571535"
-    or __burmaldaLoneKey == ""
-    or __burmaldaLoneKey:upper() == "BETA"
-then
-    __burmaldaLoneEnv.PHOOKGATE = nil
-    __burmaldaLoneEnv.SCRIPT_KEY = nil
-    return
-end
-__burmaldaLoneEnv.PHOOKGATE = nil
-__burmaldaLoneEnv.SCRIPT_KEY = nil
-
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local userInputService = game:GetService("UserInputService")
@@ -1520,14 +1506,18 @@ if integrityOk then
     return v203
   end
 
-  function getCachedTargets()
+  function getCachedTargets(maximumAge)
     local v204 = os.clock()
+    local scanInterval = cfg.ESP.ScanInterval or 0.15
+    if maximumAge then scanInterval = math.min(scanInterval, maximumAge) end
 
-    if mainGame.targetList and v204 < (mainGame.nextScan or 0) then
+    if mainGame.targetList and v204 < (mainGame.nextScan or 0)
+      and (not maximumAge or v204 - (mainGame.targetListAt or 0) < maximumAge) then
       return mainGame.targetList
     end
 
-    mainGame.nextScan = v204 + (cfg.ESP.ScanInterval or 0.15)
+    mainGame.nextScan = v204 + scanInterval
+    mainGame.targetListAt = v204
     mainGame.targetList = collectTargets()
 
     return mainGame.targetList
@@ -3119,6 +3109,7 @@ end
         local entry = bindApis[key]
         if entry and entry.Set then entry.Set(value) end
       end
+      if mainGame.calamariVisuals then mainGame.calamariVisuals.SyncUI() end
       if mainGame.friendDropdown and mainGame.friendDropdown.Set then
         mainGame.friendDropdown.Set(cfg.Silent.IgnorePlayers or {})
       end
@@ -3296,6 +3287,12 @@ end
         ChamsOutlineColor = Color3.fromRGB(255, 255, 255),
         ChamsFillTransparency = 0.5,
         ChamsOutlineTransparency = 0.2,
+        Fade = false,
+        VisibleOnly = false,
+        VisibleColors = false,
+        BoxThickness = 1,
+        TracerThickness = 1,
+        TextScale = 1,
       }
       for key, value in pairs(espDefaults) do
         if cfg.ESP[key] == nil then cfg.ESP[key] = value end
@@ -3324,6 +3321,8 @@ end
       for key, value in pairs(resourceDefaults) do
         if cfg.ResourceESP[key] == nil then cfg.ResourceESP[key] = value end
       end
+      -- Optional workload reduction; user sliders and saved values stay intact.
+      cfg.Misc.LowPC = cfg.Misc.LowPC == true
 
       local resourceLabels = {
         Cloth = "Cloth", Iron = "Iron", Sulfur = "Sulfur", Stone = "Stone", BodyBag = "Body Bag",
@@ -3342,6 +3341,11 @@ end
       local hpLow = Color3.fromRGB(255, 60, 60)
       local hpMedium = Color3.fromRGB(255, 193, 0)
       local hpHigh = Color3.fromRGB(80, 220, 100)
+      local hpBackground = Color3.new(0, 0, 0)
+      local occludedColor = Color3.fromRGB(255, 70, 70)
+      -- Target tables are rebuilt on ordinary rescans; key visibility by Model
+      -- so the 0.2 s raycast cache survives those allocations.
+      local espVisibilityCache = setmetatable({}, { __mode = "k" })
       local drawingEsp = Drawing ~= nil and type(Drawing.new) == "function"
       if drawingEsp then
         mainGame.espRenderer = "BurmaldaDrawing"
@@ -3521,10 +3525,14 @@ end
         if mainGame.resourceList and now < (mainGame.nextResourceScan or 0) then
           return mainGame.resourceList
         end
-        mainGame.nextResourceScan = now + (cfg.ResourceESP.ScanInterval or 1)
+        local scanInterval = math.max(0.1, tonumber(cfg.ResourceESP.ScanInterval) or 1)
+        if cfg.Misc.LowPC then scanInterval = math.max(scanInterval, 2) end
+        mainGame.nextResourceScan = now + scanInterval
         mainGame.resourceList = collectResources()
         return mainGame.resourceList
       end
+
+      mainGame.getCachedResources = getCachedResources
 
       local function getResourceGeometry(object)
         if object:IsA("BasePart") then
@@ -3712,8 +3720,12 @@ end
       end
 
       local function updateChams(entry, enabled, model)
+        local state = entry.chamsState
         if not enabled then
-          if entry.chams then pcall(function() entry.chams.Enabled = false end) end
+          if entry.chams and (not state or state.enabled ~= false) then
+            pcall(function() entry.chams.Enabled = false end)
+          end
+          if state then state.enabled = false end
           return
         end
         if not entry.chams and not entry.chamsFailed then
@@ -3723,25 +3735,41 @@ end
             return
           end
           highlight.Name = "BurmaldaHookESP"
+          highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
           entry.chams = highlight
           mainGame.draws[#mainGame.draws + 1] = highlight
         end
         if entry.chams then
+          state = state or {}
+          entry.chamsState = state
           pcall(function()
             local highlight = entry.chams
-            highlight.Adornee = model
-            highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-            highlight.FillColor = cfg.ESP.ChamsFillColor
-            highlight.OutlineColor = cfg.ESP.ChamsOutlineColor
-            highlight.FillTransparency = cfg.ESP.ChamsFillTransparency
-            highlight.OutlineTransparency = cfg.ESP.ChamsOutlineTransparency
+            if state.adornee ~= model then state.adornee = model; highlight.Adornee = model end
+            if state.fillColor ~= cfg.ESP.ChamsFillColor then
+              state.fillColor = cfg.ESP.ChamsFillColor
+              highlight.FillColor = cfg.ESP.ChamsFillColor
+            end
+            if state.outlineColor ~= cfg.ESP.ChamsOutlineColor then
+              state.outlineColor = cfg.ESP.ChamsOutlineColor
+              highlight.OutlineColor = cfg.ESP.ChamsOutlineColor
+            end
+            if state.fillTransparency ~= cfg.ESP.ChamsFillTransparency then
+              state.fillTransparency = cfg.ESP.ChamsFillTransparency
+              highlight.FillTransparency = cfg.ESP.ChamsFillTransparency
+            end
+            if state.outlineTransparency ~= cfg.ESP.ChamsOutlineTransparency then
+              state.outlineTransparency = cfg.ESP.ChamsOutlineTransparency
+              highlight.OutlineTransparency = cfg.ESP.ChamsOutlineTransparency
+            end
             if highlight.Parent ~= coreGui then highlight.Parent = coreGui end
-            highlight.Enabled = true
+            if state.enabled ~= true then state.enabled = true; highlight.Enabled = true end
           end)
         end
       end
 
       local function hideCharacterEspEntry(entry)
+        if entry.s.characterHidden then return end
+        entry.s.characterHidden = true
         hideEspEntry(entry)
         hideCorners(entry)
         updateLine(entry, "tracer", entry.tracer, false)
@@ -3751,6 +3779,8 @@ end
       end
 
       local function hideResourceEspEntry(entry)
+        if entry.s.resourceHidden then return end
+        entry.s.resourceHidden = true
         updateBoxDrawing(entry, "box", entry.box, false)
         updateBoxDrawing(entry, "outline", entry.outline, false)
         updateTextDrawing(entry, "name", entry.name, false)
@@ -3789,6 +3819,46 @@ end
         end
       end
 
+      local function applyAdvancedEntry(entry, distance)
+        local advanced = entry.s.advanced
+        if not advanced then advanced = {}; entry.s.advanced = advanced end
+        local alpha = cfg.ESP.Fade
+          and math.clamp(1 - distance / math.max(1, cfg.ESP.MaxDistance), 0.15, 1) or 1
+        if advanced.alpha ~= alpha then
+          advanced.alpha = alpha
+          for _, key in ipairs({"box", "outline", "name", "dist", "weapon", "hpText", "hpFill", "tracer"}) do
+            local object = entry[key]
+            if object then pcall(function() object.Transparency = alpha end) end
+          end
+          for _, object in ipairs(entry.corners or {}) do
+            pcall(function() object.Transparency = alpha end)
+          end
+          if entry.hpBg then pcall(function() entry.hpBg.Transparency = alpha * 0.6 end) end
+        end
+        local fillAlpha = alpha * (1 - math.clamp(cfg.ESP.BoxFillTransparency, 0, 1))
+        if entry.fill and advanced.fillAlpha ~= fillAlpha then
+          advanced.fillAlpha = fillAlpha
+          pcall(function() entry.fill.Transparency = fillAlpha end)
+        end
+        local scale = tonumber(cfg.ESP.TextScale) or 1
+        if advanced.scale ~= scale then
+          advanced.scale = scale
+          for key, size in pairs({name = 13, dist = 12, weapon = 12, hpText = 11}) do
+            local object = entry[key]
+            if object then pcall(function() object.Size = size * scale end) end
+          end
+        end
+        local thickness = tonumber(cfg.ESP.BoxThickness) or 1
+        if advanced.boxThickness ~= thickness then
+          advanced.boxThickness = thickness
+          if entry.box then pcall(function() entry.box.Thickness = thickness end) end
+          if entry.outline then pcall(function() entry.outline.Thickness = thickness + 2 end) end
+          for _, object in ipairs(entry.corners or {}) do
+            pcall(function() object.Thickness = thickness end)
+          end
+        end
+      end
+
       local function renderResourceEntries(camera, cameraPosition)
         if not cfg.ResourceESP.Enabled and not mainGame.resourceEspRendered then
           mainGame.stats.espResources = 0
@@ -3796,6 +3866,8 @@ end
         end
         mainGame.resourceEspRendered = cfg.ResourceESP.Enabled
         local visibleResources = {}
+        local resourceLimit = cfg.ResourceESP.MaxTargets or 128
+        if cfg.Misc.LowPC then resourceLimit = math.min(resourceLimit, 48) end
         if cfg.ResourceESP.Enabled then
           local resources = getCachedResources()
           for _, resource in ipairs(resources) do
@@ -3809,7 +3881,7 @@ end
                   position = position,
                   size = size,
                 }
-                if #visibleResources >= (cfg.ResourceESP.MaxTargets or 128) then break end
+                if #visibleResources >= resourceLimit then break end
               end
             end
           end
@@ -3817,7 +3889,9 @@ end
 
         mainGame.stats.espResources = #visibleResources
         ensureResourcePool(#visibleResources)
-        for index, entry in ipairs(mainGame.resourcePool or {}) do
+        local previousUsed = mainGame.resourcePoolUsed or 0
+        for index = 1, math.max(#visibleResources, previousUsed) do
+          local entry = mainGame.resourcePool[index]
           local resource = visibleResources[index]
           if not resource then
             hideResourceEspEntry(entry)
@@ -3826,6 +3900,7 @@ end
             local top = camera:WorldToViewportPoint(resource.position + Vector3.new(0, halfHeight, 0))
             local bottom = camera:WorldToViewportPoint(resource.position - Vector3.new(0, halfHeight, 0))
             if top.Z > 0 and bottom.Z > 0 then
+              entry.s.resourceHidden = false
               local yTop, yBottom = math.min(top.Y, bottom.Y), math.max(top.Y, bottom.Y)
               local height = math.max(yBottom - yTop, 6)
               local width = math.max(height * 0.75, 8)
@@ -3846,6 +3921,7 @@ end
             end
           end
         end
+        mainGame.resourcePoolUsed = #visibleResources
       end
 
       renderEsp = function()
@@ -3855,18 +3931,36 @@ end
         local cameraPosition = camera.CFrame.Position
         local targets = cfg.ESP.Enabled and getCachedTargets() or {}
         local visibleTargets = {}
+        local playerLimit = cfg.ESP.MaxTargets or 64
+        if cfg.Misc.LowPC then playerLimit = math.min(playerLimit, 24) end
 
         if cfg.ESP.Enabled then
           for _, target in ipairs(targets) do
             local categoryEnabled = target.player and cfg.ESP.Players or not target.player and cfg.ESP.NPCs
-            local teamDot = target.player and target.model:FindFirstChild("TeamDot")
+            local teamDot = target.player and cfg.ESP.TeamCheck
+              and target.model:FindFirstChild("TeamDot")
             local teamExcluded = target.player and cfg.ESP.TeamCheck and teamDot and teamDot.Enabled
             local head = target.head
+            local espVisible = true
+            if head and head.Parent and (cfg.ESP.VisibleOnly or cfg.ESP.VisibleColors) then
+              local now = os.clock()
+              local cached = espVisibilityCache[target.model]
+              if not cached or cached.part ~= head or now >= cached.next then
+                cached = {
+                  part = head,
+                  visible = isTargetVisible(cameraPosition, head),
+                  next = now + (cfg.Misc.LowPC and 0.4 or 0.2),
+                }
+                espVisibilityCache[target.model] = cached
+              end
+              espVisible = cached.visible ~= false
+            end
+            target.espVisible = espVisible
             if categoryEnabled and not teamExcluded and head and head.Parent and target.hum and target.hum.Parent
-              and target.hum.Health > 0
+              and target.hum.Health > 0 and (not cfg.ESP.VisibleOnly or espVisible)
               and (head.Position - cameraPosition).Magnitude <= cfg.ESP.MaxDistance then
               visibleTargets[#visibleTargets + 1] = target
-              if #visibleTargets >= (cfg.ESP.MaxTargets or 64) then break end
+              if #visibleTargets >= playerLimit then break end
             end
           end
         end
@@ -3874,9 +3968,14 @@ end
         mainGame.stats.espPlayers = 0
         mainGame.stats.espNPCs = 0
         mainGame.stats.targets = #visibleTargets
-        ensureCharacterPool(#visibleTargets)
+        local playerPoolLimit = 0
+        if cfg.ESP.Enabled or mainGame.playerEspRendered then
+          ensureCharacterPool(#visibleTargets)
+          playerPoolLimit = math.max(#visibleTargets, mainGame.playerPoolUsed or 0)
+        end
 
-        for index, entry in ipairs(mainGame.pool) do
+        for index = 1, playerPoolLimit do
+          local entry = mainGame.pool[index]
           local target = visibleTargets[index]
           if not target then
             hideCharacterEspEntry(entry)
@@ -3894,12 +3993,16 @@ end
             local top, topOnScreen = camera:WorldToViewportPoint(topPosition)
             local bottom, bottomOnScreen = camera:WorldToViewportPoint(bottomPosition)
             if topOnScreen and bottomOnScreen and top.Z > 0 and bottom.Z > 0 then
+              entry.s.characterHidden = false
               local yTop, yBottom = math.min(top.Y, bottom.Y), math.max(top.Y, bottom.Y)
               local height = math.max(yBottom - yTop, 4)
               local width = height * 0.6
               local centerX = (top.X + bottom.X) * 0.5
               local x = centerX - width * 0.5
               local boxColor = target.player and cfg.ESP.PlayerColor or cfg.ESP.NPCColor
+              if cfg.ESP.VisibleColors then
+                boxColor = target.espVisible == false and occludedColor or hpHigh
+              end
               local cornerStyle = cfg.ESP.BoxType == "Corner"
               local normalBox = cfg.ESP.Box and not cornerStyle
               local cornerBox = cfg.ESP.Box and cornerStyle
@@ -3915,7 +4018,7 @@ end
               elseif cfg.ESP.TracerOrigin == "Bottom" then originY = viewport.Y end
               updateLine(entry, "tracer", entry.tracer, cfg.ESP.Tracers,
                 Vector2.new(viewport.X * 0.5, originY), Vector2.new(centerX, (yTop + yBottom) * 0.5),
-                cfg.ESP.TracerColor, 1)
+                cfg.ESP.TracerColor, cfg.ESP.TracerThickness or 1)
 
               local topHealth = cfg.ESP.Health and cfg.ESP.HealthBarSide == "Top"
               updateTextDrawing(entry, "name", entry.name, cfg.ESP.Name, centerX,
@@ -3936,14 +4039,14 @@ end
                 local healthColor = getHealthColor(ratio)
                 if cfg.ESP.HealthBarSide == "Top" then
                   updateBoxDrawing(entry, "hpBg", entry.hpBg, true, x, yTop - 6, width, 3,
-                    Color3.new(0, 0, 0))
+                    hpBackground)
                   updateBoxDrawing(entry, "hpFill", entry.hpFill, true, x, yTop - 6,
                     width * ratio, 3, healthColor)
                   updateTextDrawing(entry, "hpText", entry.hpText, cfg.ESP.HealthNumber,
                     x + width * ratio, yTop - 20, tostring(math.floor(target.hum.Health + 0.5)), healthColor)
                 else
                   updateBoxDrawing(entry, "hpBg", entry.hpBg, true, x - 6, yTop, 3, height,
-                    Color3.new(0, 0, 0))
+                    hpBackground)
                   updateBoxDrawing(entry, "hpFill", entry.hpFill, true, x - 6,
                     yTop + height * (1 - ratio), 3, height * ratio, healthColor)
                   updateTextDrawing(entry, "hpText", entry.hpText, cfg.ESP.HealthNumber,
@@ -3956,17 +4059,24 @@ end
                 updateTextDrawing(entry, "hpText", entry.hpText, false)
               end
 
+              applyAdvancedEntry(entry, (head.Position - cameraPosition).Magnitude)
               updateChams(entry, cfg.ESP.Chams, target.model)
             else
               hideCharacterEspEntry(entry)
             end
           end
         end
+        mainGame.playerPoolUsed = #visibleTargets
+        mainGame.playerEspRendered = cfg.ESP.Enabled and (cfg.ESP.Players or cfg.ESP.NPCs)
 
         renderResourceEntries(camera, cameraPosition)
       end
 
       mainGame.resourcePool = {}
+      mainGame.resourcePoolUsed = 0
+      mainGame.playerPoolUsed = 0
+      mainGame.playerEspRendered = false
+      mainGame.resourceEspRendered = false
       mainGame.resourceList = nil
       mainGame.nextResourceScan = 0
       mainGame.weaponCatalog = nil
@@ -3996,9 +4106,9 @@ end
       if cfg.Movement[key] == nil then cfg.Movement[key] = value end
     end
 
-    local function updateMovement()
+    local function updateMovement(dt)
       if mainGame.movement and mainGame.movement.Active then
-        local ok, err = pcall(mainGame.movement.Update)
+        local ok, err = pcall(mainGame.movement.Update, dt)
         if not ok then mainGame.movementError = tostring(err) end
       end
     end
@@ -4268,7 +4378,7 @@ end
         movement.root = nil
       end
 
-      function movement.Update()
+      function movement.Update(dt)
         if not movement.Active or mainGame.unloaded then return end
         local character = localPlayer.Character
         if character ~= movement.char then
@@ -4283,7 +4393,19 @@ end
 
         local humanoid = movement.humanoid
         local root = movement.root
-        if cfg.Movement.Speed and humanoid and cfg.Movement.SpeedMethod == "Velocity" then
+        if cfg.Movement.Speed and humanoid and cfg.Movement.SpeedMethod == "CFrame" then
+          if movement.speedOriginal ~= nil then
+            pcall(function() humanoid.WalkSpeed = movement.speedOriginal end)
+            movement.speedOriginal = nil
+          end
+          if root then
+            local direction = humanoid.MoveDirection
+            if direction and direction.Magnitude > 0.05 then
+              local step = math.clamp(tonumber(dt) or (1 / 60), 0, 0.05)
+              root.CFrame = root.CFrame + direction.Unit * cfg.Movement.SpeedValue * step
+            end
+          end
+        elseif cfg.Movement.Speed and humanoid and cfg.Movement.SpeedMethod == "Velocity" then
           if movement.speedOriginal ~= nil then
             pcall(function() humanoid.WalkSpeed = movement.speedOriginal end)
             movement.speedOriginal = nil
@@ -5178,6 +5300,22 @@ end
             end
           end
 
+          -- Calamari visuals observe the already-owned local Projectile.New call.
+          -- They never redirect data and perform no work until a shot visual is on.
+          if type(data) == "table" and not data.FromServer and mainGame.calamariVisuals then
+            local origin = data.Origin
+            local camera = workspace.CurrentCamera
+            local direction
+            if typeof(origin) == "Vector3" and typeof(data.ForceHitVector) == "Vector3" then
+              direction = data.ForceHitVector - origin
+            elseif camera then
+              direction = camera.CFrame.LookVector
+            end
+            if typeof(origin) == "Vector3" and typeof(direction) == "Vector3" and direction.Magnitude > 0.001 then
+              pcall(mainGame.calamariVisuals.TraceShot, origin, direction, 1000)
+            end
+          end
+
           local results = table.pack(pcall(original, self, data, ...))
           if context.cameraCFrame and context.camera then
             pcall(function() context.camera.CFrame = context.cameraCFrame end)
@@ -5416,7 +5554,7 @@ end
         if not state.Active then return end
         local now = os.clock()
         if now >= state.nextInstall then
-          state.nextInstall = now + 2
+          state.nextInstall = now + (cfg.Misc.LowPC and 5 or 2)
           pcall(installAll)
         end
 
@@ -5473,6 +5611,1135 @@ end
 
       setGrassRemoved(cfg.LocalFeatures.RemoveGrass)
       installAll()
+    end
+
+
+    -- Additional Lone features recovered from the Qwerty reference behavior.
+    -- They use our own config, Drawing objects and lifecycle; no Qwerty UI,
+    -- authorization, HTTP loader or second projectile owner is included.
+    do
+      cfg.Extra = cfg.Extra or {}
+      local extra = cfg.Extra
+      local sectionDefaults = {
+        Aimbot = {
+          Enabled = false, FOV = 30, MaxDistance = 10000, Speed = 90,
+          ShowFOV = false, WallCheck = false, TargetNPCs = false, PriorityPlayers = false,
+          FOVColor = Color3.fromRGB(255, 255, 255), FOVThickness = 1,
+        },
+        Trigger = {
+          Enabled = false, Delay = 0.1, UseSilent = false, UseAimbot = false,
+          RequireVisible = false, RequireFOV = false,
+        },
+        Movement = { Noclip = false, AntiFall = false, AntiSpikes = false },
+        Camera = {
+          CustomFOV = false, FOV = 90, Zoom = false, ZoomFOV = 20,
+          ThirdPerson = false, Distance = 10, Height = 1.5, Side = 0, Sensitivity = 0.2,
+        },
+        World = { RemoveLeafs = false, RemoveBushes = false },
+        ESP = {
+          ScanInterval = 1, MaxTargets = 96, GhostTTL = 60, GhostMaxDistance = 5000,
+          Categories = {}, Colors = {},
+        },
+        Crosshair = {
+          Enabled = false, Shape = "Star", Size = 12, Gap = 4, Thickness = 2,
+          Spin = 0, RGB = false, RGBSpeed = 5, Color = Color3.fromRGB(255, 255, 255),
+        },
+        AntiAim = { Enabled = false, Type = "Spin", SpinSpeed = 10, Jitter = 10 },
+        Pose = { Enabled = false, Drop = 1.5, Pitch = -10, Turn = 180 },
+      }
+      local function fillDefaults(destination, defaults)
+        for key, value in pairs(defaults) do
+          if type(value) == "table" then
+            if type(destination[key]) ~= "table" then destination[key] = {} end
+            fillDefaults(destination[key], value)
+          elseif destination[key] == nil then
+            destination[key] = value
+          end
+        end
+      end
+      fillDefaults(extra, sectionDefaults)
+
+      cfg.ESP.Skeleton = cfg.ESP.Skeleton == true
+      cfg.ESP.SkeletonColor = cfg.ESP.SkeletonColor or Color3.fromRGB(255, 255, 255)
+      cfg.ESP.SkeletonThickness = tonumber(cfg.ESP.SkeletonThickness) or 1
+      cfg.ESP.Fade = cfg.ESP.Fade == true
+      cfg.ESP.VisibleOnly = cfg.ESP.VisibleOnly == true
+      cfg.ESP.VisibleColors = cfg.ESP.VisibleColors == true
+      cfg.ESP.BoxThickness = tonumber(cfg.ESP.BoxThickness) or 1
+      cfg.ESP.TracerThickness = tonumber(cfg.ESP.TracerThickness) or 1
+      cfg.ESP.TextScale = tonumber(cfg.ESP.TextScale) or 1
+
+      local categoryDefinitions = {
+        { key = "DroppedItems", label = "Dropped Item", container = "Dropped", distance = 250,
+          color = Color3.fromRGB(240, 220, 60) },
+        { key = "KeyDrops", label = "Key Drop", container = "KeyDrops", distance = 1000,
+          color = Color3.fromRGB(255, 100, 200) },
+        { key = "OfflinePlayers", label = "Offline Player", container = "OfflinePlayers", distance = 500,
+          color = Color3.fromRGB(80, 220, 240) },
+        { key = "ToolBox", label = "ToolBox", container = "LootCrates", distance = 1500,
+          color = Color3.fromRGB(165, 110, 60), match = "ToolBox" },
+        { key = "FoodCrate", label = "FoodCrate", container = "LootCrates", distance = 1500,
+          color = Color3.fromRGB(165, 110, 60), match = "FoodCrate" },
+        { key = "LargeCrate", label = "LargeCrate", container = "LootCrates", distance = 1500,
+          color = Color3.fromRGB(165, 110, 60), match = "LargeCrate" },
+        { key = "Medbag", label = "Medbag", container = "LootCrates", distance = 1500,
+          color = Color3.fromRGB(165, 110, 60), match = "Medbag" },
+        { key = "Military", label = "Military", container = "LootCrates", distance = 1500,
+          color = Color3.fromRGB(165, 110, 60), match = "Military" },
+        { key = "SNTech", label = "SNTech", container = "LootCrates", distance = 1500,
+          color = Color3.fromRGB(80, 220, 100), match = "SNTech" },
+        { key = "Raider", label = "Raider X", container = "ActiveRaiderX", distance = 5000,
+          color = Color3.fromRGB(255, 70, 70) },
+      }
+      for _, definition in ipairs(categoryDefinitions) do
+        if extra.ESP.Categories[definition.key] == nil then
+          extra.ESP.Categories[definition.key] = false
+        end
+        extra.ESP.Colors[definition.key] = extra.ESP.Colors[definition.key] or definition.color
+      end
+      if extra.ESP.Categories.Ghost == nil then extra.ESP.Categories.Ghost = false end
+      extra.ESP.Colors.Ghost = extra.ESP.Colors.Ghost or Color3.fromRGB(190, 120, 255)
+
+      local state = {
+        Active = true,
+        owned = {},
+        noclipOriginals = {},
+        noclipParts = {},
+        worldGeometry = setmetatable({}, { __mode = "k" }),
+        skeletonBones = setmetatable({}, { __mode = "k" }),
+        spikeOriginals = {},
+        leafOriginals = {},
+        bushOriginals = {},
+        worldEspPool = {},
+        worldEspPoolUsed = 0,
+        skeletonLines = {},
+        skeletonLineStates = {},
+        skeletonLinesUsed = 0,
+        ghosts = {},
+        targetVisibility = setmetatable({}, { __mode = "k" }),
+        third = { active = false, lookX = 0, lookY = 0 },
+        frozenTracks = {},
+      }
+      mainGame.extraFeatures = state
+      state.CategoryDefinitions = categoryDefinitions
+
+      local function ownDrawing(className)
+        if Drawing == nil or type(Drawing.new) ~= "function" then return nil end
+        local ok, object = pcall(Drawing.new, className)
+        if not ok or not object then return nil end
+        object.Visible = false
+        state.owned[#state.owned + 1] = object
+        mainGame.draws[#mainGame.draws + 1] = object
+        return object
+      end
+      local function hide(object)
+        if object then pcall(function() object.Visible = false end) end
+      end
+      local function dot(a, b)
+        return a.X * b.X + a.Y * b.Y + a.Z * b.Z
+      end
+      local function anyCategoryEnabled()
+        for _, enabled in pairs(extra.ESP.Categories) do
+          if enabled then return true end
+        end
+        return false
+      end
+
+      -- Character collision ownership: scan only on character changes and new
+      -- descendants, while still enforcing collision every rendered frame.
+      function state.RestoreNoclip()
+        if state.noclipAdded then pcall(function() state.noclipAdded:Disconnect() end) end
+        state.noclipAdded = nil
+        for part, original in pairs(state.noclipOriginals) do
+          if part then pcall(function() part.CanCollide = original end) end
+        end
+        table.clear(state.noclipOriginals)
+        table.clear(state.noclipParts)
+        state.noclipCharacter = nil
+      end
+      function state.SetNoclip(enabled)
+        extra.Movement.Noclip = enabled == true
+        if not extra.Movement.Noclip then state.RestoreNoclip() end
+      end
+      local function updateNoclip()
+        if not extra.Movement.Noclip then
+          if next(state.noclipOriginals) ~= nil then state.RestoreNoclip() end
+          return
+        end
+        local character = localPlayer.Character
+        if character ~= state.noclipCharacter then
+          state.RestoreNoclip()
+          state.noclipCharacter = character
+          if character then
+            for _, object in ipairs(character:GetDescendants()) do
+              if object:IsA("BasePart") then
+                state.noclipOriginals[object] = object.CanCollide
+                state.noclipParts[#state.noclipParts + 1] = object
+              end
+            end
+            state.noclipAdded = trackConnection(character.DescendantAdded:Connect(function(object)
+              if extra.Movement.Noclip and state.noclipCharacter == character
+                and object:IsA("BasePart") and state.noclipOriginals[object] == nil then
+                state.noclipOriginals[object] = object.CanCollide
+                state.noclipParts[#state.noclipParts + 1] = object
+                object.CanCollide = false
+              end
+            end))
+          end
+        end
+        if not character then return end
+        for index = #state.noclipParts, 1, -1 do
+          local object = state.noclipParts[index]
+          if not object:IsDescendantOf(character) then
+            local original = state.noclipOriginals[object]
+            if original ~= nil then pcall(function() object.CanCollide = original end) end
+            state.noclipOriginals[object] = nil
+            table.remove(state.noclipParts, index)
+          elseif object.CanCollide then
+            object.CanCollide = false
+          end
+        end
+      end
+
+      function state.RestoreGravity()
+        if state.gravityOriginal ~= nil then
+          local original = state.gravityOriginal
+          state.gravityOriginal = nil
+          pcall(function() workspace.Gravity = original end)
+        end
+      end
+      function state.SetAntiFall(enabled)
+        extra.Movement.AntiFall = enabled == true
+        if not extra.Movement.AntiFall then state.RestoreGravity() end
+      end
+      local function updateGravity()
+        if not extra.Movement.AntiFall then return end
+        if state.gravityOriginal == nil then state.gravityOriginal = workspace.Gravity end
+        if workspace.Gravity ~= 0 then workspace.Gravity = 0 end
+      end
+
+      local function nameMatches(object, words)
+        local current = object
+        for _ = 1, 3 do
+          if not current or current == workspace then return false end
+          local name = string.lower(tostring(current.Name or ""))
+          for _, word in ipairs(words) do
+            if string.find(name, word, 1, true) then return true end
+          end
+          current = current.Parent
+        end
+        return false
+      end
+      local function scanBatches(objects, callback, tokenName)
+        local token = (state[tokenName] or 0) + 1
+        state[tokenName] = token
+        local index = 1
+        local function process()
+          if not state.Active or state[tokenName] ~= token then return end
+          local last = math.min(index + 249, #objects)
+          while index <= last do
+            pcall(callback, objects[index])
+            index = index + 1
+          end
+          if index <= #objects then task.defer(process) end
+        end
+        process()
+      end
+      local function registerSpike(object)
+        if not extra.Movement.AntiSpikes or not object:IsA("BasePart")
+          or state.spikeOriginals[object] ~= nil or not nameMatches(object, { "spike" }) then return end
+        state.spikeOriginals[object] = { CanTouch = object.CanTouch, CanCollide = object.CanCollide }
+        object.CanTouch = false
+        object.CanCollide = false
+      end
+      function state.RestoreSpikes()
+        state.spikeScanToken = (state.spikeScanToken or 0) + 1
+        for part, original in pairs(state.spikeOriginals) do
+          if part and part.Parent then
+            pcall(function()
+              part.CanTouch = original.CanTouch
+              part.CanCollide = original.CanCollide
+            end)
+          end
+        end
+        table.clear(state.spikeOriginals)
+      end
+      function state.SetAntiSpikes(enabled)
+        extra.Movement.AntiSpikes = enabled == true
+        if extra.Movement.AntiSpikes then
+          scanBatches(workspace:GetDescendants(), registerSpike, "spikeScanToken")
+        else
+          state.RestoreSpikes()
+        end
+      end
+
+      local vegetationWords = {
+        Leafs = { "leaf", "leafs", "leaves" },
+        Bushes = { "bush", "bushes", "shrub" },
+      }
+      local function vegetationMap(kind)
+        return kind == "Leafs" and state.leafOriginals or state.bushOriginals
+      end
+      local function vegetationEnabled(kind)
+        return kind == "Leafs" and extra.World.RemoveLeafs or extra.World.RemoveBushes
+      end
+      local function registerVegetation(kind, object)
+        if not vegetationEnabled(kind) or not object:IsA("BasePart") then return end
+        local originals = vegetationMap(kind)
+        if originals[object] ~= nil or not nameMatches(object, vegetationWords[kind]) then return end
+        originals[object] = object.Transparency
+        object.Transparency = 1
+      end
+      function state.RestoreVegetation(kind)
+        local originals = vegetationMap(kind)
+        local tokenName = kind == "Leafs" and "leafScanToken" or "bushScanToken"
+        state[tokenName] = (state[tokenName] or 0) + 1
+        for part, transparency in pairs(originals) do
+          if part and part.Parent then pcall(function() part.Transparency = transparency end) end
+        end
+        table.clear(originals)
+      end
+      function state.SetVegetation(kind, enabled)
+        local value = enabled == true
+        if kind == "Leafs" then extra.World.RemoveLeafs = value else extra.World.RemoveBushes = value end
+        if value then
+          scanBatches(workspace:GetDescendants(), function(object)
+            registerVegetation(kind, object)
+          end, kind == "Leafs" and "leafScanToken" or "bushScanToken")
+        else
+          state.RestoreVegetation(kind)
+        end
+      end
+
+      -- FOV and third-person camera have separate backups and never share the
+      -- Freecam owner. Zoom has priority over the normal custom FOV value.
+      function state.RestoreFOV()
+        if state.fovCamera and state.fovOriginal ~= nil then
+          pcall(function() state.fovCamera.FieldOfView = state.fovOriginal end)
+        end
+        state.fovCamera, state.fovOriginal = nil, nil
+      end
+      local function updateFOV()
+        local camera = workspace.CurrentCamera
+        if not camera then return end
+        local enabled = extra.Camera.CustomFOV or extra.Camera.Zoom
+        if not enabled then
+          if state.fovOriginal ~= nil then state.RestoreFOV() end
+          return
+        end
+        if state.fovCamera ~= camera then
+          state.RestoreFOV()
+          state.fovCamera, state.fovOriginal = camera, camera.FieldOfView
+        end
+        local desired = extra.Camera.Zoom and extra.Camera.ZoomFOV or extra.Camera.FOV
+        desired = math.clamp(tonumber(desired) or 70, 5, 120)
+        if camera.FieldOfView ~= desired then camera.FieldOfView = desired end
+      end
+      function state.SetCustomFOV(enabled)
+        extra.Camera.CustomFOV = enabled == true
+        if not extra.Camera.CustomFOV and not extra.Camera.Zoom then state.RestoreFOV() end
+      end
+      function state.SetZoom(enabled)
+        extra.Camera.Zoom = enabled == true
+        if not extra.Camera.Zoom and not extra.Camera.CustomFOV then state.RestoreFOV() end
+      end
+
+      local function restoreThirdMouse()
+        local third = state.third
+        if third.originalMouseBehavior ~= nil then
+          pcall(function() userInputService.MouseBehavior = third.originalMouseBehavior end)
+        end
+        if third.originalMouseIcon ~= nil then
+          pcall(function() userInputService.MouseIconEnabled = third.originalMouseIcon end)
+        end
+        third.originalMouseBehavior, third.originalMouseIcon = nil, nil
+      end
+      function state.StopThirdPerson()
+        local third = state.third
+        if not third.active then return end
+        third.active = false
+        local camera = third.camera or workspace.CurrentCamera
+        if camera then
+          pcall(function()
+            camera.CameraType = third.originalCameraType or Enum.CameraType.Custom
+            if third.originalCameraSubject ~= nil then camera.CameraSubject = third.originalCameraSubject end
+            if third.originalCFrame then camera.CFrame = third.originalCFrame end
+          end)
+        end
+        restoreThirdMouse()
+        third.camera, third.originalCameraType, third.originalCameraSubject = nil, nil, nil
+        third.originalCFrame, third.lookX, third.lookY = nil, 0, 0
+      end
+      local function startThirdPerson()
+        local third = state.third
+        local camera = workspace.CurrentCamera
+        local character = localPlayer.Character
+        local root = character and character:FindFirstChild("HumanoidRootPart")
+        if third.active or not camera or not root then return false end
+        third.camera = camera
+        third.originalCameraType = camera.CameraType
+        third.originalCameraSubject = camera.CameraSubject
+        third.originalCFrame = camera.CFrame
+        third.originalMouseBehavior = userInputService.MouseBehavior
+        third.originalMouseIcon = userInputService.MouseIconEnabled
+        local look = camera.CFrame.LookVector
+        third.yaw = math.abs(look.X) + math.abs(look.Z) > 1e-6 and math.atan2(-look.X, -look.Z) or 0
+        third.pitch = math.asin(math.clamp(look.Y, -1, 1))
+        third.lookX, third.lookY = 0, 0
+        third.active = true
+        camera.CameraType = Enum.CameraType.Scriptable
+        return true
+      end
+      function state.SetThirdPerson(enabled)
+        extra.Camera.ThirdPerson = enabled == true
+        if extra.Camera.ThirdPerson and cfg.Movement.Freecam and mainGame.Window then
+          mainGame.Window:SetFeature("Freecam", false)
+        end
+        if not extra.Camera.ThirdPerson then state.StopThirdPerson() end
+      end
+      local function updateThirdPerson()
+        if not extra.Camera.ThirdPerson or cfg.Movement.Freecam then
+          if state.third.active then state.StopThirdPerson() end
+          return
+        end
+        local camera = workspace.CurrentCamera
+        if not camera then return end
+        if state.third.active and state.third.camera ~= camera then state.StopThirdPerson() end
+        if not state.third.active and not startThirdPerson() then return end
+        local third = state.third
+        local character = localPlayer.Character
+        local root = character and character:FindFirstChild("HumanoidRootPart")
+        if not root then return end
+        local open = menuOpen == true
+        userInputService.MouseBehavior = open and Enum.MouseBehavior.Default or Enum.MouseBehavior.LockCurrentPosition
+        userInputService.MouseIconEnabled = open
+        if not open then
+          local sensitivity = math.clamp(tonumber(extra.Camera.Sensitivity) or 0.2, 0.01, 1) * 0.01
+          third.yaw = third.yaw - math.clamp(third.lookX or 0, -500, 500) * sensitivity
+          third.pitch = math.clamp(third.pitch - math.clamp(third.lookY or 0, -500, 500) * sensitivity,
+            -1.35, 1.35)
+        end
+        third.lookX, third.lookY = 0, 0
+        if extra.Aimbot.Enabled and state.aimbotTarget then return end
+        local rotation = CFrame.fromEulerAnglesYXZ(third.pitch or 0, third.yaw or 0, 0)
+        local focus = root.Position + Vector3.new(0, 1.5, 0)
+        local look = rotation.LookVector or Vector3.new(0, 0, -1)
+        local right = rotation.RightVector or Vector3.new(1, 0, 0)
+        local position = focus - look * math.clamp(tonumber(extra.Camera.Distance) or 10, 2, 30)
+          + right * math.clamp(tonumber(extra.Camera.Side) or 0, -10, 10)
+          + Vector3.new(0, math.clamp(tonumber(extra.Camera.Height) or 1.5, -5, 10), 0)
+        camera.CFrame = CFrame.lookAt(position, focus)
+      end
+
+      -- Aimbot target selection is independent from the Silent projectile hook.
+      local function cachedVisibility(target, part, origin)
+        local now = os.clock()
+        local cached = state.targetVisibility[target.model]
+        if cached and cached.part == part and now < cached.next then return cached.visible end
+        local visible = isTargetVisible(origin, part)
+        state.targetVisibility[target.model] = { part = part, visible = visible, next = now + 0.2 }
+        return visible
+      end
+      local function currentTargetList()
+        -- Share the projectile/ESP target cache instead of scanning players
+        -- again for Aimbot on every rendered frame.
+        return getCachedTargets(0.1)
+      end
+      local function findAimbotTarget()
+        local camera = workspace.CurrentCamera
+        if not camera then return nil end
+        local origin, look = camera.CFrame.Position, camera.CFrame.LookVector
+        local best, bestPlayer = nil, nil
+        local bestAngle, bestPlayerAngle = math.huge, math.huge
+        for _, target in ipairs(currentTargetList()) do
+          if (target.player or extra.Aimbot.TargetNPCs)
+            and not (cfg.Silent.IgnorePlayers and cfg.Silent.IgnorePlayers[target.name]) then
+            local teamDot = target.player and cfg.Silent.TeamCheck
+              and target.model:FindFirstChild("TeamDot")
+            if not (cfg.Silent.TeamCheck and teamDot and teamDot.Enabled) then
+              local part = getAimPart(target)
+              if part and part.Parent then
+                local offset = part.Position - origin
+                local distance = offset.Magnitude
+                if distance > 0.1 and distance <= extra.Aimbot.MaxDistance then
+                  local angle = math.deg(math.acos(math.clamp(dot(look, offset) / distance, -1, 1)))
+                  if angle <= extra.Aimbot.FOV then
+                    local visible = not extra.Aimbot.WallCheck or cachedVisibility(target, part, origin)
+                    if visible then
+                      local candidate = { t = target, part = part, vel = getTargetVelocity(target),
+                        angle = angle, visible = extra.Aimbot.WallCheck and true or nil, source = "Aimbot" }
+                      if angle < bestAngle then best, bestAngle = candidate, angle end
+                      if target.player and angle < bestPlayerAngle then
+                        bestPlayer, bestPlayerAngle = candidate, angle
+                      end
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+        if extra.Aimbot.PriorityPlayers and bestPlayer then return bestPlayer end
+        return best or bestPlayer
+      end
+      function state.SetAimbot(enabled)
+        extra.Aimbot.Enabled = enabled == true
+        if not extra.Aimbot.Enabled then state.aimbotTarget = nil end
+      end
+      local function updateAimbot()
+        state.aimbotTarget = extra.Aimbot.Enabled and findAimbotTarget() or nil
+        local camera = workspace.CurrentCamera
+        local target = state.aimbotTarget
+        if not camera or not extra.Aimbot.Enabled or not target or menuOpen == true or cfg.Movement.Freecam then return end
+        local desired = CFrame.lookAt(camera.CFrame.Position, target.part.Position)
+        local current = camera.CFrame
+        if current.Lerp then
+          current = current:Lerp(desired, math.clamp((tonumber(extra.Aimbot.Speed) or 90) / 100, 0.01, 1))
+        else
+          current = desired
+        end
+        camera.CFrame = current
+      end
+      local function updateAimbotFOV(camera)
+        local visible = extra.Aimbot.Enabled and extra.Aimbot.ShowFOV
+        local circle = state.aimbotFovCircle
+        if not visible then
+          if circle and state.aimbotFovVisible ~= false then
+            circle.Visible = false
+            state.aimbotFovVisible = false
+          end
+          return
+        end
+        if not circle then
+          circle = ownDrawing("Circle")
+          state.aimbotFovCircle = circle
+          state.aimbotFovVisible = false
+          state.aimbotFovState = {}
+          if circle then circle.Filled = false; circle.NumSides = 32 end
+        end
+        if not circle then return end
+        local viewport = camera.ViewportSize
+        local radius = math.min(viewport.Y * 0.5
+          * math.tan(math.rad(math.min(extra.Aimbot.FOV, 175) * 0.5))
+          / math.tan(math.rad(camera.FieldOfView) * 0.5),
+          math.min(viewport.X, viewport.Y) * 0.45)
+        local position = Vector2.new(viewport.X * 0.5, viewport.Y * 0.5)
+        local cached = state.aimbotFovState
+        if state.aimbotFovVisible ~= true then state.aimbotFovVisible = true; circle.Visible = true end
+        if cached.radius ~= radius then cached.radius = radius; circle.Radius = radius end
+        if cached.position ~= position then cached.position = position; circle.Position = position end
+        if cached.color ~= extra.Aimbot.FOVColor then
+          cached.color = extra.Aimbot.FOVColor
+          circle.Color = extra.Aimbot.FOVColor
+        end
+        if cached.thickness ~= extra.Aimbot.FOVThickness then
+          cached.thickness = extra.Aimbot.FOVThickness
+          circle.Thickness = extra.Aimbot.FOVThickness
+        end
+        if cached.transparency ~= 1 then cached.transparency = 1; circle.Transparency = 1 end
+      end
+
+      local function fireTrigger()
+        if type(mouse1press) == "function" and type(mouse1release) == "function" then
+          pcall(mouse1press)
+          task.delay(0.03, function() pcall(mouse1release) end)
+          return true
+        end
+        local character = localPlayer.Character
+        local tool = character and character:FindFirstChildOfClass("Tool")
+        if tool and type(tool.Activate) == "function" then
+          pcall(tool.Activate, tool)
+          return true
+        end
+        return false
+      end
+      function state.SetTriggerBot(enabled)
+        extra.Trigger.Enabled = enabled == true
+        state.triggerTarget, state.nextTrigger = nil, 0
+      end
+      local function updateTrigger()
+        if not extra.Trigger.Enabled or menuOpen == true then return end
+        local focused = userInputService.GetFocusedTextBox and userInputService:GetFocusedTextBox()
+        if focused then return end
+        local target = nil
+        if extra.Trigger.UseAimbot and extra.Aimbot.Enabled then target = state.aimbotTarget end
+        local now = os.clock()
+        if not target and extra.Trigger.UseSilent and cfg.Silent.Enabled and now >= (state.nextSilentTriggerScan or 0) then
+          state.nextSilentTriggerScan = now + 0.1
+          local selection = selectTarget()
+          if selection then
+            local camera = workspace.CurrentCamera
+            local origin, look = camera.CFrame.Position, camera.CFrame.LookVector
+            local offset = selection.part.Position - origin
+            local distance = offset.Magnitude
+            target = { part = selection.part, t = selection.t, source = "Silent",
+              angle = distance > 0 and math.deg(math.acos(math.clamp(dot(look, offset) / distance, -1, 1))) or 0,
+              visible = not extra.Trigger.RequireVisible or isTargetVisible(origin, selection.part) }
+          end
+        end
+        if not target then state.triggerTarget = nil return end
+        if extra.Trigger.RequireFOV then
+          local allowed = target.source == "Aimbot" and extra.Aimbot.FOV or cfg.Silent.FOV
+          if target.angle and target.angle > allowed then return end
+        end
+        if extra.Trigger.RequireVisible and target.visible == false then return end
+        if extra.Trigger.RequireVisible and target.visible == nil then
+          local camera = workspace.CurrentCamera
+          if not camera or not isTargetVisible(camera.CFrame.Position, target.part) then return end
+        end
+        state.triggerTarget = target
+        if now >= (state.nextTrigger or 0) and fireTrigger() then
+          state.nextTrigger = now + math.max(0.05, tonumber(extra.Trigger.Delay) or 0.1)
+          mainGame.stats.triggerShots = (mainGame.stats.triggerShots or 0) + 1
+        end
+      end
+
+      -- Additional world ESP. Only enabled containers are scanned, at most once
+      -- per configured interval. Entries never enter collectTargets/selectTarget.
+      local function newWorldEspEntry()
+        local entry = {
+          box = ownDrawing("Square"), outline = ownDrawing("Square"),
+          name = ownDrawing("Text"), dist = ownDrawing("Text"), s = {},
+        }
+        if entry.box then entry.box.Filled = false; entry.box.Thickness = 1; entry.box.Transparency = 1 end
+        if entry.outline then
+          entry.outline.Filled = false; entry.outline.Color = Color3.new(0, 0, 0)
+          entry.outline.Thickness = 3; entry.outline.Transparency = 1
+        end
+        if entry.name then
+          entry.name.Center = true; entry.name.Outline = true; entry.name.Size = 12; entry.name.Transparency = 1
+        end
+        if entry.dist then
+          entry.dist.Center = true; entry.dist.Outline = true; entry.dist.Size = 11; entry.dist.Transparency = 1
+        end
+        return entry
+      end
+      local function hideWorldEntry(entry)
+        updateBoxDrawing(entry, "box", entry.box, false)
+        updateBoxDrawing(entry, "outline", entry.outline, false)
+        updateTextDrawing(entry, "name", entry.name, false)
+        updateTextDrawing(entry, "dist", entry.dist, false)
+      end
+      local function rootGeometry(object)
+        if object:IsA("BasePart") then return object.Position, object.Size or Vector3.new(2, 2, 2) end
+        local ok, pivot, size = pcall(function() return object:GetBoundingBox() end)
+        if ok and pivot and size then return pivot.Position, size end
+        local part = object:FindFirstChildWhichIsA("BasePart", true)
+        if not part then
+          for _, descendant in ipairs(object:GetDescendants()) do
+            if descendant:IsA("BasePart") then part = descendant; break end
+          end
+        end
+        if part then return part.Position, part.Size or Vector3.new(2, 2, 2) end
+        return nil, nil
+      end
+      local function cachedWorldGeometry(object)
+        local now = os.clock()
+        local cached = state.worldGeometry[object]
+        if cached and now < cached.next then return cached.position, cached.size end
+        local position, size = rootGeometry(object)
+        if position then
+          state.worldGeometry[object] = {
+            position = position, size = size,
+            next = now + (cfg.Misc.LowPC and 0.75 or 0.25),
+          }
+        end
+        return position, size
+      end
+      local function compactName(value)
+        return string.lower(tostring(value or "")):gsub("[^%w]", ""):gsub("%d+$", "")
+      end
+      local function collectWorldEsp()
+        local result, seen = {}, {}
+        for _, definition in ipairs(categoryDefinitions) do
+          if extra.ESP.Categories[definition.key] then
+            local container = workspace:FindFirstChild(definition.container)
+            if container then
+              local objects
+              if container:IsA("Model") and definition.container == "ActiveRaiderX" then
+                objects = { container }
+              else
+                objects = container:GetChildren()
+              end
+              for _, object in ipairs(objects) do
+                if (object:IsA("Model") or object:IsA("BasePart")) and not seen[object] then
+                  local matches = not definition.match
+                    or compactName(object.Name) == compactName(definition.match)
+                  if matches then
+                    seen[object] = true
+                    result[#result + 1] = {
+                      root = object, kind = definition.key, distance = definition.distance,
+                      name = definition.container == "LootCrates" and definition.label or object.Name,
+                      color = extra.ESP.Colors[definition.key],
+                    }
+                  end
+                end
+              end
+            end
+          end
+        end
+        return result
+      end
+      function state.SetWorldESP(key, enabled)
+        extra.ESP.Categories[key] = enabled == true
+        state.nextWorldEspScan = 0
+        if key == "Ghost" and not enabled then table.clear(state.ghosts) end
+      end
+      local function updateGhosts()
+        if not extra.ESP.Categories.Ghost then return end
+        local now = os.clock()
+        for _, player in ipairs(players:GetPlayers()) do
+          if player ~= localPlayer then
+            local character = player.Character
+            local root = character and character:FindFirstChild("HumanoidRootPart")
+            local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+            local ghost = state.ghosts[player]
+            if root and humanoid and humanoid.Health > 0 then
+              state.ghosts[player] = {
+                name = player.Name, position = root.Position, size = root.Size or Vector3.new(2, 2, 1),
+                lastSeen = now, active = true,
+              }
+            elseif ghost then
+              ghost.active = false
+            end
+          end
+        end
+        for player, ghost in pairs(state.ghosts) do
+          if now - ghost.lastSeen > math.max(1, tonumber(extra.ESP.GhostTTL) or 60) then
+            state.ghosts[player] = nil
+          end
+        end
+      end
+      local function worldEntriesWithGhosts()
+        local result = collectWorldEsp()
+        if extra.ESP.Categories.Ghost then
+          updateGhosts()
+          for _, ghost in pairs(state.ghosts) do
+            if not ghost.active then
+              result[#result + 1] = {
+                kind = "Ghost", ghost = true, name = ghost.name .. " [last seen]",
+                position = ghost.position, size = ghost.size,
+                distance = extra.ESP.GhostMaxDistance, color = extra.ESP.Colors.Ghost,
+              }
+            end
+          end
+        end
+        return result
+      end
+      local function renderWorldEsp(camera)
+        if not anyCategoryEnabled() then
+          for index = 1, state.worldEspPoolUsed or 0 do hideWorldEntry(state.worldEspPool[index]) end
+          state.worldEspPoolUsed = 0
+          mainGame.stats.espExtra = 0
+          return
+        end
+        local now = os.clock()
+        if not state.worldEspEntries or now >= (state.nextWorldEspScan or 0) then
+          local scanInterval = math.max(0.25, tonumber(extra.ESP.ScanInterval) or 1)
+          if cfg.Misc.LowPC then scanInterval = math.max(scanInterval, 2) end
+          state.nextWorldEspScan = now + scanInterval
+          state.worldEspEntries = worldEntriesWithGhosts()
+        end
+        local cameraPosition, used = camera.CFrame.Position, 0
+        local previousUsed = state.worldEspPoolUsed or 0
+        local targetLimit = math.max(1, tonumber(extra.ESP.MaxTargets) or 96)
+        if cfg.Misc.LowPC then targetLimit = math.min(targetLimit, 32) end
+        for _, resource in ipairs(state.worldEspEntries or {}) do
+          if used >= targetLimit then break end
+          local position, size = resource.position, resource.size
+          if not position and resource.root and resource.root.Parent then
+            if resource.kind == "Raider" then
+              position, size = rootGeometry(resource.root)
+            else
+              position, size = cachedWorldGeometry(resource.root)
+            end
+          end
+          if position and (position - cameraPosition).Magnitude <= (tonumber(resource.distance) or 1500) then
+            used = used + 1
+            local entry = state.worldEspPool[used]
+            if not entry then entry = newWorldEspEntry(); state.worldEspPool[used] = entry end
+            local halfHeight = math.max((size and size.Y or 2) * 0.5, 0.5)
+            local top = camera:WorldToViewportPoint(position + Vector3.new(0, halfHeight, 0))
+            local bottom = camera:WorldToViewportPoint(position - Vector3.new(0, halfHeight, 0))
+            if top.Z > 0 and bottom.Z > 0 then
+              local yTop, yBottom = math.min(top.Y, bottom.Y), math.max(top.Y, bottom.Y)
+              local height = math.max(yBottom - yTop, 6)
+              local width = math.max(height * 0.75, 8)
+              local centerX = (top.X + bottom.X) * 0.5
+              local x = centerX - width * 0.5
+              updateBoxDrawing(entry, "outline", entry.outline, true, x, yTop, width, height)
+              updateBoxDrawing(entry, "box", entry.box, true, x, yTop, width, height, resource.color)
+              local text = resource.name
+              if resource.kind == "Raider" and resource.root then
+                local humanoid = resource.root:FindFirstChildOfClass("Humanoid")
+                if humanoid then text = text .. " [" .. math.floor(humanoid.Health + 0.5) .. "]" end
+              end
+              updateTextDrawing(entry, "name", entry.name, true,
+                centerX, yTop - 14, text, resource.color)
+              updateTextDrawing(entry, "dist", entry.dist, true,
+                centerX, yTop + height + 3,
+                string.format("%d m", math.floor((position - cameraPosition).Magnitude + 0.5)),
+                resource.color)
+            else
+              hideWorldEntry(entry)
+            end
+          end
+        end
+        for index = used + 1, math.max(used, previousUsed) do
+          hideWorldEntry(state.worldEspPool[index])
+        end
+        state.worldEspPoolUsed = used
+        mainGame.stats.espExtra = used
+      end
+
+      local skeletonPairs = {
+        { "Head", "UpperTorso" }, { "UpperTorso", "LowerTorso" },
+        { "UpperTorso", "LeftUpperArm" }, { "LeftUpperArm", "LeftLowerArm" }, { "LeftLowerArm", "LeftHand" },
+        { "UpperTorso", "RightUpperArm" }, { "RightUpperArm", "RightLowerArm" }, { "RightLowerArm", "RightHand" },
+        { "LowerTorso", "LeftUpperLeg" }, { "LeftUpperLeg", "LeftLowerLeg" }, { "LeftLowerLeg", "LeftFoot" },
+        { "LowerTorso", "RightUpperLeg" }, { "RightUpperLeg", "RightLowerLeg" }, { "RightLowerLeg", "RightFoot" },
+        { "Head", "Torso" }, { "Torso", "Left Arm" }, { "Torso", "Right Arm" },
+        { "Torso", "Left Leg" }, { "Torso", "Right Leg" },
+      }
+      local skeletonBoneNames = {}
+      for _, pair in ipairs(skeletonPairs) do
+        skeletonBoneNames[pair[1]] = true
+        skeletonBoneNames[pair[2]] = true
+      end
+      local function getSkeletonBones(model)
+        local now = os.clock()
+        local cached = state.skeletonBones[model]
+        if cached and now < cached.next then return cached.bones end
+        local bones = {}
+        for _, object in ipairs(model:GetDescendants()) do
+          if object:IsA("BasePart") and skeletonBoneNames[object.Name] and not bones[object.Name] then
+            bones[object.Name] = object
+          end
+        end
+        state.skeletonBones[model] = {
+          bones = bones, next = now + (cfg.Misc.LowPC and 1 or 0.5),
+        }
+        return bones
+      end
+      local function renderSkeleton(camera)
+        local used, targetsUsed = 0, 0
+        local previousUsed = state.skeletonLinesUsed or 0
+        if cfg.ESP.Enabled and cfg.ESP.Skeleton and (cfg.ESP.Players or cfg.ESP.NPCs) then
+          local cameraPosition = camera.CFrame.Position
+          local targetLimit = cfg.Misc.LowPC and 4 or 16
+          for _, target in ipairs(getCachedTargets()) do
+            if targetsUsed >= targetLimit then break end
+            local category = target.player and cfg.ESP.Players or cfg.ESP.NPCs
+            if category and target.head and (target.head.Position - cameraPosition).Magnitude <= cfg.ESP.MaxDistance then
+              targetsUsed = targetsUsed + 1
+              local bones = getSkeletonBones(target.model)
+              for _, pair in ipairs(skeletonPairs) do
+                local first, second = bones[pair[1]], bones[pair[2]]
+                if first and second and first.Parent and second.Parent then
+                  local a = camera:WorldToViewportPoint(first.Position)
+                  local b = camera:WorldToViewportPoint(second.Position)
+                  if a.Z > 0 and b.Z > 0 then
+                    used = used + 1
+                    local line = state.skeletonLines[used]
+                    if not line then line = ownDrawing("Line"); state.skeletonLines[used] = line end
+                    local cached = state.skeletonLineStates[used]
+                    if not cached then cached = {}; state.skeletonLineStates[used] = cached end
+                    if line then
+                      local from, to = Vector2.new(a.X, a.Y), Vector2.new(b.X, b.Y)
+                      if cached.visible ~= true then cached.visible = true; line.Visible = true end
+                      if cached.from ~= from then cached.from = from; line.From = from end
+                      if cached.to ~= to then cached.to = to; line.To = to end
+                      if cached.color ~= cfg.ESP.SkeletonColor then
+                        cached.color = cfg.ESP.SkeletonColor; line.Color = cfg.ESP.SkeletonColor
+                      end
+                      if cached.thickness ~= cfg.ESP.SkeletonThickness then
+                        cached.thickness = cfg.ESP.SkeletonThickness; line.Thickness = cfg.ESP.SkeletonThickness
+                      end
+                      if cached.transparency ~= 1 then cached.transparency = 1; line.Transparency = 1 end
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+        for index = used + 1, math.max(used, previousUsed) do
+          local line = state.skeletonLines[index]
+          local cached = state.skeletonLineStates[index]
+          if line and (not cached or cached.visible ~= false) then line.Visible = false end
+          if cached then cached.visible = false end
+        end
+        state.skeletonLinesUsed = used
+      end
+
+      -- Crosshair: eight owned lines cover Cross/Star; Circle and Dot are
+      -- separate primitives, so no external UI library is required.
+      local function hsvColor(hue)
+        hue = hue % 1
+        local index = math.floor(hue * 6)
+        local fraction = hue * 6 - index
+        local q, t = 1 - fraction, fraction
+        if index == 0 then return Color3.new(1, t, 0) end
+        if index == 1 then return Color3.new(q, 1, 0) end
+        if index == 2 then return Color3.new(0, 1, t) end
+        if index == 3 then return Color3.new(0, q, 1) end
+        if index == 4 then return Color3.new(t, 0, 1) end
+        return Color3.new(1, 0, q)
+      end
+      function state.SetCrosshair(enabled)
+        extra.Crosshair.Enabled = enabled == true
+        state.crosshairSignature = nil
+        if not extra.Crosshair.Enabled and state.crosshair and state.crosshairVisible ~= false then
+          for _, object in ipairs(state.crosshair.lines) do hide(object) end
+          hide(state.crosshair.circle); hide(state.crosshair.dot)
+        end
+        if not extra.Crosshair.Enabled then state.crosshairVisible = false end
+      end
+      local function updateCrosshair(camera)
+        if not extra.Crosshair.Enabled then
+          if state.crosshair and state.crosshairVisible ~= false then state.SetCrosshair(false) end
+          return
+        end
+        local shape = extra.Crosshair.Shape
+        local animated = extra.Crosshair.RGB or ((shape == "Cross" or shape == "Star")
+          and (tonumber(extra.Crosshair.Spin) or 0) ~= 0)
+        local now = os.clock()
+        local color = extra.Crosshair.Color
+        local viewport = camera.ViewportSize
+        local signature = table.concat({
+          tostring(shape), tostring(extra.Crosshair.Size), tostring(extra.Crosshair.Gap),
+          tostring(extra.Crosshair.Thickness), tostring(extra.Crosshair.Spin),
+          tostring(extra.Crosshair.RGB), tostring(extra.Crosshair.RGBSpeed),
+          tostring(color.R), tostring(color.G), tostring(color.B),
+          tostring(viewport.X), tostring(viewport.Y),
+        }, ":")
+        if state.crosshair and not animated and state.crosshairSignature == signature then return end
+        if animated and now < (state.nextCrosshairUpdate or 0) then return end
+        state.crosshairSignature = signature
+        state.nextCrosshairUpdate = now + (animated and cfg.Misc.LowPC and 1 / 15 or 0)
+        if not state.crosshair then
+          local lines = {}
+          for index = 1, 8 do lines[index] = ownDrawing("Line") end
+          state.crosshair = { lines = lines, circle = ownDrawing("Circle"), dot = ownDrawing("Square") }
+          if state.crosshair.circle then state.crosshair.circle.Filled = false; state.crosshair.circle.NumSides = 32 end
+          if state.crosshair.dot then state.crosshair.dot.Filled = true end
+        end
+        local cross = state.crosshair
+        local viewport = camera.ViewportSize
+        local center = Vector2.new(viewport.X * 0.5, viewport.Y * 0.5)
+        local color = extra.Crosshair.RGB and hsvColor(os.clock() * (tonumber(extra.Crosshair.RGBSpeed) or 5) / 10)
+          or extra.Crosshair.Color
+        for _, line in ipairs(cross.lines) do hide(line) end
+        hide(cross.circle); hide(cross.dot)
+        local shape = extra.Crosshair.Shape
+        if shape == "Circle" and cross.circle then
+          cross.circle.Visible = true; cross.circle.Position = center
+          cross.circle.Radius = extra.Crosshair.Size; cross.circle.Thickness = extra.Crosshair.Thickness
+          cross.circle.Color = color; cross.circle.Transparency = 1
+        elseif shape == "Dot" and cross.dot then
+          local thickness = math.max(2, extra.Crosshair.Thickness * 2)
+          cross.dot.Visible = true; cross.dot.Position = Vector2.new(center.X - thickness * 0.5, center.Y - thickness * 0.5)
+          cross.dot.Size = Vector2.new(thickness, thickness); cross.dot.Color = color; cross.dot.Transparency = 1
+        else
+          local count = shape == "Cross" and 4 or 8
+          local rotation = math.rad((os.clock() * (tonumber(extra.Crosshair.Spin) or 0)) % 360)
+          for index = 1, count do
+            local line = cross.lines[index]
+            if line then
+              local angle = rotation + (index - 1) * math.pi * 2 / count
+              local x, y = math.cos(angle), math.sin(angle)
+              line.Visible = true
+              line.From = Vector2.new(center.X + x * extra.Crosshair.Gap, center.Y + y * extra.Crosshair.Gap)
+              line.To = Vector2.new(center.X + x * (extra.Crosshair.Gap + extra.Crosshair.Size),
+                center.Y + y * (extra.Crosshair.Gap + extra.Crosshair.Size))
+              line.Thickness = extra.Crosshair.Thickness; line.Color = color; line.Transparency = 1
+            end
+          end
+        end
+        state.crosshairVisible = true
+      end
+
+      -- Anti-Aim / Pose share one character owner. Pose has priority if a
+      -- config manually enables both; normal UI callbacks make them exclusive.
+      local function restoreFrozenTracks()
+        for track, speed in pairs(state.frozenTracks) do
+          pcall(function()
+            if track.AdjustSpeed then track:AdjustSpeed(speed) else track.Speed = speed end
+          end)
+        end
+        table.clear(state.frozenTracks)
+      end
+      function state.RestoreCharacterPose()
+        restoreFrozenTracks()
+        local backup = state.poseBackup
+        if not backup then return end
+        state.poseBackup = nil
+        if backup.humanoid and backup.humanoid.Parent then
+          pcall(function()
+            backup.humanoid.AutoRotate = backup.autoRotate
+            backup.humanoid.HipHeight = backup.hipHeight
+          end)
+        end
+        if backup.root and backup.root.Parent and backup.rootCFrame then
+          pcall(function()
+            local position = backup.root.Position
+            backup.root.CFrame = CFrame.lookAt(position, position + backup.rootCFrame.LookVector)
+          end)
+        end
+      end
+      local function preparePoseOwner(character, humanoid, root)
+        if state.poseBackup and state.poseBackup.character ~= character then state.RestoreCharacterPose() end
+        if not state.poseBackup then
+          state.poseBackup = {
+            character = character, humanoid = humanoid, root = root,
+            autoRotate = humanoid.AutoRotate, hipHeight = humanoid.HipHeight, rootCFrame = root.CFrame,
+          }
+        end
+      end
+      function state.SetAntiAim(enabled)
+        extra.AntiAim.Enabled = enabled == true
+        if extra.AntiAim.Enabled and extra.Pose.Enabled and mainGame.Window then
+          mainGame.Window:SetFeature("Pose Lock", false)
+        end
+        if not extra.AntiAim.Enabled and not extra.Pose.Enabled then state.RestoreCharacterPose() end
+      end
+      function state.SetPose(enabled)
+        extra.Pose.Enabled = enabled == true
+        if extra.Pose.Enabled and extra.AntiAim.Enabled and mainGame.Window then
+          mainGame.Window:SetFeature("Anti-Aim", false)
+        end
+        if not extra.Pose.Enabled and not extra.AntiAim.Enabled then state.RestoreCharacterPose() end
+      end
+      local function updatePoseOwner()
+        local enabled = extra.AntiAim.Enabled or extra.Pose.Enabled
+        if not enabled then
+          if state.poseBackup then state.RestoreCharacterPose() end
+          return
+        end
+        local character = localPlayer.Character
+        local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+        local root = character and character:FindFirstChild("HumanoidRootPart")
+        if not character or not humanoid or not root or humanoid.Health <= 0 then
+          if state.poseBackup then state.RestoreCharacterPose() end
+          return
+        end
+        preparePoseOwner(character, humanoid, root)
+        local backup = state.poseBackup
+        humanoid.AutoRotate = false
+        local camera = workspace.CurrentCamera
+        local look = camera and camera.CFrame.LookVector or root.CFrame.LookVector
+        local baseYaw = math.atan2(look.X, look.Z)
+        if extra.Pose.Enabled then
+          humanoid.HipHeight = backup.hipHeight - math.abs(tonumber(extra.Pose.Drop) or 1.5)
+          local yaw = -baseYaw + math.rad(tonumber(extra.Pose.Turn) or 180)
+          root.CFrame = CFrame.new(root.Position)
+            * CFrame.fromEulerAnglesYXZ(math.rad(tonumber(extra.Pose.Pitch) or -10), yaw, 0)
+          if humanoid.GetPlayingAnimationTracks then
+            for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+              if state.frozenTracks[track] == nil then
+                state.frozenTracks[track] = track.Speed or 1
+                if track.AdjustSpeed then track:AdjustSpeed(0) else track.Speed = 0 end
+              end
+            end
+          end
+        elseif extra.AntiAim.Enabled then
+          humanoid.HipHeight = backup.hipHeight
+          local yaw
+          if extra.AntiAim.Type == "Spin" then
+            yaw = -baseYaw + os.clock() * (tonumber(extra.AntiAim.SpinSpeed) or 10)
+          else
+            yaw = math.rad(math.random(-(tonumber(extra.AntiAim.Jitter) or 10), tonumber(extra.AntiAim.Jitter) or 10))
+          end
+          root.CFrame = CFrame.new(root.Position) * CFrame.Angles(0, yaw, 0)
+        end
+      end
+
+      function state.SetAll(enabled)
+        local value = enabled == true
+        state.SetNoclip(value); state.SetAntiFall(value); state.SetAntiSpikes(value)
+        state.SetCustomFOV(value); state.SetZoom(value); state.SetThirdPerson(value)
+        state.SetAimbot(value); state.SetTriggerBot(value); state.SetCrosshair(value)
+        state.SetAntiAim(value); state.SetPose(value)
+        for _, definition in ipairs(categoryDefinitions) do state.SetWorldESP(definition.key, value) end
+        state.SetWorldESP("Ghost", value)
+        state.SetVegetation("Leafs", value); state.SetVegetation("Bushes", value)
+      end
+
+      trackConnection(userInputService.InputChanged:Connect(function(input)
+        if not state.Active or not state.third.active or menuOpen == true then return end
+        if input.UserInputType ~= Enum.UserInputType.MouseMovement or not input.Delta then return end
+        state.third.lookX = math.clamp((state.third.lookX or 0) + (tonumber(input.Delta.X) or 0), -500, 500)
+        state.third.lookY = math.clamp((state.third.lookY or 0) + (tonumber(input.Delta.Y) or 0), -500, 500)
+      end))
+      trackConnection(workspace.DescendantAdded:Connect(function(object)
+        if not state.Active then return end
+        if extra.Movement.AntiSpikes then pcall(registerSpike, object) end
+        if extra.World.RemoveLeafs then pcall(registerVegetation, "Leafs", object) end
+        if extra.World.RemoveBushes then pcall(registerVegetation, "Bushes", object) end
+      end))
+      trackConnection(players.PlayerRemoving:Connect(function(player)
+        local ghost = state.ghosts[player]
+        if ghost then ghost.active = false end
+        mainGame.targetList = nil
+        mainGame.nextScan = 0
+      end))
+      trackConnection(localPlayer.CharacterRemoving:Connect(function()
+        state.RestoreNoclip()
+        state.RestoreCharacterPose()
+        state.StopThirdPerson()
+      end))
+
+      local worldEspAccumulator = 0
+      trackConnection(runService.RenderStepped:Connect(function(dt)
+        if not state.Active or mainGame.unloaded then return end
+        if extra.Movement.Noclip or state.noclipCharacter then updateNoclip() end
+        if extra.Movement.AntiFall or state.gravityOriginal ~= nil then updateGravity() end
+        if extra.Camera.CustomFOV or extra.Camera.Zoom or state.fovOriginal ~= nil then updateFOV() end
+        if extra.Camera.ThirdPerson or state.third.active then updateThirdPerson() end
+        if extra.Aimbot.Enabled or state.aimbotTarget then updateAimbot() end
+        if extra.Trigger.Enabled then updateTrigger() end
+        if extra.AntiAim.Enabled or extra.Pose.Enabled or state.poseBackup then updatePoseOwner() end
+        local camera = workspace.CurrentCamera
+        if camera then
+          if state.aimbotFovCircle or (extra.Aimbot.Enabled and extra.Aimbot.ShowFOV) then
+            updateAimbotFOV(camera)
+          end
+          if extra.Crosshair.Enabled or (state.crosshair and state.crosshairVisible ~= false) then
+            updateCrosshair(camera)
+          end
+          worldEspAccumulator = worldEspAccumulator + (tonumber(dt) or 0)
+          local updateInterval = cfg.Misc.LowPC and 1 / 8 or 1 / 15
+          if worldEspAccumulator >= updateInterval then
+            worldEspAccumulator = 0
+            if anyCategoryEnabled() or (state.worldEspPoolUsed or 0) > 0 then
+              renderWorldEsp(camera)
+            end
+            if (cfg.ESP.Enabled and cfg.ESP.Skeleton and (cfg.ESP.Players or cfg.ESP.NPCs))
+              or (state.skeletonLinesUsed or 0) > 0 then
+              renderSkeleton(camera)
+            end
+          end
+        end
+      end))
+
+      mainGame.extendedCleanups[#mainGame.extendedCleanups + 1] = function()
+        state.Active = false
+        state.RestoreNoclip(); state.RestoreGravity(); state.RestoreSpikes()
+        state.RestoreVegetation("Leafs"); state.RestoreVegetation("Bushes")
+        state.RestoreFOV(); state.StopThirdPerson(); state.RestoreCharacterPose()
+        for _, object in ipairs(state.owned) do hide(object) end
+        table.clear(state.ghosts)
+        if mainGame.extraFeatures == state then mainGame.extraFeatures = nil end
+        if mainGame.unloaded then
+          extra.Aimbot.Enabled = false; extra.Trigger.Enabled = false
+          extra.Movement.Noclip = false; extra.Movement.AntiFall = false; extra.Movement.AntiSpikes = false
+          extra.Camera.CustomFOV = false; extra.Camera.Zoom = false; extra.Camera.ThirdPerson = false
+          extra.World.RemoveLeafs = false; extra.World.RemoveBushes = false
+          extra.Crosshair.Enabled = false; extra.AntiAim.Enabled = false; extra.Pose.Enabled = false
+          for key in pairs(extra.ESP.Categories) do extra.ESP.Categories[key] = false end
+          cfg.ESP.Skeleton = false; cfg.ESP.Fade = false; cfg.ESP.VisibleOnly = false; cfg.ESP.VisibleColors = false
+        end
+      end
     end
 
 
@@ -5752,12 +7019,13 @@ end
         cfg.Movement.Speed = v
         updateMovement()
       end)
-      addDropdown(speedSet, "Speed Method", {"WalkSpeed", "Velocity"},
-        cfg.Movement.SpeedMethod == "Velocity" and 2 or 1, function(v)
+      addDropdown(speedSet, "Speed Method", {"WalkSpeed", "Velocity", "CFrame"},
+        cfg.Movement.SpeedMethod == "Velocity" and 2 or cfg.Movement.SpeedMethod == "CFrame" and 3 or 1,
+        function(v)
           cfg.Movement.SpeedMethod = v
           updateMovement()
         end)
-      addSlider(speedSet, "Speed Value", 8, 100, cfg.Movement.SpeedValue, function(v)
+      addSlider(speedSet, "Speed Value", 8, 200, cfg.Movement.SpeedValue, function(v)
         cfg.Movement.SpeedValue = v
         updateMovement()
       end)
@@ -5776,7 +7044,7 @@ end
         cfg.Movement.Fly = v
         updateMovement()
       end)
-      addSlider(flySet, "Fly Speed", 10, 150, cfg.Movement.FlySpeed, function(v)
+      addSlider(flySet, "Fly Speed", 10, 300, cfg.Movement.FlySpeed, function(v)
         cfg.Movement.FlySpeed = v
         updateMovement()
       end)
@@ -5789,6 +7057,9 @@ end
       addLabel(lc, "Fly: WASD + Space / LeftControl.")
 
       local freecamSet = createFeature(rc, "Freecam", cfg.Movement.Freecam, function(v)
+        if v and cfg.Extra and cfg.Extra.Camera and cfg.Extra.Camera.ThirdPerson and mainGame.Window then
+          mainGame.Window:SetFeature("Third Person", false)
+        end
         cfg.Movement.Freecam = v
         if mainGame.movement then mainGame.movement.SetFreecam(v) end
       end)
@@ -5831,6 +7102,14 @@ end
       end)
       createFeature(rc, "Keybind List", cfg.LocalFeatures.KeybindList, function(v)
         cfg.LocalFeatures.KeybindList = v
+      end)
+      createFeature(lc, "Low PC", cfg.Misc.LowPC, function(v)
+        cfg.Misc.LowPC = v
+        mainGame.nextResourceScan = 0
+        if mainGame.extraFeatures then
+          mainGame.extraFeatures.nextWorldEspScan = 0
+          mainGame.extraFeatures.nextCrosshairUpdate = 0
+        end
       end)
       createFeature(lc, "Performance Overlay", cfg.Misc.PerfOverlay, function(v)
         cfg.Misc.PerfOverlay = v
@@ -5895,6 +7174,1720 @@ end
       end)
       addLabel(rc, "Insert / RightShift: menu   |   F1: ESP   |   F2: Silent Aim")
     end
+
+do
+  local calamariFactory = (function()
+-- Calamari-inspired visuals adapted for Burmalda.hook's local menu and lifecycle.
+-- No external UI/ESP library, HTTP loader, gameplay module or projectile owner.
+-- State is plain JSON-safe data (colors are RGB arrays) for every game's configs.
+local function createBurmaldaCalamariVisuals(options)
+	options = options or {}
+	local State = options.State or {}
+	local Adapter = options.Adapter or {}
+	local GameName = tostring(options.Game or "Burmalda")
+	local Players = game:GetService("Players")
+	local RunService = game:GetService("RunService")
+	local Lighting = game:GetService("Lighting")
+	local Debris = game:GetService("Debris")
+	local UIS = game:GetService("UserInputService")
+	local LocalPlayer = Players.LocalPlayer
+	local API = {State = State, Diagnostics = {}, Unloaded = false}
+	local Revision = 0
+	local controls = {}
+	local connections = {}
+	local gui, adornmentFolder, effectFolder
+local defaults = {
+	Player = {
+		Enabled = false, MaxDistance = 2000, MaxTargets = 64,
+		Box = true, BoxHigh = {255, 255, 255}, BoxLow = {255, 255, 255},
+		BoxHighTransparency = 0, BoxLowTransparency = 0, BoxRotation = 90,
+		Fill = false, FillHigh = {255, 255, 255}, FillLow = {255, 255, 255},
+		FillHighTransparency = 0.5, FillLowTransparency = 0.5, FillRotation = 90,
+		Glow = false, GlowHigh = {255, 255, 255}, GlowLow = {255, 255, 255},
+		GlowHighTransparency = 0.5, GlowLowTransparency = 0.5, GlowRotation = 90,
+		Healthbar = true, HealthText = false,
+		HealthHigh = {0, 255, 0}, HealthMid = {255, 165, 0}, HealthLow = {255, 0, 0},
+		Names = true, NameColor = {255, 255, 255},
+		Distance = true, DistanceColor = {255, 255, 255},
+		Weapon = false, WeaponColor = {255, 255, 255},
+		Flags = false, FlagsColor = {255, 255, 255},
+		Chams = false, ChamsInside = {255, 255, 255}, ChamsOutside = {255, 255, 255},
+		ChamsInsideTransparency = 0.5, ChamsOutsideTransparency = 0,
+	},
+	World = {Enabled = false, Categories = {}},
+	Gun = {Enabled = false, Color = {166, 147, 243}, Material = "ForceField", Texture = "None"},
+	Arms = {Enabled = false, Color = {166, 147, 243}, Material = "ForceField", Texture = "None"},
+	Viewmodel = {
+		Highlight = false, Fill = {166, 147, 243}, FillTransparency = 0.5,
+		Outline = {166, 147, 243}, OutlineTransparency = 0,
+		Position = false, X = 0, Y = 0, Z = 0,
+	},
+	Bullet = {Enabled = false, Type = "Lightning", Color = {166, 147, 243}, Duration = 5},
+	HitEffects = {Enabled = false, Type = "Spark", Color1 = {166, 147, 243}, Color2 = {166, 147, 243}},
+	HitNotifications = {Enabled = false},
+	Camera = {
+		CustomFOV = false, FOV = 100, Zoom = false, ZoomAmount = 40, ZoomKey = "C",
+		ThirdPerson = false, Distance = 5, ThirdPersonKey = "None",
+	},
+	Lighting = {
+		CloudDensity = false, CloudDensityValue = 0.5,
+		CloudCover = false, CloudCoverValue = 0.5,
+		CloudColor = false, CloudColorValue = {166, 147, 243},
+		NoFog = false, FogDensity = false, FogDensityValue = 0.5,
+		FogHaze = false, FogHazeValue = 0.5, FogGlare = false, FogGlareValue = 0.5,
+		FogColor = false, FogColorValue = {166, 147, 243},
+		Fullbright = false, Brightness = 2,
+		Ambient = false, AmbientColor = {166, 147, 243},
+		Time = false, TimeValue = 12, Skybox = false, SkyboxPreset = "Galaxy",
+		SunRays = false, SunIntensity = 0.25, SunSpread = 1,
+		Bloom = false, BloomIntensity = 1, BloomSize = 1000, BloomThreshold = 0.36,
+	},
+}
+local worldCategories = {
+	["Stone"] = 400, ["Metal"] = 400, ["Phosphate"] = 400, ["Wool"] = 400,
+	["Animals"] = 1000, ["Care Package"] = 3000, ["Drops"] = 1000,
+	["Body Bag"] = 1000, ["Salvaged Flycopter"] = 3000, ["Eggs"] = 400,
+	["Auto Turret"] = 400, ["Shotgun Turret"] = 400,
+}
+for name, distance in pairs(worldCategories) do
+	defaults.World.Categories[name] = {Enabled = false, Color = {255, 80, 80}, MaxDistance = distance}
+end
+
+local function mergeDefaults(target, source)
+	for key, value in pairs(source) do
+		if type(value) == "table" then
+			if value[1] ~= nil then
+				if type(target[key]) ~= "table" then
+					local copy = {}
+					for index, item in ipairs(value) do copy[index] = item end
+					target[key] = copy
+				end
+			else
+				if type(target[key]) ~= "table" then target[key] = {} end
+				mergeDefaults(target[key], value)
+			end
+		elseif target[key] == nil then
+			target[key] = value
+		end
+	end
+end
+mergeDefaults(State, defaults)
+
+local function splitPath(path)
+	local result = {}
+	for part in string.gmatch(tostring(path), "[^.]+") do result[#result + 1] = part end
+	return result
+end
+function API.Get(path)
+	local current = State
+	for _, part in ipairs(splitPath(path)) do
+		if type(current) ~= "table" then return nil end
+		current = current[part]
+	end
+	return current
+end
+function API.Set(path, value)
+	local parts = splitPath(path)
+	local current = State
+	for index = 1, #parts - 1 do
+		local key = parts[index]
+		if type(current[key]) ~= "table" then current[key] = {} end
+		current = current[key]
+	end
+	local key = parts[#parts]
+	if current[key] == value then return end
+	current[key] = value
+	Revision += 1
+	API.Diagnostics.WorldScanAt = 0
+	API.Diagnostics.ViewmodelScanAt = 0
+	API.Diagnostics.LightingDirty = true
+end
+local function color3(value)
+	if typeof(value) == "Color3" then return value end
+	if type(value) == "table" then
+		return Color3.fromRGB(tonumber(value[1]) or 255, tonumber(value[2]) or 255, tonumber(value[3]) or 255)
+	end
+	return Color3.new(1, 1, 1)
+end
+function API.SetColor(path, value)
+	API.Set(path, {
+		math.floor(value.R * 255 + 0.5),
+		math.floor(value.G * 255 + 0.5),
+		math.floor(value.B * 255 + 0.5),
+	})
+end
+function API.Bind(path, setter, kind)
+	controls[#controls + 1] = {Path = path, Set = setter, Kind = kind}
+end
+function API.SyncUI()
+	for _, control in ipairs(controls) do
+		local value = API.Get(control.Path)
+		if control.Kind == "color" then value = color3(value) end
+		pcall(control.Set, value)
+	end
+end
+
+local function connect(connection)
+	if connection then connections[#connections + 1] = connection end
+	return connection
+end
+local function active()
+	if API.Unloaded then return false end
+	if type(options.IsActive) == "function" then
+		local ok, result = pcall(options.IsActive)
+		return ok and result ~= false
+	end
+	return true
+end
+local function lowPC()
+	if type(options.IsLowPC) == "function" then
+		local ok, result = pcall(options.IsLowPC)
+		return ok and result == true
+	end
+	return false
+end
+local function guiParent()
+	if type(gethui) == "function" then
+		local ok, parent = pcall(gethui)
+		if ok and parent then return parent end
+	end
+	local ok, parent = pcall(function() return game:GetService("CoreGui") end)
+	if ok and parent then return parent end
+	return LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui") or nil
+end
+local function ensureGui()
+	if gui and gui.Parent then return gui end
+	local parent = guiParent()
+	if not parent then return nil end
+	gui = Instance.new("ScreenGui")
+	gui.Name = "BurmaldaCalamariVisuals_" .. string.gsub(GameName, "[^%w]", "")
+	gui.IgnoreGuiInset = true
+	gui.ResetOnSpawn = false
+	gui.DisplayOrder = 999900
+	gui.Parent = parent
+	return gui
+end
+local function ensureAdornments()
+	if adornmentFolder and adornmentFolder.Parent then return adornmentFolder end
+	local parent = guiParent()
+	if not parent then return nil end
+	adornmentFolder = Instance.new("Folder")
+	adornmentFolder.Name = "BurmaldaCalamariAdornments"
+	adornmentFolder.Parent = parent
+	return adornmentFolder
+end
+local function ensureEffects()
+	if effectFolder and effectFolder.Parent then return effectFolder end
+	effectFolder = Instance.new("Folder")
+	effectFolder.Name = "BurmaldaCalamariEffects"
+	effectFolder.Parent = workspace
+	return effectFolder
+end
+local function create(className, parent, properties)
+	local object = Instance.new(className)
+	for key, value in pairs(properties or {}) do object[key] = value end
+	if parent then object.Parent = parent end
+	return object
+end
+local function setProperty(object, key, value)
+	if object and object[key] ~= value then object[key] = value end
+end
+local function destroy(object)
+	if object then pcall(function() object:Destroy() end) end
+end
+
+-- Player ESP: the same gradient/fill/glow/health layout as Calamari, but pooled
+-- and capped. The normal renderer remains independent and can stay enabled.
+local playerEntries = {}
+local targetCache, targetCacheAt = {}, 0
+local playerWasActive = false
+local function textLabel(parent, size)
+	return create("TextLabel", parent, {
+		BackgroundTransparency = 1, BorderSizePixel = 0, Font = Enum.Font.Gotham,
+		TextSize = size or 12, TextColor3 = Color3.new(1, 1, 1), Text = "",
+		ZIndex = 3,
+	})
+end
+local function addTextStroke(label)
+	return create("UIStroke", label, {Thickness = 1, Color = Color3.new(0, 0, 0), Transparency = 0.35})
+end
+local function newPlayerEntry()
+	local parent = ensureGui()
+	if not parent then return nil end
+	local main = create("Frame", parent, {
+		Visible = false, AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(150, 250),
+		BorderSizePixel = 0, BackgroundColor3 = Color3.new(1, 1, 1), ZIndex = 2,
+	})
+	local fillGradient = create("UIGradient", main, {Rotation = 90})
+	local outline = create("UIStroke", main, {
+		Thickness = 3, LineJoinMode = Enum.LineJoinMode.Miter,
+		BorderOffset = UDim.new(0, -1), Transparency = 0.5,
+	})
+	local accent = create("UIStroke", main, {LineJoinMode = Enum.LineJoinMode.Miter, Thickness = 1})
+	local boxGradient = create("UIGradient", accent, {Rotation = 90})
+	local glow = create("ImageLabel", main, {
+		BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 1,
+		Image = "rbxassetid://18245826428", ImageTransparency = 0.8, ScaleType = Enum.ScaleType.Slice,
+		SliceCenter = Rect.new(Vector2.new(21, 21), Vector2.new(80, 80)),
+		Size = UDim2.new(1, 45, 1, 45), Position = UDim2.new(0, -23, 0, -23),
+	})
+	local glowGradient = create("UIGradient", glow, {Rotation = 90})
+	local healthBack = create("Frame", main, {
+		Position = UDim2.new(0, -7, 0, 0), Size = UDim2.new(0, 4, 1, 0),
+		BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.5, BorderSizePixel = 0,
+	})
+	local health = create("Frame", healthBack, {
+		AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 1, 1, -1),
+		Size = UDim2.new(1, -2, 1, 0), BorderSizePixel = 0,
+	})
+	local healthGradient = create("UIGradient", health, {Rotation = 90})
+	local healthText = textLabel(main, 12)
+	healthText.Size = UDim2.new(0, 34, 0, 14)
+	healthText.Position = UDim2.new(0, -42, 1, -14)
+	healthText.TextXAlignment = Enum.TextXAlignment.Right
+	addTextStroke(healthText)
+	local name = textLabel(main, 12)
+	name.Size = UDim2.new(1, 0, 0, 14)
+	name.Position = UDim2.new(0, 0, 0, -18)
+	addTextStroke(name)
+	local distance = textLabel(main, 12)
+	distance.Size = UDim2.new(1, 0, 0, 14)
+	distance.Position = UDim2.new(0, 0, 1, 3)
+	addTextStroke(distance)
+	local weapon = textLabel(main, 12)
+	weapon.Size = UDim2.new(1, 0, 0, 14)
+	weapon.Position = UDim2.new(0, 0, 1, 19)
+	addTextStroke(weapon)
+	local flags = textLabel(main, 12)
+	flags.Size = UDim2.new(0, 130, 0, 14)
+	flags.AutomaticSize = Enum.AutomaticSize.Y
+	flags.Position = UDim2.new(1, 5, 0, 0)
+	flags.TextXAlignment = Enum.TextXAlignment.Left
+	flags.RichText = true
+	addTextStroke(flags)
+	return {
+		Main = main, FillGradient = fillGradient, Outline = outline, Accent = accent,
+		BoxGradient = boxGradient, Glow = glow, GlowGradient = glowGradient,
+		HealthBack = healthBack, Health = health, HealthGradient = healthGradient,
+		HealthText = healthText, Name = name, Distance = distance, Weapon = weapon, Flags = flags,
+		LastStyle = -1,
+	}
+end
+local function hidePlayerEntry(entry)
+	if not entry then return end
+	setProperty(entry.Main, "Visible", false)
+	if entry.Highlight then entry.Highlight.Enabled = false end
+end
+local function removePlayerEntry(key)
+	local entry = playerEntries[key]
+	if not entry then return end
+	destroy(entry.Main)
+	destroy(entry.Highlight)
+	playerEntries[key] = nil
+end
+local function hideAllPlayers()
+	for _, entry in pairs(playerEntries) do hidePlayerEntry(entry) end
+end
+local function defaultTargets()
+	local result = {}
+	for _, player in ipairs(Players:GetPlayers()) do
+		if player ~= LocalPlayer then
+			local model = player.Character
+			local humanoid = model and model:FindFirstChildOfClass("Humanoid")
+			local root = model and (model:FindFirstChild("HumanoidRootPart") or model:FindFirstChild("Torso") or model:FindFirstChild("UpperTorso"))
+			if model and humanoid and root then
+				result[#result + 1] = {
+					Key = player, Player = player, Model = model, Humanoid = humanoid,
+					Root = root, Head = model:FindFirstChild("Head") or root,
+					Name = player.DisplayName or player.Name,
+				}
+			end
+		end
+	end
+	return result
+end
+local function refreshTargets(now)
+	if now < targetCacheAt then return end
+	targetCacheAt = now + (lowPC() and 0.5 or 0.2)
+	local result
+	if type(Adapter.GetTargets) == "function" then
+		local ok, value = pcall(Adapter.GetTargets)
+		if ok and type(value) == "table" then result = value end
+	end
+	result = result or defaultTargets()
+	local camera = workspace.CurrentCamera
+	if camera then
+		for _, target in ipairs(result) do
+			local root = target.Root or target.root
+			if root then target.__calamariDistance = (root.Position - camera.CFrame.Position).Magnitude end
+		end
+		table.sort(result, function(a, b)
+			return (a.__calamariDistance or math.huge) < (b.__calamariDistance or math.huge)
+		end)
+	end
+	targetCache = result
+end
+local function weaponName(target)
+	if type(Adapter.GetWeapon) == "function" then
+		local ok, value = pcall(Adapter.GetWeapon, target)
+		if ok and value then return tostring(value) end
+	end
+	local model = target.Model or target.model
+	if not model then return "None" end
+	local tool = model:FindFirstChildOfClass("Tool")
+	if tool then return tool.Name end
+	for _, child in ipairs(model:GetChildren()) do
+		if child:IsA("Model") and child.Name ~= "HolsterModel" and child.Name ~= "Hair"
+			and (child:FindFirstChild("Detail") or child:FindFirstChild("Main") or child:FindFirstChild("Handle")
+			or child:FindFirstChild("Attachments") or child:FindFirstChild("ArrowAttach") or child:FindFirstChild("Attach")) then
+			return child.Name
+		end
+	end
+	return "None"
+end
+local function richEscape(value)
+	return tostring(value):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
+end
+local function flagText(target)
+	local player = target.Player or target.player
+	if not player or not player.GetAttribute then return "" end
+	local lines = {}
+	local clan = player:GetAttribute("ClanTag")
+	if clan and tostring(clan) ~= "" then
+		local clanColor = player:GetAttribute("ClanColor")
+		local c = typeof(clanColor) == "Color3" and clanColor or Color3.new(1, 1, 1)
+		lines[#lines + 1] = string.format('<font color="rgb(%d,%d,%d)">%s</font>',
+			math.floor(c.R * 255), math.floor(c.G * 255), math.floor(c.B * 255), richEscape(clan))
+	end
+	if player:GetAttribute("VIP") then lines[#lines + 1] = '<font color="rgb(255,215,0)">VIP</font>' end
+	if player:GetAttribute("SafeZone") then lines[#lines + 1] = '<font color="rgb(0,255,120)">Safezone</font>' end
+	return table.concat(lines, "\n")
+end
+local function applyPlayerStyle(entry)
+	if entry.LastStyle == Revision then return end
+	entry.LastStyle = Revision
+	local p = State.Player
+	entry.FillGradient.Color = ColorSequence.new(color3(p.FillHigh), color3(p.FillLow))
+	entry.FillGradient.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, p.FillHighTransparency),
+		NumberSequenceKeypoint.new(1, p.FillLowTransparency),
+	})
+	entry.FillGradient.Rotation = p.FillRotation
+	entry.BoxGradient.Color = ColorSequence.new(color3(p.BoxHigh), color3(p.BoxLow))
+	entry.BoxGradient.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, p.BoxHighTransparency),
+		NumberSequenceKeypoint.new(1, p.BoxLowTransparency),
+	})
+	entry.BoxGradient.Rotation = p.BoxRotation
+	entry.GlowGradient.Color = ColorSequence.new(color3(p.GlowHigh), color3(p.GlowLow))
+	entry.GlowGradient.Transparency = NumberSequence.new({
+		NumberSequenceKeypoint.new(0, p.GlowHighTransparency),
+		NumberSequenceKeypoint.new(1, p.GlowLowTransparency),
+	})
+	entry.GlowGradient.Rotation = p.GlowRotation
+	entry.HealthGradient.Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, color3(p.HealthHigh)),
+		ColorSequenceKeypoint.new(0.5, color3(p.HealthMid)),
+		ColorSequenceKeypoint.new(1, color3(p.HealthLow)),
+	})
+	setProperty(entry.Name, "TextColor3", color3(p.NameColor))
+	setProperty(entry.Distance, "TextColor3", color3(p.DistanceColor))
+	setProperty(entry.Weapon, "TextColor3", color3(p.WeaponColor))
+	setProperty(entry.Flags, "TextColor3", color3(p.FlagsColor))
+	if entry.Highlight then
+		entry.Highlight.FillColor = color3(p.ChamsInside)
+		entry.Highlight.OutlineColor = color3(p.ChamsOutside)
+		entry.Highlight.FillTransparency = p.ChamsInsideTransparency
+		entry.Highlight.OutlineTransparency = p.ChamsOutsideTransparency
+	end
+end
+local function updatePlayers(now)
+	local enabled = active() and State.Player.Enabled
+	if not enabled then
+		if playerWasActive then hideAllPlayers() end
+		playerWasActive = false
+		return
+	end
+	playerWasActive = true
+	refreshTargets(now)
+	local camera = workspace.CurrentCamera
+	if not camera then hideAllPlayers() return end
+	local seen, rendered = {}, 0
+	local cap = lowPC() and math.min(24, State.Player.MaxTargets) or State.Player.MaxTargets
+	local theta = math.tan(math.rad(camera.FieldOfView) * 0.5)
+	for _, target in ipairs(targetCache) do
+		if rendered >= cap then break end
+		local model = target.Model or target.model
+		local root = target.Root or target.root
+		local humanoid = target.Humanoid or target.hum or target.humanoid
+		local key = target.Key or target.Player or target.player or model
+		if model and root and key and model.Parent and root.Parent and (not humanoid or humanoid.Health > 0) then
+			local distance = (root.Position - camera.CFrame.Position).Magnitude
+			if distance <= State.Player.MaxDistance then
+				local point, onScreen = camera:WorldToViewportPoint(root.Position - Vector3.new(0, 0.5, 0))
+				if point.Z > 0 and onScreen then
+					local entry = playerEntries[key]
+					if not entry then
+						entry = newPlayerEntry()
+						playerEntries[key] = entry
+					end
+					if entry then
+						rendered += 1
+						seen[key] = true
+						entry.Model = model
+						entry.LastSeen = now
+						applyPlayerStyle(entry)
+						local depth = 2 * math.max(0.01, point.Z) * theta
+						local scale = camera.ViewportSize.Y / math.max(0.01, depth * 1.5)
+						local width = math.floor(math.max(scale * 6, 4))
+						local height = math.floor(math.max(scale * 8, 4))
+						setProperty(entry.Main, "Position", UDim2.fromOffset(point.X, point.Y))
+						setProperty(entry.Main, "Size", UDim2.fromOffset(width, height))
+						setProperty(entry.Main, "Visible", true)
+						setProperty(entry.Main, "BackgroundTransparency", State.Player.Fill and 0 or 1)
+						setProperty(entry.Outline, "Enabled", State.Player.Box)
+						setProperty(entry.Accent, "Enabled", State.Player.Box)
+						setProperty(entry.Glow, "Visible", State.Player.Glow)
+						local percent = 1
+						if humanoid and humanoid.MaxHealth > 0 then percent = math.clamp(humanoid.Health / humanoid.MaxHealth, 0, 1) end
+						setProperty(entry.HealthBack, "Visible", State.Player.Healthbar)
+						if State.Player.Healthbar then
+							setProperty(entry.Health, "Size", UDim2.new(1, -2, percent, 0))
+						end
+						setProperty(entry.HealthText, "Visible", State.Player.HealthText)
+						if State.Player.HealthText then
+							setProperty(entry.HealthText, "Text", tostring(math.floor(percent * 100 + 0.5)))
+							local low, mid, high = color3(State.Player.HealthLow), color3(State.Player.HealthMid), color3(State.Player.HealthHigh)
+							setProperty(entry.HealthText, "TextColor3", low:Lerp(mid, percent):Lerp(high, percent))
+						end
+						setProperty(entry.Name, "Visible", State.Player.Names)
+						if State.Player.Names then setProperty(entry.Name, "Text", tostring(target.Name or target.name or model.Name)) end
+						setProperty(entry.Distance, "Visible", State.Player.Distance)
+						if State.Player.Distance then setProperty(entry.Distance, "Text", string.format("%.1fst", distance)) end
+						setProperty(entry.Weapon, "Visible", State.Player.Weapon)
+						if State.Player.Weapon then setProperty(entry.Weapon, "Text", weaponName(target)) end
+						setProperty(entry.Flags, "Visible", State.Player.Flags)
+						if State.Player.Flags then setProperty(entry.Flags, "Text", flagText(target)) end
+						if State.Player.Chams then
+							if not entry.Highlight then
+								local parent = ensureAdornments()
+								if parent then
+									entry.Highlight = create("Highlight", parent, {
+										DepthMode = Enum.HighlightDepthMode.AlwaysOnTop,
+										Enabled = false,
+									})
+									entry.LastStyle = -1
+									applyPlayerStyle(entry)
+								end
+							end
+							if entry.Highlight then
+								if entry.Highlight.Adornee ~= model then entry.Highlight.Adornee = model end
+								entry.Highlight.Enabled = true
+							end
+						elseif entry.Highlight then
+							entry.Highlight.Enabled = false
+						end
+					end
+				end
+			end
+		end
+	end
+	for key, entry in pairs(playerEntries) do
+		if not seen[key] then
+			hidePlayerEntry(entry)
+			if (now - (entry.LastSeen or 0) > 5) or (entry.Model and not entry.Model.Parent) then removePlayerEntry(key) end
+		end
+	end
+	API.Diagnostics.PlayerESP = rendered
+end
+
+-- Calamari Misc ESP. Traversal is incremental and limited to known world roots;
+-- adapters may add game-specific cached objects without another full workspace scan.
+local worldLabels = {}
+local worldEntries = {}
+local worldScan = {Active = false, Queue = {}, Index = 1, Working = {}, Seen = {}, Processed = 0}
+local worldWasActive = false
+local worldRoots = {
+	"Nodes", "OreNodes", "Resources", "Loot", "Deployables", "Bases", "Drops",
+	"DroppedItems", "WorldItems", "Plants", "Animals", "Pickups", "SpawnedPickups", "GroundItems",
+}
+local function worldCategory(object, rootName)
+	local name = string.lower(object.Name)
+	local compact = name:gsub("[%s_%-]", "")
+	if string.find(compact, "carepackage", 1, true) then return "Care Package" end
+	if string.find(compact, "salvagedflycopter", 1, true) or string.find(compact, "flycopter", 1, true) then return "Salvaged Flycopter" end
+	if string.find(compact, "shotgunturret", 1, true) or string.find(compact, "shotguntrap", 1, true) then return "Shotgun Turret" end
+	if string.find(compact, "autoturret", 1, true) or string.find(compact, "aaturret", 1, true) then return "Auto Turret" end
+	if string.find(compact, "bodybag", 1, true) or string.find(compact, "backpack", 1, true)
+		or string.find(compact, "lootbag", 1, true) or string.find(compact, "deathbag", 1, true) then return "Body Bag" end
+	if string.find(compact, "phosphate", 1, true) or string.find(compact, "sulfur", 1, true) or string.find(compact, "sulphur", 1, true) then return "Phosphate" end
+	if string.find(compact, "metal", 1, true) or string.find(compact, "iron", 1, true) then return "Metal" end
+	if string.find(compact, "stone", 1, true) then return "Stone" end
+	if string.find(compact, "egg", 1, true) then return "Eggs" end
+	if string.find(compact, "wool", 1, true) or string.find(compact, "cloth", 1, true) or string.find(compact, "hemp", 1, true) then return "Wool" end
+	if rootName == "Animals" and object:IsA("Model") then return "Animals" end
+	if (rootName == "Drops" or rootName == "DroppedItems" or rootName == "WorldItems")
+		and (object:IsA("Model") or object:IsA("Tool") or object:IsA("BasePart")) then return "Drops" end
+	if object:IsA("Tool") then return "Drops" end
+	return nil
+end
+local function addWorldEntry(object, category, label)
+	if not object or not category or worldScan.Seen[object] then return end
+	worldScan.Seen[object] = true
+	worldScan.Working[#worldScan.Working + 1] = {Object = object, Category = category, Name = label or object.Name}
+end
+local function beginWorldScan()
+	worldScan.Active = true
+	worldScan.Queue, worldScan.Index, worldScan.Working, worldScan.Seen, worldScan.Processed = {}, 1, {}, {}, 0
+	local queued = {}
+	for _, name in ipairs(Adapter.WorldRoots or worldRoots) do
+		local folder = workspace:FindFirstChild(name)
+		if folder and not queued[folder] then
+			queued[folder] = true
+			worldScan.Queue[#worldScan.Queue + 1] = {Object = folder, Depth = 0, MaxDepth = 3, Root = name}
+		end
+	end
+	-- Top-level Tools and named bags are Drops; root folders are not traversed twice.
+	if State.World.Categories.Drops.Enabled or State.World.Categories["Body Bag"].Enabled then
+		worldScan.Queue[#worldScan.Queue + 1] = {Object = workspace, Depth = 0, MaxDepth = 0, Root = "Workspace"}
+	end
+	if type(Adapter.GetWorldEntries) == "function" then
+		local ok, entries = pcall(Adapter.GetWorldEntries)
+		if ok and type(entries) == "table" then
+			for _, entry in ipairs(entries) do
+				local object = entry.Object or entry.Model or entry.Part
+				if object then addWorldEntry(object, entry.Category or worldCategory(object, ""), entry.Name or entry.Label) end
+			end
+		end
+	end
+end
+local function processWorldScan()
+	local budget = lowPC() and 16 or 32
+	while budget > 0 and worldScan.Active do
+		local taskItem = worldScan.Queue[worldScan.Index]
+		if not taskItem or worldScan.Processed >= 1024 then
+			worldEntries = worldScan.Working
+			worldScan.Active = false
+			API.Diagnostics.WorldEntries = #worldEntries
+			return
+		end
+		worldScan.Index += 1
+		worldScan.Processed += 1
+		budget -= 1
+		local object, rootName = taskItem.Object, taskItem.Root
+		if object and object.Parent then
+			local matched = false
+			if object ~= workspace and (object:IsA("Model") or object:IsA("BasePart") or object:IsA("Tool")) then
+				local category = worldCategory(object, rootName)
+				if category then
+					addWorldEntry(object, category)
+					matched = true
+				end
+			end
+			if not matched and taskItem.Depth < taskItem.MaxDepth and not object:IsA("BasePart") and not object:IsA("Tool") then
+				for _, child in ipairs(object:GetChildren()) do
+					worldScan.Queue[#worldScan.Queue + 1] = {
+						Object = child, Depth = taskItem.Depth + 1,
+						MaxDepth = taskItem.MaxDepth, Root = rootName,
+					}
+				end
+			end
+		end
+	end
+end
+local function worldPosition(object)
+	if object:IsA("BasePart") then return object.Position end
+	local ok, pivot = pcall(function() return object:GetPivot() end)
+	if ok and pivot and pivot.Position then return pivot.Position end
+	local primary = object.PrimaryPart
+	if primary and primary:IsA("BasePart") then return primary.Position end
+	-- A model can be supplied by a game adapter before its pivot is available.
+	-- Use an existing part as a read-only fallback; never move or mutate the model.
+	for _, child in ipairs(object:GetChildren()) do
+		if child:IsA("BasePart") then return child.Position end
+	end
+	return nil
+end
+local function updateWorld(now)
+	local enabled = active() and State.World.Enabled
+	if not enabled then
+		if worldWasActive then
+			for _, label in ipairs(worldLabels) do setProperty(label, "Visible", false) end
+		end
+		worldWasActive = false
+		worldScan.Active = false
+		return
+	end
+	worldWasActive = true
+	if now >= (API.Diagnostics.WorldScanAt or 0) and not worldScan.Active then
+		API.Diagnostics.WorldScanAt = now + (lowPC() and 2 or 1)
+		beginWorldScan()
+	end
+	if worldScan.Active then processWorldScan() end
+	local camera = workspace.CurrentCamera
+	if not camera then return end
+	local index, cap = 0, lowPC() and 32 or 96
+	local previousCount = API.Diagnostics.WorldLabelCount or 0
+	for _, entry in ipairs(worldEntries) do
+		if index >= cap then break end
+		local category = State.World.Categories[entry.Category]
+		local object = entry.Object
+		if category and category.Enabled and object and object.Parent then
+			local position = worldPosition(object)
+			if position then
+				local distance = (position - camera.CFrame.Position).Magnitude
+				if distance <= category.MaxDistance then
+					local point, onScreen = camera:WorldToViewportPoint(position)
+					if point.Z > 0 and onScreen then
+						index += 1
+						local label = worldLabels[index]
+						if not label then
+							local parent = ensureGui()
+							if parent then
+								label = textLabel(parent, 14)
+								label.AnchorPoint = Vector2.new(0.5, 0.5)
+								label.AutomaticSize = Enum.AutomaticSize.XY
+								label.Size = UDim2.fromOffset(0, 0)
+								addTextStroke(label)
+								worldLabels[index] = label
+							end
+						end
+						if label then
+							setProperty(label, "Text", tostring(entry.Name or entry.Category) .. "\n" .. tostring(math.floor(distance + 0.5)) .. " Studs")
+							setProperty(label, "TextColor3", color3(category.Color))
+							setProperty(label, "Position", UDim2.fromOffset(point.X, point.Y))
+							setProperty(label, "Visible", true)
+						end
+					end
+				end
+			end
+		end
+	end
+	for labelIndex = index + 1, previousCount do
+		local label = worldLabels[labelIndex]
+		if label then setProperty(label, "Visible", false) end
+	end
+	API.Diagnostics.WorldLabelCount = index
+	API.Diagnostics.WorldESP = index
+end
+
+-- Gun/Arms materials, textures, Viewmodel Highlight and owned position offsets.
+local textures = {
+	Web = "rbxassetid://301464986", Swirl = "rbxassetid://8133639623",
+	Checkers = "rbxassetid://5790215150", CandyCane = "rbxassetid://6853532738",
+	Dots = "rbxassetid://5830615971", Scanning = "rbxassetid://5843010904",
+	Bubbles = "rbxassetid://1461576423", ["Player FF Texture"] = "rbxassetid://4494641460",
+	["Shield Forcefield"] = "rbxassetid://361073795", Water = "rbxasset://textures/water/normal_21.dds",
+	America = "rbxassetid://936775406", Rainbow = "rbxassetid://252684207",
+	Akatsuki = "rbxassetid://10913193650", None = "",
+}
+local materialNames = {
+	ForceField = "ForceField", Neon = "Neon", Glass = "Glass", Ice = "Ice",
+	Wood = "Wood", Plastic = "SmoothPlastic", Metal = "Metal",
+}
+local vmCache, vmParts, vmOriginals, vmHighlights, vmPositions = {}, {}, {}, {}, {}
+local vmWasActive = false
+local function viewmodels()
+	local result, seen = {}, {}
+	if type(Adapter.GetViewmodels) == "function" then
+		local ok, models = pcall(Adapter.GetViewmodels)
+		if ok and type(models) == "table" then
+			for _, model in ipairs(models) do
+				if typeof(model) == "Instance" and not seen[model] then seen[model] = true; result[#result + 1] = model end
+			end
+		end
+	end
+	local vfx = workspace:FindFirstChild("VFX")
+	local containers = {}
+	local vmFolder = vfx and vfx:FindFirstChild("VMs")
+	if vmFolder then containers[#containers + 1] = vmFolder end
+	vmFolder = workspace:FindFirstChild("VMs")
+	if vmFolder then containers[#containers + 1] = vmFolder end
+	if workspace.CurrentCamera then containers[#containers + 1] = workspace.CurrentCamera end
+	for _, container in ipairs(containers) do
+		if container then
+			for _, model in ipairs(container:GetChildren()) do
+				if model:IsA("Model") and model.Name ~= "IgnoreMe" and not seen[model] then
+					seen[model] = true
+					result[#result + 1] = model
+				end
+			end
+		end
+	end
+	return result
+end
+local function armPart(part, model)
+	local current = part.Parent
+	while current and current ~= model do
+		local name = string.lower(current.Name)
+		if current.Name == "Arms" or string.find(name, "arm", 1, true) or string.find(name, "hand", 1, true)
+			or string.find(name, "glove", 1, true) then return true end
+		current = current.Parent
+	end
+	return false
+end
+local function restorePart(part)
+	local original = vmOriginals[part]
+	if not original then return end
+	vmOriginals[part] = nil
+	pcall(function()
+		if part.Color == original.LastColor then part.Color = original.Color end
+		if part.Material == original.LastMaterial then part.Material = original.Material end
+		if part:IsA("MeshPart") and part.TextureID == original.LastTexture then part.TextureID = original.TextureID end
+	end)
+	destroy(original.OwnedTexture)
+end
+local function applyPart(part, settings)
+	if (part.Transparency or 0) >= 0.95 or (part.Size and part.Size.Magnitude or 1) < 0.05 then return end
+	local original = vmOriginals[part]
+	if not original then
+		original = {
+			Color = part.Color, Material = part.Material,
+			TextureID = part:IsA("MeshPart") and part.TextureID or nil,
+		}
+		vmOriginals[part] = original
+	end
+	local color = color3(settings.Color)
+	local material = Enum.Material[materialNames[settings.Material] or "ForceField"]
+	local texture = textures[settings.Texture] or ""
+	pcall(function()
+		if part.Color ~= original.LastColor and original.LastColor ~= nil and part.Color ~= color then original.Color = part.Color end
+		if part.Material ~= original.LastMaterial and original.LastMaterial ~= nil and part.Material ~= material then original.Material = part.Material end
+		part.Color = color
+		part.Material = material
+		original.LastColor, original.LastMaterial = color, material
+		if part:IsA("MeshPart") then
+			if part.TextureID ~= original.LastTexture and original.LastTexture ~= nil and part.TextureID ~= texture then original.TextureID = part.TextureID end
+			part.TextureID = texture
+			original.LastTexture = texture
+		else
+			if not original.OwnedTexture then
+				original.OwnedTexture = create("Texture", part, {StudsPerTileU = 1, StudsPerTileV = 1})
+			end
+			original.OwnedTexture.Texture = texture
+			original.OwnedTexture.Enabled = texture ~= ""
+		end
+	end)
+end
+local function restoreViewmodels()
+	for part in pairs(vmOriginals) do restorePart(part) end
+	for model, highlight in pairs(vmHighlights) do destroy(highlight); vmHighlights[model] = nil end
+	for model, position in pairs(vmPositions) do
+		pcall(function()
+			if model:GetPivot() == position.Last then model:PivotTo(position.Original) end
+		end)
+		vmPositions[model] = nil
+	end
+	table.clear(vmParts)
+	table.clear(vmCache)
+end
+local function updateViewmodels(now)
+	local enabled = active() and (State.Gun.Enabled or State.Arms.Enabled or State.Viewmodel.Highlight or State.Viewmodel.Position)
+	if not enabled then
+		if vmWasActive then restoreViewmodels() end
+		vmWasActive = false
+		return
+	end
+	vmWasActive = true
+	if now >= (API.Diagnostics.ViewmodelScanAt or 0) then
+		API.Diagnostics.ViewmodelScanAt = now + (lowPC() and 1 or 0.5)
+		vmCache = viewmodels()
+		table.clear(vmParts)
+		for _, model in ipairs(vmCache) do
+			if model and model.Parent then
+				for _, part in ipairs(model:GetDescendants()) do
+					if part:IsA("BasePart") then vmParts[#vmParts + 1] = {Part = part, Model = model, Arms = armPart(part, model)} end
+				end
+			end
+		end
+	end
+	local activeModels, activeParts = {}, {}
+	for _, item in ipairs(vmParts) do
+		local part, model = item.Part, item.Model
+		if part and part.Parent and model and model.Parent then
+			activeModels[model] = true
+			activeParts[part] = true
+			local settings = item.Arms and State.Arms or State.Gun
+			if settings.Enabled then applyPart(part, settings) elseif vmOriginals[part] then restorePart(part) end
+		end
+	end
+	for part in pairs(vmOriginals) do
+		if not activeParts[part] then restorePart(part) end
+	end
+	for _, model in ipairs(vmCache) do
+		if model and model.Parent then
+			if State.Viewmodel.Highlight then
+				local highlight = vmHighlights[model]
+				if not highlight then
+					local parent = ensureAdornments()
+					if parent then
+						highlight = create("Highlight", parent, {DepthMode = Enum.HighlightDepthMode.AlwaysOnTop})
+						vmHighlights[model] = highlight
+					end
+				end
+				if highlight then
+					highlight.Adornee = model
+					highlight.Enabled = true
+					highlight.FillColor = color3(State.Viewmodel.Fill)
+					highlight.OutlineColor = color3(State.Viewmodel.Outline)
+					highlight.FillTransparency = State.Viewmodel.FillTransparency
+					highlight.OutlineTransparency = State.Viewmodel.OutlineTransparency
+				end
+			elseif vmHighlights[model] then
+				destroy(vmHighlights[model]); vmHighlights[model] = nil
+			end
+			if State.Viewmodel.Position then
+				local position = vmPositions[model]
+				local current = model:GetPivot()
+				if not position then
+					position = {Original = current, Last = current}
+					vmPositions[model] = position
+				elseif current ~= position.Last then
+					position.Original = current
+				end
+				local written = position.Original * CFrame.new(State.Viewmodel.X, State.Viewmodel.Y, State.Viewmodel.Z)
+				model:PivotTo(written)
+				position.Last = written
+			elseif vmPositions[model] then
+				local position = vmPositions[model]
+				if model:GetPivot() == position.Last then model:PivotTo(position.Original) end
+				vmPositions[model] = nil
+			end
+		end
+	end
+	for model, highlight in pairs(vmHighlights) do
+		if not activeModels[model] then destroy(highlight); vmHighlights[model] = nil end
+	end
+	for model, position in pairs(vmPositions) do
+		if not activeModels[model] then
+			if model and model.Parent and model:GetPivot() == position.Last then model:PivotTo(position.Original) end
+			vmPositions[model] = nil
+		end
+	end
+end
+
+-- Shot visuals use existing game events through API.Impact/TraceShot. They never
+-- redirect a shot, install another Silent hook or change remote arguments.
+local activeEffects = {}
+local function ownEffect(object, lifetime)
+	if not object then return end
+	activeEffects[object] = true
+	local count = 0
+	for _ in pairs(activeEffects) do count += 1 end
+	if count > 32 then
+		for old in pairs(activeEffects) do activeEffects[old] = nil; destroy(old); break end
+	end
+	pcall(function() Debris:AddItem(object, lifetime or 2) end)
+	task.delay((lifetime or 2) + 0.1, function()
+		if activeEffects[object] then activeEffects[object] = nil; destroy(object) end
+	end)
+end
+function API.Bullet(origin, position)
+	if not active() or not State.Bullet.Enabled or typeof(origin) ~= "Vector3" or typeof(position) ~= "Vector3" then return end
+	local parent = ensureEffects()
+	local part = create("Part", parent, {
+		Name = "CalamariTracer", Anchored = true, CanCollide = false, CanQuery = false, CanTouch = false,
+		Transparency = 1, Size = Vector3.new(0.1, 0.1, 0.1),
+	})
+	local a0 = create("Attachment", part, {WorldPosition = origin})
+	local a1 = create("Attachment", part, {WorldPosition = position})
+	local beam = create("Beam", part, {
+		Attachment0 = a0, Attachment1 = a1, FaceCamera = true, Brightness = 10,
+		LightEmission = State.Bullet.Type == "Dark" and 0.25 or 1,
+		LightInfluence = State.Bullet.Type == "Dark" and 1 or 0,
+		Width0 = State.Bullet.Type == "Water" and 0.3 or 0.5,
+		Width1 = State.Bullet.Type == "Water" and 0.3 or 0.5,
+		Color = ColorSequence.new(color3(State.Bullet.Color)),
+	})
+	if State.Bullet.Type == "Dark" then
+		beam.Texture = "rbxassetid://12781848822"
+		beam.TextureLength, beam.TextureSpeed = 20, 0.9
+		beam.TextureMode = Enum.TextureMode.Static
+	elseif State.Bullet.Type == "Water" then
+		beam.Texture = "rbxassetid://12788927812"
+		beam.TextureLength, beam.TextureSpeed = 10, 1
+		beam.TextureMode = Enum.TextureMode.Wrap
+		beam.Color = ColorSequence.new({
+			ColorSequenceKeypoint.new(0, color3(State.Bullet.Color)),
+			ColorSequenceKeypoint.new(0.5, Color3.new(1, 1, 1)),
+			ColorSequenceKeypoint.new(1, color3(State.Bullet.Color)),
+		})
+	else
+		beam.Texture = "rbxassetid://12781800668"
+		beam.TextureLength, beam.TextureSpeed = 4, 10
+		beam.TextureMode = Enum.TextureMode.Wrap
+	end
+	ownEffect(part, math.max(0.1, State.Bullet.Duration) + 1)
+	API.Diagnostics.BulletTracers = (API.Diagnostics.BulletTracers or 0) + 1
+	return part
+end
+local function hitNotification(instance, partName, damage)
+	if not State.HitNotifications.Enabled then return end
+	local parent = ensureGui()
+	if not parent then return end
+	local player
+	if typeof(instance) == "Instance" then
+		local model = instance:IsA("Model") and instance or nil
+		if not model then
+			local current = instance.Parent
+			while current do
+				if current:IsA("Model") then model = current; break end
+				current = current.Parent
+			end
+		end
+		if model then player = Players:GetPlayerFromCharacter(model) end
+	end
+	local text = "Hit"
+	if player then text ..= " " .. (player.DisplayName or player.Name) end
+	if partName then text ..= " / " .. tostring(partName) end
+	if tonumber(damage) and damage > 0 then text ..= " / " .. tostring(math.floor(damage + 0.5)) end
+	local label = textLabel(parent, 15)
+	label.AnchorPoint = Vector2.new(0.5, 0, 0)
+	label.Position = UDim2.new(0.5, 0, 0, 90)
+	label.AutomaticSize = Enum.AutomaticSize.XY
+	label.Size = UDim2.fromOffset(0, 0)
+	label.Text = text
+	label.TextColor3 = color3(State.Bullet.Color)
+	addTextStroke(label)
+	task.delay(3, function() destroy(label) end)
+end
+function API.Hit(position, instance, partName, damage)
+	if not active() or typeof(position) ~= "Vector3" then return end
+	if State.HitEffects.Enabled then
+		local parent = ensureEffects()
+		local part = create("Part", parent, {
+			Name = "CalamariHitEffect", Anchored = true, CanCollide = false, CanQuery = false, CanTouch = false,
+			Transparency = 1, Size = Vector3.new(0.2, 0.2, 0.2), Position = position,
+		})
+		local emitter = create("ParticleEmitter", part, {
+			Lifetime = NumberRange.new(State.HitEffects.Type == "Spark" and 0.4 or 1),
+			Rate = 0, Speed = NumberRange.new(0, 0), Brightness = State.HitEffects.Type == "Spark" and 5 or 2,
+			Color = ColorSequence.new(color3(State.HitEffects.Color1), color3(State.HitEffects.Color2)),
+			Size = NumberSequence.new(State.HitEffects.Type == "Spark" and 8 or 4),
+			Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 1)}),
+		})
+		emitter.Texture = State.HitEffects.Type == "Spark" and "rbxassetid://10198439352"
+			or State.HitEffects.Type == "SmokeRing" and "rbxassetid://12906276200" or "rbxassetid://14354336687"
+		pcall(function() emitter:Emit(State.HitEffects.Type == "particles.js" and 6 or 1) end)
+		ownEffect(part, 2)
+		API.Diagnostics.HitEffects = (API.Diagnostics.HitEffects or 0) + 1
+	end
+	hitNotification(instance, partName, damage)
+end
+function API.Impact(origin, position, instance, partName, damage)
+	API.Bullet(origin, position)
+	API.Hit(position, instance, partName, damage)
+end
+function API.TraceShot(origin, direction, maxDistance, ignore)
+	if not active() or typeof(origin) ~= "Vector3" or typeof(direction) ~= "Vector3" then return nil end
+	if not (State.Bullet.Enabled or State.HitEffects.Enabled or State.HitNotifications.Enabled) then return nil end
+	if direction.Magnitude <= 0.001 then return nil end
+	local params = RaycastParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.IgnoreWater = true
+	params.FilterDescendantsInstances = {ignore or (LocalPlayer and LocalPlayer.Character)}
+	local result = workspace:Raycast(origin, direction.Unit * (tonumber(maxDistance) or 1000), params)
+	local position = result and result.Position or origin + direction.Unit * (tonumber(maxDistance) or 1000)
+	API.Bullet(origin, position)
+	if result and result.Instance then
+		API.Hit(position, result.Instance, result.Instance.Name)
+	end
+	return result
+end
+
+-- Lighting and optional Camera controls use per-property ownership. Off/Unload
+-- restores only values still owned by this runtime; later game writes win.
+local ownedGroups = {}
+local createdLighting = {}
+local skyboxes = {
+	Galaxy = {"15125283003", "15125281008", "15125277539", "15125279325", "15125274388", "15125275800"},
+	Vaporwave = {"1417494030", "1417494146", "1417494253", "1417494402", "1417494499", "1417494643"},
+	Redshift = {"401664839", "401664862", "401664960", "401664881", "401664901", "401664936"},
+	Desert = {"1013852", "1013853", "1013850", "1013851", "1013849", "1013854"},
+	Blaze = {"150939022", "150939038", "150939047", "150939056", "150939063", "150939082"},
+	["Among Us"] = {"5752463190", "5752463190", "5752463190", "5752463190", "5752463190", "5752463190"},
+	["Space Wave2"] = {"1233158420", "1233158838", "1233157105", "1233157640", "1233157995", "1233159158"},
+	["Turquoise Wave"] = {"47974894", "47974690", "47974821", "47974776", "47974859", "47974909"},
+	["Dark Night"] = {"6285719338", "6285721078", "6285722964", "6285724682", "6285726335", "6285730635"},
+	["Bright Pink"] = {"271042516", "271077243", "271042556", "271042310", "271042467", "271077958"},
+	["Oblivion Lost"] = {"5103110171", "5102993828", "5103111020", "5103112417", "5103113734", "5102993828"},
+	["Setting Sun"] = {"626460377", "626460216", "626460513", "626473032", "626458639", "626460625"},
+}
+local function groupWrite(group, object, property, value)
+	if not object then return end
+	local groups = ownedGroups[group]
+	if not groups then groups = {}; ownedGroups[group] = groups end
+	local entries = groups[object]
+	if not entries then entries = {}; groups[object] = entries end
+	local entry = entries[property]
+	if not entry then
+		entry = {Original = object[property]}; entries[property] = entry
+	end
+	pcall(function()
+		local current = object[property]
+		if entry.Last ~= nil and current ~= entry.Last and current ~= value then entry.Original = current end
+		if current ~= value then object[property] = value end
+		entry.Last = value
+	end)
+end
+local function groupRestore(group)
+	local groups = ownedGroups[group]
+	if not groups then return end
+	for object, entries in pairs(groups) do
+		for property, entry in pairs(entries) do
+			pcall(function() if object[property] == entry.Last then object[property] = entry.Original end end)
+		end
+	end
+	ownedGroups[group] = nil
+end
+local function effectObject(className, key)
+	local existing = Lighting:FindFirstChildOfClass(className)
+	if existing then return existing end
+	local object = createdLighting[key]
+	if object and object.Parent then return object end
+	object = Instance.new(className)
+	object.Name = "BurmaldaCalamari" .. key
+	object.Parent = Lighting
+	createdLighting[key] = object
+	return object
+end
+local function applyLightingGroup(name, enabled, writes)
+	if enabled then
+		for _, write in ipairs(writes) do groupWrite(name, write[1], write[2], write[3]) end
+	elseif ownedGroups[name] or createdLighting[name] then
+		groupRestore(name)
+		if createdLighting[name] then destroy(createdLighting[name]); createdLighting[name] = nil end
+	end
+end
+local function updateLighting()
+	local s = State.Lighting
+	local terrain = workspace:FindFirstChildOfClass("Terrain")
+	local clouds = terrain and terrain:FindFirstChild("Clouds")
+	local atmosphere = Lighting:FindFirstChild("Atmosphere")
+	applyLightingGroup("CloudDensity", s.CloudDensity, {{clouds, "Density", s.CloudDensityValue}})
+	applyLightingGroup("CloudCover", s.CloudCover, {{clouds, "Cover", s.CloudCoverValue}})
+	applyLightingGroup("CloudColor", s.CloudColor, {{clouds, "Color", color3(s.CloudColorValue)}})
+	local fog = s.NoFog or s.FogDensity or s.FogHaze or s.FogGlare
+	local fogWrites = {}
+	if s.NoFog then
+		fogWrites[#fogWrites + 1] = {Lighting, "FogStart", 999999}
+		fogWrites[#fogWrites + 1] = {Lighting, "FogEnd", 999999}
+		fogWrites[#fogWrites + 1] = {atmosphere, "Offset", 0}
+	end
+	if atmosphere and (s.NoFog or s.FogDensity) then fogWrites[#fogWrites + 1] = {atmosphere, "Density", s.NoFog and 0 or s.FogDensityValue} end
+	if atmosphere and (s.NoFog or s.FogHaze) then fogWrites[#fogWrites + 1] = {atmosphere, "Haze", s.NoFog and 0 or s.FogHazeValue} end
+	if atmosphere and (s.NoFog or s.FogGlare) then fogWrites[#fogWrites + 1] = {atmosphere, "Glare", s.NoFog and 0 or s.FogGlareValue} end
+	applyLightingGroup("Fog", fog, fogWrites)
+	applyLightingGroup("FogColor", s.FogColor and atmosphere ~= nil, {{atmosphere, "Color", color3(s.FogColorValue)}})
+	applyLightingGroup("Fullbright", s.Fullbright, {{Lighting, "Brightness", s.Brightness}})
+	applyLightingGroup("Ambient", s.Ambient, {{Lighting, "Ambient", color3(s.AmbientColor)}, {Lighting, "OutdoorAmbient", color3(s.AmbientColor)}})
+	applyLightingGroup("Time", s.Time, {{Lighting, "ClockTime", s.TimeValue}})
+	if s.Skybox then
+		local sky = effectObject("Sky", "Skybox")
+		local ids = skyboxes[s.SkyboxPreset] or skyboxes.Galaxy
+		applyLightingGroup("Skybox", true, {
+			{sky, "SkyboxBk", "rbxassetid://" .. ids[1]}, {sky, "SkyboxDn", "rbxassetid://" .. ids[2]},
+			{sky, "SkyboxFt", "rbxassetid://" .. ids[3]}, {sky, "SkyboxLf", "rbxassetid://" .. ids[4]},
+			{sky, "SkyboxRt", "rbxassetid://" .. ids[5]}, {sky, "SkyboxUp", "rbxassetid://" .. ids[6]},
+		})
+	else
+		applyLightingGroup("Skybox", false, {})
+	end
+	local sun = s.SunRays and effectObject("SunRaysEffect", "SunRays") or nil
+	applyLightingGroup("SunRays", s.SunRays, {{sun, "Enabled", true}, {sun, "Intensity", s.SunIntensity}, {sun, "Spread", s.SunSpread}})
+	local bloom = s.Bloom and effectObject("BloomEffect", "Bloom") or nil
+	applyLightingGroup("Bloom", s.Bloom, {{bloom, "Enabled", true}, {bloom, "Intensity", s.BloomIntensity}, {bloom, "Size", s.BloomSize}, {bloom, "Threshold", s.BloomThreshold}})
+end
+
+local function keyHeld(name)
+	if name == "LMB" or name == "RMB" then
+		return UIS:IsMouseButtonPressed(name == "LMB" and Enum.UserInputType.MouseButton1 or Enum.UserInputType.MouseButton2)
+	end
+	local key = Enum.KeyCode[name]
+	return key ~= nil and UIS:IsKeyDown(key)
+end
+local function updateCamera()
+	if not options.Camera or options.Camera == "None" then return end
+	local s = State.Camera
+	local camera = workspace.CurrentCamera
+	local zoom = s.Zoom and keyHeld(s.ZoomKey)
+	if camera then
+		local enabled = s.CustomFOV or zoom
+		applyLightingGroup("CalamariCameraFOV", enabled, {{camera, "FieldOfView", zoom and s.ZoomAmount or s.FOV}})
+	end
+	local third = options.Camera == "Full" or options.Camera == "ThirdPerson"
+	if third and LocalPlayer then
+		applyLightingGroup("CalamariThirdPerson", s.ThirdPerson, {
+			{LocalPlayer, "CameraMode", s.ThirdPerson and Enum.CameraMode.Classic or LocalPlayer.CameraMode},
+			{LocalPlayer, "CameraMinZoomDistance", s.Distance},
+			{LocalPlayer, "CameraMaxZoomDistance", s.Distance},
+		})
+	end
+end
+
+local lightingClock = 0
+local function restoreAll()
+	hideAllPlayers()
+	for _, label in ipairs(worldLabels) do setProperty(label, "Visible", false) end
+	restoreViewmodels()
+	for group in pairs(ownedGroups) do groupRestore(group) end
+	for key, object in pairs(createdLighting) do destroy(object); createdLighting[key] = nil end
+	for object in pairs(activeEffects) do destroy(object) end
+	table.clear(activeEffects)
+end
+function API.DisableAll()
+	for _, path in ipairs({
+		"Player.Enabled", "World.Enabled", "Gun.Enabled", "Arms.Enabled",
+		"Viewmodel.Highlight", "Viewmodel.Position", "Bullet.Enabled",
+		"HitEffects.Enabled", "HitNotifications.Enabled",
+		"Camera.CustomFOV", "Camera.Zoom", "Camera.ThirdPerson",
+	}) do API.Set(path, false) end
+	for key, value in pairs(State.Lighting) do
+		if type(value) == "boolean" then State.Lighting[key] = false end
+	end
+	Revision += 1
+	restoreAll()
+end
+function API.Update(dt)
+	if API.Unloaded or not active() then return end
+	local now = os.clock()
+	if options.Camera and options.Camera ~= "None" then
+		local cameraOk, cameraErr = pcall(updateCamera)
+		if not cameraOk then API.Diagnostics.CameraError = tostring(cameraErr) end
+	end
+	local interval = lowPC() and 0.1 or 0.05
+	API.Diagnostics.Accumulator = (API.Diagnostics.Accumulator or 0) + dt
+	if API.Diagnostics.Accumulator < interval then return end
+	local step = API.Diagnostics.Accumulator
+	API.Diagnostics.Accumulator = 0
+	local ok, err
+	ok, err = pcall(updatePlayers, now); if not ok then API.Diagnostics.PlayerError = tostring(err) end
+	ok, err = pcall(updateWorld, now); if not ok then API.Diagnostics.WorldError = tostring(err) end
+	ok, err = pcall(updateViewmodels, now); if not ok then API.Diagnostics.ViewmodelError = tostring(err) end
+	lightingClock += step
+	if lightingClock >= 0.2 or API.Diagnostics.LightingDirty then
+		lightingClock = 0
+		API.Diagnostics.LightingDirty = nil
+		ok, err = pcall(updateLighting); if not ok then API.Diagnostics.LightingError = tostring(err) end
+	end
+end
+function API.Unload()
+	if API.Unloaded then return end
+	API.Unloaded = true
+	API.Diagnostics.Unloaded = true
+	API.Diagnostics.RenderDisconnected = true
+	for _, connection in ipairs(connections) do pcall(function() connection:Disconnect() end) end
+	table.clear(connections)
+	restoreAll()
+	for key in pairs(playerEntries) do removePlayerEntry(key) end
+	destroy(gui); gui = nil
+	destroy(adornmentFolder); adornmentFolder = nil
+	destroy(effectFolder); effectFolder = nil
+end
+connect(RunService.RenderStepped:Connect(function(dt) API.Update(dt) end))
+if type(options.OnCleanup) == "function" then options.OnCleanup(API.Unload) end
+API.Skyboxes = skyboxes
+API.Textures = textures
+API.WorldCategories = worldCategories
+return API
+end
+return createBurmaldaCalamariVisuals
+
+  end)()
+  cfg.Calamari = type(cfg.Calamari) == "table" and cfg.Calamari or {}
+  local resourceCategory = {Cloth = "Wool", Iron = "Metal", Sulfur = "Phosphate", Stone = "Stone", BodyBag = "Body Bag"}
+  local calamari = calamariFactory({
+    Game = "Lone Survival",
+    State = cfg.Calamari,
+    Camera = "None",
+    IsActive = function() return not Runtime.Unloaded and not mainGame.unloaded end,
+    IsLowPC = function() return cfg.Misc.LowPC == true end,
+    Adapter = {
+      GetTargets = function()
+        local ok, targets = pcall(getCachedTargets, 0.1)
+        if not ok or type(targets) ~= "table" then return nil end
+        local result = {}
+        for _, target in ipairs(targets) do
+          if target.player and target.model and (target.hrp or target.head) then
+            local playerOk, player = pcall(players.GetPlayerFromCharacter, players, target.model)
+            result[#result + 1] = {
+              Key = target.model, Model = target.model, Root = target.hrp or target.head,
+              Humanoid = target.hum, Head = target.head, Name = target.name,
+              Player = playerOk and player or nil,
+            }
+          end
+        end
+        return result
+      end,
+      WorldRoots = {"Deployables", "Animals", "Drops", "DroppedItems", "WorldItems", "Pickups", "SpawnedPickups", "GroundItems"},
+      GetWorldEntries = function()
+        local ok, resources = pcall(mainGame.getCachedResources)
+        if not ok or type(resources) ~= "table" then return {} end
+        local result = {}
+        for _, entry in ipairs(resources) do
+          local category = resourceCategory[entry.kind]
+          if category and entry.root then
+            result[#result + 1] = {Object = entry.root, Category = category, Name = entry.name}
+          end
+        end
+        return result
+      end,
+    },
+  })
+  mainGame.calamariVisuals = calamari
+  onCleanup(function()
+    calamari.Unload()
+    if mainGame.calamariVisuals == calamari then mainGame.calamariVisuals = nil end
+  end)
+  local mountCalamari = (function()
+-- Shared control layout for the local 621x542 Burmalda menu.
+-- The host owns createFeature/addSlider/addDropdown/addColor/addBind/getTab/getSection.
+local function mountBurmaldaCalamariMenu(API, menuOptions)
+	menuOptions = menuOptions or {}
+	local function section(parent, name)
+		return getSection(parent, name).Content
+	end
+	local function caption(name)
+		name = tostring(name)
+		return string.sub(name, 1, 9) == "Calamari " and name or "Calamari " .. name
+	end
+	local function feature(parent, name, path)
+		local container = createFeature(parent, name, API.Get(path) == true, function(value)
+			API.Set(path, value == true)
+		end)
+		API.Bind(path, function(value)
+			if _fFS[name] then _fFS[name](value == true) end
+		end)
+		return container
+	end
+	local function onOff(parent, name, path)
+		local setter = addDropdown(parent, caption(name), {"Off", "On"}, API.Get(path) and 2 or 1, function(value)
+			API.Set(path, value == "On")
+		end)
+		API.Bind(path, function(value) setter(value and "On" or "Off") end)
+		return setter
+	end
+	local function slider(parent, name, path, minimum, maximum, scale)
+		scale = scale or 1
+		local setter = addSlider(parent, caption(name), minimum, maximum, (tonumber(API.Get(path)) or 0) * scale, function(value)
+			API.Set(path, value / scale)
+		end)
+		API.Bind(path, function(value) setter((tonumber(value) or 0) * scale) end)
+		return setter
+	end
+	local function dropdown(parent, name, path, values)
+		local current, defaultIndex = API.Get(path), 1
+		for index, value in ipairs(values) do if value == current then defaultIndex = index; break end end
+		local setter = addDropdown(parent, caption(name), values, defaultIndex, function(value) API.Set(path, value) end)
+		API.Bind(path, function(value) setter(value) end)
+		return setter
+	end
+	local function color(parent, name, path)
+		local value = API.Get(path)
+		local initial = Color3.fromRGB(value[1] or 255, value[2] or 255, value[3] or 255)
+		local setter = addColor(parent, caption(name), function(value) API.SetColor(path, value) end, initial)
+		API.Bind(path, function(rgb)
+			setter(Color3.fromRGB(rgb[1] or 255, rgb[2] or 255, rgb[3] or 255))
+		end)
+		return setter
+	end
+	local function bind(parent, name, path, onPress)
+		local api = addBind(parent, caption(name), API.Get(path) or "None", onPress, function(value) API.Set(path, value) end)
+		API.Bind(path, function(value) api.Set(value or "None") end)
+		return api
+	end
+
+	local left, right = getTab("VISUALS")
+	local playerSection = section(left, "Calamari Player ESP")
+	local player = feature(playerSection, "Calamari Player ESP", "Player.Enabled")
+	slider(player, "Calamari Max Distance", "Player.MaxDistance", 100, 10000)
+	slider(player, "Calamari Max Targets", "Player.MaxTargets", 8, 128)
+	onOff(player, "Box", "Player.Box")
+	color(player, "High Contrast Box", "Player.BoxHigh")
+	color(player, "Low Contrast Box", "Player.BoxLow")
+	slider(player, "Box High Alpha %", "Player.BoxHighTransparency", 0, 100, 100)
+	slider(player, "Box Low Alpha %", "Player.BoxLowTransparency", 0, 100, 100)
+	slider(player, "Box Gradient Rotation", "Player.BoxRotation", -180, 180)
+	onOff(player, "Calamari Box Fill", "Player.Fill")
+	color(player, "High Contrast Fill", "Player.FillHigh")
+	color(player, "Low Contrast Fill", "Player.FillLow")
+	slider(player, "Fill High Transparency %", "Player.FillHighTransparency", 0, 100, 100)
+	slider(player, "Fill Low Transparency %", "Player.FillLowTransparency", 0, 100, 100)
+	slider(player, "Box Fill Rotation", "Player.FillRotation", -180, 180)
+	onOff(player, "Box Glow", "Player.Glow")
+	color(player, "High Contrast Glow", "Player.GlowHigh")
+	color(player, "Low Contrast Glow", "Player.GlowLow")
+	slider(player, "Glow High Transparency %", "Player.GlowHighTransparency", 0, 100, 100)
+	slider(player, "Glow Low Transparency %", "Player.GlowLowTransparency", 0, 100, 100)
+	slider(player, "Box Glow Rotation", "Player.GlowRotation", -180, 180)
+	onOff(player, "Healthbar", "Player.Healthbar")
+	onOff(player, "Healthbar Text", "Player.HealthText")
+	color(player, "High Health", "Player.HealthHigh")
+	color(player, "Mid Health", "Player.HealthMid")
+	color(player, "Low Health", "Player.HealthLow")
+	onOff(player, "Calamari Names", "Player.Names")
+	color(player, "Names Text Color", "Player.NameColor")
+	onOff(player, "Distance Text", "Player.Distance")
+	color(player, "Distance Text Color", "Player.DistanceColor")
+	onOff(player, "Weapon Text", "Player.Weapon")
+	color(player, "Weapon Text Color", "Player.WeaponColor")
+	onOff(player, "Flags", "Player.Flags")
+	color(player, "Flags Text Color", "Player.FlagsColor")
+	onOff(player, "Calamari Chams", "Player.Chams")
+	color(player, "Chams Inside Color", "Player.ChamsInside")
+	color(player, "Chams Outside Color", "Player.ChamsOutside")
+	slider(player, "Chams Inside Transparency %", "Player.ChamsInsideTransparency", 0, 100, 100)
+	slider(player, "Chams Outline Transparency %", "Player.ChamsOutsideTransparency", 0, 100, 100)
+
+	local worldSection = section(right, "Calamari Misc ESP")
+	local world = feature(worldSection, "Calamari Misc ESP", "World.Enabled")
+	for _, name in ipairs({
+		"Stone", "Metal", "Phosphate", "Wool", "Animals", "Care Package", "Drops",
+		"Body Bag", "Salvaged Flycopter", "Eggs", "Auto Turret", "Shotgun Turret",
+	}) do
+		local path = "World.Categories." .. name
+		onOff(world, "Calamari " .. name, path .. ".Enabled")
+		color(world, "Calamari " .. name .. " Color", path .. ".Color")
+		slider(world, "Calamari " .. name .. " Max Distance", path .. ".MaxDistance", 10, 5000)
+	end
+
+	local vfxSection = section(right, "Calamari Gun VFX")
+	local gun = feature(vfxSection, "Calamari Gun Chams", "Gun.Enabled")
+	color(gun, "Gun Color", "Gun.Color")
+	dropdown(gun, "Gun Material", "Gun.Material", {"ForceField", "Neon", "Glass", "Ice", "Wood", "Plastic", "Metal"})
+	dropdown(gun, "Gun Texture", "Gun.Texture", {
+		"Web", "Swirl", "Checkers", "CandyCane", "Dots", "Scanning", "Bubbles",
+		"Player FF Texture", "Shield Forcefield", "Water", "America", "Rainbow", "Akatsuki", "None",
+	})
+	local arms = feature(vfxSection, "Calamari Arms Chams", "Arms.Enabled")
+	color(arms, "Arms Color", "Arms.Color")
+	dropdown(arms, "Arms Material", "Arms.Material", {"ForceField", "Neon", "Glass", "Ice", "Wood", "Plastic", "Metal"})
+	dropdown(arms, "Arms Texture", "Arms.Texture", {
+		"Web", "Swirl", "Checkers", "CandyCane", "Dots", "Scanning", "Bubbles",
+		"Player FF Texture", "Shield Forcefield", "Water", "America", "Rainbow", "Akatsuki", "None",
+	})
+	local highlight = feature(vfxSection, "Calamari Viewmodel Highlight", "Viewmodel.Highlight")
+	color(highlight, "Calamari VM Fill Color", "Viewmodel.Fill")
+	slider(highlight, "Fill Transparency %", "Viewmodel.FillTransparency", 0, 100, 100)
+	color(highlight, "Outline Color", "Viewmodel.Outline")
+	slider(highlight, "Outline Transparency %", "Viewmodel.OutlineTransparency", 0, 100, 100)
+	local position = feature(vfxSection, "Calamari Viewmodel Position", "Viewmodel.Position")
+	slider(position, "X pos", "Viewmodel.X", -20, 20, 10)
+	slider(position, "Y pos", "Viewmodel.Y", -20, 20, 10)
+	slider(position, "Z pos", "Viewmodel.Z", -20, 20, 10)
+	local bullet = feature(vfxSection, "Calamari Bullet Tracers", "Bullet.Enabled")
+	dropdown(bullet, "Tracer Type", "Bullet.Type", {"Dark", "Lightning", "Water"})
+	color(bullet, "Calamari Tracer Color", "Bullet.Color")
+	slider(bullet, "Tracer Duration", "Bullet.Duration", 1, 50, 10)
+	local effects = feature(vfxSection, "Calamari Hit Effects", "HitEffects.Enabled")
+	dropdown(effects, "Hit Effect Type", "HitEffects.Type", {"Spark", "SmokeRing", "particles.js"})
+	color(effects, "Hit Effect Color 1", "HitEffects.Color1")
+	color(effects, "Hit Effect Color 2", "HitEffects.Color2")
+	feature(vfxSection, "Calamari Hit Notifications", "HitNotifications.Enabled")
+
+	local lightSection = section(left, "Calamari Lighting")
+	local cloudDensity = feature(lightSection, "Calamari Cloud Density", "Lighting.CloudDensity")
+	slider(cloudDensity, "Density", "Lighting.CloudDensityValue", 0, 1000, 1000)
+	local cloudCover = feature(lightSection, "Calamari Cloud Cover", "Lighting.CloudCover")
+	slider(cloudCover, "Cover", "Lighting.CloudCoverValue", 0, 1000, 1000)
+	local cloudColor = feature(lightSection, "Calamari Cloud Color", "Lighting.CloudColor")
+	color(cloudColor, "Cloud Color", "Lighting.CloudColorValue")
+	feature(lightSection, "Calamari No Fog", "Lighting.NoFog")
+	local fogDensity = feature(lightSection, "Calamari Fog Density", "Lighting.FogDensity")
+	slider(fogDensity, "Fog Density", "Lighting.FogDensityValue", 0, 1000, 1000)
+	local fogHaze = feature(lightSection, "Calamari Fog Haze", "Lighting.FogHaze")
+	slider(fogHaze, "Haze", "Lighting.FogHazeValue", 0, 1000, 1000)
+	local fogGlare = feature(lightSection, "Calamari Fog Glare", "Lighting.FogGlare")
+	slider(fogGlare, "Glare", "Lighting.FogGlareValue", 0, 1000, 1000)
+	local fogColor = feature(lightSection, "Calamari Fog Color", "Lighting.FogColor")
+	color(fogColor, "Fog Color", "Lighting.FogColorValue")
+	local fullbright = feature(lightSection, "Calamari Fullbright", "Lighting.Fullbright")
+	slider(fullbright, "Brightness", "Lighting.Brightness", 0, 60, 10)
+	local ambient = feature(lightSection, "Calamari Ambient", "Lighting.Ambient")
+	color(ambient, "Ambient Color", "Lighting.AmbientColor")
+	local time = feature(lightSection, "Calamari Time Changer", "Lighting.Time")
+	slider(time, "Clock Time", "Lighting.TimeValue", 0, 240, 10)
+	local sky = feature(lightSection, "Calamari Skybox", "Lighting.Skybox")
+	local skyNames = {}
+	for name in pairs(API.Skyboxes) do skyNames[#skyNames + 1] = name end
+	table.sort(skyNames)
+	dropdown(sky, "Skybox Preset", "Lighting.SkyboxPreset", skyNames)
+
+	local postSection = section(right, "Calamari Lighting FX")
+	local sun = feature(postSection, "Calamari Sun Rays", "Lighting.SunRays")
+	slider(sun, "Sun Intensity", "Lighting.SunIntensity", 0, 50, 10)
+	slider(sun, "Sun Spread", "Lighting.SunSpread", 0, 10, 10)
+	local bloom = feature(postSection, "Calamari Bloom", "Lighting.Bloom")
+	slider(bloom, "Bloom Intensity", "Lighting.BloomIntensity", 0, 100, 100)
+	slider(bloom, "Bloom Size", "Lighting.BloomSize", 0, 1000)
+	slider(bloom, "Bloom Threshold", "Lighting.BloomThreshold", 0, 200, 100)
+
+	if menuOptions.Camera and menuOptions.Camera ~= "None" then
+		local cameraSection = section(left, "Calamari Camera")
+		if menuOptions.Camera == "Full" then
+			local fov = feature(cameraSection, "Calamari Field Of View", "Camera.CustomFOV")
+			slider(fov, "Calamari FOV Value", "Camera.FOV", 70, 120)
+			local zoom = feature(cameraSection, "Calamari Zoom", "Camera.Zoom")
+			slider(zoom, "Zoom Amount", "Camera.ZoomAmount", 20, 100)
+			bind(zoom, "Zoom Key", "Camera.ZoomKey")
+		end
+		local third = feature(cameraSection, "Calamari Third Person", "Camera.ThirdPerson")
+		slider(third, "Third Person Distance", "Camera.Distance", 5, 20)
+		bind(third, "Third Person Key", "Camera.ThirdPersonKey", function()
+			if _fFS["Calamari Third Person"] then
+				_fFS["Calamari Third Person"](not API.Get("Camera.ThirdPerson"))
+			end
+		end)
+	end
+end
+return mountBurmaldaCalamariMenu
+
+  end)()
+  mountCalamari(calamari, {Camera = "None"})
+end
+
+    -- Qwerty-equivalent controls, organized into the existing five tabs.
+    local extraRuntime = mainGame.extraFeatures
+    do
+      local lc, rc = getTab("COMBAT")
+      local aimbotSet = createFeature(lc, "Aimbot", cfg.Extra.Aimbot.Enabled, function(v)
+        extraRuntime.SetAimbot(v)
+      end)
+      addSlider(aimbotSet, "Aimbot FOV", 5, 180, cfg.Extra.Aimbot.FOV, function(v)
+        cfg.Extra.Aimbot.FOV = v
+      end)
+      addSlider(aimbotSet, "Aimbot Max Distance", 50, 20000, cfg.Extra.Aimbot.MaxDistance, function(v)
+        cfg.Extra.Aimbot.MaxDistance = v
+      end)
+      addSlider(aimbotSet, "Aimbot Speed", 1, 100, cfg.Extra.Aimbot.Speed, function(v)
+        cfg.Extra.Aimbot.Speed = v
+      end)
+      addBind(aimbotSet, "Aimbot Bind", "None", function()
+        if mainGame.Window then mainGame.Window:SetFeature("Aimbot", not cfg.Extra.Aimbot.Enabled) end
+      end)
+      createFeature(lc, "Aimbot Wall Check", cfg.Extra.Aimbot.WallCheck, function(v)
+        cfg.Extra.Aimbot.WallCheck = v
+      end)
+      createFeature(lc, "Aimbot NPCs", cfg.Extra.Aimbot.TargetNPCs, function(v)
+        cfg.Extra.Aimbot.TargetNPCs = v
+      end)
+      createFeature(lc, "Aimbot Players First", cfg.Extra.Aimbot.PriorityPlayers, function(v)
+        cfg.Extra.Aimbot.PriorityPlayers = v
+      end)
+      local aimbotFovSet = createFeature(lc, "Aimbot FOV Circle", cfg.Extra.Aimbot.ShowFOV, function(v)
+        cfg.Extra.Aimbot.ShowFOV = v
+      end)
+      addSlider(aimbotFovSet, "Aimbot FOV Thickness", 1, 10, cfg.Extra.Aimbot.FOVThickness, function(v)
+        cfg.Extra.Aimbot.FOVThickness = v
+      end)
+      addColor(aimbotFovSet, "Aimbot FOV Color", function(c) cfg.Extra.Aimbot.FOVColor = c end,
+        cfg.Extra.Aimbot.FOVColor)
+
+      local triggerSet = createFeature(rc, "Trigger Bot", cfg.Extra.Trigger.Enabled, function(v)
+        extraRuntime.SetTriggerBot(v)
+      end)
+      addSlider(triggerSet, "Reaction ms", 50, 1000, math.floor(cfg.Extra.Trigger.Delay * 1000 + 0.5),
+        function(v) cfg.Extra.Trigger.Delay = v / 1000 end)
+      addBind(triggerSet, "Trigger Bind", "None", function()
+        if mainGame.Window then mainGame.Window:SetFeature("Trigger Bot", not cfg.Extra.Trigger.Enabled) end
+      end)
+      createFeature(rc, "Trigger Use Silent", cfg.Extra.Trigger.UseSilent, function(v)
+        cfg.Extra.Trigger.UseSilent = v
+      end)
+      createFeature(rc, "Trigger Use Aimbot", cfg.Extra.Trigger.UseAimbot, function(v)
+        cfg.Extra.Trigger.UseAimbot = v
+      end)
+      createFeature(rc, "Trigger Visible Only", cfg.Extra.Trigger.RequireVisible, function(v)
+        cfg.Extra.Trigger.RequireVisible = v
+      end)
+      createFeature(rc, "Trigger Inside FOV", cfg.Extra.Trigger.RequireFOV, function(v)
+        cfg.Extra.Trigger.RequireFOV = v
+      end)
+    end
+
+    do
+      local lc, rc = getTab("VISUALS")
+      local skeletonSet = createFeature(lc, "Skeleton", cfg.ESP.Skeleton, function(v)
+        cfg.ESP.Skeleton = v
+      end)
+      addSlider(skeletonSet, "Skeleton Thickness", 1, 5, cfg.ESP.SkeletonThickness, function(v)
+        cfg.ESP.SkeletonThickness = v
+      end)
+      addColor(skeletonSet, "Skeleton Color", function(c) cfg.ESP.SkeletonColor = c end,
+        cfg.ESP.SkeletonColor)
+      createFeature(lc, "ESP Fade", cfg.ESP.Fade, function(v) cfg.ESP.Fade = v end)
+      createFeature(lc, "Visible Only ESP", cfg.ESP.VisibleOnly, function(v) cfg.ESP.VisibleOnly = v end)
+      createFeature(lc, "Visible Colors", cfg.ESP.VisibleColors, function(v) cfg.ESP.VisibleColors = v end)
+
+      local advanced = addControlGroup(lc, "ESP Advanced")
+      addSlider(advanced, "Box Thickness", 1, 5, cfg.ESP.BoxThickness, function(v)
+        cfg.ESP.BoxThickness = v
+      end)
+      addSlider(advanced, "Tracer Thickness", 1, 6, cfg.ESP.TracerThickness, function(v)
+        cfg.ESP.TracerThickness = v
+      end)
+      addSlider(advanced, "Text Scale", 5, 20, math.floor(cfg.ESP.TextScale * 10 + 0.5), function(v)
+        cfg.ESP.TextScale = v / 10
+      end)
+
+      local crosshairSet = createFeature(rc, "Crosshair", cfg.Extra.Crosshair.Enabled, function(v)
+        extraRuntime.SetCrosshair(v)
+      end)
+      addDropdown(crosshairSet, "Shape", {"Cross", "Star", "Circle", "Dot"},
+        cfg.Extra.Crosshair.Shape == "Star" and 2 or cfg.Extra.Crosshair.Shape == "Circle" and 3
+          or cfg.Extra.Crosshair.Shape == "Dot" and 4 or 1,
+        function(v) cfg.Extra.Crosshair.Shape = v end)
+      addSlider(crosshairSet, "Crosshair Size", 2, 40, cfg.Extra.Crosshair.Size, function(v)
+        cfg.Extra.Crosshair.Size = v
+      end)
+      addSlider(crosshairSet, "Crosshair Gap", 0, 30, cfg.Extra.Crosshair.Gap, function(v)
+        cfg.Extra.Crosshair.Gap = v
+      end)
+      addSlider(crosshairSet, "Crosshair Thickness", 1, 8, cfg.Extra.Crosshair.Thickness, function(v)
+        cfg.Extra.Crosshair.Thickness = v
+      end)
+      addSlider(crosshairSet, "Crosshair Spin", -180, 180, cfg.Extra.Crosshair.Spin, function(v)
+        cfg.Extra.Crosshair.Spin = v
+      end)
+      addColor(crosshairSet, "Crosshair Color", function(c) cfg.Extra.Crosshair.Color = c end,
+        cfg.Extra.Crosshair.Color)
+      local rgbSet = createFeature(rc, "Crosshair RGB", cfg.Extra.Crosshair.RGB, function(v)
+        cfg.Extra.Crosshair.RGB = v
+      end)
+      addSlider(rgbSet, "RGB Speed", 1, 20, cfg.Extra.Crosshair.RGBSpeed, function(v)
+        cfg.Extra.Crosshair.RGBSpeed = v
+      end)
+
+      local worldGroup = addControlGroup(rc, "World ESP")
+      local worldControls = {
+        { "Dropped Items ESP", "DroppedItems" },
+        { "Key Drops ESP", "KeyDrops" },
+        { "Offline Players ESP", "OfflinePlayers" },
+        { "ToolBox ESP", "ToolBox" },
+        { "Food Crate ESP", "FoodCrate" },
+        { "Large Crate ESP", "LargeCrate" },
+        { "Medbag ESP", "Medbag" },
+        { "Military ESP", "Military" },
+        { "SNTech ESP", "SNTech" },
+        { "Raider X ESP", "Raider" },
+      }
+      for _, control in ipairs(worldControls) do
+        local set = createFeature(worldGroup, control[1], cfg.Extra.ESP.Categories[control[2]], function(v)
+          extraRuntime.SetWorldESP(control[2], v)
+        end)
+        addColor(set, control[1] .. " Color", function(c)
+          cfg.Extra.ESP.Colors[control[2]] = c
+        end, cfg.Extra.ESP.Colors[control[2]])
+      end
+      local ghostSet = createFeature(worldGroup, "Ghost ESP", cfg.Extra.ESP.Categories.Ghost, function(v)
+        extraRuntime.SetWorldESP("Ghost", v)
+      end)
+      addSlider(ghostSet, "Ghost TTL", 5, 180, cfg.Extra.ESP.GhostTTL, function(v)
+        cfg.Extra.ESP.GhostTTL = v
+      end)
+      addSlider(ghostSet, "Ghost Max Distance", 100, 10000, cfg.Extra.ESP.GhostMaxDistance, function(v)
+        cfg.Extra.ESP.GhostMaxDistance = v
+      end)
+      addColor(ghostSet, "Ghost Color", function(c) cfg.Extra.ESP.Colors.Ghost = c end,
+        cfg.Extra.ESP.Colors.Ghost)
+      addSlider(worldGroup, "World Rescan ms", 250, 5000,
+        math.floor(cfg.Extra.ESP.ScanInterval * 1000 + 0.5), function(v)
+          cfg.Extra.ESP.ScanInterval = v / 1000
+        end)
+      addSlider(worldGroup, "World Max Targets", 16, 256, cfg.Extra.ESP.MaxTargets, function(v)
+        cfg.Extra.ESP.MaxTargets = v
+      end)
+    end
+
+    do
+      local lc, rc = getTab("MOVEMENT")
+      local noclipSet = createFeature(lc, "Noclip", cfg.Extra.Movement.Noclip, function(v)
+        extraRuntime.SetNoclip(v)
+      end)
+      addBind(noclipSet, "Noclip Bind", "None", function()
+        if mainGame.Window then mainGame.Window:SetFeature("Noclip", not cfg.Extra.Movement.Noclip) end
+      end)
+      local antiFallSet = createFeature(lc, "Anti-Fall", cfg.Extra.Movement.AntiFall, function(v)
+        extraRuntime.SetAntiFall(v)
+      end)
+      addBind(antiFallSet, "Anti-Fall Bind", "None", function()
+        if mainGame.Window then mainGame.Window:SetFeature("Anti-Fall", not cfg.Extra.Movement.AntiFall) end
+      end)
+      createFeature(lc, "Anti Spikes", cfg.Extra.Movement.AntiSpikes, function(v)
+        extraRuntime.SetAntiSpikes(v)
+      end)
+
+      local fovSet = createFeature(rc, "Custom FOV", cfg.Extra.Camera.CustomFOV, function(v)
+        extraRuntime.SetCustomFOV(v)
+      end)
+      addSlider(fovSet, "Custom FOV Value", 30, 120, cfg.Extra.Camera.FOV, function(v)
+        cfg.Extra.Camera.FOV = v
+      end)
+      local zoomSet = createFeature(rc, "Zoom", cfg.Extra.Camera.Zoom, function(v)
+        extraRuntime.SetZoom(v)
+      end)
+      addSlider(zoomSet, "Zoom FOV", 5, 70, cfg.Extra.Camera.ZoomFOV, function(v)
+        cfg.Extra.Camera.ZoomFOV = v
+      end)
+      addBind(zoomSet, "Zoom Bind", "None", function()
+        if mainGame.Window then mainGame.Window:SetFeature("Zoom", not cfg.Extra.Camera.Zoom) end
+      end)
+      local thirdSet = createFeature(rc, "Third Person", cfg.Extra.Camera.ThirdPerson, function(v)
+        extraRuntime.SetThirdPerson(v)
+      end)
+      addSlider(thirdSet, "Camera Distance", 2, 30, cfg.Extra.Camera.Distance, function(v)
+        cfg.Extra.Camera.Distance = v
+      end)
+      addSlider(thirdSet, "Camera Height", -5, 10, cfg.Extra.Camera.Height, function(v)
+        cfg.Extra.Camera.Height = v
+      end)
+      addSlider(thirdSet, "Camera Side", -10, 10, cfg.Extra.Camera.Side, function(v)
+        cfg.Extra.Camera.Side = v
+      end)
+      addSlider(thirdSet, "Camera Sensitivity", 1, 10,
+        math.floor(cfg.Extra.Camera.Sensitivity * 10 + 0.5), function(v)
+          cfg.Extra.Camera.Sensitivity = v / 10
+        end)
+      addBind(thirdSet, "Third Person Bind", "None", function()
+        if mainGame.Window then mainGame.Window:SetFeature("Third Person", not cfg.Extra.Camera.ThirdPerson) end
+      end)
+
+      local antiAimSet = createFeature(lc, "Anti-Aim", cfg.Extra.AntiAim.Enabled, function(v)
+        extraRuntime.SetAntiAim(v)
+      end)
+      addDropdown(antiAimSet, "Anti-Aim Type", {"Spin", "Jitter"},
+        cfg.Extra.AntiAim.Type == "Jitter" and 2 or 1, function(v) cfg.Extra.AntiAim.Type = v end)
+      addSlider(antiAimSet, "Spin Speed", 1, 50, cfg.Extra.AntiAim.SpinSpeed, function(v)
+        cfg.Extra.AntiAim.SpinSpeed = v
+      end)
+      addSlider(antiAimSet, "Jitter Range", 0, 45, cfg.Extra.AntiAim.Jitter, function(v)
+        cfg.Extra.AntiAim.Jitter = v
+      end)
+      local poseSet = createFeature(lc, "Pose Lock", cfg.Extra.Pose.Enabled, function(v)
+        extraRuntime.SetPose(v)
+      end)
+      addSlider(poseSet, "Pose Drop", 0, 50, math.floor(cfg.Extra.Pose.Drop * 10 + 0.5), function(v)
+        cfg.Extra.Pose.Drop = v / 10
+      end)
+      addSlider(poseSet, "Pose Pitch", -90, 90, cfg.Extra.Pose.Pitch, function(v)
+        cfg.Extra.Pose.Pitch = v
+      end)
+      addSlider(poseSet, "Pose Turn", -360, 360, cfg.Extra.Pose.Turn, function(v)
+        cfg.Extra.Pose.Turn = v
+      end)
+    end
+
+    do
+      local lc, rc = getTab("MISC")
+      createFeature(lc, "Remove Leafs", cfg.Extra.World.RemoveLeafs, function(v)
+        extraRuntime.SetVegetation("Leafs", v)
+      end)
+      createFeature(lc, "Remove Bushes", cfg.Extra.World.RemoveBushes, function(v)
+        extraRuntime.SetVegetation("Bushes", v)
+      end)
+    end
+
+
 
     -- CONFIG: JSON configs plus menu presentation and lifecycle teardown.
     do
@@ -6095,8 +9088,9 @@ end
     end
 
     local currentCamera3 = workspace.CurrentCamera
+    local fovCircleActive = cfg.Silent.Enabled and cfg.Silent.ShowFOV
 
-    if currentCamera3 then
+    if currentCamera3 and (fovCircleActive or (mainGame.fovCircle and mainGame.fovCircle.Visible)) then
       local v216, v217 = pcall(updateFovCircle, currentCamera3)
 
       if not v216 then
@@ -6105,11 +9099,20 @@ end
     end
 
     espAccumulator = espAccumulator + delta
+    local effectiveESPUpdateRate = cfg.ESP.UpdateRate or 30
+    if cfg.Misc.LowPC then
+      effectiveESPUpdateRate = math.min(effectiveESPUpdateRate, 10)
+    end
 
-    if espAccumulator < 1 / (cfg.ESP.UpdateRate or 30) then
+    if espAccumulator < 1 / effectiveESPUpdateRate then
       return
     else
       espAccumulator = 0
+      local playerEspActive = cfg.ESP.Enabled and (cfg.ESP.Players or cfg.ESP.NPCs)
+      if not playerEspActive and not cfg.ResourceESP.Enabled
+        and not mainGame.playerEspRendered and not mainGame.resourceEspRendered then
+        return
+      end
       perfRedraws = perfRedraws + 1
       local v218 = os.clock()
       local v219, v220 = pcall(renderEsp)
