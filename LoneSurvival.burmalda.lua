@@ -4592,8 +4592,12 @@ end
           if shotOrigin and (origin - shotOrigin).Magnitude > 25 then
             return old(self, ...)
           end
-          if type(params) ~= "table" or not params.IgnoreWater
-            or not containsInstance(params.FilterDescendantsInstances, localPlayer.Character) then
+          if params == nil then return old(self, ...) end
+          local paramsOk, ignoreWater, filterInstances = pcall(function()
+            return params.IgnoreWater, params.FilterDescendantsInstances
+          end)
+          if not paramsOk or not ignoreWater
+            or not containsInstance(filterInstances, localPlayer.Character) then
             return old(self, ...)
           end
           local position = target.position
@@ -5209,7 +5213,7 @@ end
 
       local function redirectVector(container, key, direction)
         if type(container) ~= "table" then return false end
-        local value = rawget(container, key)
+        local value = container[key]
         if typeof(value) ~= "Vector3" or value.Magnitude < 0.001 then return false end
         container[key] = direction.Unit * value.Magnitude
         return true
@@ -5217,12 +5221,12 @@ end
 
       local function redirectProjectile(data)
         if type(data) ~= "table" or data.FromServer or not cfg.Silent.Enabled then return end
-        local stats = rawget(data, "Stats")
+        local stats = data.Stats
         if type(stats) ~= "table" or data.ForceDown then return end
-        local kind = tostring(rawget(stats, "Type"))
+        local kind = tostring(stats.Type)
         local allowed, force, crosshair, lob, aimAll = projectileAllowed(kind, stats)
         if not allowed then return end
-        local drop = tonumber(rawget(stats, "Drop"))
+        local drop = tonumber(stats.Drop)
         if cfg.Silent.ExtendThrows and aimAll and drop and drop > 0 then
           local extended = {}
           for key, value in pairs(stats) do extended[key] = value end
@@ -5233,11 +5237,11 @@ end
           stats = extended
         end
         local camera = workspace.CurrentCamera
-        local origin = rawget(data, "Origin") or camera and camera.CFrame.Position
+        local origin = data.Origin or camera and camera.CFrame.Position
         if typeof(origin) ~= "Vector3" then return end
-        local speed = lob and (tonumber(rawget(stats, "Speed")) or 0) * 0.5
-          or tonumber(rawget(stats, "Velocity")) or 0
-        local gravity = lob and workspace.Gravity or tonumber(rawget(stats, "Drop")) or 0
+        local speed = lob and (tonumber(stats.Speed) or 0) * 0.5
+          or tonumber(stats.Velocity) or 0
+        local gravity = lob and workspace.Gravity or tonumber(stats.Drop) or 0
         local maxDistance = cfg.Silent.MaxDistance
         if gravity > 0 and speed > 0 then
           local doubledSpeed = speed * 2
@@ -5304,9 +5308,9 @@ end
           mainGame.stats.shots = mainGame.stats.shots + 1
           if type(data) == "table" and not data.FromServer then
             mainGame.stats.localShots = (mainGame.stats.localShots or 0) + 1
-            local shotStats = rawget(data, "Stats")
+            local shotStats = data.Stats
             if type(shotStats) == "table" then
-              local kind = tostring(rawget(shotStats, "Type"))
+              local kind = tostring(shotStats.Type)
               mainGame.stats.types = mainGame.stats.types or {}
               mainGame.stats.types[kind] = (mainGame.stats.types[kind] or 0) + 1
             end
@@ -5355,7 +5359,16 @@ end
       addRestore(restoreAmogusSilent)
 
       local function installAmogusSilent()
-        if state.silentInstalled and state.silentMode then return true end
+        if state.silentInstalled and state.silentMode == "projectile"
+          and mainGame.hooked and mainGame.projectileDirect and mainGame.projModule
+          and mainGame.projModule.New == mainGame.projectileWrapper then
+          return true
+        end
+        if state.silentInstalled and state.silentMode == "raycast" and state.raycastInstalled then
+          return true
+        end
+        state.silentInstalled = false
+        state.silentMode = nil
         local projectileOk, projectileError = installProjectileHook()
         if projectileOk == true then
           restoreRaycastHooks()
