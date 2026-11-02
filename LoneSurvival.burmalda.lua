@@ -8364,11 +8364,13 @@ function API.Update(dt)
 	ok, err = pcall(updatePlayers, now); if not ok then API.Diagnostics.PlayerError = tostring(err) end
 	ok, err = pcall(updateWorld, now); if not ok then API.Diagnostics.WorldError = tostring(err) end
 	ok, err = pcall(updateViewmodels, now); if not ok then API.Diagnostics.ViewmodelError = tostring(err) end
-	lightingClock += step
-	if lightingClock >= 0.2 or API.Diagnostics.LightingDirty then
-		lightingClock = 0
-		API.Diagnostics.LightingDirty = nil
-		ok, err = pcall(updateLighting); if not ok then API.Diagnostics.LightingError = tostring(err) end
+	if options.Lighting == true then
+		lightingClock += step
+		if lightingClock >= 0.2 or API.Diagnostics.LightingDirty then
+			lightingClock = 0
+			API.Diagnostics.LightingDirty = nil
+			ok, err = pcall(updateLighting); if not ok then API.Diagnostics.LightingError = tostring(err) end
+		end
 	end
 end
 function API.Unload()
@@ -8400,6 +8402,7 @@ return createBurmaldaCalamariVisuals
     Game = "Lone Survival",
     State = cfg.Calamari,
     Camera = "None",
+    Lighting = false,
     IsActive = function() return not Runtime.Unloaded and not mainGame.unloaded end,
     IsLowPC = function() return cfg.Misc.LowPC == true end,
     Adapter = {
@@ -8585,43 +8588,6 @@ local function mountBurmaldaCalamariMenu(API, menuOptions)
 	color(effects, "Hit Effect Color 2", "HitEffects.Color2")
 	feature(vfxSection, "Calamari Hit Notifications", "HitNotifications.Enabled")
 
-	local lightSection = section(left, "Calamari Lighting")
-	local cloudDensity = feature(lightSection, "Calamari Cloud Density", "Lighting.CloudDensity")
-	slider(cloudDensity, "Density", "Lighting.CloudDensityValue", 0, 1000, 1000)
-	local cloudCover = feature(lightSection, "Calamari Cloud Cover", "Lighting.CloudCover")
-	slider(cloudCover, "Cover", "Lighting.CloudCoverValue", 0, 1000, 1000)
-	local cloudColor = feature(lightSection, "Calamari Cloud Color", "Lighting.CloudColor")
-	color(cloudColor, "Cloud Color", "Lighting.CloudColorValue")
-	feature(lightSection, "Calamari No Fog", "Lighting.NoFog")
-	local fogDensity = feature(lightSection, "Calamari Fog Density", "Lighting.FogDensity")
-	slider(fogDensity, "Fog Density", "Lighting.FogDensityValue", 0, 1000, 1000)
-	local fogHaze = feature(lightSection, "Calamari Fog Haze", "Lighting.FogHaze")
-	slider(fogHaze, "Haze", "Lighting.FogHazeValue", 0, 1000, 1000)
-	local fogGlare = feature(lightSection, "Calamari Fog Glare", "Lighting.FogGlare")
-	slider(fogGlare, "Glare", "Lighting.FogGlareValue", 0, 1000, 1000)
-	local fogColor = feature(lightSection, "Calamari Fog Color", "Lighting.FogColor")
-	color(fogColor, "Fog Color", "Lighting.FogColorValue")
-	local fullbright = feature(lightSection, "Calamari Fullbright", "Lighting.Fullbright")
-	slider(fullbright, "Brightness", "Lighting.Brightness", 0, 60, 10)
-	local ambient = feature(lightSection, "Calamari Ambient", "Lighting.Ambient")
-	color(ambient, "Ambient Color", "Lighting.AmbientColor")
-	local time = feature(lightSection, "Calamari Time Changer", "Lighting.Time")
-	slider(time, "Clock Time", "Lighting.TimeValue", 0, 240, 10)
-	local sky = feature(lightSection, "Calamari Skybox", "Lighting.Skybox")
-	local skyNames = {}
-	for name in pairs(API.Skyboxes) do skyNames[#skyNames + 1] = name end
-	table.sort(skyNames)
-	dropdown(sky, "Skybox Preset", "Lighting.SkyboxPreset", skyNames)
-
-	local postSection = section(right, "Calamari Lighting FX")
-	local sun = feature(postSection, "Calamari Sun Rays", "Lighting.SunRays")
-	slider(sun, "Sun Intensity", "Lighting.SunIntensity", 0, 50, 10)
-	slider(sun, "Sun Spread", "Lighting.SunSpread", 0, 10, 10)
-	local bloom = feature(postSection, "Calamari Bloom", "Lighting.Bloom")
-	slider(bloom, "Bloom Intensity", "Lighting.BloomIntensity", 0, 100, 100)
-	slider(bloom, "Bloom Size", "Lighting.BloomSize", 0, 1000)
-	slider(bloom, "Bloom Threshold", "Lighting.BloomThreshold", 0, 200, 100)
-
 	if menuOptions.Camera and menuOptions.Camera ~= "None" then
 		local cameraSection = section(left, "Calamari Camera")
 		if menuOptions.Camera == "Full" then
@@ -8643,7 +8609,7 @@ end
 return mountBurmaldaCalamariMenu
 
   end)()
-  mountCalamari(calamari, {Camera = "None"})
+  mountCalamari(calamari, {Camera = "None", Lighting = false})
 end
 
     -- Qwerty-equivalent controls, organized into the existing five tabs.
