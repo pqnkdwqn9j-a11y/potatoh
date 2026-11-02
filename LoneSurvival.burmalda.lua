@@ -141,30 +141,30 @@ if integrityOk then
 
   v79[v80] = mainGame.cfg or {
     ESP = {
-      Enabled = true,
-      Players = true,
-      NPCs = true,
+      Enabled = false,
+      Players = false,
+      NPCs = false,
       MaxDistance = 1500,
-      Box = true,
+      Box = false,
       BoxFill = false,
-      Name = true,
-      Health = true,
-      Distance = true,
+      Name = false,
+      Health = false,
+      Distance = false,
       Tracer = false,
       PlayerColor = Color3.fromRGB(255, 70, 70),
       NPCColor = Color3.fromRGB(255, 170, 40),
     },
     Silent = {
-      Enabled = true,
+      Enabled = false,
       FOV = 120,
       MaxDistance = 10000,
       AimPart = "Head",
       VisibleOnly = false,
-      Prediction = true,
-      TargetNPCs = true,
-      PriorityPlayers = true,
+      Prediction = false,
+      TargetNPCs = false,
+      PriorityPlayers = false,
     },
-    Misc = { PerfOverlay = true, Fullbright = true },
+    Misc = { PerfOverlay = false, Fullbright = false },
   }
 
   cfg = mainGame.cfg
@@ -186,15 +186,15 @@ if integrityOk then
   end
 
   if cfg.Misc.PerfOverlay == nil then
-    cfg.Misc.PerfOverlay = true
+    cfg.Misc.PerfOverlay = false
   end
 
   if cfg.Misc.Fullbright == nil then
-    cfg.Misc.Fullbright = true
+    cfg.Misc.Fullbright = false
   end
 
   if cfg.Silent.ShowFOV == nil then
-    cfg.Silent.ShowFOV = true
+    cfg.Silent.ShowFOV = false
   end
 
   if cfg.Silent.FOVColor == nil then
@@ -221,11 +221,11 @@ if integrityOk then
   cfg.Silent.LobTypes = { Grenade = true }
 
   if cfg.Silent.AimAll == nil then
-    cfg.Silent.AimAll = true
+    cfg.Silent.AimAll = false
   end
 
   if cfg.Silent.ExtendThrows == nil then
-    cfg.Silent.ExtendThrows = true
+    cfg.Silent.ExtendThrows = false
   end
 
   cfg.Silent.SpeedBoost = nil
@@ -2127,6 +2127,9 @@ local gunFeatures = {
 	["Full Auto"] = true, ["Melee Mods"] = true, ["Hitbox Expander"] = true,
 	["No Spread"] = true, ["Always Shoot"] = true, ["No Slowdown"] = true,
 	["Force Headshots"] = true,
+    ["Instant Equip"] = true, ["Shoot While Sprinting"] = true,
+    ["Reload While Sprinting"] = true, ["Instant Reload"] = true,
+    ["Auto Reload"] = true, ["Fast Bow"] = true, ["Instant Eoka"] = true,
 }
 local worldFeatures = {
 	["Custom FOV"] = true, ["Night Mode"] = true, ["Night Vision"] = true, ["Low PC"] = true,
@@ -2174,15 +2177,15 @@ local featureTabOverrides = {
 	["Target HUD"] = "VISUALS", ["Hit Logs"] = "VISUALS",
 	["Hitmarker"] = "VISUALS", ["Damage FX"] = "VISUALS",
 	["Reload Indicator"] = "VISUALS", ["Bullet Tracers"] = "VISUALS",
-	["FOV Circle"] = "VISUALS", ["Dynamic FOV"] = "VISUALS",
-	["Snapline"] = "VISUALS", ["Target Indicator"] = "VISUALS",
+	["FOV Circle"] = "COMBAT", ["Dynamic FOV"] = "COMBAT",
+	["Snapline"] = "COMBAT", ["Target Indicator"] = "VISUALS",
 	["FOV Changer"] = "VISUALS", ["Zoom"] = "VISUALS",
 	["Aim All Projectiles"] = "COMBAT", ["Extend Throws"] = "COMBAT",
 	["Night Mode"] = "MISC", ["Night Vision"] = "MISC", ["Low PC"] = "MISC",
 	["Fullbright"] = "MISC", ["No Decoration"] = "MISC", ["Sky Color"] = "MISC",
 	["Skybox"] = "MISC", ["Delete Spikes"] = "MISC", ["Delete Leaves"] = "MISC",
 	["Custom Models"] = "MISC", ["Custom Fog"] = "MISC", ["Custom Water"] = "MISC",
-	["X-Ray"] = "MISC", ["Remove Fog"] = "MISC", ["Remove Grass"] = "MISC",
+	["X-Ray"] = "VISUALS", ["Remove Fog"] = "MISC", ["Remove Grass"] = "MISC",
 	["Remove Shadows"] = "MISC",
 }
 
@@ -3286,7 +3289,7 @@ end
         TracerColor = Color3.fromRGB(255, 255, 255),
         HealthBarSide = "Side",
         HealthNumber = false,
-        HealthDynamicColor = true,
+        HealthDynamicColor = false,
         HealthColor = Color3.fromRGB(80, 220, 100),
         Chams = false,
         ChamsFillColor = Color3.fromRGB(255, 70, 70),
@@ -3304,13 +3307,13 @@ end
         MaxDistance = 1500,
         ScanInterval = 1,
         MaxTargets = 128,
-        Boxes = true,
-        Names = true,
-        Distance = true,
-        Cloth = true,
-        Iron = true,
-        Sulfur = true,
-        Stone = true,
+        Boxes = false,
+        Names = false,
+        Distance = false,
+        Cloth = false,
+        Iron = false,
+        Sulfur = false,
+        Stone = false,
         BodyBag = false,
         ClothColor = Color3.fromRGB(235, 220, 180),
         IronColor = Color3.fromRGB(170, 190, 210),
@@ -3985,6 +3988,9 @@ end
       Fly = false,
       FlySpeed = 50,
       InfiniteJump = false,
+      Freecam = false,
+      FreecamSpeed = 50,
+      FreecamSensitivity = 0.2,
     }
     for key, value in pairs(movementDefaults) do
       if cfg.Movement[key] == nil then cfg.Movement[key] = value end
@@ -4015,6 +4021,151 @@ end
           pcall(function() movement.flyBody:Destroy() end)
           movement.flyBody = nil
         end
+      end
+
+      local freecam = { active = false }
+      local freecamBindingName = "MG_LoneFreecam"
+      local freecamActionName = "BurmaldaLoneFreecamMovement"
+      local contextActionService = game:GetService("ContextActionService")
+      movement.freecam = freecam
+      movement.freecamBindingName = freecamBindingName
+
+      local function restoreFreecamMouse()
+        if freecam.originalMouseBehavior ~= nil then
+          pcall(function() UIS.MouseBehavior = freecam.originalMouseBehavior end)
+        end
+        if freecam.originalMouseIcon ~= nil then
+          pcall(function() UIS.MouseIconEnabled = freecam.originalMouseIcon end)
+        end
+      end
+
+      function movement.StopFreecam()
+        if not freecam.active then return end
+        freecam.active = false
+        pcall(function() runService:UnbindFromRenderStep(freecamBindingName) end)
+        if contextActionService then
+          pcall(function() contextActionService:UnbindAction(freecamActionName) end)
+        end
+        local currentCamera = workspace.CurrentCamera
+        local camera = freecam.camera or currentCamera
+        if camera then
+          pcall(function() camera.CameraType = freecam.originalCameraType or Enum.CameraType.Custom end)
+          if freecam.originalCameraSubject ~= nil then
+            pcall(function() camera.CameraSubject = freecam.originalCameraSubject end)
+          end
+          if camera == currentCamera and freecam.originalCFrame then
+            pcall(function() camera.CFrame = freecam.originalCFrame end)
+          end
+        end
+        restoreFreecamMouse()
+        freecam.camera = nil
+        freecam.originalCameraType = nil
+        freecam.originalCameraSubject = nil
+        freecam.originalCFrame = nil
+        freecam.originalMouseBehavior = nil
+        freecam.originalMouseIcon = nil
+      end
+
+      function movement.UpdateFreecam(dt)
+        if not freecam.active then return end
+        if not cfg.Movement.Freecam or mainGame.unloaded then
+          movement.StopFreecam()
+          return
+        end
+        local camera = workspace.CurrentCamera
+        if not camera then return end
+        if camera ~= freecam.camera then
+          movement.StopFreecam()
+          movement.SetFreecam(true)
+          return
+        end
+        if camera.CameraType ~= Enum.CameraType.Scriptable then
+          pcall(function() camera.CameraType = Enum.CameraType.Scriptable end)
+        end
+
+        local menuIsOpen = menuOpen == true
+        pcall(function()
+          UIS.MouseBehavior = menuIsOpen and Enum.MouseBehavior.Default or Enum.MouseBehavior.LockCenter
+          UIS.MouseIconEnabled = menuIsOpen
+        end)
+        local rotation = CFrame.fromEulerAnglesYXZ(freecam.pitch, freecam.yaw, 0)
+        if not menuIsOpen then
+          local delta = Vector2.new(0, 0)
+          if type(UIS.GetMouseDelta) == "function" then
+            local ok, value = pcall(function() return UIS:GetMouseDelta() end)
+            if ok and typeof(value) == "Vector2" then delta = value end
+          end
+          local sensitivity = (tonumber(cfg.Movement.FreecamSensitivity) or 0.2) * 0.01
+          freecam.yaw = freecam.yaw - delta.X * sensitivity
+          freecam.pitch = math.clamp(freecam.pitch - delta.Y * sensitivity, -1.45, 1.45)
+          rotation = CFrame.fromEulerAnglesYXZ(freecam.pitch, freecam.yaw, 0)
+
+          local direction = Vector3.zero
+          if UIS:IsKeyDown(Enum.KeyCode.W) then direction = direction + Vector3.new(0, 0, -1) end
+          if UIS:IsKeyDown(Enum.KeyCode.S) then direction = direction + Vector3.new(0, 0, 1) end
+          if UIS:IsKeyDown(Enum.KeyCode.A) then direction = direction + Vector3.new(-1, 0, 0) end
+          if UIS:IsKeyDown(Enum.KeyCode.D) then direction = direction + Vector3.new(1, 0, 0) end
+          if UIS:IsKeyDown(Enum.KeyCode.Space) then direction = direction + Vector3.new(0, 1, 0) end
+          if UIS:IsKeyDown(Enum.KeyCode.LeftControl) then direction = direction + Vector3.new(0, -1, 0) end
+          if direction.Magnitude > 0 then
+            local speed = tonumber(cfg.Movement.FreecamSpeed) or 50
+            if UIS:IsKeyDown(Enum.KeyCode.LeftShift) then speed = speed * 3 end
+            local step = math.clamp(tonumber(dt) or 0, 0, 0.1)
+            freecam.position = freecam.position + rotation:VectorToWorldSpace(direction.Unit) * speed * step
+          end
+        end
+        camera.CFrame = CFrame.new(freecam.position) * rotation
+      end
+
+      function movement.StartFreecam()
+        if freecam.active then return true end
+        local camera = workspace.CurrentCamera
+        if not camera then return false end
+        freecam.camera = camera
+        freecam.originalCameraType = camera.CameraType
+        freecam.originalCameraSubject = camera.CameraSubject
+        freecam.originalCFrame = camera.CFrame
+        freecam.originalMouseBehavior = UIS.MouseBehavior
+        freecam.originalMouseIcon = UIS.MouseIconEnabled
+        freecam.position = camera.CFrame.Position
+        local look = camera.CFrame.LookVector
+        freecam.yaw = math.atan2(-look.X, -look.Z)
+        freecam.pitch = math.asin(math.clamp(look.Y, -1, 1))
+        freecam.active = true
+        camera.CameraType = Enum.CameraType.Scriptable
+        local cameraPriority = (tonumber(Enum.RenderPriority.Camera.Value) or 200) + 1
+        local bound, bindError = pcall(function()
+          runService:BindToRenderStep(freecamBindingName, cameraPriority, function(dt)
+            movement.UpdateFreecam(dt)
+          end)
+        end)
+        if not bound then
+          movement.StopFreecam()
+          mainGame.movementError = "Freecam: " .. tostring(bindError)
+          return false
+        end
+        if contextActionService then
+          pcall(function()
+            contextActionService:BindActionAtPriority(freecamActionName, function()
+              return Enum.ContextActionResult.Sink
+            end, false, Enum.ContextActionPriority.High.Value,
+              Enum.PlayerActions.CharacterForward, Enum.PlayerActions.CharacterBackward,
+              Enum.PlayerActions.CharacterLeft, Enum.PlayerActions.CharacterRight,
+              Enum.PlayerActions.CharacterJump)
+          end)
+        end
+        movement.UpdateFreecam(0)
+        return true
+      end
+
+      function movement.SetFreecam(enabled)
+        cfg.Movement.Freecam = enabled == true
+        if cfg.Movement.Freecam then
+          if not movement.StartFreecam() then cfg.Movement.Freecam = false end
+        else
+          movement.StopFreecam()
+        end
+        return cfg.Movement.Freecam
       end
 
       function movement.Unbind()
@@ -4157,6 +4308,8 @@ end
       end
 
       mainGame.movementCleanup = function()
+        -- Reinit must preserve the user's enabled setting; Unload clears it later.
+        pcall(movement.StopFreecam)
         movement.Active = false
         pcall(movement.Unbind)
         if mainGame.movement == movement then mainGame.movement = nil end
@@ -4178,12 +4331,15 @@ end
         if movement.Active and not mainGame.unloaded then
           local ok, err = pcall(movement.Bind, character)
           if not ok then mainGame.movementError = tostring(err) end
+          if cfg.Movement.Freecam then movement.SetFreecam(true) end
         end
       end))
       trackConnection(localPlayer.CharacterRemoving:Connect(function(character)
+        if freecam.active then movement.StopFreecam() end
         if movement.char == character then movement.Unbind() end
       end))
       movement.Bind(localPlayer.Character)
+      if cfg.Movement.Freecam then movement.SetFreecam(true) end
     end
 
 
@@ -4195,7 +4351,7 @@ end
         IgnoreDowned = false,
         Snapline = false,
         SnaplineColor = Color3.fromRGB(255, 255, 255),
-        DynamicFOV = true,
+        DynamicFOV = false,
       }
       for key, value in pairs(silentDefaults) do
         if cfg.Silent[key] == nil then cfg.Silent[key] = value end
@@ -4232,15 +4388,21 @@ end
         NoFall = false,
         SilentWalk = false,
         RemoveGrass = false,
-        DetectionNotifier = true,
+        DetectionNotifier = false,
         KeybindList = false,
       }
       for key, value in pairs(localDefaults) do
         if cfg.LocalFeatures[key] == nil then cfg.LocalFeatures[key] = value end
       end
+      if cfg.Misc.XRay == nil then cfg.Misc.XRay = false end
+      if type(cfg.Misc.XRayTransparency) ~= "number" then
+        cfg.Misc.XRayTransparency = 0.5
+      else
+        cfg.Misc.XRayTransparency = math.clamp(cfg.Misc.XRayTransparency, 0, 0.9)
+      end
 
       cfg.Remote = cfg.Remote or {}
-      local remoteDefaults = { BlockChecks = true, BlockProjectile = false, BlockRecoil = true }
+      local remoteDefaults = { BlockChecks = false, BlockProjectile = false, BlockRecoil = false }
       for key, value in pairs(remoteDefaults) do
         if cfg.Remote[key] == nil then cfg.Remote[key] = value end
       end
@@ -4309,6 +4471,76 @@ end
           pcall(setfflag, "FRMMaxGrassDistance", originals.max or "290")
         end
       end
+
+      -- Building-only X-Ray. Matching parts are cached with their own original
+      -- transparency; characters, resources and unrelated map parts are ignored.
+      local xrayCache = setmetatable({}, { __mode = "k" })
+      local xrayScanId = 0
+      local xrayNames = { "TwigWall", "SoloTwigFrame", "TrigTwigRoof", "TwigFrame", "TwigWindow", "TwigRoof" }
+      local function isXRayPart(object)
+        if not object or not object:IsA("BasePart") then return false end
+        for _, keyword in ipairs(xrayNames) do
+          if string.find(object.Name, keyword, 1, true) then return true end
+        end
+        return false
+      end
+      local function registerXRay(object)
+        if not cfg.Misc.XRay or not state.Active or not object.Parent
+          or not isXRayPart(object) or xrayCache[object] then return end
+        if (tonumber(object.Transparency) or 0) >= 0.95 then return end
+        xrayCache[object] = object.Transparency
+        pcall(function() object.Transparency = cfg.Misc.XRayTransparency end)
+      end
+      local function restoreXRay()
+        xrayScanId = xrayScanId + 1
+        for object, transparency in pairs(xrayCache) do
+          if object and object.Parent then
+            pcall(function() object.Transparency = transparency end)
+          end
+        end
+        table.clear(xrayCache)
+      end
+      local function scanXRay()
+        if not cfg.Misc.XRay or not state.Active then return end
+        xrayScanId = xrayScanId + 1
+        local scanId = xrayScanId
+        local descendants = workspace:GetDescendants()
+        local index = 1
+        local function processBatch()
+          if scanId ~= xrayScanId or not cfg.Misc.XRay or not state.Active then return end
+          local last = math.min(index + 249, #descendants)
+          while index <= last do
+            pcall(registerXRay, descendants[index])
+            index = index + 1
+          end
+          if index <= #descendants then task.defer(processBatch) end
+        end
+        processBatch()
+      end
+      local function setXRay(enabled)
+        cfg.Misc.XRay = enabled == true
+        if cfg.Misc.XRay then scanXRay() else restoreXRay() end
+      end
+      local function setXRayTransparency(value)
+        cfg.Misc.XRayTransparency = math.clamp((tonumber(value) or 0.5), 0, 0.9)
+        if cfg.Misc.XRay then
+          for object in pairs(xrayCache) do
+            if object and object.Parent then
+              pcall(function() object.Transparency = cfg.Misc.XRayTransparency end)
+            end
+          end
+        end
+      end
+      state.SetXRay = setXRay
+      state.SetXRayTransparency = setXRayTransparency
+      state.ScanXRay = scanXRay
+      state.RestoreXRay = restoreXRay
+      state.IsXRayPart = isXRayPart
+      state.XRayCache = xrayCache
+      addRestore(restoreXRay)
+      trackConnection(workspace.DescendantAdded:Connect(function(object)
+        if cfg.Misc.XRay and state.Active then pcall(registerXRay, object) end
+      end))
 
       mainGame.extendedCleanups[#mainGame.extendedCleanups + 1] = function()
         state.Active = false
@@ -5185,6 +5417,7 @@ end
         cfg.Movement.HighJump = false
         cfg.Movement.Fly = false
         cfg.Movement.InfiniteJump = false
+        cfg.Movement.Freecam = false
       end
       if mainGame.hooked and mainGame.projModule and mainGame.origNew then
         local restored = pcall(function()
@@ -5199,6 +5432,7 @@ end
       cfg.Silent.Enabled = false
       cfg.ESP.Enabled = false
       cfg.ResourceESP.Enabled = false
+      cfg.Misc.XRay = false
       -- Each cleanup stage is isolated: one failure must not skip the menu,
       -- drawings, lighting restore or global-reference teardown.
       pcall(function() setFullbright(false) end)
@@ -5238,6 +5472,9 @@ end
       addDropdown(silentSet, "Aim Part", {"Head", "Body"},
         cfg.Silent.AimPart == "Body" and 2 or 1,
         function(v) cfg.Silent.AimPart = v end)
+      addBind(silentSet, "Silent Bind", "None", function()
+        if mainGame.Window then mainGame.Window:SetFeature("Silent Aim", not cfg.Silent.Enabled) end
+      end)
       createFeature(lc, "Team Check", cfg.Silent.TeamCheck, function(v) cfg.Silent.TeamCheck = v end)
       createFeature(lc, "Ignore Downed", cfg.Silent.IgnoreDowned, function(v)
         cfg.Silent.IgnoreDowned = v
@@ -5251,8 +5488,14 @@ end
       createFeature(lc, "Prediction", cfg.Silent.Prediction, function(v)
         cfg.Silent.Prediction = v
       end)
+      createFeature(lc, "Aim All Projectiles", cfg.Silent.AimAll, function(v)
+        cfg.Silent.AimAll = v
+      end)
+      createFeature(lc, "Extend Throws", cfg.Silent.ExtendThrows, function(v)
+        cfg.Silent.ExtendThrows = v
+      end)
 
-      local snaplineSet = createFeature(rc, "Snapline", cfg.Silent.Snapline, function(v)
+      local snaplineSet = createFeature(lc, "Snapline", cfg.Silent.Snapline, function(v)
         cfg.Silent.Snapline = v
       end)
       addColor(snaplineSet, "Snapline Color", function(c) cfg.Silent.SnaplineColor = c end,
@@ -5268,11 +5511,11 @@ end
       createFeature(lc, "Dynamic FOV", cfg.Silent.DynamicFOV, function(v)
         cfg.Silent.DynamicFOV = v
       end)
-      createFeature(rc, "Players First", cfg.Silent.PriorityPlayers, function(v)
+      createFeature(lc, "Players First", cfg.Silent.PriorityPlayers, function(v)
         cfg.Silent.PriorityPlayers = v
       end)
 
-      local weaponGroup = addControlGroup(lc, "Weapon Mods")
+      local weaponGroup = addControlGroup(rc, "Weapon Mods")
       addSlider(weaponGroup, "Recoil", 0, 100, cfg.WeaponMods.Recoil, function(v)
         cfg.WeaponMods.Recoil = v
       end)
@@ -5282,13 +5525,13 @@ end
       addSlider(weaponGroup, "Fire Rate", 1, 10, cfg.WeaponMods.FireRate, function(v)
         cfg.WeaponMods.FireRate = v
       end)
-      createFeature(lc, "Instant Equip", cfg.WeaponMods.InstantEquip, function(v)
+      createFeature(rc, "Instant Equip", cfg.WeaponMods.InstantEquip, function(v)
         cfg.WeaponMods.InstantEquip = v
       end)
-      createFeature(lc, "Shoot While Sprinting", cfg.WeaponMods.ShootSprinting, function(v)
+      createFeature(rc, "Shoot While Sprinting", cfg.WeaponMods.ShootSprinting, function(v)
         cfg.WeaponMods.ShootSprinting = v
       end)
-      createFeature(lc, "Reload While Sprinting", cfg.WeaponMods.ReloadSprinting, function(v)
+      createFeature(rc, "Reload While Sprinting", cfg.WeaponMods.ReloadSprinting, function(v)
         cfg.WeaponMods.ReloadSprinting = v
       end)
       createFeature(rc, "Instant Reload", cfg.WeaponMods.InstantReload, function(v)
@@ -5304,22 +5547,24 @@ end
         cfg.WeaponMods.InstantEoka = v
       end)
 
-      createFeature(rc, "Block AC Checks", cfg.Remote.BlockChecks, function(v)
+      local remoteGroup = addControlGroup(rc, "Remote")
+      createFeature(remoteGroup, "Block AC Checks", cfg.Remote.BlockChecks, function(v)
         cfg.Remote.BlockChecks = v
       end)
-      createFeature(rc, "Block Projectile Remote", cfg.Remote.BlockProjectile, function(v)
+      createFeature(remoteGroup, "Block Projectile Remote", cfg.Remote.BlockProjectile, function(v)
         cfg.Remote.BlockProjectile = v
       end)
-      createFeature(rc, "Block Recoil Remote", cfg.Remote.BlockRecoil, function(v)
+      createFeature(remoteGroup, "Block Recoil Remote", cfg.Remote.BlockRecoil, function(v)
         cfg.Remote.BlockRecoil = v
       end)
 
-      local ignoreApi = addMultiDropdown(rc, "Ignore Players", getPlayerNames(),
+      local ignoreGroup = addControlGroup(rc, "Ignore Players")
+      local ignoreApi = addMultiDropdown(ignoreGroup, "Ignore Players", getPlayerNames(),
         cfg.Silent.IgnorePlayers, function(v) cfg.Silent.IgnorePlayers = v end)
       mainGame.friendDropdown = ignoreApi
-      addButton(rc, "Ignore all players", function() ignoreApi.SelectAll() end)
-      addButton(rc, "Clear ignore list", function() ignoreApi.Clear() end)
-      addButton(rc, "Refresh player list", function() ignoreApi.Refresh(getPlayerNames()) end)
+      addButton(ignoreGroup, "Ignore all players", function() ignoreApi.SelectAll() end)
+      addButton(ignoreGroup, "Clear ignore list", function() ignoreApi.Clear() end)
+      addButton(ignoreGroup, "Refresh player list", function() ignoreApi.Refresh(getPlayerNames()) end)
     end
 
     -- VISUALS: our rost-style renderer, with resources isolated from aim targets.
@@ -5339,6 +5584,9 @@ end
         math.floor((cfg.ESP.ScanInterval or 0.15) * 1000), function(v)
           cfg.ESP.ScanInterval = v / 1000
         end)
+      addBind(espSet, "ESP Bind", "None", function()
+        if mainGame.Window then mainGame.Window:SetFeature("ESP", not cfg.ESP.Enabled) end
+      end)
       createFeature(lc, "Players", cfg.ESP.Players, function(v) cfg.ESP.Players = v end)
       createFeature(lc, "ESP Team Check", cfg.ESP.TeamCheck, function(v) cfg.ESP.TeamCheck = v end)
       createFeature(lc, "NPC / Bots", cfg.ESP.NPCs, function(v) cfg.ESP.NPCs = v end)
@@ -5380,6 +5628,22 @@ end
       addSlider(chamsSet, "Outline Alpha", 0, 9,
         math.floor(cfg.ESP.ChamsOutlineTransparency * 10 + 0.5),
         function(v) cfg.ESP.ChamsOutlineTransparency = v / 10 end)
+
+      local xraySet = createFeature(rc, "X-Ray", cfg.Misc.XRay, function(v)
+        cfg.Misc.XRay = v
+        if mainGame.amogus then mainGame.amogus.SetXRay(v) end
+      end)
+      addSlider(xraySet, "Transparency", 0, 9,
+        math.floor(cfg.Misc.XRayTransparency * 10 + 0.5), function(v)
+          if mainGame.amogus then
+            mainGame.amogus.SetXRayTransparency(v / 10)
+          else
+            cfg.Misc.XRayTransparency = v / 10
+          end
+        end)
+      addBind(xraySet, "X-Ray Bind", "None", function()
+        if mainGame.Window then mainGame.Window:SetFeature("X-Ray", not cfg.Misc.XRay) end
+      end)
 
       local resourceSet = createFeature(rc, "Resource ESP", cfg.ResourceESP.Enabled,
         function(v) cfg.ResourceESP.Enabled = v end)
@@ -5443,16 +5707,29 @@ end
         cfg.Movement.FlySpeed = v
         updateMovement()
       end)
+      addBind(flySet, "Fly Bind", "None", function()
+        if mainGame.Window then mainGame.Window:SetFeature("Fly", not cfg.Movement.Fly) end
+      end)
       createFeature(lc, "Infinite Jump", cfg.Movement.InfiniteJump, function(v)
         cfg.Movement.InfiniteJump = v
       end)
-      addLabel(lc, "Fly: WASD + Space up / LeftControl down. Movement restores on disable and Unload.")
-      createFeature(rc, "Aim All Projectiles", cfg.Silent.AimAll, function(v)
-        cfg.Silent.AimAll = v
+      addLabel(lc, "Fly: WASD + Space / LeftControl.")
+
+      local freecamSet = createFeature(rc, "Freecam", cfg.Movement.Freecam, function(v)
+        cfg.Movement.Freecam = v
+        if mainGame.movement then mainGame.movement.SetFreecam(v) end
       end)
-      createFeature(rc, "Extend Throws", cfg.Silent.ExtendThrows, function(v)
-        cfg.Silent.ExtendThrows = v
+      addSlider(freecamSet, "Camera Speed", 10, 300, cfg.Movement.FreecamSpeed, function(v)
+        cfg.Movement.FreecamSpeed = v
       end)
+      addSlider(freecamSet, "Sensitivity", 1, 10,
+        math.floor(cfg.Movement.FreecamSensitivity * 10 + 0.5), function(v)
+          cfg.Movement.FreecamSensitivity = v / 10
+        end)
+      addBind(freecamSet, "Freecam Bind", "None", function()
+        if mainGame.Window then mainGame.Window:SetFeature("Freecam", not cfg.Movement.Freecam) end
+      end)
+      addLabel(rc, "Freecam: WASD + Space / Ctrl; Shift = fast.")
     end
 
     -- MISC: world lighting, performance overlay and recovered diagnostics.
@@ -5462,13 +5739,13 @@ end
         cfg.Misc.Fullbright = v
         setFullbright(v)
       end)
-      createFeature(lc, "Instant Loot", cfg.LocalFeatures.InstantLoot, function(v)
+      createFeature(rc, "Instant Loot", cfg.LocalFeatures.InstantLoot, function(v)
         cfg.LocalFeatures.InstantLoot = v
       end)
-      createFeature(lc, "No Fall", cfg.LocalFeatures.NoFall, function(v)
+      createFeature(rc, "No Fall", cfg.LocalFeatures.NoFall, function(v)
         cfg.LocalFeatures.NoFall = v
       end)
-      createFeature(lc, "Silent Walk", cfg.LocalFeatures.SilentWalk, function(v)
+      createFeature(rc, "Silent Walk", cfg.LocalFeatures.SilentWalk, function(v)
         cfg.LocalFeatures.SilentWalk = v
         if mainGame.amogus then mainGame.amogus.SetSilentWalk(v) end
       end)
@@ -5564,6 +5841,14 @@ end
           configButtons[#configButtons + 1] = button
         end
       end
+      addButton(lc, "Disable All Features", function()
+        for featureName, enabled in pairs(featureStates) do
+          if enabled and featureName ~= "Menu Accent" and featureName ~= "UI Animations" then
+            local setter = _fFS[featureName]
+            if setter then setter(false) end
+          end
+        end
+      end)
       addButton(lc, "Save New Config", function()
         local name, err = configApi.Save()
         configStatus.Text = name and ("Saved: " .. name) or ("Save failed: " .. tostring(err))
