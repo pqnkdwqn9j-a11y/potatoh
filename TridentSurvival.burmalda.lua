@@ -20,6 +20,7 @@ local userInputService = ref("UserInputService")
 local lighting = ref("Lighting")
 local httpService = ref("HttpService")
 local guiService = ref("GuiService")
+local virtualInputManager = ref("VirtualInputManager")
 local workspaceService = ref("Workspace") or workspace
 local localPlayer = players and players.LocalPlayer
 local camera = workspaceService and workspaceService.CurrentCamera
@@ -54,6 +55,9 @@ local cfg = {
   Weapon = {
     NoRecoil = false, NoSpread = false, AlwaysShoot = false,
     ForceHeadshots = false, NoSlowdown = false,
+  },
+  Farm = {
+    FastMining = false, MiningSpeed = 4, AutoMine = false,
   },
   ESP = {
     Enabled = false, Players = true, NPCs = true, Resources = false,
@@ -141,7 +145,9 @@ local NPC_TYPES = {
   LabWorker = true, GasMaskSoldier = true,
 }
 local RESOURCE_NAMES = {
-  IronOre = "Iron", StoneOre = "Stone", NitrateOre = "Nitrate",
+  IronOre = "Iron", Iron = "Iron", StoneOre = "Stone", Stone = "Stone",
+  NitrateOre = "Nitrate", Nitrate = "Nitrate",
+  Tree1 = "Tree", Tree2 = "Tree", Tree3 = "Tree", Tree4 = "Tree", Tree = "Tree",
   Backpack = "Backpack", ClaimTotem = "Totem", MetalCrate = "Metal Crate",
 }
 local BODY_PARTS = {
@@ -256,6 +262,7 @@ local function discoverModules()
   end
   local classes = runtime.classes
   local weaponTables = {}
+  local farmTables = {}
   local playerUpdate = nil
   for _, value in pairs(garbage) do
     if type(value) == "function" then
@@ -266,6 +273,10 @@ local function discoverModules()
         playerUpdate = value
       end
     elseif type(value) == "table" then
+      if type(rawget(value, "AttackCooldown")) == "number"
+        and string.lower(tostring(rawget(value, "type") or "")) == "miningdrill" then
+        farmTables[value] = true
+      end
       if rawget(value, "Damage") ~= nil or rawget(value, "recoilOffset") ~= nil
         or type(rawget(value, "AimRecoil")) == "table" or type(rawget(value, "HipRecoil")) == "table"
         or type(rawget(value, "RecoilData")) == "table" then
@@ -289,6 +300,12 @@ local function discoverModules()
   if not classes then runtime.discoveryError = "Trident classes not found" return false end
   runtime.weaponTables = weaponTables
   runtime.classes = classes
+  local miningDrill = rawget(classes, "MiningDrill")
+  if type(miningDrill) == "table" and type(rawget(miningDrill, "AttackCooldown")) == "number" then
+    farmTables[miningDrill] = true
+  end
+  runtime.farmTables = farmTables
+  runtime.farmModsNeedScan = false
   local entityClient = rawget(classes, "EntityClient")
   local getEntity = entityClient and rawget(entityClient, "GetEntityFromPart")
   local createEntity = entityClient and rawget(entityClient, "Create")
@@ -331,28 +348,53 @@ end
 
 local WORLD_RESOURCE_TYPES = {
   IronOre = "IronOre", Iron = "IronOre", StoneOre = "StoneOre", Stone = "StoneOre",
-  NitrateOre = "NitrateOre", Nitrate = "NitrateOre", Backpack = "Backpack",
-  ClaimTotem = "ClaimTotem", MetalCrate = "MetalCrate",
+  NitrateOre = "NitrateOre", Nitrate = "NitrateOre",
+  Tree1 = "Tree1", Tree2 = "Tree2", Tree3 = "Tree3", Tree4 = "Tree4", Tree = "Tree1",
+  Backpack = "Backpack", ClaimTotem = "ClaimTotem", MetalCrate = "MetalCrate",
 }
 local function scanWorldResources()
   local now = os.clock()
   if runtime.worldResources and now < (runtime.nextEntityScan or 0) then return runtime.worldResources end
   runtime.nextEntityScan = now + 1
   local result, seen = {}, {}
-  local function visit(model)
-    if not model or seen[model] or not model.Parent then return end
-    local entityType = WORLD_RESOURCE_TYPES[tostring(model.Name)]
-    if not entityType then return end
-    seen[model] = true
-    result[#result + 1] = { model = model, type = entityType, name = RESOURCE_NAMES[entityType] }
+  local function isClass(object, className)
+    return object.ClassName == className
+  end
+  local function visit(object, inheritedType, depth, scanFolders)
+    if not object or seen[object] or not object.Parent or depth > 4 then return end
+    seen[object] = true
+    local entityType = WORLD_RESOURCE_TYPES[tostring(object.Name)] or inheritedType
+    if isClass(object, "Folder") then
+      if not scanFolders and not entityType then return end
+      local ok, children = pcall(function() return object:GetChildren() end)
+      if ok then
+        for _, child in ipairs(children) do visit(child, entityType, depth + 1, scanFolders) end
+      end
+      return
+    end
+    if not entityType or not isClass(object, "Model") then return end
+    result[#result + 1] = {
+      model = object, type = entityType,
+      name = RESOURCE_NAMES[entityType] or tostring(entityType),
+    }
   end
   if workspaceService and workspaceService.GetChildren then
     local ok, children = pcall(function() return workspaceService:GetChildren() end)
-    if ok then for _, child in ipairs(children) do visit(child) end end
+    if ok then for _, child in ipairs(children) do visit(child, nil, 0, false) end end
+    for _, name in ipairs({ "Entities", "Resources", "Nodes", "OreNodes" }) do
+      local container = findChild(workspaceService, name)
+      if container then
+        local containerOk, containerChildren = pcall(function() return container:GetChildren() end)
+        if containerOk then
+          for _, child in ipairs(containerChildren) do visit(child, nil, 0, true) end
+        end
+      end
+    end
   end
   runtime.worldResources = result
   return result
 end
+runtime.ScanWorldResources = scanWorldResources
 local function eachEntity(callback, includeResources)
   local seen = {}
   local function visit(entity)
@@ -903,6 +945,108 @@ local function applyWeaponDataMods()
 end
 runtime.ApplyWeaponDataMods = applyWeaponDataMods
 
+local miningOriginals = {}
+local function restoreFastMining()
+  for container, value in pairs(miningOriginals) do
+    pcall(rawset, container, "AttackCooldown", value)
+  end
+  miningOriginals = {}
+  runtime.fastMiningInstalled = false
+end
+runtime.RestoreFastMining = restoreFastMining
+addRestore(restoreFastMining)
+local function refreshFarmTables()
+  if not runtime.farmModsNeedScan then return end
+  runtime.farmModsNeedScan = false
+  local tables = {}
+  local function add(container, allowMissingType)
+    if type(container) ~= "table" or type(rawget(container, "AttackCooldown")) ~= "number" then return end
+    local itemType = string.lower(tostring(rawget(container, "type") or ""))
+    if allowMissingType or itemType == "miningdrill" or itemType == "drill" then
+      tables[container] = true
+    end
+  end
+  for container in pairs(runtime.farmTables or {}) do add(container, true) end
+  for container in pairs(miningOriginals) do add(container, true) end
+  local classes = runtime.classes
+  add(classes and rawget(classes, "MiningDrill"), true)
+  add(runtime.equippedInfo, false)
+  if getgc then
+    local ok, garbage = pcall(getgc, true)
+    if ok and type(garbage) == "table" then
+      for _, value in pairs(garbage) do add(value, false) end
+    end
+  end
+  runtime.farmTables = tables
+end
+local function applyFarmMods()
+  if not cfg.Farm.FastMining then
+    restoreFastMining()
+    return
+  end
+  refreshFarmTables()
+  local speed = tonumber(cfg.Farm.MiningSpeed) or 4
+  if speed ~= speed then speed = 4 end
+  speed = math.clamp(speed, 1, 10)
+  for container in pairs(runtime.farmTables or {}) do
+    if miningOriginals[container] == nil then
+      miningOriginals[container] = rawget(container, "AttackCooldown")
+    end
+    local original = miningOriginals[container]
+    local value = original
+    if type(original) == "number" and original > 0 then
+      value = math.min(original, math.max(0.1, original / speed))
+    end
+    pcall(rawset, container, "AttackCooldown", value)
+  end
+  runtime.fastMiningInstalled = next(miningOriginals) ~= nil
+end
+runtime.ApplyFarmMods = applyFarmMods
+
+local farmMouseHeld = false
+local function setFarmMouse(held)
+  if farmMouseHeld == held then return true end
+  local ok, err
+  if virtualInputManager and type(virtualInputManager.SendMouseButtonEvent) == "function" then
+    ok, err = pcall(function()
+      local size = camera and camera.ViewportSize or Vector2.new()
+      virtualInputManager:SendMouseButtonEvent(size.X / 2, size.Y / 2, 0, held, game, 1)
+    end)
+  end
+  if not ok and held and type(mouse1press) == "function" then
+    ok, err = pcall(mouse1press)
+  elseif not ok and not held and type(mouse1release) == "function" then
+    ok, err = pcall(mouse1release)
+  end
+  if not ok then
+    runtime.farmInputError = tostring(err or "mouse input unavailable")
+    return false
+  end
+  farmMouseHeld = held
+  runtime.farmInputError = nil
+  return true
+end
+local function stopAutoMine()
+  setFarmMouse(false)
+end
+runtime.StopAutoMine = stopAutoMine
+addRestore(stopAutoMine)
+local function miningDrillEquipped()
+  refreshEquipped()
+  local item, info = runtime.equippedItem, runtime.equippedInfo
+  local itemType = string.lower(tostring(item and rawget(item, "type") or info and rawget(info, "type") or ""))
+  return itemType == "miningdrill" or itemType == "drill"
+end
+local function updateAutoMine()
+  local menuOpen = runtime.Window and runtime.Window.Closed == false
+  if not (runtime.Active and cfg.Farm.AutoMine) or menuOpen then
+    stopAutoMine()
+    return
+  end
+  setFarmMouse(miningDrillEquipped())
+end
+runtime.UpdateAutoMine = updateAutoMine
+
 local function combatEntity(entityId)
   if type(entityId) == "table" then
     local kind = classifyEntity(entityId)
@@ -1063,20 +1207,25 @@ local function combatHookRequested()
   return cfg.Silent.Enabled or cfg.Weapon.ForceHeadshots or cfg.Weapon.NoRecoil
     or cfg.Weapon.NoSpread or cfg.Weapon.AlwaysShoot or cfg.Weapon.NoSlowdown
 end
+local function farmHookRequested()
+  return cfg.Farm.FastMining or cfg.Farm.AutoMine
+end
 local function hookSignature()
   return table.concat({
     tostring(cfg.Silent.Enabled), tostring(cfg.Weapon.ForceHeadshots), tostring(cfg.Weapon.NoRecoil),
     tostring(cfg.Weapon.NoSpread), tostring(cfg.Weapon.AlwaysShoot), tostring(cfg.Weapon.NoSlowdown),
+    tostring(cfg.Farm.FastMining), tostring(cfg.Farm.MiningSpeed), tostring(cfg.Farm.AutoMine),
     tostring(calamariShotVisuals()),
   }, ":")
 end
 runtime.hookSignature = hookSignature()
-runtime.hooksDirty = true
+runtime.hooksDirty = false
 local function installGameHooks()
   local visualShots = calamariShotVisuals()
   if not discoverModules() then
     if visualShots then installRemoteHook() end
-    runtime.hooksDirty = combatHookRequested() or (visualShots and not runtime.remoteInstalled)
+    runtime.hooksDirty = combatHookRequested() or farmHookRequested()
+      or (visualShots and not runtime.remoteInstalled)
     return false
   end
   refreshEquipped()
@@ -1085,6 +1234,7 @@ local function installGameHooks()
   if cfg.Silent.Enabled then installSkewedOriginHooks() end
   if cfg.Silent.Enabled or cfg.Weapon.ForceHeadshots or visualShots then installRemoteHook() end
   applyWeaponDataMods()
+  applyFarmMods()
   if cfg.Weapon.AlwaysShoot or cfg.Weapon.NoSlowdown then installCharacterModuleClones() end
   updateModuleClones()
   local retry = false
@@ -1093,6 +1243,7 @@ local function installGameHooks()
   if visualShots and not runtime.createProjectileInstalled and not runtime.remoteInstalled then retry = true end
   if cfg.Weapon.AlwaysShoot and not runtime.characterClonesInstalled then retry = true end
   if cfg.Weapon.NoSlowdown and not runtime.characterClonesInstalled and not runtime.sprintBlockState then retry = true end
+  if cfg.Farm.FastMining and not runtime.fastMiningInstalled then retry = true end
   runtime.hooksDirty = retry
   return true
 end
@@ -1100,6 +1251,7 @@ runtime.InstallGameHooks = installGameHooks
 local function requestGameHooks()
   runtime.hooksDirty = true
   runtime.weaponModsNeedScan = true
+  runtime.farmModsNeedScan = true
   if not runtime.Active then return end
   local ok, err = pcall(installGameHooks)
   if not ok then runtime.hookError = tostring(err) end
@@ -2880,6 +3032,7 @@ end
   local hookFeatures = {
     ["Silent Aim"] = true, ["No Recoil"] = true, ["No Spread"] = true,
     ["Always Shoot"] = true, ["No Slowdown"] = true, ["Force Headshots"] = true,
+    ["Fast Farm"] = true, ["Auto Mine"] = true,
   }
 
   local function feature(parent, name, default, onChanged, getter)
@@ -2887,7 +3040,7 @@ end
     local panel = createFeature(parent, name, default, function(value)
       state = value
       if onChanged then onChanged(value) end
-      if hookFeatures[name] then runtime.RequestGameHooks() end
+      if hookFeatures[name] and runtime.uiReady then runtime.RequestGameHooks() end
     end)
     featureBindings[name] = {
       Set = function(value) _fFS[name](value == true) end,
@@ -3045,6 +3198,20 @@ end
     function() return cfg.World.RemoveGrass end)
   feature(worldRight, "Remove Shadows", cfg.World.RemoveShadows, function(value) cfg.World.RemoveShadows = value applyWorld() end,
     function() return cfg.World.RemoveShadows end)
+  local farmControls = getSection(worldRight, "Farm").Content
+  local fastFarm = feature(farmControls, "Fast Farm", cfg.Farm.FastMining, function(value)
+    cfg.Farm.FastMining = value
+    if not value then restoreFastMining() end
+  end, function() return cfg.Farm.FastMining end)
+  slider(fastFarm, "Fast Farm", "Speed", 1, 10, cfg.Farm.MiningSpeed,
+    function(value)
+      cfg.Farm.MiningSpeed = value
+      if cfg.Farm.FastMining then applyFarmMods() end
+    end, function() return cfg.Farm.MiningSpeed end)
+  feature(farmControls, "Auto Mine", cfg.Farm.AutoMine, function(value)
+    cfg.Farm.AutoMine = value
+    if not value then stopAutoMine() end
+  end, function() return cfg.Farm.AutoMine end)
   local timeChanger = feature(worldLeft, "Time Changer", cfg.World.TimeChanger, function(value)
     cfg.World.TimeChanger = value applyWorld()
   end, function() return cfg.World.TimeChanger end)
@@ -4438,6 +4605,12 @@ return createBurmaldaCalamariVisuals
       or string.find(lower, "totem", 1, true) then return "Drops" end
     return nil
   end
+  local function ensureCalamariEntities()
+    local now = os.clock()
+    if runtime.cacheValidated or now < (runtime.nextCalamariDiscovery or 0) then return end
+    runtime.nextCalamariDiscovery = now + 1
+    pcall(discoverModules)
+  end
   local calamari = calamariFactory({
     Game = "Trident Survival",
     State = cfg.Calamari,
@@ -4451,6 +4624,7 @@ return createBurmaldaCalamariVisuals
         "WorldItems", "Plants", "Animals", "Pickups", "SpawnedPickups", "GroundItems", "Eggs",
       },
       GetTargets = function()
+        ensureCalamariEntities()
         local result = {}
         eachEntity(function(entity, model, kind, label)
           if kind ~= "player" and kind ~= "npc" then return end
@@ -4470,6 +4644,7 @@ return createBurmaldaCalamariVisuals
         return result
       end,
       GetWorldEntries = function()
+        ensureCalamariEntities()
         local result, seen = {}, {}
         eachEntity(function(entity, model, kind, label)
           if kind ~= "resource" or seen[model] then return end
@@ -4659,6 +4834,10 @@ end
 
   selectTab("COMBAT")
   if menuOpen then toggleMenu() end
+  runtime.uiReady = true
+  if cfg.ESP.Enabled or combatHookRequested() or farmHookRequested() or calamariShotVisuals() then
+    runtime.RequestGameHooks()
+  end
 end
 
 trackConnection(runService.RenderStepped:Connect(function(deltaTime)
@@ -4670,7 +4849,7 @@ trackConnection(runService.RenderStepped:Connect(function(deltaTime)
     runtime.hookSignature = signature
     runtime.hooksDirty = true
   end
-  local discoveryNeeded = cfg.ESP.Enabled or combatHookRequested()
+  local discoveryNeeded = cfg.ESP.Enabled or combatHookRequested() or farmHookRequested()
     or (calamariShotVisuals() and not runtime.remoteInstalled)
   if now >= runtime.nextDiscovery and (runtime.hooksDirty
     or (discoveryNeeded and (not runtime.classes or not runtime.cacheValidated))) then
@@ -4698,6 +4877,10 @@ trackConnection(runService.RenderStepped:Connect(function(deltaTime)
   elseif not cfg.ESP.Enabled and runtime.espRendered then
     pcall(renderEsp)
   end
+  if now >= (runtime.nextFarmInputUpdate or 0) then
+    runtime.nextFarmInputUpdate = now + 0.1
+    pcall(updateAutoMine)
+  end
   if cfg.Weapon.NoSlowdown then pcall(updateSprintBlock) end
   pcall(updateMovement)
 end))
@@ -4706,12 +4889,14 @@ if localPlayer then
   trackConnection(localPlayer.CharacterAdded:Connect(function()
     runtime.currentTarget = nil
     runtime.pendingShot = nil
+    runtime.farmModsNeedScan = true
     restoreRigMovement()
     stopFly()
   end))
   trackConnection(localPlayer.CharacterRemoving:Connect(function()
     runtime.currentTarget = nil
     runtime.pendingShot = nil
+    stopAutoMine()
     restoreRigMovement()
     stopFly()
   end))
@@ -4748,7 +4933,6 @@ function runtime.Unload()
   if Env.__BURMALDA_TRIDENT == runtime then Env.__BURMALDA_TRIDENT = nil end
 end
 
-pcall(installGameHooks)
 buildUi()
 applyWorld()
 applyGrass()
