@@ -293,6 +293,9 @@ if integrityOk then
     pcall(function() runService:UnbindFromRenderStep("MG_Fullbright") end)
     mainGame.fbBound = false
   end
+  mainGame.fbFallback = nil
+  mainGame.fbError = nil
+  mainGame.fbRetryAt = nil
 
   mainGame.hookGeneration = (mainGame.hookGeneration or 0) + 1
   mainGame.unloaded = false
@@ -300,6 +303,19 @@ if integrityOk then
   local function trackConnection(p4)
     mainGame.conns[#mainGame.conns + 1] = p4
     return p4
+  end
+
+  local function stopFullbrightFallback()
+    local connection = mainGame.fbFallback
+    mainGame.fbFallback = nil
+    if not connection then return end
+    pcall(function() connection:Disconnect() end)
+    for index = #mainGame.conns, 1, -1 do
+      if mainGame.conns[index] == connection then
+        table.remove(mainGame.conns, index)
+        break
+      end
+    end
   end
 
   fullbrightBindingName = "MG_Fullbright"
@@ -408,11 +424,33 @@ if integrityOk then
           )
         end)
       end
+
+      if not mainGame.fbFallback then
+        mainGame.fbFallback = trackConnection(runService.RenderStepped:Connect(function()
+          if not cfg.Misc.Fullbright or mainGame.unloaded then return end
+          local now = os.clock()
+          if now < (mainGame.fbRetryAt or 0) then return end
+          if not mainGame.fbBound
+            or lighting.Ambient ~= fullbrightSettings.Ambient
+            or lighting.OutdoorAmbient ~= fullbrightSettings.OutdoorAmbient
+            or lighting.Brightness ~= fullbrightSettings.Brightness
+            or lighting.ClockTime ~= fullbrightSettings.ClockTime
+            or lighting.FogEnd ~= fullbrightSettings.FogEnd
+            or lighting.GlobalShadows ~= fullbrightSettings.GlobalShadows then
+            local ok, message = pcall(applyFullbright)
+            mainGame.fbError = not ok and tostring(message) or nil
+            mainGame.fbRetryAt = not ok and now + 1 or nil
+          end
+        end))
+      end
     else
       if mainGame.fbBound then
         mainGame.fbBound = false
         pcall(function() runService:UnbindFromRenderStep(fullbrightBindingName) end)
       end
+      stopFullbrightFallback()
+      mainGame.fbError = nil
+      mainGame.fbRetryAt = nil
 
       local fbSaved = mainGame.fbSaved
 
@@ -444,11 +482,14 @@ if integrityOk then
   end
 
   function isTargetVisible(p6, p7, p8)
+    if not p7 or not p7.Parent then return false end
+    local targetModel = p7.Parent
+    local direction = p7.Position - p6
     local raycastParams = RaycastParams.new()
     raycastParams.FilterType = Enum.RaycastFilterType.Exclude
     raycastParams.IgnoreWater = true
 
-    local v98 = { workspace.CurrentCamera, localPlayer.Character, p7.Parent }
+    local v98 = { workspace.CurrentCamera, localPlayer.Character, targetModel }
 
     if p8 then
       for index6, value9 in ipairs(p8) do
@@ -456,9 +497,28 @@ if integrityOk then
       end
     end
 
-    raycastParams.FilterDescendantsInstances = v98
-    local raycast = workspace:Raycast(p6, p7.Position - p6, raycastParams)
-    return raycast == nil or raycast.Instance:IsDescendantOf(p7.Parent)
+    for _ = 1, 4 do
+      raycastParams.FilterDescendantsInstances = v98
+      local raycast = workspace:Raycast(p6, direction, raycastParams)
+      if raycast == nil then return true end
+      local instance = raycast.Instance
+      if not instance then return false end
+      if instance:IsDescendantOf(targetModel) then return true end
+
+      local water = Enum.Material.Water ~= nil and raycast.Material == Enum.Material.Water
+      local current = instance
+      for _ = 1, 4 do
+        if water or not current or current == workspace then break end
+        local name = string.lower(tostring(current.Name or ""))
+        water = string.find(name, "water", 1, true) ~= nil
+          or string.find(name, "underwater", 1, true) ~= nil
+          or name == "ocean" or name == "sea" or name == "lake" or name == "river"
+        current = current.Parent
+      end
+      if not water then return false end
+      v98[#v98 + 1] = instance
+    end
+    return false
   end
 
   function collectTargets()
@@ -4814,7 +4874,8 @@ end
           return true
         end
         if cfg.Remote.BlockRecoil and action == "Whitelist Recoil" then return true end
-        if cfg.LocalFeatures.NoFall and action == "TFD" then return true end
+        if (cfg.LocalFeatures.NoFall or cfg.Extra and cfg.Extra.Movement and cfg.Extra.Movement.AntiFall)
+          and action == "TFD" then return true end
         if cfg.LocalFeatures.SilentWalk and (action == "Change Crouch State"
           or action == "Change Sprinting State") then
           return true
@@ -5599,6 +5660,22 @@ end
       end
       fillDefaults(extra, sectionDefaults)
 
+      local function finiteNumber(value)
+        return type(value) == "number" and value == value
+          and value ~= math.huge and value ~= -math.huge
+      end
+      local function validVector(value)
+        return value and finiteNumber(value.X) and finiteNumber(value.Y) and finiteNumber(value.Z)
+      end
+      local function getLocalCharacter()
+        local character = localPlayer.Character
+        if character and character.Parent then return character end
+        local playersFolder = workspace:FindFirstChild("Players")
+        local mapped = playersFolder and playersFolder:FindFirstChild(localPlayer.Name)
+        if mapped and mapped:IsA("Model") and mapped.Parent then return mapped end
+        return character
+      end
+
       cfg.ESP.Skeleton = cfg.ESP.Skeleton == true
       cfg.ESP.SkeletonColor = cfg.ESP.SkeletonColor or Color3.fromRGB(255, 255, 255)
       cfg.ESP.SkeletonThickness = tonumber(cfg.ESP.SkeletonThickness) or 1
@@ -5704,7 +5781,7 @@ end
           if next(state.noclipOriginals) ~= nil then state.RestoreNoclip() end
           return
         end
-        local character = localPlayer.Character
+        local character = getLocalCharacter()
         if character ~= state.noclipCharacter then
           state.RestoreNoclip()
           state.noclipCharacter = character
@@ -5748,12 +5825,13 @@ end
       end
       function state.SetAntiFall(enabled)
         extra.Movement.AntiFall = enabled == true
-        if not extra.Movement.AntiFall then state.RestoreGravity() end
+        state.RestoreGravity()
+        if extra.Movement.AntiFall and mainGame.amogus and type(mainGame.amogus.Install) == "function" then
+          pcall(mainGame.amogus.Install)
+        end
       end
       local function updateGravity()
-        if not extra.Movement.AntiFall then return end
-        if state.gravityOriginal == nil then state.gravityOriginal = workspace.Gravity end
-        if workspace.Gravity ~= 0 then workspace.Gravity = 0 end
+        if state.gravityOriginal ~= nil then state.RestoreGravity() end
       end
 
       local function nameMatches(object, words)
@@ -5892,7 +5970,7 @@ end
       end
       function state.StopThirdPerson()
         local third = state.third
-        if not third.active then return end
+        if not third.active and not third.camera then return end
         third.active = false
         local camera = third.camera or workspace.CurrentCamera
         if camera then
@@ -5905,23 +5983,27 @@ end
         restoreThirdMouse()
         third.camera, third.originalCameraType, third.originalCameraSubject = nil, nil, nil
         third.originalCFrame, third.lookX, third.lookY = nil, 0, 0
+        third.menuOpen = nil
       end
       local function startThirdPerson()
         local third = state.third
         local camera = workspace.CurrentCamera
-        local character = localPlayer.Character
+        local character = getLocalCharacter()
         local root = character and character:FindFirstChild("HumanoidRootPart")
-        if third.active or not camera or not root then return false end
+        if third.active or not camera or not root or not root:IsA("BasePart") then return false end
+        local cameraCFrame = camera.CFrame
+        if not validVector(cameraCFrame.Position) or not validVector(cameraCFrame.LookVector) then return false end
         third.camera = camera
         third.originalCameraType = camera.CameraType
         third.originalCameraSubject = camera.CameraSubject
-        third.originalCFrame = camera.CFrame
+        third.originalCFrame = cameraCFrame
         third.originalMouseBehavior = userInputService.MouseBehavior
         third.originalMouseIcon = userInputService.MouseIconEnabled
-        local look = camera.CFrame.LookVector
+        local look = cameraCFrame.LookVector
         third.yaw = math.abs(look.X) + math.abs(look.Z) > 1e-6 and math.atan2(-look.X, -look.Z) or 0
         third.pitch = math.asin(math.clamp(look.Y, -1, 1))
         third.lookX, third.lookY = 0, 0
+        third.menuOpen = nil
         third.active = true
         camera.CameraType = Enum.CameraType.Scriptable
         return true
@@ -5943,12 +6025,22 @@ end
         if state.third.active and state.third.camera ~= camera then state.StopThirdPerson() end
         if not state.third.active and not startThirdPerson() then return end
         local third = state.third
-        local character = localPlayer.Character
+        local character = getLocalCharacter()
         local root = character and character:FindFirstChild("HumanoidRootPart")
-        if not root then return end
+        if not root or not root.Parent or not root:IsA("BasePart") then
+          state.StopThirdPerson()
+          return
+        end
+        if not validVector(root.Position) or not finiteNumber(third.yaw) or not finiteNumber(third.pitch)
+          or not finiteNumber(third.lookX or 0) or not finiteNumber(third.lookY or 0) then
+          error("invalid Third Person state", 0)
+        end
         local open = menuOpen == true
-        userInputService.MouseBehavior = open and Enum.MouseBehavior.Default or Enum.MouseBehavior.LockCurrentPosition
-        userInputService.MouseIconEnabled = open
+        if third.menuOpen ~= open then
+          third.menuOpen = open
+          userInputService.MouseBehavior = open and Enum.MouseBehavior.Default or Enum.MouseBehavior.LockCurrentPosition
+          userInputService.MouseIconEnabled = open
+        end
         if not open then
           local sensitivity = math.clamp(tonumber(extra.Camera.Sensitivity) or 0.2, 0.01, 1) * 0.01
           third.yaw = third.yaw - math.clamp(third.lookX or 0, -500, 500) * sensitivity
@@ -5957,13 +6049,14 @@ end
         end
         third.lookX, third.lookY = 0, 0
         if extra.Aimbot.Enabled and state.aimbotTarget then return end
-        local rotation = CFrame.fromEulerAnglesYXZ(third.pitch or 0, third.yaw or 0, 0)
+        local rotation = CFrame.fromEulerAnglesYXZ(third.pitch, third.yaw, 0)
         local focus = root.Position + Vector3.new(0, 1.5, 0)
         local look = rotation.LookVector or Vector3.new(0, 0, -1)
         local right = rotation.RightVector or Vector3.new(1, 0, 0)
         local position = focus - look * math.clamp(tonumber(extra.Camera.Distance) or 10, 2, 30)
           + right * math.clamp(tonumber(extra.Camera.Side) or 0, -10, 10)
           + Vector3.new(0, math.clamp(tonumber(extra.Camera.Height) or 1.5, -5, 10), 0)
+        if not validVector(position) or not validVector(focus) then error("invalid Third Person transform", 0) end
         camera.CFrame = CFrame.lookAt(position, focus)
       end
 
@@ -6079,7 +6172,7 @@ end
           task.delay(0.03, function() pcall(mouse1release) end)
           return true
         end
-        local character = localPlayer.Character
+        local character = getLocalCharacter()
         local tool = character and character:FindFirstChildOfClass("Tool")
         if tool and type(tool.Activate) == "function" then
           pcall(tool.Activate, tool)
@@ -6503,15 +6596,16 @@ end
         if not backup then return end
         state.poseBackup = nil
         if backup.humanoid and backup.humanoid.Parent then
-          pcall(function()
-            backup.humanoid.AutoRotate = backup.autoRotate
-            backup.humanoid.HipHeight = backup.hipHeight
-          end)
+          pcall(function() backup.humanoid.AutoRotate = backup.autoRotate end)
+          pcall(function() backup.humanoid.HipHeight = backup.hipHeight end)
         end
-        if backup.root and backup.root.Parent and backup.rootCFrame then
+        if backup.root and backup.root.Parent and backup.rootCFrame
+          and validVector(backup.rootCFrame.LookVector) then
           pcall(function()
             local position = backup.root.Position
-            backup.root.CFrame = CFrame.lookAt(position, position + backup.rootCFrame.LookVector)
+            if validVector(position) then
+              backup.root.CFrame = CFrame.lookAt(position, position + backup.rootCFrame.LookVector)
+            end
           end)
         end
       end
@@ -6544,24 +6638,36 @@ end
           if state.poseBackup then state.RestoreCharacterPose() end
           return
         end
-        local character = localPlayer.Character
+        local character = getLocalCharacter()
         local humanoid = character and character:FindFirstChildOfClass("Humanoid")
         local root = character and character:FindFirstChild("HumanoidRootPart")
-        if not character or not humanoid or not root or humanoid.Health <= 0 then
+        if not character or not humanoid or not humanoid.Parent or not root or not root.Parent
+          or not root:IsA("BasePart") or humanoid.Health <= 0 then
           if state.poseBackup then state.RestoreCharacterPose() end
           return
         end
+        if not validVector(root.Position) or not validVector(root.CFrame.LookVector) then
+          error("invalid Anti-Aim character transform", 0)
+        end
         preparePoseOwner(character, humanoid, root)
         local backup = state.poseBackup
-        humanoid.AutoRotate = false
+        if not finiteNumber(backup.hipHeight) then error("invalid Anti-Aim HipHeight backup", 0) end
+        if humanoid.AutoRotate then humanoid.AutoRotate = false end
         local camera = workspace.CurrentCamera
         local look = camera and camera.CFrame.LookVector or root.CFrame.LookVector
+        if not validVector(look) then error("invalid Anti-Aim camera transform", 0) end
         local baseYaw = math.atan2(look.X, look.Z)
         if extra.Pose.Enabled then
-          humanoid.HipHeight = backup.hipHeight - math.abs(tonumber(extra.Pose.Drop) or 1.5)
-          local yaw = -baseYaw + math.rad(tonumber(extra.Pose.Turn) or 180)
-          root.CFrame = CFrame.new(root.Position)
-            * CFrame.fromEulerAnglesYXZ(math.rad(tonumber(extra.Pose.Pitch) or -10), yaw, 0)
+          local drop = math.abs(tonumber(extra.Pose.Drop) or 1.5)
+          local turn = tonumber(extra.Pose.Turn) or 180
+          local pitch = tonumber(extra.Pose.Pitch) or -10
+          if not finiteNumber(drop) or not finiteNumber(turn) or not finiteNumber(pitch) then
+            error("invalid Pose settings", 0)
+          end
+          local hipHeight = backup.hipHeight - drop
+          if humanoid.HipHeight ~= hipHeight then humanoid.HipHeight = hipHeight end
+          local yaw = -baseYaw + math.rad(turn)
+          root.CFrame = CFrame.new(root.Position) * CFrame.fromEulerAnglesYXZ(math.rad(pitch), yaw, 0)
           if humanoid.GetPlayingAnimationTracks then
             for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
               if state.frozenTracks[track] == nil then
@@ -6571,12 +6677,16 @@ end
             end
           end
         elseif extra.AntiAim.Enabled then
-          humanoid.HipHeight = backup.hipHeight
+          if humanoid.HipHeight ~= backup.hipHeight then humanoid.HipHeight = backup.hipHeight end
           local yaw
           if extra.AntiAim.Type == "Spin" then
-            yaw = -baseYaw + os.clock() * (tonumber(extra.AntiAim.SpinSpeed) or 10)
+            local speed = tonumber(extra.AntiAim.SpinSpeed) or 10
+            if not finiteNumber(speed) then error("invalid Anti-Aim Spin Speed", 0) end
+            yaw = -baseYaw + (os.clock() * speed) % (math.pi * 2)
           else
-            yaw = math.rad(math.random(-(tonumber(extra.AntiAim.Jitter) or 10), tonumber(extra.AntiAim.Jitter) or 10))
+            local jitter = math.abs(tonumber(extra.AntiAim.Jitter) or 10)
+            if not finiteNumber(jitter) then error("invalid Anti-Aim Jitter", 0) end
+            yaw = math.rad((math.random() * 2 - 1) * jitter)
           end
           root.CFrame = CFrame.new(root.Position) * CFrame.Angles(0, yaw, 0)
         end
@@ -6617,34 +6727,86 @@ end
         state.StopThirdPerson()
       end))
 
+      local function runtimeErrorTrace(value)
+        local message = tostring(value)
+        if debug and type(debug.traceback) == "function" then
+          local ok, trace = pcall(debug.traceback, message, 2)
+          if ok and type(trace) == "string" then
+            if string.find(trace, message, 1, true) then return trace end
+            return message .. "\n" .. trace
+          end
+        end
+        return message
+      end
+      local function runFeature(label, features, callback)
+        local now = os.clock()
+        state.errorBackoff = state.errorBackoff or {}
+        if not features and now < (state.errorBackoff[label] or 0) then return false end
+        local ok, message = xpcall(callback, runtimeErrorTrace)
+        if ok then
+          if state.errors then state.errors[label] = nil end
+          if state.errorWarnings then state.errorWarnings[label] = nil end
+          state.errorBackoff[label] = nil
+          return true
+        end
+        state.errors = state.errors or {}
+        state.errorWarnings = state.errorWarnings or {}
+        state.errors[label] = message
+        state.errorBackoff[label] = not features and now + 1 or nil
+        if features and mainGame.Window and not mainGame.Window.Destroyed then
+          for _, featureName in ipairs(type(features) == "table" and features or { features }) do
+            pcall(function() mainGame.Window:SetFeature(featureName, false) end)
+          end
+        end
+        if state.errorWarnings[label] ~= message then
+          state.errorWarnings[label] = message
+          if type(warn) == "function" then
+            pcall(warn, "[Burmalda.hook] " .. label .. (features and " disabled: " or ": ") .. message)
+          end
+        end
+        return false
+      end
+
       local worldEspAccumulator = 0
       trackConnection(runService.RenderStepped:Connect(function(dt)
         if not state.Active or mainGame.unloaded then return end
-        if extra.Movement.Noclip or state.noclipCharacter then updateNoclip() end
-        if extra.Movement.AntiFall or state.gravityOriginal ~= nil then updateGravity() end
-        if extra.Camera.CustomFOV or extra.Camera.Zoom or state.fovOriginal ~= nil then updateFOV() end
-        if extra.Camera.ThirdPerson or state.third.active then updateThirdPerson() end
-        if extra.Aimbot.Enabled or state.aimbotTarget then updateAimbot() end
-        if extra.Trigger.Enabled then updateTrigger() end
-        if extra.AntiAim.Enabled or extra.Pose.Enabled or state.poseBackup then updatePoseOwner() end
+        if extra.Movement.Noclip or state.noclipCharacter then
+          runFeature("Noclip", "Noclip", updateNoclip)
+        end
+        if extra.Movement.AntiFall or state.gravityOriginal ~= nil then
+          runFeature("Anti-Fall", "Anti-Fall", updateGravity)
+        end
+        if extra.Camera.CustomFOV or extra.Camera.Zoom or state.fovOriginal ~= nil then
+          runFeature("Camera FOV", { "Custom FOV", "Zoom" }, updateFOV)
+        end
+        if extra.Camera.ThirdPerson or state.third.active then
+          runFeature("Third Person", "Third Person", updateThirdPerson)
+        end
+        if extra.Aimbot.Enabled or state.aimbotTarget then
+          runFeature("Aimbot", "Aimbot", updateAimbot)
+        end
+        if extra.Trigger.Enabled then runFeature("Trigger Bot", "Trigger Bot", updateTrigger) end
+        if extra.AntiAim.Enabled or extra.Pose.Enabled or state.poseBackup then
+          runFeature("Anti-Aim/Pose", { "Anti-Aim", "Pose Lock" }, updatePoseOwner)
+        end
         local camera = workspace.CurrentCamera
         if camera then
           if state.aimbotFovCircle or (extra.Aimbot.Enabled and extra.Aimbot.ShowFOV) then
-            updateAimbotFOV(camera)
+            runFeature("Aimbot FOV Circle", "Aimbot FOV Circle", function() updateAimbotFOV(camera) end)
           end
           if extra.Crosshair.Enabled or (state.crosshair and state.crosshairVisible ~= false) then
-            updateCrosshair(camera)
+            runFeature("Crosshair", "Crosshair", function() updateCrosshair(camera) end)
           end
           worldEspAccumulator = worldEspAccumulator + (tonumber(dt) or 0)
           local updateInterval = cfg.Misc.LowPC and 1 / 8 or 1 / 15
           if worldEspAccumulator >= updateInterval then
             worldEspAccumulator = 0
             if anyCategoryEnabled() or (state.worldEspPoolUsed or 0) > 0 then
-              renderWorldEsp(camera)
+              runFeature("World ESP", nil, function() renderWorldEsp(camera) end)
             end
             if (cfg.ESP.Enabled and cfg.ESP.Skeleton and (cfg.ESP.Players or cfg.ESP.NPCs))
               or (state.skeletonLinesUsed or 0) > 0 then
-              renderSkeleton(camera)
+              runFeature("Skeleton", "Skeleton", function() renderSkeleton(camera) end)
             end
           end
         end
