@@ -63,15 +63,6 @@ local S = {
 	FOVCircle = true,
 	TargetLine = false,
 
-	SilentAim = false,
-	SilentFOV = 240,
-	SilentRange = 1500,
-	SilentPart = "Head",
-	SilentTeamCheck = true,
-	SilentWallCheck = true,
-	SilentNPC = false,
-	SilentPrediction = true,
-
 	AutoCross = false,
 
 	Triggerbot = false,
@@ -1577,7 +1568,7 @@ do
 	end
 
 	function Entities.Update()
-		local needNPC = S.NPCESP or S.AimNPC or S.TriggerNPC or S.SilentNPC
+		local needNPC = S.NPCESP or S.AimNPC or S.TriggerNPC
 		local needHeli = (S.NPCESP and S.NPCHeli) or S.AimHeli
 		if not needNPC and not needHeli then
 			if #Entities.NPCs > 0 or Entities.Heli then Entities.NPCs = {}; Entities.Heli = nil end
@@ -2224,8 +2215,7 @@ do
 	local Shared = Runtime.Shared
 	local Aim = {
 		CurrentTarget = nil, CurrentPart = nil, CurrentScreen = nil, TriggerStatus = "off",
-		SilentTarget = nil, SilentPart = nil, SilentAt = 0, SilentNextScan = 0,
-		SilentStatus = "off", SilentHookStatus = "not installed",
+		NamecallHookStatus = "not installed",
 	}
 	Runtime.Aim = Aim
 
@@ -2254,9 +2244,8 @@ do
 	}
 
 	local aimOptions = {FOV = 160, Range = 1500, PartMode = "Head"}
-	local silentOptions = {FOV = 240, Range = 1500, PartMode = "Head", Priority = "Crosshair"}
 	local triggerOptions = {FOV = 6, Range = 1500, PartMode = "Closest", Priority = "Crosshair"}
-	local aimBest, silentBest, triggerBest = {}, {}, {}
+	local aimBest, triggerBest = {}, {}
 	local fovCircle = newDrawing("Circle")
 	local targetLine = newDrawing("Line")
 	if fovCircle then
@@ -2359,78 +2348,6 @@ do
 	end
 	Aim.SelectTarget = selectTarget
 
-	local function updateSilent()
-		if not S.SilentAim then
-			Aim.SilentTarget = nil
-			Aim.SilentPart = nil
-			Aim.SilentStatus = "off"
-			Aim.SilentNextScan = 0
-			return
-		end
-		local now = os.clock()
-		if now < Aim.SilentNextScan then return end
-		Aim.SilentNextScan = now + 0.05
-		silentOptions.FOV = S.SilentFOV
-		silentOptions.Range = S.SilentRange
-		silentOptions.PartMode = S.SilentPart
-		silentOptions.TeamCheck = S.SilentTeamCheck
-		silentOptions.WallCheck = S.SilentWallCheck
-		silentOptions.IncludeNPC = S.SilentNPC
-		silentOptions.IncludeHeli = false
-		silentOptions.PlayersFirst = false
-		local best = selectTarget(silentOptions, silentBest)
-		Aim.SilentAt = now
-		Aim.SilentTarget = best and best.Target or nil
-		Aim.SilentPart = best and best.Part or nil
-		Aim.SilentStatus = best and "target" or "no target"
-	end
-
-	local function normalizedToolName()
-		local name = string.gsub(string.lower(Shared.ToolName()), "[_%-]+", " ")
-		return string.gsub(name, "%s+", " ")
-	end
-
-	local function silentBallistics(remoteName, payload)
-		local tool = normalizedToolName()
-		if remoteName == "Fire" then
-			for _, entry in ipairs(gunBallistics) do
-				local pattern = string.gsub(entry[1], "[_%-]+", " ")
-				if string.find(tool, pattern, 1, true) then return entry[2], entry[3] end
-			end
-			return 1200, 8
-		end
-		local charge = math.clamp(tonumber(payload.charge) or 1, 0.15, 1)
-		return 220 + 125 * charge, 50
-	end
-
-	local function silentDirection(remoteName, payload, origin)
-		if not S.SilentAim or Runtime.Unloaded then return nil end
-		local target, part = Aim.SilentTarget, Aim.SilentPart
-		if not target or not part or not part.Parent then return nil end
-		if os.clock() - Aim.SilentAt > 0.35 then return nil end
-		if target.Model and not part:IsDescendantOf(target.Model) then return nil end
-		if target.Humanoid and target.Humanoid.Health <= 0 then return nil end
-		local basePosition = part.Position
-		if (basePosition - origin).Magnitude > S.SilentRange then return nil end
-		local position = basePosition
-		if S.SilentPrediction then
-			local speed, gravity = silentBallistics(remoteName, payload)
-			local root = target.Root
-			local velocity = root and root.AssemblyLinearVelocity or part.AssemblyLinearVelocity or Vector3.zero
-			if speed and speed > 0 then
-				local travel = math.clamp((basePosition - origin).Magnitude / speed, 0, 1.5)
-				for _ = 1, 2 do
-					position = basePosition + velocity * travel + Vector3.new(0, gravity * travel * travel * 0.5, 0)
-					travel = math.clamp((position - origin).Magnitude / speed, 0, 1.5)
-				end
-				position = basePosition + velocity * travel + Vector3.new(0, gravity * travel * travel * 0.5, 0)
-			end
-		end
-		local delta = position - origin
-		if delta.Magnitude <= 0.01 then return nil end
-		return delta.Unit
-	end
-
 	local oldNamecall, wrappedHook, hookMode, hookMeta
 	local function callOriginal(self, method, args)
 		if method and type(setnamecallmethod) == "function" then pcall(setnamecallmethod, method) end
@@ -2494,7 +2411,7 @@ do
 		local calamari = Runtime.CalamariVisuals
 		local visualShots = calamari and (calamari.State.Bullet.Enabled
 			or calamari.State.HitEffects.Enabled or calamari.State.HitNotifications.Enabled) or false
-		if not S.SilentAim and not S.AutoCross and not visualShots then return callOriginal(self, method, args) end
+		if not S.AutoCross and not visualShots then return callOriginal(self, method, args) end
 		local payload = args[1]
 		if type(payload) ~= "table" then return callOriginal(self, method, args) end
 		if S.AutoCross and self.Name == "Swing" then
@@ -2515,30 +2432,14 @@ do
 		if typeof(payload.origin) ~= "Vector3" or typeof(payload.dir) ~= "Vector3" then
 			return callOriginal(self, method, args)
 		end
-		local direction
-		if S.SilentAim then
-			local ok, result = pcall(silentDirection, self.Name, payload, payload.origin)
-			if ok then
-				direction = result
-			else
-				Runtime.Diagnostics.SilentErrors = (Runtime.Diagnostics.SilentErrors or 0) + 1
-			end
-		end
-
-		if visualShots then pcall(calamari.TraceShot, payload.origin, direction or payload.dir, 1000) end
-		if not S.SilentAim or not direction then return callOriginal(self, method, args) end
-		local rewritten = copyPayload(payload)
-		rewritten.dir = direction
-		args[1] = rewritten
-		Runtime.Diagnostics.SilentRedirects = (Runtime.Diagnostics.SilentRedirects or 0) + 1
-		Runtime.Diagnostics.SilentLastRemote = self.Name
+		if visualShots then pcall(calamari.TraceShot, payload.origin, payload.dir, 1000) end
 		return callOriginal(self, method, args)
 	end
 
-	function Aim.InstallSilent()
+	function Aim.InstallNamecall()
 		if hookMode and oldNamecall then return true end
 		if type(getnamecallmethod) ~= "function" then
-			Aim.SilentHookStatus = "getnamecallmethod unavailable"
+			Aim.NamecallHookStatus = "getnamecallmethod unavailable"
 			return false
 		end
 		local wrapped = namecallHook
@@ -2550,7 +2451,7 @@ do
 			local ok, original = pcall(hookmetamethod, game, "__namecall", wrapped)
 			if ok and type(original) == "function" then
 				oldNamecall, wrappedHook, hookMode = original, wrapped, "hookmetamethod"
-				Aim.SilentHookStatus = "installed"
+				Aim.NamecallHookStatus = "installed"
 				return true
 			end
 		end
@@ -2563,16 +2464,16 @@ do
 				if type(setreadonly) == "function" then pcall(setreadonly, mt, true) end
 				if wrote and mt.__namecall == wrapped then
 					oldNamecall, wrappedHook, hookMode, hookMeta = original, wrapped, "metatable", mt
-					Aim.SilentHookStatus = "installed"
+					Aim.NamecallHookStatus = "installed"
 					return true
 				end
 			end
 		end
-		Aim.SilentHookStatus = "namecall hook unavailable"
+		Aim.NamecallHookStatus = "namecall hook unavailable"
 		return false
 	end
 
-	local function restoreSilentHook()
+	local function restoreNamecallHook()
 		if not hookMode then return end
 		local mode, original, wrapped, mt = hookMode, oldNamecall, wrappedHook, hookMeta
 		hookMode, wrappedHook, hookMeta = nil, nil, nil
@@ -2588,9 +2489,9 @@ do
 				if type(setreadonly) == "function" then pcall(setreadonly, mt, true) end
 			end)
 		end
-		Aim.SilentHookStatus = "not installed"
+		Aim.NamecallHookStatus = "not installed"
 	end
-	Aim.RestoreSilent = restoreSilentHook
+	Aim.RestoreNamecall = restoreNamecallHook
 
 	local function predictedPosition(target, part)
 		local position = part.Position
@@ -2613,7 +2514,6 @@ do
 	end
 
 	function Aim.Update(dt)
-		updateSilent()
 		if fovCircle then
 			fovCircle.Visible = S.Aimbot and S.FOVCircle
 			fovCircle.Position = Vector2.new(Camera.ViewportSize.X * 0.5, Camera.ViewportSize.Y * 0.5)
@@ -2732,11 +2632,9 @@ do
 
 	onCleanup(function()
 		release()
-		restoreSilentHook()
+		restoreNamecallHook()
 		Aim.CurrentTarget = nil
 		Aim.CurrentPart = nil
-		Aim.SilentTarget = nil
-		Aim.SilentPart = nil
 	end)
 end
 
@@ -2823,15 +2721,20 @@ do
 			topPosition = head.Position + Vector3.new(0, 0.6, 0)
 			bottomPosition = root.Position - Vector3.new(0, 3, 0)
 		end
-		local topX, topY, _, topVisible = Shared.Project(topPosition)
-		local bottomX, bottomY, _, bottomVisible = Shared.Project(bottomPosition)
-		if not topVisible or not bottomVisible then return end
-		local height = math.abs(bottomY - topY)
+		local topX, topY, topZ = Shared.Project(topPosition)
+		local bottomX, bottomY, bottomZ = Shared.Project(bottomPosition)
+		if not topZ or not bottomZ or topZ <= 0 or bottomZ <= 0 then return end
+		local viewport = Camera.ViewportSize
+		local centerX = (topX + bottomX) * 0.5
+		if centerX < 0 or centerX > viewport.X then return end
+		local rawTop, rawBottom = math.min(topY, bottomY), math.max(topY, bottomY)
+		if rawBottom < 0 or rawTop > viewport.Y then return end
+		local top = math.clamp(rawTop, 0, viewport.Y)
+		local bottom = math.clamp(rawBottom, 0, viewport.Y)
+		local height = bottom - top
 		if height < 5 then return end
 		local width = height * 0.55
-		local centerX = (topX + bottomX) * 0.5
 		local left = centerX - width * 0.5
-		local top = math.min(topY, bottomY)
 		local entry = rigEntry(key)
 		entry.Seen = Visuals.Generation
 		entry.LastSeen = os.clock()
@@ -3092,14 +2995,8 @@ do
 	Runtime.FeatureHandlers.HideGrass = function() Runtime.Environment.Apply() end
 	Runtime.FeatureHandlers.LowPC = function() Runtime.Environment.Apply() end
 	Runtime.FeatureHandlers.Noclip = function(value) if not value then Runtime.Movement.Restore() end end
-	Runtime.FeatureHandlers.SilentAim = function(value)
-		if value and not Runtime.Aim.InstallSilent() then
-			S.SilentAim = false
-			if _fFS["Silent Aim"] then _fFS["Silent Aim"](false) end
-		end
-	end
 	Runtime.FeatureHandlers.AutoCross = function(value)
-		if value and not Runtime.Aim.InstallSilent() then
+		if value and not Runtime.Aim.InstallNamecall() then
 			S.AutoCross = false
 			if _fFS["Weak Spot Aim"] then _fFS["Weak Spot Aim"](false) end
 		end
@@ -3133,17 +3030,6 @@ do
 		color(editor, "FOV Color", "FOV")
 		color(editor, "Line Color", "TargetLine")
 		toggleBind(editor, "Aimbot", "Aimbot")
-
-		local silentSection = section(rc, "Silent Aim")
-		editor = feature(silentSection, "Silent Aim", "SilentAim")
-		slider(editor, "FOV", 10, 900, "SilentFOV")
-		slider(editor, "Range", 20, 1500, "SilentRange")
-		dropdown(editor, "Target Part", {"Head", "Body", "Root", "Closest"}, "SilentPart")
-		onOff(editor, "Team Check", "SilentTeamCheck")
-		onOff(editor, "Wall Check", "SilentWallCheck")
-		onOff(editor, "Target NPC", "SilentNPC")
-		onOff(editor, "Prediction", "SilentPrediction")
-		toggleBind(editor, "Silent Aim", "SilentAim")
 
 		local triggerSection = section(rc, "Triggerbot")
 		editor = feature(triggerSection, "Triggerbot", "Triggerbot")
@@ -4992,13 +4878,13 @@ renderConnection = RunService.RenderStepped:Connect(function(dt)
 	if calamari and Runtime.Aim then
 		local visualShots = calamari.State.Bullet.Enabled or calamari.State.HitEffects.Enabled or calamari.State.HitNotifications.Enabled
 		local now = os.clock()
-		if visualShots and Runtime.Aim.SilentHookStatus ~= "installed" and now >= (Runtime.CalamariVisualHookNext or 0) then
+		if visualShots and Runtime.Aim.NamecallHookStatus ~= "installed" and now >= (Runtime.CalamariVisualHookNext or 0) then
 			Runtime.CalamariVisualHookNext = now + 0.5
-			local gameplayOwned = S.SilentAim or S.AutoCross
-			local ok, installed = pcall(Runtime.Aim.InstallSilent)
+			local gameplayOwned = S.AutoCross
+			local ok, installed = pcall(Runtime.Aim.InstallNamecall)
 			if ok and installed and not gameplayOwned then Runtime.CalamariVisualHookOwned = true end
-		elseif not visualShots and not S.SilentAim and not S.AutoCross and Runtime.CalamariVisualHookOwned then
-			if Runtime.Aim.RestoreSilent then pcall(Runtime.Aim.RestoreSilent) end
+		elseif not visualShots and not S.AutoCross and Runtime.CalamariVisualHookOwned then
+			if Runtime.Aim.RestoreNamecall then pcall(Runtime.Aim.RestoreNamecall) end
 			Runtime.CalamariVisualHookOwned = false
 		end
 	end
