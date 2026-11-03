@@ -3850,6 +3850,24 @@ local function updatePlayers(now)
 			local distance = (root.Position - camera.CFrame.Position).Magnitude
 			if distance <= State.Player.MaxDistance then
 				local point, onScreen = camera:WorldToViewportPoint(root.Position - Vector3.new(0, 0.5, 0))
+				if Adapter.PlayerHeadFallback and (not onScreen or point.Z <= 0) then
+					local head = target.Head or target.head
+					if head and head ~= root then
+						local headPoint, headOnScreen = camera:WorldToViewportPoint(head.Position)
+						if headPoint.Z > 0 and headOnScreen then
+							if point.Z > 0 then
+								point = Vector3.new(
+									math.clamp(point.X, 0, camera.ViewportSize.X),
+									math.clamp(point.Y, 0, camera.ViewportSize.Y),
+									point.Z
+								)
+							else
+								point = headPoint
+							end
+							onScreen = true
+						end
+					end
+				end
 				if point.Z > 0 and onScreen then
 					local entry = playerEntries[key]
 					if not entry then
@@ -4621,6 +4639,7 @@ return createBurmaldaCalamariVisuals
 		IsActive = function() return Runtime.Ready and not Runtime.Unloaded end,
 		IsLowPC = function() return S.LowPC == true end,
 		Adapter = {
+			PlayerHeadFallback = true,
 			WorldRoots = {
 				"Loot", "Deployables", "WorldItems", "DroppedItems", "Dropped", "Debris", "Corpses",
 				"DeadBodies", "Bags", "Dead", "LootBags", "DeathBags", "Drops", "Nodes", "OreNodes",
