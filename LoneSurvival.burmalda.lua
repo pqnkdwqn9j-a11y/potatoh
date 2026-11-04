@@ -5634,7 +5634,7 @@ end
         Movement = { Noclip = false, AntiFall = false, AntiSpikes = false },
         Camera = {
           CustomFOV = false, FOV = 90, Zoom = false, ZoomFOV = 20,
-          ThirdPerson = false, Distance = 10, Height = 1.5, Side = 0, Sensitivity = 0.2,
+          ThirdPerson = false, Distance = 10,
         },
         World = { RemoveLeafs = false, RemoveBushes = false },
         ESP = {
@@ -5734,7 +5734,7 @@ end
         skeletonLinesUsed = 0,
         ghosts = {},
         targetVisibility = setmetatable({}, { __mode = "k" }),
-        third = { active = false, lookX = 0, lookY = 0 },
+        third = { active = false },
         frozenTracks = {},
       }
       mainGame.extraFeatures = state
@@ -5958,55 +5958,36 @@ end
         if not extra.Camera.Zoom and not extra.Camera.CustomFOV then state.RestoreFOV() end
       end
 
-      local function restoreThirdMouse()
-        local third = state.third
-        if third.originalMouseBehavior ~= nil then
-          pcall(function() userInputService.MouseBehavior = third.originalMouseBehavior end)
-        end
-        if third.originalMouseIcon ~= nil then
-          pcall(function() userInputService.MouseIconEnabled = third.originalMouseIcon end)
-        end
-        third.originalMouseBehavior, third.originalMouseIcon = nil, nil
+      local function thirdPersonDistance()
+        local distance = tonumber(extra.Camera.Distance) or 10
+        if not finiteNumber(distance) then distance = 10 end
+        return math.clamp(distance, 2, 30)
       end
       function state.StopThirdPerson()
         local third = state.third
-        if not third.active and not third.camera then return end
+        if not third.active then return end
         third.active = false
-        local camera = third.camera or workspace.CurrentCamera
-        if camera then
-          pcall(function()
-            camera.CameraType = third.originalCameraType or Enum.CameraType.Custom
-            if third.originalCameraSubject ~= nil then camera.CameraSubject = third.originalCameraSubject end
-            if third.originalCFrame then camera.CFrame = third.originalCFrame end
-          end)
-        end
-        restoreThirdMouse()
-        third.camera, third.originalCameraType, third.originalCameraSubject = nil, nil, nil
-        third.originalCFrame, third.lookX, third.lookY = nil, 0, 0
-        third.menuOpen = nil
+        pcall(function()
+          if third.lastCameraMode ~= nil and localPlayer.CameraMode == third.lastCameraMode then
+            localPlayer.CameraMode = third.originalCameraMode or Enum.CameraMode.Classic
+          end
+          if third.lastMinZoom ~= nil and localPlayer.CameraMinZoomDistance == third.lastMinZoom then
+            localPlayer.CameraMinZoomDistance = third.originalMinZoom or 0.5
+          end
+          if third.lastMaxZoom ~= nil and localPlayer.CameraMaxZoomDistance == third.lastMaxZoom then
+            localPlayer.CameraMaxZoomDistance = third.originalMaxZoom or 128
+          end
+        end)
+        third.originalCameraMode, third.originalMinZoom, third.originalMaxZoom = nil, nil, nil
+        third.lastCameraMode, third.lastMinZoom, third.lastMaxZoom = nil, nil, nil
       end
       local function startThirdPerson()
         local third = state.third
-        local camera = workspace.CurrentCamera
-        local character = getLocalCharacter()
-        local root = character and character:FindFirstChild("HumanoidRootPart")
-        if third.active or not camera or not root or not root:IsA("BasePart") then return false end
-        local cameraCFrame = camera.CFrame
-        if not validVector(cameraCFrame.Position) or not validVector(cameraCFrame.LookVector) then return false end
-        third.camera = camera
-        third.originalCameraType = camera.CameraType
-        third.originalCameraSubject = camera.CameraSubject
-        third.originalCFrame = cameraCFrame
-        third.originalMouseBehavior = userInputService.MouseBehavior
-        third.originalMouseIcon = userInputService.MouseIconEnabled
-        local look = cameraCFrame.LookVector
-        third.yaw = math.abs(look.X) + math.abs(look.Z) > 1e-6 and math.atan2(-look.X, -look.Z) or 0
-        third.pitch = math.asin(math.clamp(look.Y, -1, 1))
-        third.lookX, third.lookY = 0, 0
-        third.menuOpen = nil
+        if third.active then return end
+        third.originalCameraMode = localPlayer.CameraMode
+        third.originalMinZoom = localPlayer.CameraMinZoomDistance
+        third.originalMaxZoom = localPlayer.CameraMaxZoomDistance
         third.active = true
-        camera.CameraType = Enum.CameraType.Scriptable
-        return true
       end
       function state.SetThirdPerson(enabled)
         extra.Camera.ThirdPerson = enabled == true
@@ -6020,44 +6001,20 @@ end
           if state.third.active then state.StopThirdPerson() end
           return
         end
-        local camera = workspace.CurrentCamera
-        if not camera then return end
-        if state.third.active and state.third.camera ~= camera then state.StopThirdPerson() end
-        if not state.third.active and not startThirdPerson() then return end
         local third = state.third
-        local character = getLocalCharacter()
-        local root = character and character:FindFirstChild("HumanoidRootPart")
-        if not root or not root.Parent or not root:IsA("BasePart") then
-          state.StopThirdPerson()
-          return
+        if not third.active then startThirdPerson() end
+        local distance = thirdPersonDistance()
+        third.lastCameraMode = Enum.CameraMode.Classic
+        third.lastMinZoom, third.lastMaxZoom = distance, distance
+        if localPlayer.CameraMode ~= third.lastCameraMode then
+          localPlayer.CameraMode = third.lastCameraMode
         end
-        if not validVector(root.Position) or not finiteNumber(third.yaw) or not finiteNumber(third.pitch)
-          or not finiteNumber(third.lookX or 0) or not finiteNumber(third.lookY or 0) then
-          error("invalid Third Person state", 0)
+        if localPlayer.CameraMinZoomDistance ~= distance then
+          localPlayer.CameraMinZoomDistance = distance
         end
-        local open = menuOpen == true
-        if third.menuOpen ~= open then
-          third.menuOpen = open
-          userInputService.MouseBehavior = open and Enum.MouseBehavior.Default or Enum.MouseBehavior.LockCurrentPosition
-          userInputService.MouseIconEnabled = open
+        if localPlayer.CameraMaxZoomDistance ~= distance then
+          localPlayer.CameraMaxZoomDistance = distance
         end
-        if not open then
-          local sensitivity = math.clamp(tonumber(extra.Camera.Sensitivity) or 0.2, 0.01, 1) * 0.01
-          third.yaw = third.yaw - math.clamp(third.lookX or 0, -500, 500) * sensitivity
-          third.pitch = math.clamp(third.pitch - math.clamp(third.lookY or 0, -500, 500) * sensitivity,
-            -1.35, 1.35)
-        end
-        third.lookX, third.lookY = 0, 0
-        if extra.Aimbot.Enabled and state.aimbotTarget then return end
-        local rotation = CFrame.fromEulerAnglesYXZ(third.pitch, third.yaw, 0)
-        local focus = root.Position + Vector3.new(0, 1.5, 0)
-        local look = rotation.LookVector or Vector3.new(0, 0, -1)
-        local right = rotation.RightVector or Vector3.new(1, 0, 0)
-        local position = focus - look * math.clamp(tonumber(extra.Camera.Distance) or 10, 2, 30)
-          + right * math.clamp(tonumber(extra.Camera.Side) or 0, -10, 10)
-          + Vector3.new(0, math.clamp(tonumber(extra.Camera.Height) or 1.5, -5, 10), 0)
-        if not validVector(position) or not validVector(focus) then error("invalid Third Person transform", 0) end
-        camera.CFrame = CFrame.lookAt(position, focus)
       end
 
       local function cachedVisibility(target, part, origin)
@@ -6703,12 +6660,6 @@ end
         state.SetVegetation("Leafs", value); state.SetVegetation("Bushes", value)
       end
 
-      trackConnection(userInputService.InputChanged:Connect(function(input)
-        if not state.Active or not state.third.active or menuOpen == true then return end
-        if input.UserInputType ~= Enum.UserInputType.MouseMovement or not input.Delta then return end
-        state.third.lookX = math.clamp((state.third.lookX or 0) + (tonumber(input.Delta.X) or 0), -500, 500)
-        state.third.lookY = math.clamp((state.third.lookY or 0) + (tonumber(input.Delta.Y) or 0), -500, 500)
-      end))
       trackConnection(workspace.DescendantAdded:Connect(function(object)
         if not state.Active then return end
         if extra.Movement.AntiSpikes then pcall(registerSpike, object) end
@@ -7674,12 +7625,33 @@ local function applyPlayerStyle(entry)
 	setProperty(entry.Distance, "TextColor3", color3(p.DistanceColor))
 	setProperty(entry.Weapon, "TextColor3", color3(p.WeaponColor))
 	setProperty(entry.Flags, "TextColor3", color3(p.FlagsColor))
-	if entry.Highlight then
-		entry.Highlight.FillColor = color3(p.ChamsInside)
-		entry.Highlight.OutlineColor = color3(p.ChamsOutside)
-		entry.Highlight.FillTransparency = p.ChamsInsideTransparency
-		entry.Highlight.OutlineTransparency = p.ChamsOutsideTransparency
+		if entry.Highlight then
+			entry.Highlight.FillColor = color3(p.ChamsInside)
+			entry.Highlight.OutlineColor = color3(p.ChamsOutside)
+			entry.Highlight.FillTransparency = p.ChamsInsideTransparency
+			entry.Highlight.OutlineTransparency = p.ChamsOutsideTransparency
+		end
+end
+local fallbackBodyParts = {"UpperTorso", "Torso", "LowerTorso", "LeftUpperArm", "RightUpperArm", "LeftArm", "RightArm"}
+local function onViewport(camera, point)
+	return point and point.Z > 0 and point.X >= 0 and point.X <= camera.ViewportSize.X
+		and point.Y >= 0 and point.Y <= camera.ViewportSize.Y
+end
+local function visiblePartPoint(camera, part)
+	if not part or not part.Parent then return nil end
+	local ok, point = pcall(camera.WorldToViewportPoint, camera, part.Position)
+	if ok and onViewport(camera, point) then return point end
+	return nil
+end
+local function playerFallbackPoint(camera, target, model, distance)
+	local point = visiblePartPoint(camera, target.Head or target.head)
+	if point or distance > 80 then return point end
+	for _, name in ipairs(fallbackBodyParts) do
+		local part = model:FindFirstChild(name)
+		point = visiblePartPoint(camera, part)
+		if point then return point end
 	end
+	return nil
 end
 local function updatePlayers(now)
 	local enabled = active() and State.Player.Enabled
@@ -7705,6 +7677,16 @@ local function updatePlayers(now)
 			local distance = (root.Position - camera.CFrame.Position).Magnitude
 			if distance <= State.Player.MaxDistance then
 				local point, onScreen = camera:WorldToViewportPoint(root.Position - Vector3.new(0, 0.5, 0))
+				if Adapter.PlayerViewportFallback then
+					onScreen = onViewport(camera, point)
+					if not onScreen then
+						local fallback = playerFallbackPoint(camera, target, model, distance)
+						if fallback then
+							point = fallback
+							onScreen = true
+						end
+					end
+				end
 				if point.Z > 0 and onScreen then
 					local entry = playerEntries[key]
 					if not entry then
@@ -7717,12 +7699,22 @@ local function updatePlayers(now)
 						entry.Model = model
 						entry.LastSeen = now
 						applyPlayerStyle(entry)
-						local depth = 2 * math.max(0.01, point.Z) * theta
-						local scale = camera.ViewportSize.Y / math.max(0.01, depth * 1.5)
-						local width = math.floor(math.max(scale * 6, 4))
-						local height = math.floor(math.max(scale * 8, 4))
-						setProperty(entry.Main, "Position", UDim2.fromOffset(point.X, point.Y))
-						setProperty(entry.Main, "Size", UDim2.fromOffset(width, height))
+					local depth = 2 * math.max(0.01, point.Z) * theta
+					local scale = camera.ViewportSize.Y / math.max(0.01, depth * 1.5)
+					local width = math.floor(math.max(scale * 6, 4))
+					local height = math.floor(math.max(scale * 8, 4))
+					local centerX, centerY = point.X, point.Y
+					if Adapter.PlayerViewportFallback then
+						local viewport = camera.ViewportSize
+						local topReserve = State.Player.Names and 24 or 6
+						local bottomReserve = State.Player.Weapon and 40 or (State.Player.Distance and 22 or 6)
+						width = math.floor(math.min(width, math.max(4, viewport.X - 16)))
+						height = math.floor(math.min(height, math.max(4, viewport.Y - topReserve - bottomReserve - 8)))
+						centerX = math.clamp(centerX, width * 0.5 + 4, viewport.X - width * 0.5 - 4)
+						centerY = math.clamp(centerY, height * 0.5 + topReserve, viewport.Y - height * 0.5 - bottomReserve)
+					end
+					setProperty(entry.Main, "Position", UDim2.fromOffset(centerX, centerY))
+					setProperty(entry.Main, "Size", UDim2.fromOffset(width, height))
 						setProperty(entry.Main, "Visible", true)
 						setProperty(entry.Main, "BackgroundTransparency", State.Player.Fill and 0 or 1)
 						setProperty(entry.Outline, "Enabled", State.Player.Box)
@@ -8874,16 +8866,6 @@ end
       addSlider(thirdSet, "Camera Distance", 2, 30, cfg.Extra.Camera.Distance, function(v)
         cfg.Extra.Camera.Distance = v
       end)
-      addSlider(thirdSet, "Camera Height", -5, 10, cfg.Extra.Camera.Height, function(v)
-        cfg.Extra.Camera.Height = v
-      end)
-      addSlider(thirdSet, "Camera Side", -10, 10, cfg.Extra.Camera.Side, function(v)
-        cfg.Extra.Camera.Side = v
-      end)
-      addSlider(thirdSet, "Camera Sensitivity", 1, 10,
-        math.floor(cfg.Extra.Camera.Sensitivity * 10 + 0.5), function(v)
-          cfg.Extra.Camera.Sensitivity = v / 10
-        end)
       addBind(thirdSet, "Third Person Bind", "None", function()
         if mainGame.Window then mainGame.Window:SetFeature("Third Person", not cfg.Extra.Camera.ThirdPerson) end
       end)
