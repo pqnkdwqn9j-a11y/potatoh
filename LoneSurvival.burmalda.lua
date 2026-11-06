@@ -1,3 +1,17 @@
+-- Burmalda.hook | Lone Survival | private JNKIE payload gate
+local __burmaldaLoneEnv = getgenv and getgenv() or _G
+local __burmaldaLoneKey = tostring(__burmaldaLoneEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
+if tostring(__burmaldaLoneEnv.PHOOKGATE or "") ~= "1347571535"
+    or __burmaldaLoneKey == ""
+    or __burmaldaLoneKey:upper() == "BETA"
+then
+    __burmaldaLoneEnv.PHOOKGATE = nil
+    __burmaldaLoneEnv.SCRIPT_KEY = nil
+    return
+end
+__burmaldaLoneEnv.PHOOKGATE = nil
+__burmaldaLoneEnv.SCRIPT_KEY = nil
+
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local userInputService = game:GetService("UserInputService")
@@ -297,6 +311,7 @@ if integrityOk then
   mainGame.fbError = nil
   mainGame.fbRetryAt = nil
 
+  -- Invalidates asynchronous hook retries from an older execute/Unload.
   mainGame.hookGeneration = (mainGame.hookGeneration or 0) + 1
   mainGame.unloaded = false
 
@@ -852,6 +867,8 @@ if integrityOk then
           end
         end)
 
+        -- Preserve varargs/multi-returns and always restore temporary camera /
+        -- AdjustSpring state, including when the original function errors.
         local originalResults = table.pack(pcall(mainGame.origNew, p17, p18, ...))
 
         if v117 then
@@ -1580,6 +1597,7 @@ if integrityOk then
     return mainGame.targetList
   end
 
+
   function buildUi()
     local function uiBuildTraceback(value)
       local message = tostring(value)
@@ -1609,6 +1627,8 @@ if integrityOk then
       return mainGame.Window
     end
 
+    -- Standalone adapter for the exact 621x542 source-structure menu. Only UI code is shared;
+    -- unrelated gameplay and crafting are not included in this build.
     local _burmaldaEnv = getgenv and getgenv() or _G
     local TS = game:GetService("TweenService")
     local UIS = userInputService
@@ -1621,6 +1641,9 @@ if integrityOk then
     local camera = workspace.CurrentCamera
     local _isLargeScreen = camera ~= nil and camera.ViewportSize.X >= 1024
 
+-- Shared Burmalda.hook stats HUD. UI-only: no game-specific logic or assets.
+-- The brand row intentionally has no left Logo/ImageLabel. The HUD is owned by
+-- its caller's ScreenGui and remains visible when the main menu is hidden.
 local function createBurmaldaStatsHud(options)
 	options = options or {}
 	local parent = assert(options.Parent, "Stats HUD parent is required")
@@ -1708,6 +1731,7 @@ local function createBurmaldaStatsHud(options)
 	local mainScale = Instance.new("UIScale", mainBar)
 	mainScale.Scale = scaleValue
 
+	-- No icon is created before this label: this is the requested logo-free HUD.
 	section(mainBar, nil, "Burmalda.hook", 0, 12)
 	separator(mainBar)
 	local fpsLabel = section(mainBar, "12096147158", "0 fps", 14, 12)
@@ -1772,6 +1796,7 @@ local function createBurmaldaStatsHud(options)
 	return api
 end
 
+
     local sg = Instance.new("ScreenGui")
     sg.Name = "BurmaldaHookLoneSurvival"
     sg.IgnoreGuiInset = true
@@ -1784,6 +1809,7 @@ end
       sg.Parent = localPlayer:WaitForChild("PlayerGui")
     end
 
+    -- Shared second-screen HUD; hiding the menu never hides or destroys it.
     local statsHud = createBurmaldaStatsHud({
       Parent = sg,
       Workspace = workspace,
@@ -1813,6 +1839,7 @@ end
     btnIco.Image = "rbxassetid://110686514699024"
     btnIco.ScaleType = Enum.ScaleType.Fit
 
+    -- Draggable floating open button; all connections belong to this window.
     do
       local dragging, dragInput, dragStart, startPos
       local changedConnection = nil
@@ -1857,7 +1884,13 @@ end
         end
       end)
     end
-
+-- Burmalda.hook | local port of the supplied patapim/bred UI structure.
+-- Source geometry: Window 621x542, Pages 30px, two scrolling columns,
+-- Section topbar 25px, content (8,35), controls gap 6px, bottom padding 8px.
+-- No external UI library, logo asset, glow asset or runtime HTTP dependency.
+-- Only the gameplay/adapter API escapes this implementation scope. Keeping
+-- helper locals inside the do-block avoids the Luau 200-register limit when
+-- the menu is embedded into an already large game client.
 local Theme, UIAnimations, main, mainStroke, mainScale, baseMenuScale
 local tabs, tabFrames, tabButtons, activeFrame
 local _fFS, _fDD, sectionContents, columnSections
@@ -2100,7 +2133,8 @@ tabFrames.VISUAL = tabFrames.VISUALS
 tabFrames.ESP = tabFrames.VISUALS
 tabFrames.HUD = tabFrames.MISC
 tabFrames.SETTINGS = tabFrames.CONFIG
-
+-- Keep feature-column aliases in sync with page aliases. Without these,
+-- getTab("ESP")/getTab("HUD") silently fell back to CONFIG.
 tabColumns.VISUAL = tabColumns.VISUALS
 tabColumns.ESP = tabColumns.VISUALS
 tabColumns.HUD = tabColumns.MISC
@@ -2201,6 +2235,8 @@ local interfaceFeatures = {
 	["Menu Accent"] = true, ["UI Animations"] = true,
 }
 
+-- UI-only organization: keep the original geometry and callbacks, but do not mix
+-- aiming, weapon mods, visual effects, world options and movement on one page.
 local featureTabOverrides = {
 	["Target HUD"] = "VISUALS", ["Hit Logs"] = "VISUALS",
 	["Hitmarker"] = "VISUALS", ["Damage FX"] = "VISUALS",
@@ -2395,6 +2431,7 @@ function createFeature(parent, name, default, callback, hasSettings)
 	return editor
 end
 
+-- The source library places sub-elements on the toggle row; there are no card arrows.
 _fDD.RegisterEditor = function() end
 
 function addBind(p, name, def, onPress, onChanged)
@@ -2531,7 +2568,8 @@ function addSlider(p, name, min, max, def, callback)
 end
 
 function addDropdown(p, name, options, defIdx, callback)
-
+	-- On/Off options are ordinary buttons. Keep their string values and setter
+	-- registry so existing configs and programmatic controls remain compatible.
 	local onValue, offValue
 	if #options == 2 then
 		for _, value in ipairs(options) do
@@ -2873,6 +2911,7 @@ connectUI(UIS.InputBegan, function(input, gameProcessed)
 	if input.KeyCode == Enum.KeyCode.RightShift then toggleMenu(true) end
 end)
 
+-- Drag the source window by its 39px title bar.
 do
 	local dragging, dragInput, dragStart, startPos = false, nil, nil, nil
 	local function finishDrag() dragging = false end
@@ -2900,6 +2939,7 @@ do
 	end)
 end
 
+-- The reference window is resizeable; preserve its 621x542 minimum.
 do
 	local resize = Instance.new("TextButton", main)
 	resize.Name = "Resize"
@@ -2937,6 +2977,8 @@ end)
 if Runtime.StartClosed and menuOpen then toggleMenu() end
 end
 
+
+    -- Programmatic control registry and standalone JSON config support.
     local featureStates, featureForContainer = {}, {}
     local optionApis, bindApis = {}, {}
     local baseCreateFeature = createFeature
@@ -3110,7 +3152,8 @@ end
       if not ok or type(decoded) ~= "table" then return false, decoded end
       if type(decoded.Cfg) == "table" then
         mergeTables(cfg, decodeValue(decoded.Cfg))
-
+        -- IgnorePlayers is a map, not a schema with additive defaults. Loading
+        -- must remove keys that were absent from the saved map.
         local savedSilent = decoded.Cfg.Silent
         if type(savedSilent) == "table" and type(savedSilent.IgnorePlayers) == "table" then
           cfg.Silent.IgnorePlayers = decodeValue(savedSilent.IgnorePlayers)
@@ -3153,6 +3196,8 @@ end
       return ok
     end
 
+
+    -- Lone-only controls use the same source sections and 14px Gotham controls.
     local function resolveControlParent(parent, name)
       if sectionContents[parent] then return parent end
       if columnSections[parent] then return getSection(parent, defaultSectionName(parent, name)).Content end
@@ -3291,6 +3336,9 @@ end
       return section.Content
     end
 
+    -- Rost-style player/NPC ESP plus an independent world-resource overlay.
+    -- Resource entries are rendered only here: collectTargets/selectTarget and
+    -- Projectile.New never consume this list.
     do
       local espDefaults = {
         BoxType = "Normal",
@@ -3347,7 +3395,7 @@ end
       for key, value in pairs(resourceDefaults) do
         if cfg.ResourceESP[key] == nil then cfg.ResourceESP[key] = value end
       end
-
+      -- Optional workload reduction; user sliders and saved values stay intact.
       cfg.Misc.LowPC = cfg.Misc.LowPC == true
 
       local resourceLabels = {
@@ -3369,7 +3417,8 @@ end
       local hpHigh = Color3.fromRGB(80, 220, 100)
       local hpBackground = Color3.new(0, 0, 0)
       local occludedColor = Color3.fromRGB(255, 70, 70)
-
+      -- Target tables are rebuilt on ordinary rescans; key visibility by Model
+      -- so the 0.2 s raycast cache survives those allocations.
       local espVisibilityCache = setmetatable({}, { __mode = "k" })
       local drawingEsp = Drawing ~= nil and type(Drawing.new) == "function"
       if drawingEsp then
@@ -3514,7 +3563,8 @@ end
         local clothPlantsFolder = workspace:FindFirstChild("ClothPlants")
         local droppedPacksFolder = workspace:FindFirstChild("DroppedPacks")
         if resourcesFolder and clothPlantsFolder then
-
+          -- Confirmed static reference layout: keep the hot scan limited to the
+          -- world-resource containers instead of walking the whole map.
           local containers = { resourcesFolder, clothPlantsFolder }
           if droppedPacksFolder then containers[#containers + 1] = droppedPacksFolder end
           for _, container in ipairs(containers) do
@@ -3523,7 +3573,7 @@ end
             end
           end
         else
-
+          -- Offline/legacy fallback for maps without the reference containers.
           descendants = workspace:GetDescendants()
         end
         for _, instance in ipairs(descendants) do
@@ -4109,6 +4159,9 @@ end
       mainGame.stats.espResources = 0
     end
 
+
+    -- Our local movement package. It is independent from Projectile.New and
+    -- keeps per-character baselines so disable/respawn/reinit/Unload can restore.
     cfg.Movement = cfg.Movement or {}
     local movementDefaults = {
       Speed = false,
@@ -4155,7 +4208,7 @@ end
       end
 
       local freecam = { active = false }
-
+      -- Kept only to remove stale bindings from the previous Freecam build.
       local freecamBindingName = "MG_LoneFreecam"
       local freecamActionName = "BurmaldaLoneFreecamMovement"
       local contextActionService = game:GetService("ContextActionService")
@@ -4181,7 +4234,7 @@ end
       function movement.StopFreecam()
         if not freecam.active then return end
         freecam.active = false
-
+        -- Defensive migration cleanup; this build does not create either binding.
         pcall(function() runService:UnbindFromRenderStep(freecamBindingName) end)
         if contextActionService then
           pcall(function() contextActionService:UnbindAction(freecamActionName) end)
@@ -4244,7 +4297,8 @@ end
 
         local rotation = CFrame.fromEulerAnglesYXZ(freecam.pitch, freecam.yaw, 0)
         if not menuIsOpen then
-
+          -- InputChanged supplies each mouse delta once. Never poll a sticky
+          -- GetMouseDelta value and reapply it on every rendered frame.
           local deltaX = math.clamp(freecam.lookX or 0, -500, 500)
           local deltaY = math.clamp(freecam.lookY or 0, -500, 500)
           freecam.lookX = 0
@@ -4536,7 +4590,7 @@ end
       end
 
       mainGame.movementCleanup = function()
-
+        -- Reinit must preserve the user's enabled setting; Unload clears it later.
         pcall(movement.StopFreecam)
         movement.Active = false
         pcall(movement.Unbind)
@@ -4570,6 +4624,9 @@ end
       if cfg.Movement.Freecam then movement.SetFreecam(true) end
     end
 
+
+    -- Amogus feature equivalents implemented against our own lifecycle and UI.
+    -- No remote UI/ESP library, HTTP loader or third-party gameplay file is used.
     do
       local silentDefaults = {
         TeamCheck = false,
@@ -4697,6 +4754,8 @@ end
         end
       end
 
+      -- Building-only X-Ray. Matching parts are cached with their own original
+      -- transparency; characters, resources and unrelated map parts are ignored.
       local xrayCache = setmetatable({}, { __mode = "k" })
       local xrayScanId = 0
       local xrayNames = { "TwigWall", "SoloTwigFrame", "TrigTwigRoof", "TwigFrame", "TwigWindow", "TwigRoof" }
@@ -4795,6 +4854,9 @@ end
         return true
       end
 
+      -- Keep the original Lone collector/selector and add only the optional
+      -- Team Check / Ignore Downed filters. Dynamic FOV changes the circle,
+      -- never the original angular shot-selection range.
       local baseCollectTargets = collectTargets
       local baseUpdateFovCircle = updateFovCircle
       collectTargets = function()
@@ -5174,6 +5236,9 @@ end
         return force or crosshair or lob or aimAll, force, crosshair, lob, aimAll
       end
 
+      -- Original Lone Projectile.New behavior. Bullet/Rocket use the projectile's
+      -- ForceHitVector; Arrow/Grenade/AimAll use the original temporary camera
+      -- alignment. The camera and CrosshairManager spring are always restored.
       local function redirectProjectile(data, context)
         if not cfg.Silent.Enabled then
           mainGame.stats.lastAim = { reason = "silent off" }
@@ -5328,6 +5393,8 @@ end
             end
           end
 
+          -- Calamari visuals observe the already-owned local Projectile.New call.
+          -- They never redirect data and perform no work until a shot visual is on.
           if type(data) == "table" and not data.FromServer and mainGame.calamariVisuals then
             local origin = data.Origin
             local camera = workspace.CurrentCamera
@@ -5442,6 +5509,7 @@ end
         end
       end))
 
+
       state.installErrors = state.installErrors or {}
       state.installWarnings = state.installWarnings or {}
 
@@ -5461,7 +5529,8 @@ end
         if debug and type(debug.traceback) == "function" then
           local ok, trace = pcall(debug.traceback, message, 2)
           if ok and type(trace) == "string" then
-
+            -- Some executor shims return only a source label. Never lose the
+            -- original error text when that happens.
             if string.find(trace, message, 1, true) then return trace end
             return message .. "\n" .. trace
           end
@@ -5479,7 +5548,8 @@ end
 
         state.installErrors[name] = message
         state.lastInstallError = { Stage = name, Error = message }
-
+        -- RenderStepped retries installation. Report each distinct failure once,
+        -- not every two seconds, and never let it abort construction of the UI.
         if state.installWarnings[name] ~= message then
           state.installWarnings[name] = message
           local output = "[Burmalda.hook] " .. name .. " install failed:\n" .. message
@@ -5517,7 +5587,7 @@ end
       function state.SetSilentWalk(enabled)
         enabled = enabled == true
         local wasApplied = state.silentWalkApplied == true
-
+        -- Building the UI with an Off default must not touch the character or network.
         if not enabled and not wasApplied then return end
         state.silentWalkApplied = enabled
         local character = localPlayer.Character
@@ -5636,6 +5706,10 @@ end
       installAll()
     end
 
+
+    -- Additional Lone features recovered from the Qwerty reference behavior.
+    -- They use our own config, Drawing objects and lifecycle; no Qwerty UI,
+    -- authorization, HTTP loader or second projectile owner is included.
     do
       cfg.Extra = cfg.Extra or {}
       local extra = cfg.Extra
@@ -5780,6 +5854,8 @@ end
         return false
       end
 
+      -- Character collision ownership: scan only on character changes and new
+      -- descendants, while still enforcing collision every rendered frame.
       function state.RestoreNoclip()
         if state.noclipAdded then pcall(function() state.noclipAdded:Disconnect() end) end
         state.noclipAdded = nil
@@ -5945,6 +6021,8 @@ end
         end
       end
 
+      -- FOV and third-person camera have separate backups and never share the
+      -- Freecam owner. Zoom has priority over the normal custom FOV value.
       function state.RestoreFOV()
         if state.fovCamera and state.fovOriginal ~= nil then
           pcall(function() state.fovCamera.FieldOfView = state.fovOriginal end)
@@ -6035,6 +6113,7 @@ end
         end
       end
 
+      -- Aimbot target selection is independent from the Silent projectile hook.
       local function cachedVisibility(target, part, origin)
         local now = os.clock()
         local cached = state.targetVisibility[target.model]
@@ -6044,7 +6123,8 @@ end
         return visible
       end
       local function currentTargetList()
-
+        -- Share the projectile/ESP target cache instead of scanning players
+        -- again for Aimbot on every rendered frame.
         return getCachedTargets(0.1)
       end
       local function findAimbotTarget()
@@ -6196,6 +6276,8 @@ end
         end
       end
 
+      -- Additional world ESP. Only enabled containers are scanned, at most once
+      -- per configured interval. Entries never enter collectTargets/selectTarget.
       local function newWorldEspEntry()
         local entry = {
           box = ownDrawing("Square"), outline = ownDrawing("Square"),
@@ -6472,6 +6554,8 @@ end
         state.skeletonLinesUsed = used
       end
 
+      -- Crosshair: eight owned lines cover Cross/Star; Circle and Dot are
+      -- separate primitives, so no external UI library is required.
       local function hsvColor(hue)
         hue = hue % 1
         local index = math.floor(hue * 6)
@@ -6557,6 +6641,8 @@ end
         state.crosshairVisible = true
       end
 
+      -- Anti-Aim / Pose share one character owner. Pose has priority if a
+      -- config manually enables both; normal UI callbacks make them exclusive.
       local function restoreFrozenTracks()
         for track, speed in pairs(state.frozenTracks) do
           pcall(function()
@@ -6801,8 +6887,9 @@ end
       end
     end
 
-    local function unloadFromMenu()
 
+    local function unloadFromMenu()
+      -- Invalidate retry/async installs before any operation that can fail.
       mainGame.unloaded = true
       mainGame.hookGeneration = (mainGame.hookGeneration or 0) + 1
       if mainGame.movementCleanup then pcall(mainGame.movementCleanup) end
@@ -6831,7 +6918,8 @@ end
       cfg.ESP.Enabled = false
       cfg.ResourceESP.Enabled = false
       cfg.Misc.XRay = false
-
+      -- Each cleanup stage is isolated: one failure must not skip the menu,
+      -- drawings, lighting restore or global-reference teardown.
       pcall(function() setFullbright(false) end)
       for _, drawing in ipairs(mainGame.draws or {}) do
         pcall(function()
@@ -6856,6 +6944,7 @@ end
       pcall(function() cwarn("[MainGame] unloaded") end)
     end
 
+    -- COMBAT: Silent Aim, Amogus targeting and weapon-module modifiers.
     do
       local lc, rc = getTab("COMBAT")
       local silentSet = createFeature(lc, "Silent Aim", cfg.Silent.Enabled, function(v)
@@ -6963,6 +7052,7 @@ end
       addButton(ignoreGroup, "Refresh player list", function() ignoreApi.Refresh(getPlayerNames()) end)
     end
 
+    -- VISUALS: our rost-style renderer, with resources isolated from aim targets.
     do
       local lc, rc = getTab("VISUALS")
       local espSet = createFeature(lc, "ESP", cfg.ESP.Enabled, function(v) cfg.ESP.Enabled = v end)
@@ -7067,6 +7157,7 @@ end
         cfg.ResourceESP.BodyBagColor)
     end
 
+    -- MOVEMENT: our local character controls plus recovered projectile options.
     do
       local lc, rc = getTab("MOVEMENT")
       local speedSet = createFeature(lc, "Speed", cfg.Movement.Speed, function(v)
@@ -7130,6 +7221,7 @@ end
       addLabel(rc, "Freecam: WASD + Space / Ctrl; Shift = fast.")
     end
 
+    -- MISC: world lighting, performance overlay and recovered diagnostics.
     do
       local lc, rc = getTab("MISC")
       createFeature(lc, "Fullbright", cfg.Misc.Fullbright, function(v)
@@ -7230,7 +7322,9 @@ end
 
 do
   local calamariFactory = (function()
-
+-- Calamari-inspired visuals adapted for Burmalda.hook's local menu and lifecycle.
+-- No external UI/ESP library, HTTP loader, gameplay module or projectile owner.
+-- State is plain JSON-safe data (colors are RGB arrays) for every game's configs.
 local function createBurmaldaCalamariVisuals(options)
 	options = options or {}
 	local State = options.State or {}
@@ -7447,6 +7541,8 @@ local function destroy(object)
 	if object then pcall(function() object:Destroy() end) end
 end
 
+-- Player ESP: the same gradient/fill/glow/health layout as Calamari, but pooled
+-- and capped. The normal renderer remains independent and can stay enabled.
 local playerEntries = {}
 local targetCache, targetCacheAt = {}, 0
 local playerWasActive = false
@@ -7791,6 +7887,8 @@ local function updatePlayers(now)
 	API.Diagnostics.PlayerESP = rendered
 end
 
+-- Calamari Misc ESP. Traversal is incremental and limited to known world roots;
+-- adapters may add game-specific cached objects without another full workspace scan.
 local worldLabels = {}
 local worldEntries = {}
 local worldScan = {Active = false, Queue = {}, Index = 1, Working = {}, Seen = {}, Processed = 0}
@@ -7835,7 +7933,7 @@ local function beginWorldScan()
 			worldScan.Queue[#worldScan.Queue + 1] = {Object = folder, Depth = 0, MaxDepth = 3, Root = name}
 		end
 	end
-
+	-- Top-level Tools and named bags are Drops; root folders are not traversed twice.
 	if State.World.Categories.Drops.Enabled or State.World.Categories["Body Bag"].Enabled then
 		worldScan.Queue[#worldScan.Queue + 1] = {Object = workspace, Depth = 0, MaxDepth = 0, Root = "Workspace"}
 	end
@@ -7889,7 +7987,8 @@ local function worldPosition(object)
 	if ok and pivot and pivot.Position then return pivot.Position end
 	local primary = object.PrimaryPart
 	if primary and primary:IsA("BasePart") then return primary.Position end
-
+	-- A model can be supplied by a game adapter before its pivot is available.
+	-- Use an existing part as a read-only fallback; never move or mutate the model.
 	for _, child in ipairs(object:GetChildren()) do
 		if child:IsA("BasePart") then return child.Position end
 	end
@@ -7958,6 +8057,7 @@ local function updateWorld(now)
 	API.Diagnostics.WorldESP = index
 end
 
+-- Gun/Arms materials, textures, Viewmodel Highlight and owned position offsets.
 local textures = {
 	Web = "rbxassetid://301464986", Swirl = "rbxassetid://8133639623",
 	Checkers = "rbxassetid://5790215150", CandyCane = "rbxassetid://6853532738",
@@ -8152,6 +8252,8 @@ local function updateViewmodels(now)
 	end
 end
 
+-- Shot visuals use existing game events through API.Impact/TraceShot. They never
+-- redirect a shot, install another Silent hook or change remote arguments.
 local activeEffects = {}
 local function ownEffect(object, lifetime)
 	if not object then return end
@@ -8279,6 +8381,8 @@ function API.TraceShot(origin, direction, maxDistance, ignore)
 	return result
 end
 
+-- Lighting and optional Camera controls use per-property ownership. Off/Unload
+-- restores only values still owned by this runtime; later game writes win.
 local ownedGroups = {}
 local createdLighting = {}
 local skyboxes = {
@@ -8525,7 +8629,8 @@ return createBurmaldaCalamariVisuals
     if mainGame.calamariVisuals == calamari then mainGame.calamariVisuals = nil end
   end)
   local mountCalamari = (function()
-
+-- Shared control layout for the local 621x542 Burmalda menu.
+-- The host owns createFeature/addSlider/addDropdown/addColor/addBind/getTab/getSection.
 local function mountBurmaldaCalamariMenu(API, menuOptions)
 	menuOptions = menuOptions or {}
 	local function section(parent, name)
@@ -8693,6 +8798,7 @@ return mountBurmaldaCalamariMenu
   mountCalamari(calamari, {Camera = "None", Lighting = false})
 end
 
+    -- Qwerty-equivalent controls, organized into the existing five tabs.
     local extraRuntime = mainGame.extraFeatures
     do
       local lc, rc = getTab("COMBAT")
@@ -8923,6 +9029,9 @@ end
       end)
     end
 
+
+
+    -- CONFIG: JSON configs plus menu presentation and lifecycle teardown.
     do
       local lc, rc = getTab("CONFIG")
       local configGroup = addControlGroup(rc, "Configs")
