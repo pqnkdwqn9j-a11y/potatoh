@@ -1,3 +1,23 @@
+-- Burmalda.hook | Fust Survival | private JNKIE payload gate
+local __burmaldaFustEnv = getgenv and getgenv() or _G
+local __burmaldaFustKey = tostring(__burmaldaFustEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
+if tostring(__burmaldaFustEnv.PHOOKGATE or "") ~= "1347571535"
+    or __burmaldaFustKey == ""
+    or __burmaldaFustKey:upper() == "BETA"
+then
+    __burmaldaFustEnv.PHOOKGATE = nil
+    __burmaldaFustEnv.SCRIPT_KEY = nil
+    return
+end
+__burmaldaFustEnv.PHOOKGATE = nil
+__burmaldaFustEnv.SCRIPT_KEY = nil
+
+-- Burmalda.hook | Fust Survival | standalone development build
+-- Release: 2026-11-01. Target PlaceId: 79862723087324.
+-- No HTTP loader or external UI/ESP library.
+-- Executors: Real, Opiumware, Madium, Potassium, Synapse Z, Volt, Volcano.
+-- Xeno is unsupported. Live game validation is still required.
+
 local _fustEnv = getgenv and getgenv() or _G
 if _fustEnv.BurmaldaFust and _fustEnv.BurmaldaFust.Unload then
 	pcall(_fustEnv.BurmaldaFust.Unload)
@@ -215,6 +235,9 @@ sg.ResetOnSpawn = false
 sg.DisplayOrder = 999998
 sg.Parent = uiParent
 
+-- Shared Burmalda.hook stats HUD. UI-only: no game-specific logic or assets.
+-- The brand row intentionally has no left Logo/ImageLabel. The HUD is owned by
+-- its caller's ScreenGui and remains visible when the main menu is hidden.
 local function createBurmaldaStatsHud(options)
 	options = options or {}
 	local parent = assert(options.Parent, "Stats HUD parent is required")
@@ -302,6 +325,7 @@ local function createBurmaldaStatsHud(options)
 	local mainScale = Instance.new("UIScale", mainBar)
 	mainScale.Scale = scaleValue
 
+	-- No icon is created before this label: this is the requested logo-free HUD.
 	section(mainBar, nil, "Burmalda.hook", 0, 12)
 	separator(mainBar)
 	local fpsLabel = section(mainBar, "12096147158", "0 fps", 14, 12)
@@ -365,6 +389,7 @@ local function createBurmaldaStatsHud(options)
 
 	return api
 end
+
 
 local advGui = newScreenGui()
 advGui.Name = "BurmaldaHookFustStats"
@@ -442,6 +467,13 @@ btnIco.ScaleType = Enum.ScaleType.Fit
 hudMakeDrag(openBtn)
 Runtime.StartClosed = true
 
+-- Burmalda.hook | Fust Survival | local 621x542 UI; no external library.
+-- Source geometry: Window 621x542, Pages 30px, two scrolling columns,
+-- Section topbar 25px, content (8,35), controls gap 6px, bottom padding 8px.
+-- No external UI library, logo asset, glow asset or runtime HTTP dependency.
+-- Only the gameplay/adapter API escapes this implementation scope. Keeping
+-- helper locals inside the do-block avoids the Luau 200-register limit when
+-- the menu is embedded into an already large game client.
 local Theme, UIAnimations, main, mainStroke, mainScale, baseMenuScale
 local tabs, tabFrames, tabButtons, activeFrame
 local _fFS, _fDD, sectionContents, columnSections
@@ -684,7 +716,8 @@ tabFrames.VISUAL = tabFrames.VISUALS
 tabFrames.ESP = tabFrames.VISUALS
 tabFrames.HUD = tabFrames.MISC
 tabFrames.SETTINGS = tabFrames.CONFIG
-
+-- Keep feature-column aliases in sync with page aliases. Without these,
+-- getTab("ESP")/getTab("HUD") silently fell back to CONFIG.
 tabColumns.VISUAL = tabColumns.VISUALS
 tabColumns.ESP = tabColumns.VISUALS
 tabColumns.HUD = tabColumns.MISC
@@ -883,6 +916,7 @@ function createFeature(parent, name, default, callback, hasSettings)
 	return editor
 end
 
+-- The source library places sub-elements on the toggle row; there are no card arrows.
 _fDD.RegisterEditor = function() end
 
 function addBind(p, name, def, onPress, onChanged)
@@ -1019,7 +1053,8 @@ function addSlider(p, name, min, max, def, callback)
 end
 
 function addDropdown(p, name, options, defIdx, callback)
-
+	-- On/Off options are ordinary buttons. Keep their string values and setter
+	-- registry so existing configs and programmatic controls remain compatible.
 	local onValue, offValue
 	if #options == 2 then
 		for _, value in ipairs(options) do
@@ -1362,6 +1397,7 @@ connectUI(UIS.InputBegan, function(input, gameProcessed)
 	if input.KeyCode == Enum.KeyCode.RightShift then toggleMenu(true) end
 end)
 
+-- Drag the source window by its 39px title bar.
 do
 	local dragging, dragInput, dragStart, startPos = false, nil, nil, nil
 	local function finishDrag() dragging = false end
@@ -1389,6 +1425,7 @@ do
 	end)
 end
 
+-- The reference window is resizeable; preserve its 621x542 minimum.
 do
 	local resize = Instance.new("TextButton", main)
 	resize.Name = "Resize"
@@ -2213,8 +2250,9 @@ end
 
 do
 	local Shared = Runtime.Shared
+	local CollectionService = game:GetService("CollectionService")
 	local Aim = {
-		CurrentTarget = nil, CurrentPart = nil, CurrentScreen = nil, TriggerStatus = "off",
+		CurrentTarget = nil, CurrentPart = nil, CurrentPosition = nil, CurrentScreen = nil, TriggerStatus = "off",
 		NamecallHookStatus = "not installed",
 	}
 	Runtime.Aim = Aim
@@ -2370,20 +2408,55 @@ do
 		return isFustRemote(self, "Shoot") or isFustRemote(self, "Fire")
 	end
 
+	local function nearestWeakSpot()
+		local root = Shared.Root()
+		if not root or not root:IsA("BasePart") then return nil, nil end
+		local rootPosition = root.Position
+		local bestSpot, bestPart, bestDistance = nil, nil, 196
+		local seen = {}
+		local function consider(node)
+			if not node or seen[node] or not node:IsDescendantOf(workspace) then return end
+			seen[node] = true
+			if node:GetAttribute("Depleted") == true then return end
+			local weakSpot = node:GetAttribute("WeakSpot")
+			if typeof(weakSpot) ~= "Vector3" then return end
+			local offset = rootPosition - weakSpot
+			local distance = offset.X * offset.X + offset.Y * offset.Y + offset.Z * offset.Z
+			if distance >= bestDistance then return end
+			bestDistance = distance
+			bestSpot = weakSpot
+			bestPart = Shared.FindPart(node, {"Rock", "Trunk"})
+		end
+		if CollectionService and type(CollectionService.GetTagged) == "function" then
+			local ok, tagged = pcall(CollectionService.GetTagged, CollectionService, "FustNode")
+			if ok and type(tagged) == "table" then
+				for _, node in ipairs(tagged) do consider(node) end
+			end
+		end
+		for _, folderName in ipairs({"Nodes", "OreNodes"}) do
+			local folder = workspace:FindFirstChild(folderName)
+			if folder then
+				for _, node in ipairs(folder:GetChildren()) do consider(node) end
+			end
+		end
+		return bestSpot, bestPart
+	end
+
 	local function weakSpotPosition(payload)
 		local target = payload.target
-		if typeof(target) ~= "Instance" or not target:IsA("BasePart") then return nil end
-		if not target:IsDescendantOf(workspace) then return nil end
-		local node = target.Parent
-		while node and node ~= workspace do
-			local weakSpot = node:GetAttribute("WeakSpot")
-			if typeof(weakSpot) == "Vector3" then
-				if node:GetAttribute("Depleted") == true then return nil end
-				return weakSpot
+		if typeof(target) == "Instance" and target:IsA("BasePart") then
+			if not target:IsDescendantOf(workspace) then return nil, nil end
+			local node = target.Parent
+			while node and node ~= workspace do
+				local weakSpot = node:GetAttribute("WeakSpot")
+				if typeof(weakSpot) == "Vector3" then
+					if node:GetAttribute("Depleted") == true then return nil, nil end
+					return weakSpot, nil
+				end
+				node = node.Parent
 			end
-			node = node.Parent
 		end
-		return nil
+		return nearestWeakSpot()
 	end
 
 	local function copyPayload(payload)
@@ -2416,7 +2489,7 @@ do
 		if type(payload) ~= "table" then return callOriginal(self, method, args) end
 		if S.AutoCross and self.Name == "Swing" then
 			if not isFustRemote(self, "Swing") then return callOriginal(self, method, args) end
-			local ok, weakSpot = pcall(weakSpotPosition, payload)
+			local ok, weakSpot, nearestPart = pcall(weakSpotPosition, payload)
 			if not ok then
 				Runtime.Diagnostics.AutoCrossErrors = (Runtime.Diagnostics.AutoCrossErrors or 0) + 1
 				return callOriginal(self, method, args)
@@ -2424,6 +2497,7 @@ do
 			if not weakSpot then return callOriginal(self, method, args) end
 			local rewritten = copyPayload(payload)
 			rewritten.pos = weakSpot
+			if rewritten.target == nil then rewritten.target = nearestPart end
 			args[1] = rewritten
 			Runtime.Diagnostics.AutoCrossRedirects = (Runtime.Diagnostics.AutoCrossRedirects or 0) + 1
 			return callOriginal(self, method, args)
@@ -2477,7 +2551,8 @@ do
 		if not hookMode then return end
 		local mode, original, wrapped, mt = hookMode, oldNamecall, wrappedHook, hookMeta
 		hookMode, wrappedHook, hookMeta = nil, nil, nil
-
+		-- Keep the original closure referenced: if an executor refuses restore,
+		-- the stale hook must still pass every call through instead of returning nil.
 		oldNamecall = original
 		if mode == "hookmetamethod" and type(hookmetamethod) == "function" then
 			pcall(hookmetamethod, game, "__namecall", original)
@@ -2493,7 +2568,39 @@ do
 	end
 	Aim.RestoreNamecall = restoreNamecallHook
 
-	local function predictedPosition(target, part)
+	local velocitySample = {Part = nil, Position = nil, Elapsed = 0, Velocity = Vector3.zero}
+	local function resetVelocitySample()
+		velocitySample.Part = nil
+		velocitySample.Position = nil
+		velocitySample.Elapsed = 0
+		velocitySample.Velocity = Vector3.zero
+	end
+
+	local function sampleTargetVelocity(part, dt)
+		if not S.AimPrediction or not part then
+			resetVelocitySample()
+			return Vector3.zero
+		end
+		local position = part.Position
+		if velocitySample.Part ~= part or not velocitySample.Position then
+			velocitySample.Part = part
+			velocitySample.Position = position
+			velocitySample.Elapsed = 0
+			velocitySample.Velocity = Vector3.zero
+			return velocitySample.Velocity
+		end
+		local step = tonumber(dt) or 0
+		if step <= 0 or step ~= step then return velocitySample.Velocity end
+		velocitySample.Elapsed += step
+		if velocitySample.Elapsed < 0.05 then return velocitySample.Velocity end
+		local elapsed = velocitySample.Elapsed
+		velocitySample.Velocity = (position - velocitySample.Position) / elapsed
+		velocitySample.Position = position
+		velocitySample.Elapsed = 0
+		return velocitySample.Velocity
+	end
+
+	local function predictedPosition(target, part, sampledVelocity)
 		local position = part.Position
 		if not S.AimPrediction then return position end
 		local tool = string.lower(Shared.ToolName())
@@ -2510,6 +2617,11 @@ do
 		local distance = (position - Camera.CFrame.Position).Magnitude
 		local travel = math.clamp(distance / speed, 0, 1.5)
 		local velocity = target.Root and target.Root.AssemblyLinearVelocity or Vector3.zero
+		if velocity.Magnitude < 0.5 and part then
+			local partVelocity = part.AssemblyLinearVelocity
+			if partVelocity then velocity = partVelocity end
+		end
+		if velocity.Magnitude < 0.5 and sampledVelocity then velocity = sampledVelocity end
 		return position + velocity * travel + Vector3.new(0, gravity * travel * travel * 0.5, 0)
 	end
 
@@ -2522,9 +2634,13 @@ do
 		end
 		Aim.CurrentTarget = nil
 		Aim.CurrentPart = nil
+		Aim.CurrentPosition = nil
 		Aim.CurrentScreen = nil
 		if targetLine then targetLine.Visible = false end
-		if not S.Aimbot or Runtime.MenuOpen or not keyDown(S.AimKey) then return end
+		if not S.Aimbot or Runtime.MenuOpen or not keyDown(S.AimKey) then
+			resetVelocitySample()
+			return
+		end
 		aimOptions.FOV = S.AimFOV
 		aimOptions.Range = S.AimRange
 		aimOptions.PartMode = S.AimPart
@@ -2535,10 +2651,15 @@ do
 		aimOptions.IncludeHeli = S.AimHeli
 		aimOptions.PlayersFirst = S.AimPlayersFirst
 		local best = selectTarget(aimOptions, aimBest)
-		if not best then return end
+		if not best then
+			resetVelocitySample()
+			return
+		end
 		Aim.CurrentTarget = best.Target
 		Aim.CurrentPart = best.Part
-		local position = predictedPosition(best.Target, best.Part)
+		local sampledVelocity = sampleTargetVelocity(best.Part, dt)
+		local position = predictedPosition(best.Target, best.Part, sampledVelocity)
+		Aim.CurrentPosition = position
 		local x, y, _, visible = Shared.Project(position)
 		if visible then Aim.CurrentScreen = Vector2.new(x, y) end
 		if targetLine and S.TargetLine and Aim.CurrentScreen then
@@ -2633,8 +2754,10 @@ do
 	onCleanup(function()
 		release()
 		restoreNamecallHook()
+		resetVelocitySample()
 		Aim.CurrentTarget = nil
 		Aim.CurrentPart = nil
+		Aim.CurrentPosition = nil
 	end)
 end
 
@@ -3231,7 +3354,8 @@ do
 					control.Set(Colors[colorKey], true)
 					if colorKey == "Accent" then setMenuAccent(Colors.Accent) end
 				elseif control.Kind ~= "feature" and accepted[key] then
-
+					-- Editors own clamping and callback semantics; silent sync here could
+					-- leave a manually edited config different from the runtime value.
 					control.Set(S[key], false)
 				end
 			end
@@ -3406,7 +3530,9 @@ end
 
 do
 	local calamariFactory = (function()
-
+-- Calamari-inspired visuals adapted for Burmalda.hook's local menu and lifecycle.
+-- No external UI/ESP library, HTTP loader, gameplay module or projectile owner.
+-- State is plain JSON-safe data (colors are RGB arrays) for every game's configs.
 local function createBurmaldaCalamariVisuals(options)
 	options = options or {}
 	local State = options.State or {}
@@ -3623,6 +3749,8 @@ local function destroy(object)
 	if object then pcall(function() object:Destroy() end) end
 end
 
+-- Player ESP: the same gradient/fill/glow/health layout as Calamari, but pooled
+-- and capped. The normal renderer remains independent and can stay enabled.
 local playerEntries = {}
 local targetCache, targetCacheAt = {}, 0
 local playerWasActive = false
@@ -3819,12 +3947,33 @@ local function applyPlayerStyle(entry)
 	setProperty(entry.Distance, "TextColor3", color3(p.DistanceColor))
 	setProperty(entry.Weapon, "TextColor3", color3(p.WeaponColor))
 	setProperty(entry.Flags, "TextColor3", color3(p.FlagsColor))
-	if entry.Highlight then
-		entry.Highlight.FillColor = color3(p.ChamsInside)
-		entry.Highlight.OutlineColor = color3(p.ChamsOutside)
-		entry.Highlight.FillTransparency = p.ChamsInsideTransparency
-		entry.Highlight.OutlineTransparency = p.ChamsOutsideTransparency
+		if entry.Highlight then
+			entry.Highlight.FillColor = color3(p.ChamsInside)
+			entry.Highlight.OutlineColor = color3(p.ChamsOutside)
+			entry.Highlight.FillTransparency = p.ChamsInsideTransparency
+			entry.Highlight.OutlineTransparency = p.ChamsOutsideTransparency
+		end
+end
+local fallbackBodyParts = {"UpperTorso", "Torso", "LowerTorso", "LeftUpperArm", "RightUpperArm", "LeftArm", "RightArm"}
+local function onViewport(camera, point)
+	return point and point.Z > 0 and point.X >= 0 and point.X <= camera.ViewportSize.X
+		and point.Y >= 0 and point.Y <= camera.ViewportSize.Y
+end
+local function visiblePartPoint(camera, part)
+	if not part or not part.Parent then return nil end
+	local ok, point = pcall(camera.WorldToViewportPoint, camera, part.Position)
+	if ok and onViewport(camera, point) then return point end
+	return nil
+end
+local function playerFallbackPoint(camera, target, model, distance)
+	local point = visiblePartPoint(camera, target.Head or target.head)
+	if point or distance > 80 then return point end
+	for _, name in ipairs(fallbackBodyParts) do
+		local part = model:FindFirstChild(name)
+		point = visiblePartPoint(camera, part)
+		if point then return point end
 	end
+	return nil
 end
 local function updatePlayers(now)
 	local enabled = active() and State.Player.Enabled
@@ -3850,20 +3999,12 @@ local function updatePlayers(now)
 			local distance = (root.Position - camera.CFrame.Position).Magnitude
 			if distance <= State.Player.MaxDistance then
 				local point, onScreen = camera:WorldToViewportPoint(root.Position - Vector3.new(0, 0.5, 0))
-				if Adapter.PlayerHeadFallback and (not onScreen or point.Z <= 0) then
-					local head = target.Head or target.head
-					if head and head ~= root then
-						local headPoint, headOnScreen = camera:WorldToViewportPoint(head.Position)
-						if headPoint.Z > 0 and headOnScreen then
-							if point.Z > 0 then
-								point = Vector3.new(
-									math.clamp(point.X, 0, camera.ViewportSize.X),
-									math.clamp(point.Y, 0, camera.ViewportSize.Y),
-									point.Z
-								)
-							else
-								point = headPoint
-							end
+				if Adapter.PlayerViewportFallback then
+					onScreen = onViewport(camera, point)
+					if not onScreen then
+						local fallback = playerFallbackPoint(camera, target, model, distance)
+						if fallback then
+							point = fallback
 							onScreen = true
 						end
 					end
@@ -3880,12 +4021,22 @@ local function updatePlayers(now)
 						entry.Model = model
 						entry.LastSeen = now
 						applyPlayerStyle(entry)
-						local depth = 2 * math.max(0.01, point.Z) * theta
-						local scale = camera.ViewportSize.Y / math.max(0.01, depth * 1.5)
-						local width = math.floor(math.max(scale * 6, 4))
-						local height = math.floor(math.max(scale * 8, 4))
-						setProperty(entry.Main, "Position", UDim2.fromOffset(point.X, point.Y))
-						setProperty(entry.Main, "Size", UDim2.fromOffset(width, height))
+					local depth = 2 * math.max(0.01, point.Z) * theta
+					local scale = camera.ViewportSize.Y / math.max(0.01, depth * 1.5)
+					local width = math.floor(math.max(scale * 6, 4))
+					local height = math.floor(math.max(scale * 8, 4))
+					local centerX, centerY = point.X, point.Y
+					if Adapter.PlayerViewportFallback then
+						local viewport = camera.ViewportSize
+						local topReserve = State.Player.Names and 24 or 6
+						local bottomReserve = State.Player.Weapon and 40 or (State.Player.Distance and 22 or 6)
+						width = math.floor(math.min(width, math.max(4, viewport.X - 16)))
+						height = math.floor(math.min(height, math.max(4, viewport.Y - topReserve - bottomReserve - 8)))
+						centerX = math.clamp(centerX, width * 0.5 + 4, viewport.X - width * 0.5 - 4)
+						centerY = math.clamp(centerY, height * 0.5 + topReserve, viewport.Y - height * 0.5 - bottomReserve)
+					end
+					setProperty(entry.Main, "Position", UDim2.fromOffset(centerX, centerY))
+					setProperty(entry.Main, "Size", UDim2.fromOffset(width, height))
 						setProperty(entry.Main, "Visible", true)
 						setProperty(entry.Main, "BackgroundTransparency", State.Player.Fill and 0 or 1)
 						setProperty(entry.Outline, "Enabled", State.Player.Box)
@@ -3944,6 +4095,8 @@ local function updatePlayers(now)
 	API.Diagnostics.PlayerESP = rendered
 end
 
+-- Calamari Misc ESP. Traversal is incremental and limited to known world roots;
+-- adapters may add game-specific cached objects without another full workspace scan.
 local worldLabels = {}
 local worldEntries = {}
 local worldScan = {Active = false, Queue = {}, Index = 1, Working = {}, Seen = {}, Processed = 0}
@@ -3988,7 +4141,7 @@ local function beginWorldScan()
 			worldScan.Queue[#worldScan.Queue + 1] = {Object = folder, Depth = 0, MaxDepth = 3, Root = name}
 		end
 	end
-
+	-- Top-level Tools and named bags are Drops; root folders are not traversed twice.
 	if State.World.Categories.Drops.Enabled or State.World.Categories["Body Bag"].Enabled then
 		worldScan.Queue[#worldScan.Queue + 1] = {Object = workspace, Depth = 0, MaxDepth = 0, Root = "Workspace"}
 	end
@@ -4042,7 +4195,8 @@ local function worldPosition(object)
 	if ok and pivot and pivot.Position then return pivot.Position end
 	local primary = object.PrimaryPart
 	if primary and primary:IsA("BasePart") then return primary.Position end
-
+	-- A model can be supplied by a game adapter before its pivot is available.
+	-- Use an existing part as a read-only fallback; never move or mutate the model.
 	for _, child in ipairs(object:GetChildren()) do
 		if child:IsA("BasePart") then return child.Position end
 	end
@@ -4111,6 +4265,7 @@ local function updateWorld(now)
 	API.Diagnostics.WorldESP = index
 end
 
+-- Gun/Arms materials, textures, Viewmodel Highlight and owned position offsets.
 local textures = {
 	Web = "rbxassetid://301464986", Swirl = "rbxassetid://8133639623",
 	Checkers = "rbxassetid://5790215150", CandyCane = "rbxassetid://6853532738",
@@ -4305,6 +4460,8 @@ local function updateViewmodels(now)
 	end
 end
 
+-- Shot visuals use existing game events through API.Impact/TraceShot. They never
+-- redirect a shot, install another Silent hook or change remote arguments.
 local activeEffects = {}
 local function ownEffect(object, lifetime)
 	if not object then return end
@@ -4432,6 +4589,8 @@ function API.TraceShot(origin, direction, maxDistance, ignore)
 	return result
 end
 
+-- Lighting and optional Camera controls use per-property ownership. Off/Unload
+-- restores only values still owned by this runtime; later game writes win.
 local ownedGroups = {}
 local createdLighting = {}
 local skyboxes = {
@@ -4639,7 +4798,7 @@ return createBurmaldaCalamariVisuals
 		IsActive = function() return Runtime.Ready and not Runtime.Unloaded end,
 		IsLowPC = function() return S.LowPC == true end,
 		Adapter = {
-			PlayerHeadFallback = true,
+			PlayerViewportFallback = true,
 			WorldRoots = {
 				"Loot", "Deployables", "WorldItems", "DroppedItems", "Dropped", "Debris", "Corpses",
 				"DeadBodies", "Bags", "Dead", "LootBags", "DeathBags", "Drops", "Nodes", "OreNodes",
@@ -4683,7 +4842,8 @@ return createBurmaldaCalamariVisuals
 		if Runtime.CalamariVisuals == calamari then Runtime.CalamariVisuals = nil end
 	end)
 	local mountCalamari = (function()
-
+-- Shared control layout for the local 621x542 Burmalda menu.
+-- The host owns createFeature/addSlider/addDropdown/addColor/addBind/getTab/getSection.
 local function mountBurmaldaCalamariMenu(API, menuOptions)
 	menuOptions = menuOptions or {}
 	local function section(parent, name)
@@ -4850,6 +5010,7 @@ return mountBurmaldaCalamariMenu
 	end)()
 	mountCalamari(calamari, {Camera = "Full", Lighting = false})
 end
+
 
 function Runtime.Unload()
 	if Runtime.Unloaded then return end
