@@ -3625,7 +3625,7 @@ end
         if tool then return tool.Name end
         local worldmodel = character and character:FindFirstChild("Worldmodel", true)
         if not worldmodel then return "Unarmed" end
-        mainGame.weaponNameCache = mainGame.weaponNameCache or {}
+        mainGame.weaponNameCache = mainGame.weaponNameCache or setmetatable({}, { __mode = "k" })
         local cached = mainGame.weaponNameCache[worldmodel]
         if cached then return cached end
         if not mainGame.weaponCatalog or os.clock() >= (mainGame.nextWeaponCatalogScan or 0) then
@@ -4104,7 +4104,7 @@ end
       mainGame.resourceList = nil
       mainGame.nextResourceScan = 0
       mainGame.weaponCatalog = nil
-      mainGame.weaponNameCache = {}
+      mainGame.weaponNameCache = setmetatable({}, { __mode = "k" })
       mainGame.nextWeaponCatalogScan = 0
       mainGame.stats.espResources = 0
     end
@@ -4398,24 +4398,23 @@ end
         movement.root = nil
       end
 
-      function movement.Update(dt)
-        if not movement.Active or mainGame.unloaded then return end
-        local character = localPlayer.Character
-        if character ~= movement.char then
-          movement.Bind(character)
-          return
+      local function disableSpeedWithError(err)
+        cfg.Movement.Speed = false
+        if movement.humanoid and movement.speedOriginal ~= nil then
+          pcall(function() movement.humanoid.WalkSpeed = movement.speedOriginal end)
         end
-        if character and (not movement.humanoid or not movement.humanoid.Parent
-          or not movement.root or not movement.root.Parent) then
-          movement.Bind(character)
-          return
+        movement.speedOriginal = nil
+        mainGame.movementError = "Speed disabled: " .. tostring(err)
+        if mainGame.Window and not mainGame.Window.Destroyed and featureStates.Speed then
+          pcall(function() mainGame.Window:SetFeature("Speed", false) end)
         end
+        if type(warn) == "function" then pcall(warn, "[MainGame] " .. mainGame.movementError) end
+      end
 
-        local humanoid = movement.humanoid
-        local root = movement.root
+      local function updateSpeed(dt, humanoid, root)
         if cfg.Movement.Speed and humanoid and cfg.Movement.SpeedMethod == "CFrame" then
           if movement.speedOriginal ~= nil then
-            pcall(function() humanoid.WalkSpeed = movement.speedOriginal end)
+            humanoid.WalkSpeed = movement.speedOriginal
             movement.speedOriginal = nil
           end
           if root then
@@ -4427,7 +4426,7 @@ end
           end
         elseif cfg.Movement.Speed and humanoid and cfg.Movement.SpeedMethod == "Velocity" then
           if movement.speedOriginal ~= nil then
-            pcall(function() humanoid.WalkSpeed = movement.speedOriginal end)
+            humanoid.WalkSpeed = movement.speedOriginal
             movement.speedOriginal = nil
           end
           if root then
@@ -4444,9 +4443,28 @@ end
             humanoid.WalkSpeed = cfg.Movement.SpeedValue
           end
         elseif movement.speedOriginal ~= nil then
-          if humanoid then pcall(function() humanoid.WalkSpeed = movement.speedOriginal end) end
+          if humanoid then humanoid.WalkSpeed = movement.speedOriginal end
           movement.speedOriginal = nil
         end
+      end
+
+      function movement.Update(dt)
+        if not movement.Active or mainGame.unloaded then return end
+        local character = localPlayer.Character
+        if character ~= movement.char then
+          movement.Bind(character)
+          return
+        end
+        if character and (not movement.humanoid or not movement.humanoid.Parent
+          or not movement.root or not movement.root.Parent) then
+          movement.Bind(character)
+          return
+        end
+
+        local humanoid = movement.humanoid
+        local root = movement.root
+        local speedOk, speedErr = pcall(updateSpeed, dt, humanoid, root)
+        if not speedOk then disableSpeedWithError(speedErr) end
 
         if cfg.Movement.HighJump and humanoid then
           if not movement.jumpOriginal then
@@ -4529,7 +4547,7 @@ end
         for index = #callbacks, 1, -1 do pcall(callbacks[index]) end
       end
 
-      trackConnection(runService.RenderStepped:Connect(updateMovement))
+      trackConnection(runService.Heartbeat:Connect(updateMovement))
       trackConnection(UIS.JumpRequest:Connect(function()
         if not cfg.Movement.InfiniteJump or mainGame.unloaded then return end
         local humanoid = movement.humanoid
@@ -5724,9 +5742,9 @@ end
         noclipParts = {},
         worldGeometry = setmetatable({}, { __mode = "k" }),
         skeletonBones = setmetatable({}, { __mode = "k" }),
-        spikeOriginals = {},
-        leafOriginals = {},
-        bushOriginals = {},
+        spikeOriginals = setmetatable({}, { __mode = "k" }),
+        leafOriginals = setmetatable({}, { __mode = "k" }),
+        bushOriginals = setmetatable({}, { __mode = "k" }),
         worldEspPool = {},
         worldEspPoolUsed = 0,
         skeletonLines = {},
@@ -5735,7 +5753,7 @@ end
         ghosts = {},
         targetVisibility = setmetatable({}, { __mode = "k" }),
         third = { active = false },
-        frozenTracks = {},
+        frozenTracks = setmetatable({}, { __mode = "k" }),
       }
       mainGame.extraFeatures = state
       state.CategoryDefinitions = categoryDefinitions
