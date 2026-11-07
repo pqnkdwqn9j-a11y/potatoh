@@ -2197,7 +2197,7 @@ local gunFeatures = {
 }
 local worldFeatures = {
 	["Custom FOV"] = true, ["Night Mode"] = true, ["Night Vision"] = true, ["Low PC"] = true,
-	["Third Person"] = true, ["Stretch Resolution"] = true, ["Jump Circles"] = true,
+	["Stretch Resolution"] = true, ["Jump Circles"] = true,
 	["Fullbright"] = true, ["No Decoration"] = true, ["Sky Color"] = true,
 	["Skybox"] = true, ["Delete Spikes"] = true, ["Delete Leaves"] = true,
 	["Custom Models"] = true, ["Custom Fog"] = true, ["Custom Water"] = true,
@@ -2219,7 +2219,7 @@ local aimVisualFeatures = {
 	["Target Indicator"] = true,
 }
 local cameraFeatures = {
-	["Custom FOV"] = true, ["Third Person"] = true, ["Stretch Resolution"] = true,
+	["Custom FOV"] = true, ["Stretch Resolution"] = true,
 	["Custom Hand Position"] = true, ["FOV Changer"] = true, ["Zoom"] = true,
 }
 local performanceFeatures = { ["Low PC"] = true, ["Performance Overlay"] = true }
@@ -5726,7 +5726,6 @@ end
         Movement = { Noclip = false, AntiFall = false, AntiSpikes = false },
         Camera = {
           CustomFOV = false, FOV = 90, Zoom = false, ZoomFOV = 20,
-          ThirdPerson = false, Distance = 10,
         },
         World = { RemoveLeafs = false, RemoveBushes = false },
         ESP = {
@@ -5826,7 +5825,6 @@ end
         skeletonLinesUsed = 0,
         ghosts = {},
         targetVisibility = setmetatable({}, { __mode = "k" }),
-        third = { active = false },
         frozenTracks = setmetatable({}, { __mode = "k" }),
       }
       mainGame.extraFeatures = state
@@ -6021,8 +6019,6 @@ end
         end
       end
 
-      -- FOV and third-person camera have separate backups and never share the
-      -- Freecam owner. Zoom has priority over the normal custom FOV value.
       function state.RestoreFOV()
         if state.fovCamera and state.fovOriginal ~= nil then
           pcall(function() state.fovCamera.FieldOfView = state.fovOriginal end)
@@ -6054,66 +6050,7 @@ end
         if not extra.Camera.Zoom and not extra.Camera.CustomFOV then state.RestoreFOV() end
       end
 
-      local function thirdPersonDistance()
-        local distance = tonumber(extra.Camera.Distance) or 10
-        if not finiteNumber(distance) then distance = 10 end
-        return math.clamp(distance, 2, 30)
-      end
-      function state.StopThirdPerson()
-        local third = state.third
-        if not third.active then return end
-        third.active = false
-        pcall(function()
-          if third.lastCameraMode ~= nil and localPlayer.CameraMode == third.lastCameraMode then
-            localPlayer.CameraMode = third.originalCameraMode or Enum.CameraMode.Classic
-          end
-          if third.lastMinZoom ~= nil and localPlayer.CameraMinZoomDistance == third.lastMinZoom then
-            localPlayer.CameraMinZoomDistance = third.originalMinZoom or 0.5
-          end
-          if third.lastMaxZoom ~= nil and localPlayer.CameraMaxZoomDistance == third.lastMaxZoom then
-            localPlayer.CameraMaxZoomDistance = third.originalMaxZoom or 128
-          end
-        end)
-        third.originalCameraMode, third.originalMinZoom, third.originalMaxZoom = nil, nil, nil
-        third.lastCameraMode, third.lastMinZoom, third.lastMaxZoom = nil, nil, nil
-      end
-      local function startThirdPerson()
-        local third = state.third
-        if third.active then return end
-        third.originalCameraMode = localPlayer.CameraMode
-        third.originalMinZoom = localPlayer.CameraMinZoomDistance
-        third.originalMaxZoom = localPlayer.CameraMaxZoomDistance
-        third.active = true
-      end
-      function state.SetThirdPerson(enabled)
-        extra.Camera.ThirdPerson = enabled == true
-        if extra.Camera.ThirdPerson and cfg.Movement.Freecam and mainGame.Window then
-          mainGame.Window:SetFeature("Freecam", false)
-        end
-        if not extra.Camera.ThirdPerson then state.StopThirdPerson() end
-      end
-      local function updateThirdPerson()
-        if not extra.Camera.ThirdPerson or cfg.Movement.Freecam then
-          if state.third.active then state.StopThirdPerson() end
-          return
-        end
-        local third = state.third
-        if not third.active then startThirdPerson() end
-        local distance = thirdPersonDistance()
-        third.lastCameraMode = Enum.CameraMode.Classic
-        third.lastMinZoom, third.lastMaxZoom = distance, distance
-        if localPlayer.CameraMode ~= third.lastCameraMode then
-          localPlayer.CameraMode = third.lastCameraMode
-        end
-        if localPlayer.CameraMinZoomDistance ~= distance then
-          localPlayer.CameraMinZoomDistance = distance
-        end
-        if localPlayer.CameraMaxZoomDistance ~= distance then
-          localPlayer.CameraMaxZoomDistance = distance
-        end
-      end
 
-      -- Aimbot target selection is independent from the Silent projectile hook.
       local function cachedVisibility(target, part, origin)
         local now = os.clock()
         local cached = state.targetVisibility[target.model]
@@ -6756,7 +6693,7 @@ end
       function state.SetAll(enabled)
         local value = enabled == true
         state.SetNoclip(value); state.SetAntiFall(value); state.SetAntiSpikes(value)
-        state.SetCustomFOV(value); state.SetZoom(value); state.SetThirdPerson(value)
+        state.SetCustomFOV(value); state.SetZoom(value)
         state.SetAimbot(value); state.SetTriggerBot(value); state.SetCrosshair(value)
         state.SetAntiAim(value); state.SetPose(value)
         for _, definition in ipairs(categoryDefinitions) do state.SetWorldESP(definition.key, value) end
@@ -6779,7 +6716,6 @@ end
       trackConnection(localPlayer.CharacterRemoving:Connect(function()
         state.RestoreNoclip()
         state.RestoreCharacterPose()
-        state.StopThirdPerson()
       end))
 
       local function runtimeErrorTrace(value)
@@ -6834,9 +6770,6 @@ end
         if extra.Camera.CustomFOV or extra.Camera.Zoom or state.fovOriginal ~= nil then
           runFeature("Camera FOV", { "Custom FOV", "Zoom" }, updateFOV)
         end
-        if extra.Camera.ThirdPerson or state.third.active then
-          runFeature("Third Person", "Third Person", updateThirdPerson)
-        end
         if extra.Aimbot.Enabled or state.aimbotTarget then
           runFeature("Aimbot", "Aimbot", updateAimbot)
         end
@@ -6871,14 +6804,14 @@ end
         state.Active = false
         state.RestoreNoclip(); state.RestoreGravity(); state.RestoreSpikes()
         state.RestoreVegetation("Leafs"); state.RestoreVegetation("Bushes")
-        state.RestoreFOV(); state.StopThirdPerson(); state.RestoreCharacterPose()
+        state.RestoreFOV(); state.RestoreCharacterPose()
         for _, object in ipairs(state.owned) do hide(object) end
         table.clear(state.ghosts)
         if mainGame.extraFeatures == state then mainGame.extraFeatures = nil end
         if mainGame.unloaded then
           extra.Aimbot.Enabled = false; extra.Trigger.Enabled = false
           extra.Movement.Noclip = false; extra.Movement.AntiFall = false; extra.Movement.AntiSpikes = false
-          extra.Camera.CustomFOV = false; extra.Camera.Zoom = false; extra.Camera.ThirdPerson = false
+          extra.Camera.CustomFOV = false; extra.Camera.Zoom = false
           extra.World.RemoveLeafs = false; extra.World.RemoveBushes = false
           extra.Crosshair.Enabled = false; extra.AntiAim.Enabled = false; extra.Pose.Enabled = false
           for key in pairs(extra.ESP.Categories) do extra.ESP.Categories[key] = false end
@@ -7202,9 +7135,6 @@ end
       addLabel(lc, "Fly: WASD + Space / LeftControl.")
 
       local freecamSet = createFeature(rc, "Freecam", cfg.Movement.Freecam, function(v)
-        if v and cfg.Extra and cfg.Extra.Camera and cfg.Extra.Camera.ThirdPerson and mainGame.Window then
-          mainGame.Window:SetFeature("Third Person", false)
-        end
         cfg.Movement.Freecam = v
         if mainGame.movement then mainGame.movement.SetFreecam(v) end
       end)
@@ -7372,7 +7302,6 @@ local defaults = {
 	HitNotifications = {Enabled = false},
 	Camera = {
 		CustomFOV = false, FOV = 100, Zoom = false, ZoomAmount = 40, ZoomKey = "C",
-		ThirdPerson = false, Distance = 5, ThirdPersonKey = "None",
 	},
 	Lighting = {
 		CloudDensity = false, CloudDensityValue = 0.5,
@@ -8501,14 +8430,6 @@ local function updateCamera()
 		local enabled = s.CustomFOV or zoom
 		applyLightingGroup("CalamariCameraFOV", enabled, {{camera, "FieldOfView", zoom and s.ZoomAmount or s.FOV}})
 	end
-	local third = options.Camera == "Full" or options.Camera == "ThirdPerson"
-	if third and LocalPlayer then
-		applyLightingGroup("CalamariThirdPerson", s.ThirdPerson, {
-			{LocalPlayer, "CameraMode", s.ThirdPerson and Enum.CameraMode.Classic or LocalPlayer.CameraMode},
-			{LocalPlayer, "CameraMinZoomDistance", s.Distance},
-			{LocalPlayer, "CameraMaxZoomDistance", s.Distance},
-		})
-	end
 end
 
 local lightingClock = 0
@@ -8526,7 +8447,7 @@ function API.DisableAll()
 		"Player.Enabled", "World.Enabled", "Gun.Enabled", "Arms.Enabled",
 		"Viewmodel.Highlight", "Viewmodel.Position", "Bullet.Enabled",
 		"HitEffects.Enabled", "HitNotifications.Enabled",
-		"Camera.CustomFOV", "Camera.Zoom", "Camera.ThirdPerson",
+		"Camera.CustomFOV", "Camera.Zoom",
 	}) do API.Set(path, false) end
 	for key, value in pairs(State.Lighting) do
 		if type(value) == "boolean" then State.Lighting[key] = false end
@@ -8783,13 +8704,6 @@ local function mountBurmaldaCalamariMenu(API, menuOptions)
 			slider(zoom, "Zoom Amount", "Camera.ZoomAmount", 20, 100)
 			bind(zoom, "Zoom Key", "Camera.ZoomKey")
 		end
-		local third = feature(cameraSection, "Calamari Third Person", "Camera.ThirdPerson")
-		slider(third, "Third Person Distance", "Camera.Distance", 5, 20)
-		bind(third, "Third Person Key", "Camera.ThirdPersonKey", function()
-			if _fFS["Calamari Third Person"] then
-				_fFS["Calamari Third Person"](not API.Get("Camera.ThirdPerson"))
-			end
-		end)
 	end
 end
 return mountBurmaldaCalamariMenu
@@ -8984,16 +8898,6 @@ end
       addBind(zoomSet, "Zoom Bind", "None", function()
         if mainGame.Window then mainGame.Window:SetFeature("Zoom", not cfg.Extra.Camera.Zoom) end
       end)
-      local thirdSet = createFeature(rc, "Third Person", cfg.Extra.Camera.ThirdPerson, function(v)
-        extraRuntime.SetThirdPerson(v)
-      end)
-      addSlider(thirdSet, "Camera Distance", 2, 30, cfg.Extra.Camera.Distance, function(v)
-        cfg.Extra.Camera.Distance = v
-      end)
-      addBind(thirdSet, "Third Person Bind", "None", function()
-        if mainGame.Window then mainGame.Window:SetFeature("Third Person", not cfg.Extra.Camera.ThirdPerson) end
-      end)
-
       local antiAimSet = createFeature(lc, "Anti-Aim", cfg.Extra.AntiAim.Enabled, function(v)
         extraRuntime.SetAntiAim(v)
       end)
