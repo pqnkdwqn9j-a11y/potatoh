@@ -406,7 +406,6 @@ btnIco.BackgroundTransparency = 1
 btnIco.Image = "rbxassetid://110686514699024"
 btnIco.ScaleType = Enum.ScaleType.Fit
 hudMakeDrag(openBtn)
-Runtime.StartClosed = true
 
 local Theme, UIAnimations, main, mainStroke, mainScale, baseMenuScale
 local tabs, tabFrames, tabButtons, activeFrame
@@ -1389,7 +1388,6 @@ onCleanup(function()
 	hidePopups()
 end)
 
-if Runtime.StartClosed and menuOpen then toggleMenu() end
 end
 
 do
