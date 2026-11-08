@@ -41,7 +41,7 @@ local Runtime = {
 	Guis = {},
 	CraftingMenuOpen = false,
 	SilentPath = "GunBase.fire + FireServer + Workspace Raycast",
-	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt", "Volcano" },
+	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt", "Volcano", "Solara" },
 }
 _burmaldaEnv.BurmaldaRost = Runtime
 Runtime.ExecutorName = executorName
