@@ -60,7 +60,7 @@ local Runtime = {
 	Diagnostics = {},
 	RaycastBypass = 0,
 	TabNames = {"COMBAT", "VISUALS", "MOVEMENT", "MISC", "CONFIG"},
-	SupportedExecutors = {"Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt", "Volcano"},
+	SupportedExecutors = {"Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt", "Volcano", "Solara"},
 }
 _degradeEnv.BurmaldaDEGRADE = Runtime
 
