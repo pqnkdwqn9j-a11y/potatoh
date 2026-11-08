@@ -1,21 +1,3 @@
-local __burmaldaFallenEnv = getgenv and getgenv() or _G
-local __burmaldaFallenGame = tostring(__burmaldaFallenEnv.BURMALDA_GAME or ""):match("^%s*(.-)%s*$")
-local __burmaldaFallenKey = tostring(__burmaldaFallenEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
-if game.PlaceId ~= 10228136016
-    or __burmaldaFallenGame ~= "fallen survival"
-    or tostring(__burmaldaFallenEnv.PHOOKGATE or "") ~= "1347571535"
-    or __burmaldaFallenKey == ""
-    or __burmaldaFallenKey:upper() == "BETA"
-then
-    __burmaldaFallenEnv.PHOOKGATE = nil
-    __burmaldaFallenEnv.SCRIPT_KEY = nil
-    __burmaldaFallenEnv.BURMALDA_GAME = nil
-    return
-end
-__burmaldaFallenEnv.PHOOKGATE = nil
-__burmaldaFallenEnv.SCRIPT_KEY = nil
-__burmaldaFallenEnv.BURMALDA_GAME = nil
-
 local Env = getgenv and getgenv() or _G
 if Env.BurmaldaFallenSurvival and Env.BurmaldaFallenSurvival.Unload then
 	pcall(Env.BurmaldaFallenSurvival.Unload)
@@ -63,7 +45,7 @@ local Runtime = {
 	GuardActive = false,
 	TabNames = { 'COMBAT', 'VISUALS', 'ENTITY', 'LOCAL', 'WORLD', 'MISC', 'CONFIG' },
 	PlaceId = 10228136016,
-	SupportedExecutors = { 'Real', 'Opiumware', 'Madium', 'Potassium', 'Synapse Z', 'Volt', 'Volcano' },
+	SupportedExecutors = { 'Real', 'Opiumware', 'Madium', 'Potassium', 'Synapse Z', 'Volt', 'Volcano', 'Solara' },
 }
 Env.BurmaldaFallenSurvival = Runtime
 
@@ -228,6 +210,48 @@ local State = {
 	KeybindList = false,
 	MenuAccent = false,
 	UIAnimations = false,
+	ScorpionGunMods = false,
+	ScorpionNoRecoil = false,
+	ScorpionNoSway = false,
+	ScorpionNoBob = false,
+	ScorpionRPM = false,
+	ScorpionRPMValue = 1,
+	ScorpionInstantBullet = false,
+	ScorpionRangeMult = false,
+	ScorpionRangeAmount = 5,
+	ScorpionAutoshoot = false,
+	ScorpionDownCheck = false,
+	ScorpionTargetTeammates = false,
+	ScorpionInstantEoka = false,
+	ScorpionInstantLoot = false,
+	ScorpionPerfectFarm = false,
+	ScorpionRemoveGrass = false,
+	ScorpionHitSound = false,
+	ScorpionHitSoundName = 'Minecraft',
+	ScorpionHitSoundVolume = 100,
+	ScorpionShootSound = false,
+	ScorpionShootVolume = 100,
+	ScorpionTracer = false,
+	ScorpionTracerStyle = 'Default',
+	ScorpionTracerDuration = 1,
+	ScorpionTracerThickness = 15,
+	ScorpionFovRainbow = false,
+	ScorpionFovRainbowSpeed = 1,
+	ScorpionFovRotate = false,
+	ScorpionFovRotateSpeed = 1.2,
+	ScorpionFovFill = false,
+	ScorpionFovFillTransparency = 80,
+	ScorpionFovThickness = 2,
+	ScorpionAmbience = false,
+	ScorpionAmbBrightness = 12,
+	ScorpionAmbIndoor = 4,
+	ScorpionAmbColour = 'White',
+	ScorpionGunChams = false,
+	ScorpionArmsChams = false,
+	ScorpionGunMaterial = 'ForceField',
+	ScorpionGunColour = 'White',
+	ScorpionWatermark = false,
+	ScorpionFlyRestrictions = false,
 }
 Runtime.State = State
 
@@ -1083,11 +1107,12 @@ end
 local function getTargets()
 	local list = {}
 	local function addPlayer(player)
-		if player == LocalPlayer or isTeammate(player, State.AimTeamCheck) then return end
+		if player == LocalPlayer then return end
+		if not State.ScorpionTargetTeammates and isTeammate(player, State.AimTeamCheck) then return end
 		local character = player.Character
 		if not character or not getRoot(character) then return end
 		local humanoid = getHumanoid(character)
-		if isDowned(humanoid) then return end
+		if isDowned(humanoid) and State.ScorpionDownCheck then return end
 		list[#list + 1] = { Player = player, Character = character, Model = character }
 	end
 	if Players.GetPlayers then
@@ -1691,6 +1716,439 @@ local function syncUI()
 	applyFOV()
 end
 
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Scorpion = {}
+Runtime.Scorpion = Scorpion
+
+local dbg = {}
+do
+	local d = debug
+	if type(d) == "table" then
+		dbg.traceback = d.traceback
+		dbg.info = d.info
+		dbg.getupvalues = d.getupvalues
+		dbg.getconstants = d.getconstants
+		dbg.setconstant = d.setconstant
+		dbg.getstack = d.getstack
+		dbg.setstack = d.setstack
+	end
+end
+Scorpion.dbg = dbg
+
+local hookFunction = type(hookfunction) == "function" and hookfunction or nil
+local getConnections = type(getconnections) == "function" and getconnections or nil
+local getSenv = type(getsenv) == "function" and getsenv or nil
+local setHidden = type(sethiddenproperty) == "function" and sethiddenproperty or nil
+local setFFlag = type(setfflag) == "function" and setfflag or nil
+local setReadonly = type(setreadonly) == "function" and setreadonly or nil
+local isValidLevel = type(isvalidlevel) == "function" and isvalidlevel or nil
+local getStack = type(getstack) == "function" and getstack or nil
+local setStack = type(setstack) == "function" and setstack or nil
+local cloneRef = type(cloneref) == "function" and cloneref or nil
+local getHui = type(gethui) == "function" and gethui or nil
+
+local coreGui = cloneRef and cloneRef(game:GetService("CoreGui")) or game:GetService("CoreGui")
+local uiParent = nil
+if getHui then pcall(function() uiParent = getHui() end) end
+if not uiParent then uiParent = coreGui end
+
+Scorpion.UndetectedGui = function(gui)
+	if not gui then return end
+	pcall(function()
+		gui.Name = "\0"
+		gui.ZIndexBehavior = Enum.ZIndexBehavior.Global
+		gui.IgnoreGuiInset = true
+		gui.ResetOnSpawn = false
+		gui.DisplayOrder = 999999
+		gui.Parent = uiParent
+	end)
+end
+
+for _, gui in pairs(Runtime.Guis or {}) do Scorpion.UndetectedGui(gui) end
+
+local function trace()
+	if not dbg.traceback then return "" end
+	local ok, value = pcall(dbg.traceback)
+	return ok and type(value) == "string" and value or ""
+end
+Scorpion.Trace = trace
+
+local originals = {}
+Scorpion.Originals = originals
+
+local function hook(target, replacement)
+	if not hookFunction or type(target) ~= "function" then return nil end
+	local ok, original = pcall(hookFunction, target, replacement)
+	if ok and type(original) == "function" then return original end
+	return nil
+end
+
+local Modules = ReplicatedStorage:FindFirstChild("Modules")
+if Modules then
+	local ItemClass = Modules:FindFirstChild("ItemClass")
+	if ItemClass then
+		local ok, class = pcall(require, ItemClass)
+		if ok and type(class) == "table" and type(class.AttachmentStats) == "function" then
+			local original = class.AttachmentStats
+			class.AttachmentStats = function(...)
+				local result = original(...)
+				if State.ScorpionGunMods and result and trace():find("ViewmodelController", 1, true) then
+					if State.ScorpionNoRecoil then result.RecoilMult = -1 end
+					if State.ScorpionNoSway then result.SwayMult = -1 end
+					if State.ScorpionRPM then result.FireRateMult = State.ScorpionRPMValue - 1 end
+					if State.ScorpionInstantBullet then result.SpeedMult = 100 end
+					if State.ScorpionRangeMult then result.RangeMult = State.ScorpionRangeAmount end
+				end
+				return result
+			end
+			originals.ItemClass = { class, "AttachmentStats", original }
+		end
+	end
+	local RaycastModule = Modules:FindFirstChild("RaycastUtil")
+	if RaycastModule then
+		local ok, util = pcall(require, RaycastModule)
+		if ok and type(util) == "table" and type(util.Raycast) == "function" then
+			local original = hook(util.Raycast, function(...)
+				local output = { original(...) }
+				if State.ScorpionPerfectFarm and trace():find("ViewmodelController", 1, true) then
+					local hit, position = output[1], output[2]
+					if typeof(hit) == "Instance" and typeof(position) == "Vector3" then
+						local model = hit.Parent
+						if model and model:IsA("Model") then
+							local folder = model.Parent
+							if folder and folder:IsA("Folder") and (folder.Name == "Trees" or folder.Name == "Nodes") then
+								local critical = model:FindFirstChild("NodeSpark") or model:FindFirstChild("TreeX")
+								if critical and critical:IsA("Model") and critical.PrimaryPart then output[1] = critical.PrimaryPart end
+							end
+						end
+					end
+				end
+				return unpack(output)
+			end)
+			if original then originals.RaycastUtil = { util, "Raycast", original } end
+		end
+	end
+end
+
+local quickStack = {}
+Scorpion.QuickStack = quickStack
+
+local function attachCharacter(character)
+	if not character then return end
+	task.spawn(function()
+		task.wait(1)
+		if Runtime.Unloaded then return end
+		local vmc = character:FindFirstChild("ViewmodelController")
+		if vmc and getSenv then
+			local ok, environment = pcall(getSenv, vmc)
+			if ok and type(environment) == "table" and type(environment.ChooseRandom) == "function" then
+				local original = environment.ChooseRandom
+				environment.ChooseRandom = function(...)
+					if State.ScorpionInstantEoka then return 0 end
+					return original(...)
+				end
+				originals.ChooseRandom = { environment, "ChooseRandom", original }
+			end
+		end
+		local inventory = character:FindFirstChild("InventoryController")
+		local equip = inventory and inventory:FindFirstChild("EquipArmor")
+		if equip and getConnections and dbg.getupvalues and dbg.getconstants and dbg.setconstant then
+			local ok, connections = pcall(getConnections, equip.Event)
+			if ok and type(connections) == "table" then
+				for _, connection in ipairs(connections) do
+					local fn = connection.Function
+					if type(fn) ~= "function" then continue end
+					local okUp, upvalues = pcall(dbg.getupvalues, fn)
+					if not okUp or type(upvalues) ~= "table" then continue end
+					for _, candidate in ipairs(upvalues) do
+						if type(candidate) ~= "function" then continue end
+						local okConst, constants = pcall(dbg.getconstants, candidate)
+						if not okConst or type(constants) ~= "table" then continue end
+						if constants[1] == "ArmorEquip" and constants[5] == "GetAttribute" then
+							quickStack[#quickStack + 1] = candidate
+						end
+					end
+				end
+			end
+		end
+		Scorpion.ApplyQuickStack()
+		local humanoid = character:FindFirstChildOfClass("Humanoid")
+		if humanoid and getConnections and hookFunction and dbg.info then
+			local ok, connections = pcall(getConnections, humanoid.StateChanged)
+			if ok and type(connections) == "table" then
+				for _, connection in ipairs(connections) do
+					local fn = connection.Function
+					if type(fn) ~= "function" then continue end
+					local okInfo, source = pcall(dbg.info, fn, "s")
+					if okInfo and type(source) == "string" and source:find("ViewmodelController", 1, true) then
+						local original = hook(fn, function(...)
+							if State.ScorpionFlyRestrictions then return end
+							if original then return original(...) end
+						end)
+						if not original then continue end
+					end
+				end
+			end
+		end
+	end)
+end
+Scorpion.AttachCharacter = attachCharacter
+
+Scorpion.ApplyQuickStack = function()
+	if not dbg.setconstant then return end
+	for _, fn in ipairs(quickStack) do
+		pcall(function()
+			dbg.setconstant(fn, 19, State.ScorpionInstantLoot and 0 or 0.9)
+			dbg.setconstant(fn, 20, State.ScorpionInstantLoot and 0 or 0.3)
+			dbg.setconstant(fn, 21, State.ScorpionInstantLoot and 0 or 0.1)
+		end)
+	end
+end
+
+if setReadonly and dbg.traceback then
+	pcall(function()
+		local originalAbs = math.abs
+		setReadonly(math, false)
+		math.abs = function(value)
+			if State.ScorpionNoBob and trace():find("ViewmodelController", 1, true) then
+				for level = 2, 4 do
+					if isValidLevel and isValidLevel(level) then
+						local stack = getStack and getStack(level)
+						local candidate = stack and stack[2]
+						if type(candidate) == "boolean" and setStack then setStack(level, 2, true) end
+					end
+				end
+			end
+			return originalAbs(value)
+		end
+		setReadonly(math, true)
+		originals.MathAbs = originalAbs
+	end)
+end
+
+local SoundService = game:GetService("SoundService")
+local hitSounds = {
+	Minecraft = "73369656122118", Telegram = "6696469190", ["Rust Headshot"] = "127036469955037",
+	["CSGO Kill"] = "7269900245", ["Minecraft Bow"] = "72656167409567", ["CSGO Headshot"] = "93671116663771",
+	["Minecraft XP"] = "101023147710668", ["Minecraft Drop"] = "90752223133261",
+	["Fortnite Headshot"] = "136947670419465", Gamesense = "4817809188", Primordial = "97511223764004",
+}
+Scorpion.HitSounds = hitSounds
+local soundPool = {}
+for name, id in pairs(hitSounds) do
+	local sound = Instance.new("Sound")
+	sound.SoundId = "rbxassetid://" .. id
+	sound.Parent = SoundService
+	soundPool[name] = sound
+end
+local shootSound = Instance.new("Sound")
+shootSound.SoundId = "rbxassetid://116617548245274"
+shootSound.Parent = SoundService
+
+Scorpion.PlayHit = function()
+	if not State.ScorpionHitSound then return end
+	local sound = soundPool[State.ScorpionHitSoundName]
+	if sound then
+		sound.Volume = State.ScorpionHitSoundVolume / 100
+		sound:Play()
+	end
+end
+Scorpion.PlayShoot = function()
+	if not State.ScorpionShootSound then return end
+	shootSound.Volume = State.ScorpionShootVolume / 100
+	shootSound:Play()
+end
+
+local tracerStyles = { "Default", "Obelus", "Lightning", "DNA", "Minecraft", "Beam", "Galaxy" }
+Scorpion.TracerStyles = tracerStyles
+local tracerTextures = {
+	Default = "115789305736770", Obelus = "2382169232", Lightning = "7151778302",
+	DNA = "7071778278", Minecraft = "301464986", Beam = "4494641460", Galaxy = "1120738433",
+}
+Scorpion.CreateTracer = function(origin, direction)
+	if not State.ScorpionTracer then return end
+	local attachmentA = Instance.new("Attachment")
+	local attachmentB = Instance.new("Attachment")
+	attachmentA.Position = origin
+	attachmentB.Position = origin + direction * 300
+	local beam = Instance.new("Beam")
+	beam.Texture = "rbxassetid://" .. (tracerTextures[State.ScorpionTracerStyle] or tracerTextures.Default)
+	beam.FaceCamera = true
+	beam.Width0 = State.ScorpionTracerThickness / 100
+	beam.Width1 = State.ScorpionTracerThickness / 100
+	beam.LightEmission = 1
+	beam.Attachment0 = attachmentA
+	beam.Attachment1 = attachmentB
+	local parent = Workspace.Terrain or Workspace
+	beam.Parent = parent
+	attachmentA.Parent = parent
+	attachmentB.Parent = parent
+	game:GetService("Debris"):AddItem(beam, State.ScorpionTracerDuration)
+	game:GetService("Debris"):AddItem(attachmentA, State.ScorpionTracerDuration)
+	game:GetService("Debris"):AddItem(attachmentB, State.ScorpionTracerDuration)
+end
+
+local VFX = Workspace:FindFirstChild("VFX")
+if VFX then
+	local okCreate, originalCreate = pcall(function() return VFX.CreateProjectile end)
+	if okCreate and type(originalCreate) == "function" then
+		VFX.CreateProjectile = function(self, ...)
+			local args = { ... }
+			if trace():find("ViewmodelController", 1, true) and type(args[1]) == "table" then
+				local origin = args[1].Position or args[1].PositionFirst
+				local direction = args[1].Direction or args[1].DirectionFirst
+				if typeof(origin) == "Vector3" and typeof(direction) == "Vector3" then
+					Scorpion.PlayShoot()
+					task.spawn(function() pcall(Scorpion.CreateTracer, origin, direction.Unit) end)
+				end
+			end
+			return originalCreate(self, ...)
+		end
+		originals.CreateProjectile = { VFX, "CreateProjectile", originalCreate }
+	end
+	for _, name in ipairs({ "CreateBlood", "CreateHole" }) do
+		local original = VFX[name]
+		if type(original) == "function" then
+			VFX[name] = function(self, hit, position, ...)
+				if not trace():find("HitVFX", 1, true) then Scorpion.PlayHit() end
+				return original(self, hit, position, ...)
+			end
+			originals[name] = { VFX, name, original }
+		end
+	end
+end
+
+Scorpion.ApplyAmbience = function()
+	if not State.ScorpionAmbience then
+		Lighting.Ambient = OriginalLighting.Ambient or Lighting.Ambient
+		Lighting.OutdoorAmbient = OriginalLighting.OutdoorAmbient or Lighting.OutdoorAmbient
+		return
+	end
+	local color = EspColours[State.ScorpionAmbColour] or EspColours.White
+	Lighting.Ambient = Color3.new(color.R * State.ScorpionAmbBrightness / 100, color.G * State.ScorpionAmbBrightness / 100, color.B * State.ScorpionAmbBrightness / 100)
+	Lighting.OutdoorAmbient = Color3.new(color.R * State.ScorpionAmbIndoor / 100, color.G * State.ScorpionAmbIndoor / 100, color.B * State.ScorpionAmbIndoor / 100)
+end
+
+Scorpion.ApplyGrass = function()
+	if not setFFlag then return end
+	if State.RemoveGrass or State.ScorpionRemoveGrass then
+		pcall(setFFlag, "FRMMinGrassDistance", "-1")
+		pcall(setFFlag, "FRMMaxGrassDistance", "-1")
+	else
+		pcall(setFFlag, "FRMMinGrassDistance", "100")
+		pcall(setFFlag, "FRMMaxGrassDistance", "290")
+	end
+end
+
+Scorpion.ApplyGunChams = function()
+	local enabled = State.ScorpionGunChams or State.ScorpionArmsChams
+	local character = LocalPlayer.Character
+	if not enabled then
+		for part, saved in pairs(OriginalChams) do
+			if part and part.Parent and saved and type(saved) == "table" and saved.Material then
+				pcall(function() part.Material = saved.Material; part.Color = saved.Color end)
+			end
+		end
+		return
+	end
+	if not character then return end
+	local parts = {}
+	if State.ScorpionGunChams then
+		local tool = character:FindFirstChildOfClass("Tool")
+		if tool then for _, part in ipairs(tool:GetDescendants()) do if part:IsA("BasePart") then parts[#parts + 1] = part end end end
+	end
+	if State.ScorpionArmsChams then
+		for _, name in ipairs({ "LeftUpperArm", "RightUpperArm", "LeftLowerArm", "RightLowerArm", "LeftHand", "RightHand" }) do
+			local part = character:FindFirstChild(name)
+			if part and part:IsA("BasePart") then parts[#parts + 1] = part end
+		end
+	end
+	local material = Enum.Material[State.ScorpionGunMaterial] or Enum.Material.ForceField
+	local color = EspColours[State.ScorpionGunColour] or EspColours.White
+	for _, part in ipairs(parts) do
+		if OriginalChams[part] == nil then OriginalChams[part] = { Color = part.Color, Material = part.Material } end
+		part.Material = material
+		part.Color = color
+	end
+end
+
+Scorpion.ApplyFOV = function(dt)
+	if not fovCircle then return end
+	if State.ScorpionFovRainbow then
+		local hue = (os.clock() * State.ScorpionFovRainbowSpeed / 5) % 1
+		fovCircle.Color = Color3.fromHSV(hue, 0.7, 1)
+	end
+	if State.ScorpionFovRotate and not State.ScorpionFovRainbow then
+		local hue = (os.clock() * State.ScorpionFovRotateSpeed / 5) % 1
+		fovCircle.Color = Color3.fromHSV(hue, 0.35, 1)
+	end
+	if State.ScorpionFovFill then
+		fovCircle.Filled = true
+		fovCircle.Transparency = 1 - State.ScorpionFovFillTransparency / 100
+	else
+		fovCircle.Filled = false
+		fovCircle.Transparency = 1
+	end
+	fovCircle.Thickness = State.ScorpionFovThickness
+end
+
+Scorpion.ApplyNetworkSleeping = function(root, active)
+	if not setHidden or not root then return end
+	pcall(setHidden, root, "NetworkIsSleeping", active == true)
+end
+
+Scorpion.Restore = function()
+	for _, entry in pairs(originals) do
+		if type(entry) == "table" and entry[1] and entry[2] and entry[3] then
+			pcall(function() entry[1][entry[2]] = entry[3] end)
+		end
+	end
+	if originals.MathAbs and setReadonly then
+		pcall(function()
+			setReadonly(math, false)
+			math.abs = originals.MathAbs
+			setReadonly(math, true)
+		end)
+	end
+	if setFFlag then
+		pcall(setFFlag, "FRMMinGrassDistance", "100")
+		pcall(setFFlag, "FRMMaxGrassDistance", "290")
+	end
+	pcall(Scorpion.ApplyAmbience)
+end
+
+if LocalPlayer.Character then attachCharacter(LocalPlayer.Character) end
+trackConnection(LocalPlayer.CharacterAdded:Connect(attachCharacter))
+trackConnection(RunService.Heartbeat:Connect(function(dt)
+	if Runtime.Unloaded then return end
+	Scorpion.ApplyFOV(dt)
+	if State.ScorpionAutoshoot and State.SilentAim and not Runtime.MenuOpen and type(mouse1click) == "function" then
+		local ok, target = pcall(getAimTarget)
+		if ok and target then pcall(mouse1click) end
+	end
+	if Scorpion.Watermark then
+		pcall(function() Scorpion.Watermark.Visible = State.ScorpionWatermark == true end)
+	end
+end))
+
+pcall(function()
+	local label = Instance.new("TextLabel", sg)
+	label.Name = "ScorpionWatermark"
+	label.Size = UDim2.new(0, 180, 0, 20)
+	label.Position = UDim2.new(1, -190, 0, 8)
+	label.BackgroundTransparency = 1
+	label.Text = "Burmalda.hook | Fallen Survival"
+	label.TextColor3 = EspColours.White
+	label.Font = Enum.Font.SourceSansBold
+	label.TextSize = 12
+	label.TextXAlignment = Enum.TextXAlignment.Right
+	label.Visible = false
+	trackGui(label)
+	Scorpion.Watermark = label
+end)
+onCleanup(function() Scorpion.Restore() end)
+
+
 section(Columns[tabFrames.COMBAT].Left, 'Silent Aim')
 feature('COMBAT', 'Left', 'Silent Aim', 'SilentAim')
 slider('COMBAT', 'Left', 'FOV', 'AimFOV', 10, 1500)
@@ -1723,6 +2181,18 @@ feature('COMBAT', 'Right', 'Manipulation Indicator', 'AimManipulationIndicator')
 dropdown('COMBAT', 'Right', 'Manipulation Ind Colour', 'AimManipulationIndicatorColour', ColourNames)
 feature('COMBAT', 'Right', 'Hitscan Indicator', 'AimHitscanIndicator')
 dropdown('COMBAT', 'Right', 'Hitscan Ind Colour', 'AimHitscanIndicatorColour', ColourNames)
+feature('COMBAT', 'Right', 'Gun Mods', 'ScorpionGunMods')
+feature('COMBAT', 'Right', 'No Recoil', 'ScorpionNoRecoil')
+feature('COMBAT', 'Right', 'No Sway', 'ScorpionNoSway')
+feature('COMBAT', 'Right', 'No Bob', 'ScorpionNoBob')
+feature('COMBAT', 'Right', 'RPM', 'ScorpionRPM')
+slider('COMBAT', 'Right', 'RPM Multiplier', 'ScorpionRPMValue', 1, 15)
+feature('COMBAT', 'Right', 'Instant Bullet', 'ScorpionInstantBullet')
+feature('COMBAT', 'Right', 'Range Multiplier', 'ScorpionRangeMult')
+slider('COMBAT', 'Right', 'Range Amount', 'ScorpionRangeAmount', 1, 20)
+feature('COMBAT', 'Right', 'Autoshoot', 'ScorpionAutoshoot')
+feature('COMBAT', 'Right', 'Ignore Downed', 'ScorpionDownCheck')
+feature('COMBAT', 'Right', 'Target Teammates', 'ScorpionTargetTeammates')
 bind('COMBAT', 'Right', 'Force Hit Bind', 'AimForceHit')
 bind('COMBAT', 'Right', 'Manipulation Bind', 'AimManipulation')
 bind('COMBAT', 'Right', 'Hitscan Bind', 'AimHitscan')
@@ -1880,6 +2350,13 @@ feature('WORLD', 'Right', 'Bullet TP', 'BulletTP')
 feature('WORLD', 'Right', 'TP To Waypoint', 'TPToWaypoint')
 feature('WORLD', 'Right', 'Combat Mode', 'CombatMode')
 feature('WORLD', 'Right', 'Staff Detector', 'StaffDetector')
+feature('WORLD', 'Right', 'Instant Eoka', 'ScorpionInstantEoka')
+feature('WORLD', 'Right', 'Instant Loot', 'ScorpionInstantLoot', function() if Runtime.Scorpion then Runtime.Scorpion.ApplyQuickStack() end end)
+feature('WORLD', 'Right', 'Perfect Farm', 'ScorpionPerfectFarm')
+feature('WORLD', 'Right', 'Remove Grass', 'ScorpionRemoveGrass', function() if Runtime.Scorpion then Runtime.Scorpion.ApplyGrass() end end)
+feature('WORLD', 'Right', 'Ambience', 'ScorpionAmbience', function() if Runtime.Scorpion then Runtime.Scorpion.ApplyAmbience() end end)
+slider('WORLD', 'Right', 'Amb Brightness', 'ScorpionAmbBrightness', 0, 100)
+slider('WORLD', 'Right', 'Amb Indoor', 'ScorpionAmbIndoor', 0, 100)
 
 section(Columns[tabFrames.MISC].Left, 'Interface')
 feature('MISC', 'Left', 'Stats HUD', 'StatsHUD')
@@ -1889,6 +2366,23 @@ feature('MISC', 'Left', 'Menu Accent', 'MenuAccent', function(value)
 	mainStroke.Color = value and Theme.Green or Theme.Accent
 end)
 feature('MISC', 'Left', 'UI Animations', 'UIAnimations', setUIAnimations)
+feature('MISC', 'Left', 'Hit Sound', 'ScorpionHitSound')
+dropdown('MISC', 'Left', 'Hit Sound Preset', 'ScorpionHitSoundName', { 'Minecraft', 'Telegram', 'Rust Headshot', 'CSGO Kill', 'Minecraft Bow', 'CSGO Headshot', 'Minecraft XP', 'Minecraft Drop', 'Fortnite Headshot', 'Gamesense', 'Primordial' })
+slider('MISC', 'Left', 'Hit Volume', 'ScorpionHitSoundVolume', 0, 1000)
+feature('MISC', 'Left', 'Shoot Sound', 'ScorpionShootSound')
+slider('MISC', 'Left', 'Shoot Volume', 'ScorpionShootVolume', 0, 1000)
+feature('MISC', 'Left', 'Bullet Tracer', 'ScorpionTracer')
+dropdown('MISC', 'Left', 'Tracer Style', 'ScorpionTracerStyle', { 'Default', 'Obelus', 'Lightning', 'DNA', 'Minecraft', 'Beam', 'Galaxy' })
+slider('MISC', 'Left', 'Tracer Duration', 'ScorpionTracerDuration', 0, 15)
+slider('MISC', 'Left', 'Tracer Thickness', 'ScorpionTracerThickness', 0, 100)
+feature('MISC', 'Left', 'FOV Rainbow', 'ScorpionFovRainbow')
+slider('MISC', 'Left', 'Rainbow Speed', 'ScorpionFovRainbowSpeed', 0, 5)
+feature('MISC', 'Left', 'FOV Rotate', 'ScorpionFovRotate')
+slider('MISC', 'Left', 'Rotate Speed', 'ScorpionFovRotateSpeed', 0, 5)
+feature('MISC', 'Left', 'FOV Fill', 'ScorpionFovFill')
+slider('MISC', 'Left', 'FOV Fill Alpha', 'ScorpionFovFillTransparency', 0, 100)
+slider('MISC', 'Left', 'FOV Thickness', 'ScorpionFovThickness', 1, 10)
+feature('MISC', 'Left', 'Watermark', 'ScorpionWatermark')
 
 section(Columns[tabFrames.MISC].Right, 'Binds')
 bind('MISC', 'Right', 'Speed Bind', 'Speed')
@@ -1904,6 +2398,11 @@ bind('MISC', 'Right', 'No Fall Bind', 'NoFallDamage')
 bind('MISC', 'Right', 'Teleport Bind', 'TeleportMouse')
 bind('MISC', 'Right', 'Respawn Bind', 'Respawn')
 bind('MISC', 'Right', 'Suicide Bind', 'Suicide')
+feature('MISC', 'Right', 'Gun Chams', 'ScorpionGunChams', function() if Runtime.Scorpion then Runtime.Scorpion.ApplyGunChams() end end)
+feature('MISC', 'Right', 'Arms Chams', 'ScorpionArmsChams', function() if Runtime.Scorpion then Runtime.Scorpion.ApplyGunChams() end end)
+dropdown('MISC', 'Right', 'Gun Material', 'ScorpionGunMaterial', { 'ForceField', 'Neon', 'Glass', 'Ice', 'Wood', 'Plastic', 'Metal' })
+dropdown('MISC', 'Right', 'Gun Colour', 'ScorpionGunColour', ColourNames)
+feature('MISC', 'Right', 'Fly Restrictions', 'ScorpionFlyRestrictions')
 button('MISC', 'Right', 'Unload Burmalda.hook', function()
 	local defer = task.defer or task.spawn or function(callback) callback() end
 	defer(Runtime.Unload)
