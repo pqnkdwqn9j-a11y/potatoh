@@ -3285,23 +3285,6 @@ do
 		toggleBind(editor, "Low PC", "LowPC")
 		editor = feature(section(rc, "HUD"), "Stats HUD", "HUD")
 		toggleBind(editor, "Stats HUD", "HUD")
-		local safeButton = Instance.new("TextButton", section(lc, "Performance"))
-		safeButton.Size = UDim2.new(1, 0, 0, 22)
-		safeButton.BackgroundColor3 = Theme.Element
-		safeButton.BorderSizePixel = 0
-		safeButton.Text = "Visuals Only"
-		safeButton.TextColor3 = Color3.new(1, 1, 1)
-		safeButton.Font = Enum.Font.GothamMedium
-		safeButton.TextSize = 12
-		safeButton.AutoButtonColor = false
-		sourceStroke(safeButton)
-		safeButton.MouseButton1Click:Connect(function()
-			for _, name in ipairs({"Aimbot", "Triggerbot", "Weapon Patches", "Weak Spot Aim",
-				"Speed", "High Jump", "Noclip", "No Fall Damage", "Copter Fly"}) do
-				if _fFS[name] then pcall(_fFS[name], false) end
-			end
-			if Runtime.Aim.RestoreNamecall then pcall(Runtime.Aim.RestoreNamecall) end
-		end)
 	end
 
 	do
