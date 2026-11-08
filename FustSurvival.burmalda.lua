@@ -2849,17 +2849,17 @@ do
 		if not topZ or not bottomZ or topZ <= 0 or bottomZ <= 0 then return end
 		local viewport = Camera.ViewportSize
 		local centerX = (topX + bottomX) * 0.5
-		if centerX < 0 or centerX > viewport.X then return end
 		local rawTop, rawBottom = math.min(topY, bottomY), math.max(topY, bottomY)
-		if rawBottom < 0 or rawTop > viewport.Y then return end
 		local top = math.clamp(rawTop, 0, viewport.Y)
 		local bottom = math.clamp(rawBottom, 0, viewport.Y)
 		local height = bottom - top
 		if height < 5 then return end
 		local width = height * 0.55
+		if centerX + width * 0.5 < 0 or centerX - width * 0.5 > viewport.X then return end
 		local left = centerX - width * 0.5
 		local entry = rigEntry(key)
 		entry.Seen = Visuals.Generation
+		entry.Missed = 0
 		entry.LastSeen = os.clock()
 		if entry.Box then
 			entry.Box.Visible = options.Box == true
@@ -2953,6 +2953,7 @@ do
 	end
 
 	function Visuals.Update(dt)
+		Camera = workspace.CurrentCamera or Camera
 		Visuals.Clock += dt
 		if S.LowPC and Visuals.Clock < 0.05 then return end
 		local step = Visuals.Clock
@@ -3013,7 +3014,12 @@ do
 			end
 		end
 		for _, entry in pairs(Visuals.Rigs) do
-			if entry.Seen ~= Visuals.Generation then hide(entry) end
+			if entry.Seen ~= Visuals.Generation then
+				entry.Missed = (entry.Missed or 0) + 1
+				if entry.Missed >= 4 then hide(entry) end
+			else
+				entry.Missed = 0
+			end
 		end
 		Visuals.PruneClock += step
 		if Visuals.PruneClock >= 1 then
