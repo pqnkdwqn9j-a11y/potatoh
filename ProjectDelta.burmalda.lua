@@ -59,7 +59,7 @@ local Runtime = {
 	MenuOpen = true,
 	TabNames = { "COMBAT", "VISUALS", "MOVEMENT", "MISC", "CONFIG" },
 	PlaceId = 7336302630,
-	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt", "Volcano" },
+	SupportedExecutors = { "Real", "Opiumware", "Madium", "Potassium", "Synapse Z", "Volt", "Volcano", "Solara" },
 }
 Env.BurmaldaProjectDelta = Runtime
 
