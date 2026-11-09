@@ -83,6 +83,10 @@ local S = {
 	TargetLine = false,
 
 	AutoCross = false,
+	AutoFarm = false,
+	AutoFarmMode = "Ore",
+	AutoFarmRange = 60,
+	LootContents = false,
 
 	Triggerbot = false,
 	TriggerRadius = 6,
@@ -3038,6 +3042,19 @@ do
 		return label
 	end
 
+local function containerContents(model)
+		if not model then return "" end
+		local inventory = model:FindFirstChild("Inventory") or model:FindFirstChild("Items") or model
+		local names = {}
+		for _, child in ipairs(inventory:GetChildren()) do
+			if child:IsA("Model") or child:IsA("Tool") or child:IsA("BasePart") then
+				names[#names + 1] = child.Name
+			end
+			if #names >= 6 then break end
+		end
+		return #names > 0 and table.concat(names, "\n") or ""
+	end
+
 	local function renderWorld()
 		for index = 1, Visuals.WorldIndex do
 			local label = Visuals.WorldLabels[index]
@@ -3058,7 +3075,8 @@ do
 						local label = worldLabel()
 						if label then
 							label.Visible = true
-							label.Text = entry.Label .. (S[category.Distance] and "\n" .. tostring(math.floor(distance + 0.5)) .. "m" or "")
+							local contents = S.LootContents and (entry.Category == "Loot" or entry.Category == "Base") and containerContents(entry.Model) or ""
+							label.Text = entry.Label .. (contents ~= "" and "\n" .. contents or "") .. (S[category.Distance] and "\n" .. tostring(math.floor(distance + 0.5)) .. "m" or "")
 							label.Position = Vector2.new(x, y)
 							label.Size = S.WorldTextSize
 							label.Color = Colors[category.Color]
@@ -3168,6 +3186,99 @@ do
 	end)
 end
 
+local Workspace = game:GetService("Workspace")
+local Shared = Runtime.Shared
+local AutoFarm = { Next = 0, Target = nil, Active = false }
+Runtime.AutoFarm = AutoFarm
+
+local function heldTool()
+	local character = LocalPlayer.Character
+	if not character then return nil end
+	return character:FindFirstChildOfClass("Tool") or character:FindFirstChild("Tool")
+end
+
+local function isHarvestTool(tool)
+	if not tool then return false end
+	local name = string.lower(tool.Name)
+	if S.AutoFarmMode == "Wood" then
+		return string.find(name, "axe", 1, true) ~= nil or string.find(name, "топор", 1, true) ~= nil
+	end
+	return string.find(name, "pick", 1, true) ~= nil or string.find(name, "кирк", 1, true) ~= nil
+end
+
+local function nodePosition(model)
+	if not model then return nil end
+	if model:IsA("BasePart") then return model.Position end
+	local part = model.PrimaryPart or model:FindFirstChildOfClass("BasePart")
+	return part and part.Position or nil
+end
+
+local function findNode()
+	local root = Shared.Root(LocalPlayer.Character)
+	if not root then return nil end
+	local best, bestDistance = nil, S.AutoFarmRange
+	local folders = { Workspace:FindFirstChild("Nodes"), Workspace:FindFirstChild("OreNodes"), Workspace:FindFirstChild("Trees") }
+	for _, folder in ipairs(folders) do
+		if not folder then continue end
+		for _, model in ipairs(folder:GetDescendants()) do
+			if not model:IsA("Model") and not model:IsA("BasePart") then continue end
+			local position = nodePosition(model)
+			if not position then continue end
+			local distance = (position - root.Position).Magnitude
+			if distance >= bestDistance then continue end
+			local ok, spot = pcall(function() return model:GetAttribute("WeakSpot") end)
+			if not ok or typeof(spot) ~= "Vector3" then continue end
+			bestDistance = distance
+			best = model
+		end
+	end
+	return best, bestDistance
+end
+
+local function stopFarm()
+	AutoFarm.Active = false
+	AutoFarm.Target = nil
+	if S.AutoCross and _fFS["Weak Spot Aim"] then _fFS["Weak Spot Aim"](false) end
+end
+
+AutoFarm.Stop = stopFarm
+
+local farmConnection = RunService.Heartbeat:Connect(function()
+	if Runtime.Unloaded then return end
+	if not S.AutoFarm then
+		if AutoFarm.Active then stopFarm() end
+		return
+	end
+	if os.clock() < AutoFarm.Next then return end
+	AutoFarm.Next = os.clock() + 0.35
+	local character = LocalPlayer.Character
+	local root = Shared.Root(character)
+	local humanoid = Shared.Humanoid(character)
+	if not root or not humanoid or humanoid.Health <= 0 then return end
+	if not isHarvestTool(heldTool()) then
+		if AutoFarm.Active then stopFarm() end
+		return
+	end
+	local model, distance = findNode()
+	if not model then
+		if AutoFarm.Active then stopFarm() end
+		return
+	end
+	AutoFarm.Active = true
+	AutoFarm.Target = model
+	local position = nodePosition(model)
+	if distance > 8 then
+		pcall(function() humanoid:MoveTo(position) end)
+		return
+	end
+	if not S.AutoCross and _fFS["Weak Spot Aim"] then _fFS["Weak Spot Aim"](true) end
+	if type(mouse1click) == "function" then pcall(mouse1click) end
+	if type(mouse1release) == "function" then pcall(mouse1release) end
+end)
+onCleanup(function() pcall(function() farmConnection:Disconnect() end) end)
+onCleanup(function() stopFarm() end)
+
+
 do
 	local function section(parent, name)
 		return getSection(parent, name).Content
@@ -3249,10 +3360,12 @@ do
 	Runtime.FeatureHandlers.HideGrass = function() Runtime.Environment.Apply() end
 	Runtime.FeatureHandlers.LowPC = function() Runtime.Environment.Apply() end
 	Runtime.FeatureHandlers.Noclip = function(value) if not value then Runtime.Movement.Restore() end end
-	Runtime.FeatureHandlers.AutoCross = function(value)
+Runtime.FeatureHandlers.AutoCross = function(value)
 		if value and not Runtime.Aim.InstallNamecall() then
 			S.AutoCross = false
 			if _fFS["Weak Spot Aim"] then _fFS["Weak Spot Aim"](false) end
+		elseif not value and not S.AutoFarm and Runtime.Aim.RestoreNamecall then
+			pcall(Runtime.Aim.RestoreNamecall)
 		end
 	end
 	Runtime.FeatureHandlers.UIAnimations = function(value) UIAnimations = value end
@@ -3350,6 +3463,13 @@ do
 		onOff(editor, "Elite", "LootElite")
 		onOff(editor, "Distance", "LootDistance")
 		color(editor, "Color", "Loot")
+		onOff(editor, "Show Contents", "LootContents")
+
+		local farmSection = section(rc, "Auto Farm")
+		editor = feature(farmSection, "Auto Farm", "AutoFarm")
+		dropdown(editor, "Farm Type", {"Ore", "Wood"}, "AutoFarmMode")
+		slider(editor, "Farm Range", 10, 200, "AutoFarmRange")
+		toggleBind(editor, "Auto Farm", "AutoFarm")
 
 		editor = feature(section(lc, "Base"), "Base ESP", "BaseESP")
 		slider(editor, "Range", 25, 500, "BaseRange")
