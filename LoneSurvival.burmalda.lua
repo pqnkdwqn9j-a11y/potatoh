@@ -3183,7 +3183,6 @@ end
         local entry = bindApis[key]
         if entry and entry.Set then entry.Set(value) end
       end
-      if mainGame.calamariVisuals then mainGame.calamariVisuals.SyncUI() end
       if mainGame.friendDropdown and mainGame.friendDropdown.Set then
         mainGame.friendDropdown.Set(cfg.Silent.IgnorePlayers or {})
       end
@@ -5393,22 +5392,6 @@ end
             end
           end
 
-          -- Calamari visuals observe the already-owned local Projectile.New call.
-          -- They never redirect data and perform no work until a shot visual is on.
-          if type(data) == "table" and not data.FromServer and mainGame.calamariVisuals then
-            local origin = data.Origin
-            local camera = workspace.CurrentCamera
-            local direction
-            if typeof(origin) == "Vector3" and typeof(data.ForceHitVector) == "Vector3" then
-              direction = data.ForceHitVector - origin
-            elseif camera then
-              direction = camera.CFrame.LookVector
-            end
-            if typeof(origin) == "Vector3" and typeof(direction) == "Vector3" and direction.Magnitude > 0.001 then
-              pcall(mainGame.calamariVisuals.TraceShot, origin, direction, 1000)
-            end
-          end
-
           local results = table.pack(pcall(original, self, data, ...))
           if context.cameraCFrame and context.camera then
             pcall(function() context.camera.CFrame = context.cameraCFrame end)
@@ -7250,1467 +7233,1422 @@ end
       addLabel(rc, "Insert / RightShift: menu   |   F1: ESP   |   F2: Silent Aim")
     end
 
-do
-  local calamariFactory = (function()
--- Calamari-inspired visuals adapted for Burmalda.hook's local menu and lifecycle.
--- No external UI/ESP library, HTTP loader, gameplay module or projectile owner.
--- State is plain JSON-safe data (colors are RGB arrays) for every game's configs.
-local function createBurmaldaCalamariVisuals(options)
-	options = options or {}
-	local State = options.State or {}
-	local Adapter = options.Adapter or {}
-	local GameName = tostring(options.Game or "Burmalda")
-	local Players = game:GetService("Players")
-	local RunService = game:GetService("RunService")
-	local Lighting = game:GetService("Lighting")
-	local Debris = game:GetService("Debris")
-	local UIS = game:GetService("UserInputService")
-	local LocalPlayer = Players.LocalPlayer
-	local API = {State = State, Diagnostics = {}, Unloaded = false}
-	local Revision = 0
-	local controls = {}
-	local connections = {}
-	local gui, adornmentFolder, effectFolder
-local defaults = {
-	Player = {
-		Enabled = false, MaxDistance = 2000, MaxTargets = 64,
-		Box = true, BoxHigh = {255, 255, 255}, BoxLow = {255, 255, 255},
-		BoxHighTransparency = 0, BoxLowTransparency = 0, BoxRotation = 90,
-		Fill = false, FillHigh = {255, 255, 255}, FillLow = {255, 255, 255},
-		FillHighTransparency = 0.5, FillLowTransparency = 0.5, FillRotation = 90,
-		Glow = false, GlowHigh = {255, 255, 255}, GlowLow = {255, 255, 255},
-		GlowHighTransparency = 0.5, GlowLowTransparency = 0.5, GlowRotation = 90,
-		Healthbar = true, HealthText = false,
-		HealthHigh = {0, 255, 0}, HealthMid = {255, 165, 0}, HealthLow = {255, 0, 0},
-		Names = true, NameColor = {255, 255, 255},
-		Distance = true, DistanceColor = {255, 255, 255},
-		Weapon = false, WeaponColor = {255, 255, 255},
-		Flags = false, FlagsColor = {255, 255, 255},
-		Chams = false, ChamsInside = {255, 255, 255}, ChamsOutside = {255, 255, 255},
-		ChamsInsideTransparency = 0.5, ChamsOutsideTransparency = 0,
-	},
-	World = {Enabled = false, Categories = {}},
-	Gun = {Enabled = false, Color = {166, 147, 243}, Material = "ForceField", Texture = "None"},
-	Arms = {Enabled = false, Color = {166, 147, 243}, Material = "ForceField", Texture = "None"},
-	Viewmodel = {
-		Highlight = false, Fill = {166, 147, 243}, FillTransparency = 0.5,
-		Outline = {166, 147, 243}, OutlineTransparency = 0,
-		Position = false, X = 0, Y = 0, Z = 0,
-	},
-	Bullet = {Enabled = false, Type = "Lightning", Color = {166, 147, 243}, Duration = 5},
-	HitEffects = {Enabled = false, Type = "Spark", Color1 = {166, 147, 243}, Color2 = {166, 147, 243}},
-	HitNotifications = {Enabled = false},
-	Camera = {
-		CustomFOV = false, FOV = 100, Zoom = false, ZoomAmount = 40, ZoomKey = "C",
-	},
-	Lighting = {
-		CloudDensity = false, CloudDensityValue = 0.5,
-		CloudCover = false, CloudCoverValue = 0.5,
-		CloudColor = false, CloudColorValue = {166, 147, 243},
-		NoFog = false, FogDensity = false, FogDensityValue = 0.5,
-		FogHaze = false, FogHazeValue = 0.5, FogGlare = false, FogGlareValue = 0.5,
-		FogColor = false, FogColorValue = {166, 147, 243},
-		Fullbright = false, Brightness = 2,
-		Ambient = false, AmbientColor = {166, 147, 243},
-		Time = false, TimeValue = 12, Skybox = false, SkyboxPreset = "Galaxy",
-		SunRays = false, SunIntensity = 0.25, SunSpread = 1,
-		Bloom = false, BloomIntensity = 1, BloomSize = 1000, BloomThreshold = 0.36,
-	},
+local __velocityFactory = (function()
+local InputService, HttpService, GuiService, RunService, Stats, CoreGui, TweenService, SoundService, Workspace, Players, Lighting = game:GetService("UserInputService"), game:GetService("HttpService"), game:GetService("GuiService"), game:GetService("RunService"), game:GetService("Stats"), game:GetService("CoreGui"), game:GetService("TweenService"), game:GetService("SoundService"), game:GetService("Workspace"), game:GetService("Players"), game:GetService("Lighting")
+local Camera, LocalPlayer, gui_offset = Workspace.CurrentCamera, Players.LocalPlayer, GuiService:GetGuiInset().Y
+local Mouse = LocalPlayer:GetMouse()
+local vec2, vec3, dim2, dim, rect, dim_offset = Vector2.new, Vector3.new, UDim2.new, UDim.new, Rect.new, UDim2.fromOffset
+local color, rgb, hex, hsv, rgbseq, rgbkey, numseq, numkey = Color3.new, Color3.fromRGB, Color3.fromHex, Color3.fromHSV, ColorSequence.new, ColorSequenceKeypoint.new, NumberSequence.new, NumberSequenceKeypoint.new
+local angle, empty_cfr, cfr = CFrame.Angles, CFrame.new(), CFrame.new
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local Flags = {
+    ["Players_CHAMS"] = false,
+    ["Players_FILL_CHAMS"] = {Color = rgb(255, 0, 0), Transparency = 0.5},
+    ["Players_OUTLINE_CHAMS"] = {Color = rgb(0, 255, 0), Transparency = 0.3},
 }
-local worldCategories = {
-	["Stone"] = 400, ["Metal"] = 400, ["Phosphate"] = 400, ["Wool"] = 400,
-	["Animals"] = 1000, ["Care Package"] = 3000, ["Drops"] = 1000,
-	["Body Bag"] = 1000, ["Salvaged Flycopter"] = 3000, ["Eggs"] = 400,
-	["Auto Turret"] = 400, ["Shotgun Turret"] = 400,
-}
-for name, distance in pairs(worldCategories) do
-	defaults.World.Categories[name] = {Enabled = false, Color = {255, 80, 80}, MaxDistance = distance}
-end
+    local Fonts = setmetatable({}, {__index = function() return Enum.Font.Code end})
 
-local function mergeDefaults(target, source)
-	for key, value in pairs(source) do
-		if type(value) == "table" then
-			if value[1] ~= nil then
-				if type(target[key]) ~= "table" then
-					local copy = {}
-					for index, item in ipairs(value) do copy[index] = item end
-					target[key] = copy
-				end
-			else
-				if type(target[key]) ~= "table" then target[key] = {} end
-				mergeDefaults(target[key], value)
-			end
-		elseif target[key] == nil then
-			target[key] = value
-		end
-	end
-end
-mergeDefaults(State, defaults)
+local MiscOptions = {
+    ["Enabled"] = false;
+    ["Render Distance"] = 200;
 
-local function splitPath(path)
-	local result = {}
-	for part in string.gmatch(tostring(path), "[^.]+") do result[#result + 1] = part end
-	return result
-end
-function API.Get(path)
-	local current = State
-	for _, part in ipairs(splitPath(path)) do
-		if type(current) ~= "table" then return nil end
-		current = current[part]
-	end
-	return current
-end
-function API.Set(path, value)
-	local parts = splitPath(path)
-	local current = State
-	for index = 1, #parts - 1 do
-		local key = parts[index]
-		if type(current[key]) ~= "table" then current[key] = {} end
-		current = current[key]
-	end
-	local key = parts[#parts]
-	if current[key] == value then return end
-	current[key] = value
-	Revision += 1
-	API.Diagnostics.WorldScanAt = 0
-	API.Diagnostics.ViewmodelScanAt = 0
-	API.Diagnostics.LightingDirty = true
-end
-local function color3(value)
-	if typeof(value) == "Color3" then return value end
-	if type(value) == "table" then
-		return Color3.fromRGB(tonumber(value[1]) or 255, tonumber(value[2]) or 255, tonumber(value[3]) or 255)
-	end
-	return Color3.new(1, 1, 1)
-end
-function API.SetColor(path, value)
-	API.Set(path, {
-		math.floor(value.R * 255 + 0.5),
-		math.floor(value.G * 255 + 0.5),
-		math.floor(value.B * 255 + 0.5),
-	})
-end
-function API.Bind(path, setter, kind)
-	controls[#controls + 1] = {Path = path, Set = setter, Kind = kind}
-end
-function API.SyncUI()
-	for _, control in ipairs(controls) do
-		local value = API.Get(control.Path)
-		if control.Kind == "color" then value = color3(value) end
-		pcall(control.Set, value)
-	end
-end
+    ["ChamsEnabled"] = false;
+    ["Chams Fill"] = { Color = rgb(255, 0, 0), Transparency = 0.9 };
+    ["Chams Outline"] = { Color = rgb(255, 0, 0), Transparency = 0.4 };
 
-local function connect(connection)
-	if connection then connections[#connections + 1] = connection end
-	return connection
-end
-local function active()
-	if API.Unloaded then return false end
-	if type(options.IsActive) == "function" then
-		local ok, result = pcall(options.IsActive)
-		return ok and result ~= false
-	end
-	return true
-end
-local function lowPC()
-	if type(options.IsLowPC) == "function" then
-		local ok, result = pcall(options.IsLowPC)
-		return ok and result == true
-	end
-	return false
-end
-local function guiParent()
-	if type(gethui) == "function" then
-		local ok, parent = pcall(gethui)
-		if ok and parent then return parent end
-	end
-	local ok, parent = pcall(function() return game:GetService("CoreGui") end)
-	if ok and parent then return parent end
-	return LocalPlayer and LocalPlayer:FindFirstChild("PlayerGui") or nil
-end
-local function ensureGui()
-	if gui and gui.Parent then return gui end
-	local parent = guiParent()
-	if not parent then return nil end
-	gui = Instance.new("ScreenGui")
-	gui.Name = "BurmaldaCalamariVisuals_" .. string.gsub(GameName, "[^%w]", "")
-	gui.IgnoreGuiInset = true
-	gui.ResetOnSpawn = false
-	gui.DisplayOrder = 999900
-	gui.Parent = parent
-	return gui
-end
-local function ensureAdornments()
-	if adornmentFolder and adornmentFolder.Parent then return adornmentFolder end
-	local parent = guiParent()
-	if not parent then return nil end
-	adornmentFolder = Instance.new("Folder")
-	adornmentFolder.Name = "BurmaldaCalamariAdornments"
-	adornmentFolder.Parent = parent
-	return adornmentFolder
-end
-local function ensureEffects()
-	if effectFolder and effectFolder.Parent then return effectFolder end
-	effectFolder = Instance.new("Folder")
-	effectFolder.Name = "BurmaldaCalamariEffects"
-	effectFolder.Parent = workspace
-	return effectFolder
-end
-local function create(className, parent, properties)
-	local object = Instance.new(className)
-	for key, value in pairs(properties or {}) do object[key] = value end
-	if parent then object.Parent = parent end
-	return object
-end
-local function setProperty(object, key, value)
-	if object and object[key] ~= value then object[key] = value end
-end
-local function destroy(object)
-	if object then pcall(function() object:Destroy() end) end
-end
+    ["Boxes"] = true;
+    ["BoxType"] = "Normal";
+    ["Box Gradient 1"] = { Color = rgb(255, 255, 255), Transparency = 0.9 };
+    ["Box Gradient 2"] = { Color = rgb(255, 255, 255), Transparency = 0.4 };
+    ["Box Gradient Rotation"] = 180;
+    ["Box Fill"] = true;
+    ["Box Fill 1"] = { Color = rgb(255, 255, 255), Transparency = 0.3 };
+    ["Box Fill 2"] = { Color = rgb(0, 0, 0), Transparency = 0.3 };
+    ["Box Fill Rotation"] = 180;
 
--- Player ESP: the same gradient/fill/glow/health layout as Calamari, but pooled
--- and capped. The normal renderer remains independent and can stay enabled.
-local playerEntries = {}
-local targetCache, targetCacheAt = {}, 0
-local playerWasActive = false
-local function textLabel(parent, size)
-	return create("TextLabel", parent, {
-		BackgroundTransparency = 1, BorderSizePixel = 0, Font = Enum.Font.Gotham,
-		TextSize = size or 12, TextColor3 = Color3.new(1, 1, 1), Text = "",
-		ZIndex = 3,
-	})
-end
-local function addTextStroke(label)
-	return create("UIStroke", label, {Thickness = 1, Color = Color3.new(0, 0, 0), Transparency = 0.35})
-end
-local function newPlayerEntry()
-	local parent = ensureGui()
-	if not parent then return nil end
-	local main = create("Frame", parent, {
-		Visible = false, AnchorPoint = Vector2.new(0.5, 0.5), Size = UDim2.fromOffset(150, 250),
-		BorderSizePixel = 0, BackgroundColor3 = Color3.new(1, 1, 1), ZIndex = 2,
-	})
-	local fillGradient = create("UIGradient", main, {Rotation = 90})
-	local outline = create("UIStroke", main, {
-		Thickness = 3, LineJoinMode = Enum.LineJoinMode.Miter,
-		BorderOffset = UDim.new(0, -1), Transparency = 0.5,
-	})
-	local accent = create("UIStroke", main, {LineJoinMode = Enum.LineJoinMode.Miter, Thickness = 1})
-	local boxGradient = create("UIGradient", accent, {Rotation = 90})
-	local glow = create("ImageLabel", main, {
-		BackgroundTransparency = 1, BorderSizePixel = 0, ZIndex = 1,
-		Image = "rbxassetid://18245826428", ImageTransparency = 0.8, ScaleType = Enum.ScaleType.Slice,
-		SliceCenter = Rect.new(Vector2.new(21, 21), Vector2.new(80, 80)),
-		Size = UDim2.new(1, 45, 1, 45), Position = UDim2.new(0, -23, 0, -23),
-	})
-	local glowGradient = create("UIGradient", glow, {Rotation = 90})
-	local healthBack = create("Frame", main, {
-		Position = UDim2.new(0, -7, 0, 0), Size = UDim2.new(0, 4, 1, 0),
-		BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.5, BorderSizePixel = 0,
-	})
-	local health = create("Frame", healthBack, {
-		AnchorPoint = Vector2.new(0, 1), Position = UDim2.new(0, 1, 1, -1),
-		Size = UDim2.new(1, -2, 1, 0), BorderSizePixel = 0,
-	})
-	local healthGradient = create("UIGradient", health, {Rotation = 90})
-	local healthText = textLabel(main, 12)
-	healthText.Size = UDim2.new(0, 34, 0, 14)
-	healthText.Position = UDim2.new(0, -42, 1, -14)
-	healthText.TextXAlignment = Enum.TextXAlignment.Right
-	addTextStroke(healthText)
-	local name = textLabel(main, 12)
-	name.Size = UDim2.new(1, 0, 0, 14)
-	name.Position = UDim2.new(0, 0, 0, -18)
-	addTextStroke(name)
-	local distance = textLabel(main, 12)
-	distance.Size = UDim2.new(1, 0, 0, 14)
-	distance.Position = UDim2.new(0, 0, 1, 3)
-	addTextStroke(distance)
-	local weapon = textLabel(main, 12)
-	weapon.Size = UDim2.new(1, 0, 0, 14)
-	weapon.Position = UDim2.new(0, 0, 1, 19)
-	addTextStroke(weapon)
-	local flags = textLabel(main, 12)
-	flags.Size = UDim2.new(0, 130, 0, 14)
-	flags.AutomaticSize = Enum.AutomaticSize.Y
-	flags.Position = UDim2.new(1, 5, 0, 0)
-	flags.TextXAlignment = Enum.TextXAlignment.Left
-	flags.RichText = true
-	addTextStroke(flags)
-	return {
-		Main = main, FillGradient = fillGradient, Outline = outline, Accent = accent,
-		BoxGradient = boxGradient, Glow = glow, GlowGradient = glowGradient,
-		HealthBack = healthBack, Health = health, HealthGradient = healthGradient,
-		HealthText = healthText, Name = name, Distance = distance, Weapon = weapon, Flags = flags,
-		LastStyle = -1,
-	}
-end
-local function hidePlayerEntry(entry)
-	if not entry then return end
-	setProperty(entry.Main, "Visible", false)
-	if entry.Highlight then entry.Highlight.Enabled = false end
-end
-local function removePlayerEntry(key)
-	local entry = playerEntries[key]
-	if not entry then return end
-	destroy(entry.Main)
-	destroy(entry.Highlight)
-	playerEntries[key] = nil
-end
-local function hideAllPlayers()
-	for _, entry in pairs(playerEntries) do hidePlayerEntry(entry) end
-end
-local function defaultTargets()
-	local result = {}
-	for _, player in ipairs(Players:GetPlayers()) do
-		if player ~= LocalPlayer then
-			local model = player.Character
-			local humanoid = model and model:FindFirstChildOfClass("Humanoid")
-			local root = model and (model:FindFirstChild("HumanoidRootPart") or model:FindFirstChild("Torso") or model:FindFirstChild("UpperTorso"))
-			if model and humanoid and root then
-				result[#result + 1] = {
-					Key = player, Player = player, Model = model, Humanoid = humanoid,
-					Root = root, Head = model:FindFirstChild("Head") or root,
-					Name = player.DisplayName or player.Name,
-				}
-			end
-		end
-	end
-	return result
-end
-local function refreshTargets(now)
-	if now < targetCacheAt then return end
-	targetCacheAt = now + (lowPC() and 0.5 or 0.2)
-	local result
-	if type(Adapter.GetTargets) == "function" then
-		local ok, value = pcall(Adapter.GetTargets)
-		if ok and type(value) == "table" then result = value end
-	end
-	result = result or defaultTargets()
-	local camera = workspace.CurrentCamera
-	if camera then
-		for _, target in ipairs(result) do
-			local root = target.Root or target.root
-			if root then target.__calamariDistance = (root.Position - camera.CFrame.Position).Magnitude end
-		end
-		table.sort(result, function(a, b)
-			return (a.__calamariDistance or math.huge) < (b.__calamariDistance or math.huge)
-		end)
-	end
-	targetCache = result
-end
-local function weaponName(target)
-	if type(Adapter.GetWeapon) == "function" then
-		local ok, value = pcall(Adapter.GetWeapon, target)
-		if ok and value then return tostring(value) end
-	end
-	local model = target.Model or target.model
-	if not model then return "None" end
-	local tool = model:FindFirstChildOfClass("Tool")
-	if tool then return tool.Name end
-	for _, child in ipairs(model:GetChildren()) do
-		if child:IsA("Model") and child.Name ~= "HolsterModel" and child.Name ~= "Hair"
-			and (child:FindFirstChild("Detail") or child:FindFirstChild("Main") or child:FindFirstChild("Handle")
-			or child:FindFirstChild("Attachments") or child:FindFirstChild("ArrowAttach") or child:FindFirstChild("Attach")) then
-			return child.Name
-		end
-	end
-	return "None"
-end
-local function richEscape(value)
-	return tostring(value):gsub("&", "&amp;"):gsub("<", "&lt;"):gsub(">", "&gt;")
-end
-local function flagText(target)
-	local player = target.Player or target.player
-	if not player or not player.GetAttribute then return "" end
-	local lines = {}
-	local clan = player:GetAttribute("ClanTag")
-	if clan and tostring(clan) ~= "" then
-		local clanColor = player:GetAttribute("ClanColor")
-		local c = typeof(clanColor) == "Color3" and clanColor or Color3.new(1, 1, 1)
-		lines[#lines + 1] = string.format('<font color="rgb(%d,%d,%d)">%s</font>',
-			math.floor(c.R * 255), math.floor(c.G * 255), math.floor(c.B * 255), richEscape(clan))
-	end
-	if player:GetAttribute("VIP") then lines[#lines + 1] = '<font color="rgb(255,215,0)">VIP</font>' end
-	if player:GetAttribute("SafeZone") then lines[#lines + 1] = '<font color="rgb(0,255,120)">Safezone</font>' end
-	return table.concat(lines, "\n")
-end
-local function applyPlayerStyle(entry)
-	if entry.LastStyle == Revision then return end
-	entry.LastStyle = Revision
-	local p = State.Player
-	entry.FillGradient.Color = ColorSequence.new(color3(p.FillHigh), color3(p.FillLow))
-	entry.FillGradient.Transparency = NumberSequence.new({
-		NumberSequenceKeypoint.new(0, p.FillHighTransparency),
-		NumberSequenceKeypoint.new(1, p.FillLowTransparency),
-	})
-	entry.FillGradient.Rotation = p.FillRotation
-	entry.BoxGradient.Color = ColorSequence.new(color3(p.BoxHigh), color3(p.BoxLow))
-	entry.BoxGradient.Transparency = NumberSequence.new({
-		NumberSequenceKeypoint.new(0, p.BoxHighTransparency),
-		NumberSequenceKeypoint.new(1, p.BoxLowTransparency),
-	})
-	entry.BoxGradient.Rotation = p.BoxRotation
-	entry.GlowGradient.Color = ColorSequence.new(color3(p.GlowHigh), color3(p.GlowLow))
-	entry.GlowGradient.Transparency = NumberSequence.new({
-		NumberSequenceKeypoint.new(0, p.GlowHighTransparency),
-		NumberSequenceKeypoint.new(1, p.GlowLowTransparency),
-	})
-	entry.GlowGradient.Rotation = p.GlowRotation
-	entry.HealthGradient.Color = ColorSequence.new({
-		ColorSequenceKeypoint.new(0, color3(p.HealthHigh)),
-		ColorSequenceKeypoint.new(0.5, color3(p.HealthMid)),
-		ColorSequenceKeypoint.new(1, color3(p.HealthLow)),
-	})
-	setProperty(entry.Name, "TextColor3", color3(p.NameColor))
-	setProperty(entry.Distance, "TextColor3", color3(p.DistanceColor))
-	setProperty(entry.Weapon, "TextColor3", color3(p.WeaponColor))
-	setProperty(entry.Flags, "TextColor3", color3(p.FlagsColor))
-		if entry.Highlight then
-			entry.Highlight.FillColor = color3(p.ChamsInside)
-			entry.Highlight.OutlineColor = color3(p.ChamsOutside)
-			entry.Highlight.FillTransparency = p.ChamsInsideTransparency
-			entry.Highlight.OutlineTransparency = p.ChamsOutsideTransparency
-		end
-end
-local fallbackBodyParts = {"UpperTorso", "Torso", "LowerTorso", "LeftUpperArm", "RightUpperArm", "LeftArm", "RightArm"}
-local function onViewport(camera, point)
-	return point and point.Z > 0 and point.X >= 0 and point.X <= camera.ViewportSize.X
-		and point.Y >= 0 and point.Y <= camera.ViewportSize.Y
-end
-local function visiblePartPoint(camera, part)
-	if not part or not part.Parent then return nil end
-	local ok, point = pcall(camera.WorldToViewportPoint, camera, part.Position)
-	if ok and onViewport(camera, point) then return point end
-	return nil
-end
-local function playerFallbackPoint(camera, target, model, distance)
-	local point = visiblePartPoint(camera, target.Head or target.head)
-	if point or distance > 80 then return point end
-	for _, name in ipairs(fallbackBodyParts) do
-		local part = model:FindFirstChild(name)
-		point = visiblePartPoint(camera, part)
-		if point then return point end
-	end
-	return nil
-end
-local function updatePlayers(now)
-	local enabled = active() and State.Player.Enabled
-	if not enabled then
-		if playerWasActive then hideAllPlayers() end
-		playerWasActive = false
-		return
-	end
-	playerWasActive = true
-	refreshTargets(now)
-	local camera = workspace.CurrentCamera
-	if not camera then hideAllPlayers() return end
-	local seen, rendered = {}, 0
-	local cap = lowPC() and math.min(24, State.Player.MaxTargets) or State.Player.MaxTargets
-	local theta = math.tan(math.rad(camera.FieldOfView) * 0.5)
-	for _, target in ipairs(targetCache) do
-		if rendered >= cap then break end
-		local model = target.Model or target.model
-		local root = target.Root or target.root
-		local humanoid = target.Humanoid or target.hum or target.humanoid
-		local key = target.Key or target.Player or target.player or model
-		if model and root and key and model.Parent and root.Parent and (not humanoid or humanoid.Health > 0) then
-			local distance = (root.Position - camera.CFrame.Position).Magnitude
-			if distance <= State.Player.MaxDistance then
-				local point, onScreen = camera:WorldToViewportPoint(root.Position - Vector3.new(0, 0.5, 0))
-				if Adapter.PlayerViewportFallback then
-					onScreen = onViewport(camera, point)
-					if not onScreen then
-						local fallback = playerFallbackPoint(camera, target, model, distance)
-						if fallback then
-							point = fallback
-							onScreen = true
-						end
-					end
-				end
-				if point.Z > 0 and onScreen then
-					local entry = playerEntries[key]
-					if not entry then
-						entry = newPlayerEntry()
-						playerEntries[key] = entry
-					end
-					if entry then
-						rendered += 1
-						seen[key] = true
-						entry.Model = model
-						entry.LastSeen = now
-						applyPlayerStyle(entry)
-					local depth = 2 * math.max(0.01, point.Z) * theta
-					local scale = camera.ViewportSize.Y / math.max(0.01, depth * 1.5)
-					local width = math.floor(math.max(scale * 6, 4))
-					local height = math.floor(math.max(scale * 8, 4))
-					local centerX, centerY = point.X, point.Y
-					if Adapter.PlayerViewportFallback then
-						local viewport = camera.ViewportSize
-						local topReserve = State.Player.Names and 24 or 6
-						local bottomReserve = State.Player.Weapon and 40 or (State.Player.Distance and 22 or 6)
-						width = math.floor(math.min(width, math.max(4, viewport.X - 16)))
-						height = math.floor(math.min(height, math.max(4, viewport.Y - topReserve - bottomReserve - 8)))
-						centerX = math.clamp(centerX, width * 0.5 + 4, viewport.X - width * 0.5 - 4)
-						centerY = math.clamp(centerY, height * 0.5 + topReserve, viewport.Y - height * 0.5 - bottomReserve)
-					end
-					setProperty(entry.Main, "Position", UDim2.fromOffset(centerX, centerY))
-					setProperty(entry.Main, "Size", UDim2.fromOffset(width, height))
-						setProperty(entry.Main, "Visible", true)
-						setProperty(entry.Main, "BackgroundTransparency", State.Player.Fill and 0 or 1)
-						setProperty(entry.Outline, "Enabled", State.Player.Box)
-						setProperty(entry.Accent, "Enabled", State.Player.Box)
-						setProperty(entry.Glow, "Visible", State.Player.Glow)
-						local percent = 1
-						if humanoid and humanoid.MaxHealth > 0 then percent = math.clamp(humanoid.Health / humanoid.MaxHealth, 0, 1) end
-						setProperty(entry.HealthBack, "Visible", State.Player.Healthbar)
-						if State.Player.Healthbar then
-							setProperty(entry.Health, "Size", UDim2.new(1, -2, percent, 0))
-						end
-						setProperty(entry.HealthText, "Visible", State.Player.HealthText)
-						if State.Player.HealthText then
-							setProperty(entry.HealthText, "Text", tostring(math.floor(percent * 100 + 0.5)))
-							local low, mid, high = color3(State.Player.HealthLow), color3(State.Player.HealthMid), color3(State.Player.HealthHigh)
-							setProperty(entry.HealthText, "TextColor3", low:Lerp(mid, percent):Lerp(high, percent))
-						end
-						setProperty(entry.Name, "Visible", State.Player.Names)
-						if State.Player.Names then setProperty(entry.Name, "Text", tostring(target.Name or target.name or model.Name)) end
-						setProperty(entry.Distance, "Visible", State.Player.Distance)
-						if State.Player.Distance then setProperty(entry.Distance, "Text", string.format("%.1fst", distance)) end
-						setProperty(entry.Weapon, "Visible", State.Player.Weapon)
-						if State.Player.Weapon then setProperty(entry.Weapon, "Text", weaponName(target)) end
-						setProperty(entry.Flags, "Visible", State.Player.Flags)
-						if State.Player.Flags then setProperty(entry.Flags, "Text", flagText(target)) end
-						if State.Player.Chams then
-							if not entry.Highlight then
-								local parent = ensureAdornments()
-								if parent then
-									entry.Highlight = create("Highlight", parent, {
-										DepthMode = Enum.HighlightDepthMode.AlwaysOnTop,
-										Enabled = false,
-									})
-									entry.LastStyle = -1
-									applyPlayerStyle(entry)
-								end
-							end
-							if entry.Highlight then
-								if entry.Highlight.Adornee ~= model then entry.Highlight.Adornee = model end
-								entry.Highlight.Enabled = true
-							end
-						elseif entry.Highlight then
-							entry.Highlight.Enabled = false
-						end
-					end
-				end
-			end
-		end
-	end
-	for key, entry in pairs(playerEntries) do
-		if not seen[key] then
-			hidePlayerEntry(entry)
-			if (now - (entry.LastSeen or 0) > 5) or (entry.Model and not entry.Model.Parent) then removePlayerEntry(key) end
-		end
-	end
-	API.Diagnostics.PlayerESP = rendered
-end
+    ["Healthbar"] = true;
+    ["Healthbar_Position"] = "Left";
+    ["Healthbar_Number"] = true;
+    ["Healthbar_Low"] = { Color = rgb(255, 0, 0), Transparency = 1 };
+    ["Healthbar_Medium"] = { Color = rgb(255, 193, 0), Transparency = 1 };
+    ["Healthbar_Animations"] = true;
+    ["Healthbar_High"] = { Color = rgb(0, 255, 0), Transparency = 1 };
+    ["Healthbar_Font"] = "SmallestPixel";
+    ["Healthbar_Text_Size"] = 3.5;
+    ["Healthbar_Thickness"] = 1.3;
+    ["Healthbar_Tween"] = true;
+    ["Healthbar_EasingStyle"] = "Circular";
+    ["Healthbar_EasingDirection"] = "InOut";
+    ["Healthbar_Easing_Speed"] = 1;
 
--- Calamari Misc ESP. Traversal is incremental and limited to known world roots;
--- adapters may add game-specific cached objects without another full workspace scan.
-local worldLabels = {}
-local worldEntries = {}
-local worldScan = {Active = false, Queue = {}, Index = 1, Working = {}, Seen = {}, Processed = 0}
-local worldWasActive = false
-local worldRoots = {
-	"Nodes", "OreNodes", "Resources", "Loot", "Deployables", "Bases", "Drops",
-	"DroppedItems", "WorldItems", "Plants", "Animals", "Pickups", "SpawnedPickups", "GroundItems",
-}
-local function worldCategory(object, rootName)
-	local name = string.lower(object.Name)
-	local compact = name:gsub("[%s_%-]", "")
-	if string.find(compact, "carepackage", 1, true) then return "Care Package" end
-	if string.find(compact, "salvagedflycopter", 1, true) or string.find(compact, "flycopter", 1, true) then return "Salvaged Flycopter" end
-	if string.find(compact, "shotgunturret", 1, true) or string.find(compact, "shotguntrap", 1, true) then return "Shotgun Turret" end
-	if string.find(compact, "autoturret", 1, true) or string.find(compact, "aaturret", 1, true) then return "Auto Turret" end
-	if string.find(compact, "bodybag", 1, true) or string.find(compact, "backpack", 1, true)
-		or string.find(compact, "lootbag", 1, true) or string.find(compact, "deathbag", 1, true) then return "Body Bag" end
-	if string.find(compact, "phosphate", 1, true) or string.find(compact, "sulfur", 1, true) or string.find(compact, "sulphur", 1, true) then return "Phosphate" end
-	if string.find(compact, "metal", 1, true) or string.find(compact, "iron", 1, true) then return "Metal" end
-	if string.find(compact, "stone", 1, true) then return "Stone" end
-	if string.find(compact, "egg", 1, true) then return "Eggs" end
-	if string.find(compact, "wool", 1, true) or string.find(compact, "cloth", 1, true) or string.find(compact, "hemp", 1, true) then return "Wool" end
-	if rootName == "Animals" and object:IsA("Model") then return "Animals" end
-	if (rootName == "Drops" or rootName == "DroppedItems" or rootName == "WorldItems")
-		and (object:IsA("Model") or object:IsA("Tool") or object:IsA("BasePart")) then return "Drops" end
-	if object:IsA("Tool") then return "Drops" end
-	return nil
-end
-local function addWorldEntry(object, category, label)
-	if not object or not category or worldScan.Seen[object] then return end
-	worldScan.Seen[object] = true
-	worldScan.Working[#worldScan.Working + 1] = {Object = object, Category = category, Name = label or object.Name}
-end
-local function beginWorldScan()
-	worldScan.Active = true
-	worldScan.Queue, worldScan.Index, worldScan.Working, worldScan.Seen, worldScan.Processed = {}, 1, {}, {}, 0
-	local queued = {}
-	for _, name in ipairs(Adapter.WorldRoots or worldRoots) do
-		local folder = workspace:FindFirstChild(name)
-		if folder and not queued[folder] then
-			queued[folder] = true
-			worldScan.Queue[#worldScan.Queue + 1] = {Object = folder, Depth = 0, MaxDepth = 3, Root = name}
-		end
-	end
-	-- Top-level Tools and named bags are Drops; root folders are not traversed twice.
-	if State.World.Categories.Drops.Enabled or State.World.Categories["Body Bag"].Enabled then
-		worldScan.Queue[#worldScan.Queue + 1] = {Object = workspace, Depth = 0, MaxDepth = 0, Root = "Workspace"}
-	end
-	if type(Adapter.GetWorldEntries) == "function" then
-		local ok, entries = pcall(Adapter.GetWorldEntries)
-		if ok and type(entries) == "table" then
-			for _, entry in ipairs(entries) do
-				local object = entry.Object or entry.Model or entry.Part
-				if object then addWorldEntry(object, entry.Category or worldCategory(object, ""), entry.Name or entry.Label) end
-			end
-		end
-	end
-end
-local function processWorldScan()
-	local budget = lowPC() and 16 or 32
-	while budget > 0 and worldScan.Active do
-		local taskItem = worldScan.Queue[worldScan.Index]
-		if not taskItem or worldScan.Processed >= 1024 then
-			worldEntries = worldScan.Working
-			worldScan.Active = false
-			API.Diagnostics.WorldEntries = #worldEntries
-			return
-		end
-		worldScan.Index += 1
-		worldScan.Processed += 1
-		budget -= 1
-		local object, rootName = taskItem.Object, taskItem.Root
-		if object and object.Parent then
-			local matched = false
-			if object ~= workspace and (object:IsA("Model") or object:IsA("BasePart") or object:IsA("Tool")) then
-				local category = worldCategory(object, rootName)
-				if category then
-					addWorldEntry(object, category)
-					matched = true
-				end
-			end
-			if not matched and taskItem.Depth < taskItem.MaxDepth and not object:IsA("BasePart") and not object:IsA("Tool") then
-				for _, child in ipairs(object:GetChildren()) do
-					worldScan.Queue[#worldScan.Queue + 1] = {
-						Object = child, Depth = taskItem.Depth + 1,
-						MaxDepth = taskItem.MaxDepth, Root = rootName,
-					}
-				end
-			end
-		end
-	end
-end
-local function worldPosition(object)
-	if object:IsA("BasePart") then return object.Position end
-	local ok, pivot = pcall(function() return object:GetPivot() end)
-	if ok and pivot and pivot.Position then return pivot.Position end
-	local primary = object.PrimaryPart
-	if primary and primary:IsA("BasePart") then return primary.Position end
-	-- A model can be supplied by a game adapter before its pivot is available.
-	-- Use an existing part as a read-only fallback; never move or mutate the model.
-	for _, child in ipairs(object:GetChildren()) do
-		if child:IsA("BasePart") then return child.Position end
-	end
-	return nil
-end
-local function updateWorld(now)
-	local enabled = active() and State.World.Enabled
-	if not enabled then
-		if worldWasActive then
-			for _, label in ipairs(worldLabels) do setProperty(label, "Visible", false) end
-		end
-		worldWasActive = false
-		worldScan.Active = false
-		return
-	end
-	worldWasActive = true
-	if now >= (API.Diagnostics.WorldScanAt or 0) and not worldScan.Active then
-		API.Diagnostics.WorldScanAt = now + (lowPC() and 2 or 1)
-		beginWorldScan()
-	end
-	if worldScan.Active then processWorldScan() end
-	local camera = workspace.CurrentCamera
-	if not camera then return end
-	local index, cap = 0, lowPC() and 32 or 96
-	local previousCount = API.Diagnostics.WorldLabelCount or 0
-	for _, entry in ipairs(worldEntries) do
-		if index >= cap then break end
-		local category = State.World.Categories[entry.Category]
-		local object = entry.Object
-		if category and category.Enabled and object and object.Parent then
-			local position = worldPosition(object)
-			if position then
-				local distance = (position - camera.CFrame.Position).Magnitude
-				if distance <= category.MaxDistance then
-					local point, onScreen = camera:WorldToViewportPoint(position)
-					if point.Z > 0 and onScreen then
-						index += 1
-						local label = worldLabels[index]
-						if not label then
-							local parent = ensureGui()
-							if parent then
-								label = textLabel(parent, 14)
-								label.AnchorPoint = Vector2.new(0.5, 0.5)
-								label.AutomaticSize = Enum.AutomaticSize.XY
-								label.Size = UDim2.fromOffset(0, 0)
-								addTextStroke(label)
-								worldLabels[index] = label
-							end
-						end
-						if label then
-							setProperty(label, "Text", tostring(entry.Name or entry.Category) .. "\n" .. tostring(math.floor(distance + 0.5)) .. " Studs")
-							setProperty(label, "TextColor3", color3(category.Color))
-							setProperty(label, "Position", UDim2.fromOffset(point.X, point.Y))
-							setProperty(label, "Visible", true)
-						end
-					end
-				end
-			end
-		end
-	end
-	for labelIndex = index + 1, previousCount do
-		local label = worldLabels[labelIndex]
-		if label then setProperty(label, "Visible", false) end
-	end
-	API.Diagnostics.WorldLabelCount = index
-	API.Diagnostics.WorldESP = index
-end
+    ["Name_Text"] = true;
+    ["Name_Text_Color"] = { Color = rgb(255, 255, 255) };
+    ["Name_Text_Position"] = "Top";
+    ["Name_Text_Font"] = "SmallestPixel";
+    ["Name_Text_Size"] = 6.7;
 
--- Gun/Arms materials, textures, Viewmodel Highlight and owned position offsets.
-local textures = {
-	Web = "rbxassetid://301464986", Swirl = "rbxassetid://8133639623",
-	Checkers = "rbxassetid://5790215150", CandyCane = "rbxassetid://6853532738",
-	Dots = "rbxassetid://5830615971", Scanning = "rbxassetid://5843010904",
-	Bubbles = "rbxassetid://1461576423", ["Player FF Texture"] = "rbxassetid://4494641460",
-	["Shield Forcefield"] = "rbxassetid://361073795", Water = "rbxasset://textures/water/normal_21.dds",
-	America = "rbxassetid://936775406", Rainbow = "rbxassetid://252684207",
-	Akatsuki = "rbxassetid://10913193650", None = "",
-}
-local materialNames = {
-	ForceField = "ForceField", Neon = "Neon", Glass = "Glass", Ice = "Ice",
-	Wood = "Wood", Plastic = "SmoothPlastic", Metal = "Metal",
-}
-local vmCache, vmParts, vmOriginals, vmHighlights, vmPositions = {}, {}, {}, {}, {}
-local vmWasActive = false
-local function viewmodels()
-	local result, seen = {}, {}
-	if type(Adapter.GetViewmodels) == "function" then
-		local ok, models = pcall(Adapter.GetViewmodels)
-		if ok and type(models) == "table" then
-			for _, model in ipairs(models) do
-				if typeof(model) == "Instance" and not seen[model] then seen[model] = true; result[#result + 1] = model end
-			end
-		end
-	end
-	local vfx = workspace:FindFirstChild("VFX")
-	local containers = {}
-	local vmFolder = vfx and vfx:FindFirstChild("VMs")
-	if vmFolder then containers[#containers + 1] = vmFolder end
-	vmFolder = workspace:FindFirstChild("VMs")
-	if vmFolder then containers[#containers + 1] = vmFolder end
-	if workspace.CurrentCamera then containers[#containers + 1] = workspace.CurrentCamera end
-	for _, container in ipairs(containers) do
-		if container then
-			for _, model in ipairs(container:GetChildren()) do
-				if model:IsA("Model") and model.Name ~= "IgnoreMe" and not seen[model] then
-					seen[model] = true
-					result[#result + 1] = model
-				end
-			end
-		end
-	end
-	return result
-end
-local function armPart(part, model)
-	local current = part.Parent
-	while current and current ~= model do
-		local name = string.lower(current.Name)
-		if current.Name == "Arms" or string.find(name, "arm", 1, true) or string.find(name, "hand", 1, true)
-			or string.find(name, "glove", 1, true) then return true end
-		current = current.Parent
-	end
-	return false
-end
-local function restorePart(part)
-	local original = vmOriginals[part]
-	if not original then return end
-	vmOriginals[part] = nil
-	pcall(function()
-		if part.Color == original.LastColor then part.Color = original.Color end
-		if part.Material == original.LastMaterial then part.Material = original.Material end
-		if part:IsA("MeshPart") and part.TextureID == original.LastTexture then part.TextureID = original.TextureID end
-	end)
-	destroy(original.OwnedTexture)
-end
-local function applyPart(part, settings)
-	if (part.Transparency or 0) >= 0.95 or (part.Size and part.Size.Magnitude or 1) < 0.05 then return end
-	local original = vmOriginals[part]
-	if not original then
-		original = {
-			Color = part.Color, Material = part.Material,
-			TextureID = part:IsA("MeshPart") and part.TextureID or nil,
-		}
-		vmOriginals[part] = original
-	end
-	local color = color3(settings.Color)
-	local material = Enum.Material[materialNames[settings.Material] or "ForceField"]
-	local texture = textures[settings.Texture] or ""
-	pcall(function()
-		if part.Color ~= original.LastColor and original.LastColor ~= nil and part.Color ~= color then original.Color = part.Color end
-		if part.Material ~= original.LastMaterial and original.LastMaterial ~= nil and part.Material ~= material then original.Material = part.Material end
-		part.Color = color
-		part.Material = material
-		original.LastColor, original.LastMaterial = color, material
-		if part:IsA("MeshPart") then
-			if part.TextureID ~= original.LastTexture and original.LastTexture ~= nil and part.TextureID ~= texture then original.TextureID = part.TextureID end
-			part.TextureID = texture
-			original.LastTexture = texture
-		else
-			if not original.OwnedTexture then
-				original.OwnedTexture = create("Texture", part, {StudsPerTileU = 1, StudsPerTileV = 1})
-			end
-			original.OwnedTexture.Texture = texture
-			original.OwnedTexture.Enabled = texture ~= ""
-		end
-	end)
-end
-local function restoreViewmodels()
-	for part in pairs(vmOriginals) do restorePart(part) end
-	for model, highlight in pairs(vmHighlights) do destroy(highlight); vmHighlights[model] = nil end
-	for model, position in pairs(vmPositions) do
-		pcall(function()
-			if model:GetPivot() == position.Last then model:PivotTo(position.Original) end
-		end)
-		vmPositions[model] = nil
-	end
-	table.clear(vmParts)
-	table.clear(vmCache)
-end
-local function updateViewmodels(now)
-	local enabled = active() and (State.Gun.Enabled or State.Arms.Enabled or State.Viewmodel.Highlight or State.Viewmodel.Position)
-	if not enabled then
-		if vmWasActive then restoreViewmodels() end
-		vmWasActive = false
-		return
-	end
-	vmWasActive = true
-	if now >= (API.Diagnostics.ViewmodelScanAt or 0) then
-		API.Diagnostics.ViewmodelScanAt = now + (lowPC() and 1 or 0.5)
-		vmCache = viewmodels()
-		table.clear(vmParts)
-		for _, model in ipairs(vmCache) do
-			if model and model.Parent then
-				for _, part in ipairs(model:GetDescendants()) do
-					if part:IsA("BasePart") then vmParts[#vmParts + 1] = {Part = part, Model = model, Arms = armPart(part, model)} end
-				end
-			end
-		end
-	end
-	local activeModels, activeParts = {}, {}
-	for _, item in ipairs(vmParts) do
-		local part, model = item.Part, item.Model
-		if part and part.Parent and model and model.Parent then
-			activeModels[model] = true
-			activeParts[part] = true
-			local settings = item.Arms and State.Arms or State.Gun
-			if settings.Enabled then applyPart(part, settings) elseif vmOriginals[part] then restorePart(part) end
-		end
-	end
-	for part in pairs(vmOriginals) do
-		if not activeParts[part] then restorePart(part) end
-	end
-	for _, model in ipairs(vmCache) do
-		if model and model.Parent then
-			if State.Viewmodel.Highlight then
-				local highlight = vmHighlights[model]
-				if not highlight then
-					local parent = ensureAdornments()
-					if parent then
-						highlight = create("Highlight", parent, {DepthMode = Enum.HighlightDepthMode.AlwaysOnTop})
-						vmHighlights[model] = highlight
-					end
-				end
-				if highlight then
-					highlight.Adornee = model
-					highlight.Enabled = true
-					highlight.FillColor = color3(State.Viewmodel.Fill)
-					highlight.OutlineColor = color3(State.Viewmodel.Outline)
-					highlight.FillTransparency = State.Viewmodel.FillTransparency
-					highlight.OutlineTransparency = State.Viewmodel.OutlineTransparency
-				end
-			elseif vmHighlights[model] then
-				destroy(vmHighlights[model]); vmHighlights[model] = nil
-			end
-			if State.Viewmodel.Position then
-				local position = vmPositions[model]
-				local current = model:GetPivot()
-				if not position then
-					position = {Original = current, Last = current}
-					vmPositions[model] = position
-				elseif current ~= position.Last then
-					position.Original = current
-				end
-				local written = position.Original * CFrame.new(State.Viewmodel.X, State.Viewmodel.Y, State.Viewmodel.Z)
-				model:PivotTo(written)
-				position.Last = written
-			elseif vmPositions[model] then
-				local position = vmPositions[model]
-				if model:GetPivot() == position.Last then model:PivotTo(position.Original) end
-				vmPositions[model] = nil
-			end
-		end
-	end
-	for model, highlight in pairs(vmHighlights) do
-		if not activeModels[model] then destroy(highlight); vmHighlights[model] = nil end
-	end
-	for model, position in pairs(vmPositions) do
-		if not activeModels[model] then
-			if model and model.Parent and model:GetPivot() == position.Last then model:PivotTo(position.Original) end
-			vmPositions[model] = nil
-		end
-	end
-end
+    ["Distance_Text"] = true;
+    ["Distance_Text_Color"] = { Color = rgb(255, 255, 255) };
+    ["Distance_Text_Position"] = "Bottom";
+    ["Distance_Text_Font"] = "SmallestPixel";
+    ["Distance_Text_Size"] = 5;
 
--- Shot visuals use existing game events through API.Impact/TraceShot. They never
--- redirect a shot, install another Silent hook or change remote arguments.
-local activeEffects = {}
-local function ownEffect(object, lifetime)
-	if not object then return end
-	activeEffects[object] = true
-	local count = 0
-	for _ in pairs(activeEffects) do count += 1 end
-	if count > 32 then
-		for old in pairs(activeEffects) do activeEffects[old] = nil; destroy(old); break end
-	end
-	pcall(function() Debris:AddItem(object, lifetime or 2) end)
-	task.delay((lifetime or 2) + 0.1, function()
-		if activeEffects[object] then activeEffects[object] = nil; destroy(object) end
-	end)
-end
-function API.Bullet(origin, position)
-	if not active() or not State.Bullet.Enabled or typeof(origin) ~= "Vector3" or typeof(position) ~= "Vector3" then return end
-	local parent = ensureEffects()
-	local part = create("Part", parent, {
-		Name = "CalamariTracer", Anchored = true, CanCollide = false, CanQuery = false, CanTouch = false,
-		Transparency = 1, Size = Vector3.new(0.1, 0.1, 0.1),
-	})
-	local a0 = create("Attachment", part, {WorldPosition = origin})
-	local a1 = create("Attachment", part, {WorldPosition = position})
-	local beam = create("Beam", part, {
-		Attachment0 = a0, Attachment1 = a1, FaceCamera = true, Brightness = 10,
-		LightEmission = State.Bullet.Type == "Dark" and 0.25 or 1,
-		LightInfluence = State.Bullet.Type == "Dark" and 1 or 0,
-		Width0 = State.Bullet.Type == "Water" and 0.3 or 0.5,
-		Width1 = State.Bullet.Type == "Water" and 0.3 or 0.5,
-		Color = ColorSequence.new(color3(State.Bullet.Color)),
-	})
-	if State.Bullet.Type == "Dark" then
-		beam.Texture = "rbxassetid://12781848822"
-		beam.TextureLength, beam.TextureSpeed = 20, 0.9
-		beam.TextureMode = Enum.TextureMode.Static
-	elseif State.Bullet.Type == "Water" then
-		beam.Texture = "rbxassetid://12788927812"
-		beam.TextureLength, beam.TextureSpeed = 10, 1
-		beam.TextureMode = Enum.TextureMode.Wrap
-		beam.Color = ColorSequence.new({
-			ColorSequenceKeypoint.new(0, color3(State.Bullet.Color)),
-			ColorSequenceKeypoint.new(0.5, Color3.new(1, 1, 1)),
-			ColorSequenceKeypoint.new(1, color3(State.Bullet.Color)),
-		})
-	else
-		beam.Texture = "rbxassetid://12781800668"
-		beam.TextureLength, beam.TextureSpeed = 4, 10
-		beam.TextureMode = Enum.TextureMode.Wrap
-	end
-	ownEffect(part, math.max(0.1, State.Bullet.Duration) + 1)
-	API.Diagnostics.BulletTracers = (API.Diagnostics.BulletTracers or 0) + 1
-	return part
-end
-local function hitNotification(instance, partName, damage)
-	if not State.HitNotifications.Enabled then return end
-	local parent = ensureGui()
-	if not parent then return end
-	local player
-	if typeof(instance) == "Instance" then
-		local model = instance:IsA("Model") and instance or nil
-		if not model then
-			local current = instance.Parent
-			while current do
-				if current:IsA("Model") then model = current; break end
-				current = current.Parent
-			end
-		end
-		if model then player = Players:GetPlayerFromCharacter(model) end
-	end
-	local text = "Hit"
-	if player then text ..= " " .. (player.DisplayName or player.Name) end
-	if partName then text ..= " / " .. tostring(partName) end
-	if tonumber(damage) and damage > 0 then text ..= " / " .. tostring(math.floor(damage + 0.5)) end
-	local label = textLabel(parent, 15)
-	label.AnchorPoint = Vector2.new(0.5, 0, 0)
-	label.Position = UDim2.new(0.5, 0, 0, 90)
-	label.AutomaticSize = Enum.AutomaticSize.XY
-	label.Size = UDim2.fromOffset(0, 0)
-	label.Text = text
-	label.TextColor3 = color3(State.Bullet.Color)
-	addTextStroke(label)
-	task.delay(3, function() destroy(label) end)
-end
-function API.Hit(position, instance, partName, damage)
-	if not active() or typeof(position) ~= "Vector3" then return end
-	if State.HitEffects.Enabled then
-		local parent = ensureEffects()
-		local part = create("Part", parent, {
-			Name = "CalamariHitEffect", Anchored = true, CanCollide = false, CanQuery = false, CanTouch = false,
-			Transparency = 1, Size = Vector3.new(0.2, 0.2, 0.2), Position = position,
-		})
-		local emitter = create("ParticleEmitter", part, {
-			Lifetime = NumberRange.new(State.HitEffects.Type == "Spark" and 0.4 or 1),
-			Rate = 0, Speed = NumberRange.new(0, 0), Brightness = State.HitEffects.Type == "Spark" and 5 or 2,
-			Color = ColorSequence.new(color3(State.HitEffects.Color1), color3(State.HitEffects.Color2)),
-			Size = NumberSequence.new(State.HitEffects.Type == "Spark" and 8 or 4),
-			Transparency = NumberSequence.new({NumberSequenceKeypoint.new(0, 0), NumberSequenceKeypoint.new(1, 1)}),
-		})
-		emitter.Texture = State.HitEffects.Type == "Spark" and "rbxassetid://10198439352"
-			or State.HitEffects.Type == "SmokeRing" and "rbxassetid://12906276200" or "rbxassetid://14354336687"
-		pcall(function() emitter:Emit(State.HitEffects.Type == "particles.js" and 6 or 1) end)
-		ownEffect(part, 2)
-		API.Diagnostics.HitEffects = (API.Diagnostics.HitEffects or 0) + 1
-	end
-	hitNotification(instance, partName, damage)
-end
-function API.Impact(origin, position, instance, partName, damage)
-	API.Bullet(origin, position)
-	API.Hit(position, instance, partName, damage)
-end
-function API.TraceShot(origin, direction, maxDistance, ignore)
-	if not active() or typeof(origin) ~= "Vector3" or typeof(direction) ~= "Vector3" then return nil end
-	if not (State.Bullet.Enabled or State.HitEffects.Enabled or State.HitNotifications.Enabled) then return nil end
-	if direction.Magnitude <= 0.001 then return nil end
-	local params = RaycastParams.new()
-	params.FilterType = Enum.RaycastFilterType.Exclude
-	params.IgnoreWater = true
-	params.FilterDescendantsInstances = {ignore or (LocalPlayer and LocalPlayer.Character)}
-	local result = workspace:Raycast(origin, direction.Unit * (tonumber(maxDistance) or 1000), params)
-	local position = result and result.Position or origin + direction.Unit * (tonumber(maxDistance) or 1000)
-	API.Bullet(origin, position)
-	if result and result.Instance then
-		API.Hit(position, result.Instance, result.Instance.Name)
-	end
-	return result
-end
+    ["Weapon_Text"] = true,
+    ["Weapon_Text_Color"] = { Color = rgb(255, 255, 255) };
+    ["Weapon_Text_Position"] = "Top";
+    ["Weapon_Text_Font"] = "SmallestPixel";
+    ["Weapon_Text_Size"] = 12;
+};
 
--- Lighting and optional Camera controls use per-property ownership. Off/Unload
--- restores only values still owned by this runtime; later game writes win.
-local ownedGroups = {}
-local createdLighting = {}
-local skyboxes = {
-	Galaxy = {"15125283003", "15125281008", "15125277539", "15125279325", "15125274388", "15125275800"},
-	Vaporwave = {"1417494030", "1417494146", "1417494253", "1417494402", "1417494499", "1417494643"},
-	Redshift = {"401664839", "401664862", "401664960", "401664881", "401664901", "401664936"},
-	Desert = {"1013852", "1013853", "1013850", "1013851", "1013849", "1013854"},
-	Blaze = {"150939022", "150939038", "150939047", "150939056", "150939063", "150939082"},
-	["Among Us"] = {"5752463190", "5752463190", "5752463190", "5752463190", "5752463190", "5752463190"},
-	["Space Wave2"] = {"1233158420", "1233158838", "1233157105", "1233157640", "1233157995", "1233159158"},
-	["Turquoise Wave"] = {"47974894", "47974690", "47974821", "47974776", "47974859", "47974909"},
-	["Dark Night"] = {"6285719338", "6285721078", "6285722964", "6285724682", "6285726335", "6285730635"},
-	["Bright Pink"] = {"271042516", "271077243", "271042556", "271042310", "271042467", "271077958"},
-	["Oblivion Lost"] = {"5103110171", "5102993828", "5103111020", "5103112417", "5103113734", "5102993828"},
-	["Setting Sun"] = {"626460377", "626460216", "626460513", "626473032", "626458639", "626460625"},
-}
-local function groupWrite(group, object, property, value)
-	if not object then return end
-	local groups = ownedGroups[group]
-	if not groups then groups = {}; ownedGroups[group] = groups end
-	local entries = groups[object]
-	if not entries then entries = {}; groups[object] = entries end
-	local entry = entries[property]
-	if not entry then
-		entry = {Original = object[property]}; entries[property] = entry
-	end
-	pcall(function()
-		local current = object[property]
-		if entry.Last ~= nil and current ~= entry.Last and current ~= value then entry.Original = current end
-		if current ~= value then object[property] = value end
-		entry.Last = value
-	end)
-end
-local function groupRestore(group)
-	local groups = ownedGroups[group]
-	if not groups then return end
-	for object, entries in pairs(groups) do
-		for property, entry in pairs(entries) do
-			pcall(function() if object[property] == entry.Last then object[property] = entry.Original end end)
-		end
-	end
-	ownedGroups[group] = nil
-end
-local function effectObject(className, key)
-	local existing = Lighting:FindFirstChildOfClass(className)
-	if existing then return existing end
-	local object = createdLighting[key]
-	if object and object.Parent then return object end
-	object = Instance.new(className)
-	object.Name = "BurmaldaCalamari" .. key
-	object.Parent = Lighting
-	createdLighting[key] = object
-	return object
-end
-local function applyLightingGroup(name, enabled, writes)
-	if enabled then
-		for _, write in ipairs(writes) do groupWrite(name, write[1], write[2], write[3]) end
-	elseif ownedGroups[name] or createdLighting[name] then
-		groupRestore(name)
-		if createdLighting[name] then destroy(createdLighting[name]); createdLighting[name] = nil end
-	end
-end
-local function updateLighting()
-	local s = State.Lighting
-	local terrain = workspace:FindFirstChildOfClass("Terrain")
-	local clouds = terrain and terrain:FindFirstChild("Clouds")
-	local atmosphere = Lighting:FindFirstChild("Atmosphere")
-	applyLightingGroup("CloudDensity", s.CloudDensity, {{clouds, "Density", s.CloudDensityValue}})
-	applyLightingGroup("CloudCover", s.CloudCover, {{clouds, "Cover", s.CloudCoverValue}})
-	applyLightingGroup("CloudColor", s.CloudColor, {{clouds, "Color", color3(s.CloudColorValue)}})
-	local fog = s.NoFog or s.FogDensity or s.FogHaze or s.FogGlare
-	local fogWrites = {}
-	if s.NoFog then
-		fogWrites[#fogWrites + 1] = {Lighting, "FogStart", 999999}
-		fogWrites[#fogWrites + 1] = {Lighting, "FogEnd", 999999}
-		fogWrites[#fogWrites + 1] = {atmosphere, "Offset", 0}
-	end
-	if atmosphere and (s.NoFog or s.FogDensity) then fogWrites[#fogWrites + 1] = {atmosphere, "Density", s.NoFog and 0 or s.FogDensityValue} end
-	if atmosphere and (s.NoFog or s.FogHaze) then fogWrites[#fogWrites + 1] = {atmosphere, "Haze", s.NoFog and 0 or s.FogHazeValue} end
-	if atmosphere and (s.NoFog or s.FogGlare) then fogWrites[#fogWrites + 1] = {atmosphere, "Glare", s.NoFog and 0 or s.FogGlareValue} end
-	applyLightingGroup("Fog", fog, fogWrites)
-	applyLightingGroup("FogColor", s.FogColor and atmosphere ~= nil, {{atmosphere, "Color", color3(s.FogColorValue)}})
-	applyLightingGroup("Fullbright", s.Fullbright, {{Lighting, "Brightness", s.Brightness}})
-	applyLightingGroup("Ambient", s.Ambient, {{Lighting, "Ambient", color3(s.AmbientColor)}, {Lighting, "OutdoorAmbient", color3(s.AmbientColor)}})
-	applyLightingGroup("Time", s.Time, {{Lighting, "ClockTime", s.TimeValue}})
-	if s.Skybox then
-		local sky = effectObject("Sky", "Skybox")
-		local ids = skyboxes[s.SkyboxPreset] or skyboxes.Galaxy
-		applyLightingGroup("Skybox", true, {
-			{sky, "SkyboxBk", "rbxassetid://" .. ids[1]}, {sky, "SkyboxDn", "rbxassetid://" .. ids[2]},
-			{sky, "SkyboxFt", "rbxassetid://" .. ids[3]}, {sky, "SkyboxLf", "rbxassetid://" .. ids[4]},
-			{sky, "SkyboxRt", "rbxassetid://" .. ids[5]}, {sky, "SkyboxUp", "rbxassetid://" .. ids[6]},
-		})
-	else
-		applyLightingGroup("Skybox", false, {})
-	end
-	local sun = s.SunRays and effectObject("SunRaysEffect", "SunRays") or nil
-	applyLightingGroup("SunRays", s.SunRays, {{sun, "Enabled", true}, {sun, "Intensity", s.SunIntensity}, {sun, "Spread", s.SunSpread}})
-	local bloom = s.Bloom and effectObject("BloomEffect", "Bloom") or nil
-	applyLightingGroup("Bloom", s.Bloom, {{bloom, "Enabled", true}, {bloom, "Intensity", s.BloomIntensity}, {bloom, "Size", s.BloomSize}, {bloom, "Threshold", s.BloomThreshold}})
-end
+local Options = MiscOptions
 
-local function keyHeld(name)
-	if name == "LMB" or name == "RMB" then
-		return UIS:IsMouseButtonPressed(name == "LMB" and Enum.UserInputType.MouseButton1 or Enum.UserInputType.MouseButton2)
-	end
-	local key = Enum.KeyCode[name]
-	return key ~= nil and UIS:IsKeyDown(key)
-end
-local function updateCamera()
-	if not options.Camera or options.Camera == "None" then return end
-	local s = State.Camera
-	local camera = workspace.CurrentCamera
-	local zoom = s.Zoom and keyHeld(s.ZoomKey)
-	if camera then
-		local enabled = s.CustomFOV or zoom
-		applyLightingGroup("CalamariCameraFOV", enabled, {{camera, "FieldOfView", zoom and s.ZoomAmount or s.FOV}})
-	end
-end
+    if getgenv().Esp then
+        getgenv().Esp.Unload()
+    end
 
-local lightingClock = 0
-local function restoreAll()
-	hideAllPlayers()
-	for _, label in ipairs(worldLabels) do setProperty(label, "Visible", false) end
-	restoreViewmodels()
-	for group in pairs(ownedGroups) do groupRestore(group) end
-	for key, object in pairs(createdLighting) do destroy(object); createdLighting[key] = nil end
-	for object in pairs(activeEffects) do destroy(object) end
-	table.clear(activeEffects)
-end
-function API.DisableAll()
-	for _, path in ipairs({
-		"Player.Enabled", "World.Enabled", "Gun.Enabled", "Arms.Enabled",
-		"Viewmodel.Highlight", "Viewmodel.Position", "Bullet.Enabled",
-		"HitEffects.Enabled", "HitNotifications.Enabled",
-		"Camera.CustomFOV", "Camera.Zoom",
-	}) do API.Set(path, false) end
-	for key, value in pairs(State.Lighting) do
-		if type(value) == "boolean" then State.Lighting[key] = false end
-	end
-	Revision += 1
-	restoreAll()
-end
-function API.Update(dt)
-	if API.Unloaded or not active() then return end
-	local now = os.clock()
-	if options.Camera and options.Camera ~= "None" then
-		local cameraOk, cameraErr = pcall(updateCamera)
-		if not cameraOk then API.Diagnostics.CameraError = tostring(cameraErr) end
-	end
-	local interval = lowPC() and 0.1 or 0.05
-	API.Diagnostics.Accumulator = (API.Diagnostics.Accumulator or 0) + dt
-	if API.Diagnostics.Accumulator < interval then return end
-	local step = API.Diagnostics.Accumulator
-	API.Diagnostics.Accumulator = 0
-	local ok, err
-	ok, err = pcall(updatePlayers, now); if not ok then API.Diagnostics.PlayerError = tostring(err) end
-	ok, err = pcall(updateWorld, now); if not ok then API.Diagnostics.WorldError = tostring(err) end
-	ok, err = pcall(updateViewmodels, now); if not ok then API.Diagnostics.ViewmodelError = tostring(err) end
-	if options.Lighting == true then
-		lightingClock += step
-		if lightingClock >= 0.2 or API.Diagnostics.LightingDirty then
-			lightingClock = 0
-			API.Diagnostics.LightingDirty = nil
-			ok, err = pcall(updateLighting); if not ok then API.Diagnostics.LightingError = tostring(err) end
-		end
-	end
-end
-function API.Unload()
-	if API.Unloaded then return end
-	API.Unloaded = true
-	API.Diagnostics.Unloaded = true
-	API.Diagnostics.RenderDisconnected = true
-	for _, connection in ipairs(connections) do pcall(function() connection:Disconnect() end) end
-	table.clear(connections)
-	restoreAll()
-	for key in pairs(playerEntries) do removePlayerEntry(key) end
-	destroy(gui); gui = nil
-	destroy(adornmentFolder); adornmentFolder = nil
-	destroy(effectFolder); effectFolder = nil
-end
-connect(RunService.RenderStepped:Connect(function(dt) API.Update(dt) end))
-if type(options.OnCleanup) == "function" then options.OnCleanup(API.Unload) end
-API.Skyboxes = skyboxes
-API.Textures = textures
-API.WorldCategories = worldCategories
-return API
-end
-return createBurmaldaCalamariVisuals
+    getgenv().Esp = {
+        Players = {},
+        PlayersOptions = {},
+        ScreenGui = Instance.new("ScreenGui", CoreGui),
+        Cache = Instance.new("ScreenGui", gethui()),
+        Connections = {},
+    }; do
+        Esp.ScreenGui.IgnoreGuiInset = true
+        Esp.ScreenGui.Name = "EspObject"
 
-  end)()
-  cfg.Calamari = type(cfg.Calamari) == "table" and cfg.Calamari or {}
-  local resourceCategory = {Cloth = "Wool", Iron = "Metal", Sulfur = "Phosphate", Stone = "Stone", BodyBag = "Body Bag"}
-  local calamari = calamariFactory({
-    Game = "Lone Survival",
-    State = cfg.Calamari,
-    Camera = "None",
-    Lighting = false,
-    IsActive = function() return not Runtime.Unloaded and not mainGame.unloaded end,
-    IsLowPC = function() return cfg.Misc.LowPC == true end,
-    Adapter = {
-      GetTargets = function()
-        local ok, targets = pcall(getCachedTargets, 0.1)
-        if not ok or type(targets) ~= "table" then return nil end
-        local result = {}
-        for _, target in ipairs(targets) do
-          if target.player and target.model and (target.hrp or target.head) then
-            local playerOk, player = pcall(players.GetPlayerFromCharacter, players, target.model)
-            result[#result + 1] = {
-              Key = target.model, Model = target.model, Root = target.hrp or target.head,
-              Humanoid = target.hum, Head = target.head, Name = target.name,
-              Player = playerOk and player or nil,
-            }
-          end
+        Esp.Cache.Enabled = false
+
+        function Esp:Create(instance, options)
+            local Ins = Instance.new(instance)
+
+            for prop, value in options do
+                Ins[prop] = value
+            end
+
+            return Ins
         end
-        return result
-      end,
-      WorldRoots = {"Deployables", "Animals", "Drops", "DroppedItems", "WorldItems", "Pickups", "SpawnedPickups", "GroundItems"},
-      GetWorldEntries = function()
-        local ok, resources = pcall(mainGame.getCachedResources)
-        if not ok or type(resources) ~= "table" then return {} end
-        local result = {}
-        for _, entry in ipairs(resources) do
-          local category = resourceCategory[entry.kind]
-          if category and entry.root then
-            result[#result + 1] = {Object = entry.root, Category = category, Name = entry.name}
-          end
+
+        function Esp:ConvertScreenPoint(world_position)
+            local ViewportSize = Camera.ViewportSize
+            local LocalPos = Camera.CFrame:pointToObjectSpace(world_position)
+
+            local AspectRatio = ViewportSize.X / ViewportSize.Y
+            local HalfY = -LocalPos.Z * math.tan(math.rad(Camera.FieldOfView / 2))
+            local HalfX = AspectRatio * HalfY
+
+            local FarPlaneCorner = Vector3.new(-HalfX, HalfY, LocalPos.Z)
+            local RelativePos = LocalPos - FarPlaneCorner
+
+            local ScreenX = RelativePos.X / (HalfX * 2)
+            local ScreenY = -RelativePos.Y / (HalfY * 2)
+
+            local OnScreen = -LocalPos.Z > 0 and ScreenX >= 0 and ScreenX <= 1 and ScreenY >= 0 and ScreenY <= 1
+
+            return Vector3.new(ScreenX * ViewportSize.X, ScreenY * ViewportSize.Y, -LocalPos.Z), OnScreen
         end
-        return result
-      end,
-    },
-  })
-  mainGame.calamariVisuals = calamari
-  onCleanup(function()
-    calamari.Unload()
-    if mainGame.calamariVisuals == calamari then mainGame.calamariVisuals = nil end
-  end)
-  local mountCalamari = (function()
--- Shared control layout for the local 621x542 Burmalda menu.
--- The host owns createFeature/addSlider/addDropdown/addColor/addBind/getTab/getSection.
-local function mountBurmaldaCalamariMenu(API, menuOptions)
-	menuOptions = menuOptions or {}
-	local function section(parent, name)
-		return getSection(parent, name).Content
-	end
-	local function caption(name)
-		name = tostring(name)
-		return string.sub(name, 1, 9) == "Calamari " and name or "Calamari " .. name
-	end
-	local function feature(parent, name, path)
-		local container = createFeature(parent, name, API.Get(path) == true, function(value)
-			API.Set(path, value == true)
-		end)
-		API.Bind(path, function(value)
-			if _fFS[name] then _fFS[name](value == true) end
-		end)
-		return container
-	end
-	local function onOff(parent, name, path)
-		local setter = addDropdown(parent, caption(name), {"Off", "On"}, API.Get(path) and 2 or 1, function(value)
-			API.Set(path, value == "On")
-		end)
-		API.Bind(path, function(value) setter(value and "On" or "Off") end)
-		return setter
-	end
-	local function slider(parent, name, path, minimum, maximum, scale)
-		scale = scale or 1
-		local setter = addSlider(parent, caption(name), minimum, maximum, (tonumber(API.Get(path)) or 0) * scale, function(value)
-			API.Set(path, value / scale)
-		end)
-		API.Bind(path, function(value) setter((tonumber(value) or 0) * scale) end)
-		return setter
-	end
-	local function dropdown(parent, name, path, values)
-		local current, defaultIndex = API.Get(path), 1
-		for index, value in ipairs(values) do if value == current then defaultIndex = index; break end end
-		local setter = addDropdown(parent, caption(name), values, defaultIndex, function(value) API.Set(path, value) end)
-		API.Bind(path, function(value) setter(value) end)
-		return setter
-	end
-	local function color(parent, name, path)
-		local value = API.Get(path)
-		local initial = Color3.fromRGB(value[1] or 255, value[2] or 255, value[3] or 255)
-		local setter = addColor(parent, caption(name), function(value) API.SetColor(path, value) end, initial)
-		API.Bind(path, function(rgb)
-			setter(Color3.fromRGB(rgb[1] or 255, rgb[2] or 255, rgb[3] or 255))
-		end)
-		return setter
-	end
-	local function bind(parent, name, path, onPress)
-		local api = addBind(parent, caption(name), API.Get(path) or "None", onPress, function(value) API.Set(path, value) end)
-		API.Bind(path, function(value) api.Set(value or "None") end)
-		return api
-	end
 
-	local left, right = getTab("VISUALS")
-	local playerSection = section(left, "Calamari Player ESP")
-	local player = feature(playerSection, "Calamari Player ESP", "Player.Enabled")
-	slider(player, "Calamari Max Distance", "Player.MaxDistance", 100, 10000)
-	slider(player, "Calamari Max Targets", "Player.MaxTargets", 8, 128)
-	onOff(player, "Box", "Player.Box")
-	color(player, "High Contrast Box", "Player.BoxHigh")
-	color(player, "Low Contrast Box", "Player.BoxLow")
-	slider(player, "Box High Alpha %", "Player.BoxHighTransparency", 0, 100, 100)
-	slider(player, "Box Low Alpha %", "Player.BoxLowTransparency", 0, 100, 100)
-	slider(player, "Box Gradient Rotation", "Player.BoxRotation", -180, 180)
-	onOff(player, "Calamari Box Fill", "Player.Fill")
-	color(player, "High Contrast Fill", "Player.FillHigh")
-	color(player, "Low Contrast Fill", "Player.FillLow")
-	slider(player, "Fill High Transparency %", "Player.FillHighTransparency", 0, 100, 100)
-	slider(player, "Fill Low Transparency %", "Player.FillLowTransparency", 0, 100, 100)
-	slider(player, "Box Fill Rotation", "Player.FillRotation", -180, 180)
-	onOff(player, "Box Glow", "Player.Glow")
-	color(player, "High Contrast Glow", "Player.GlowHigh")
-	color(player, "Low Contrast Glow", "Player.GlowLow")
-	slider(player, "Glow High Transparency %", "Player.GlowHighTransparency", 0, 100, 100)
-	slider(player, "Glow Low Transparency %", "Player.GlowLowTransparency", 0, 100, 100)
-	slider(player, "Box Glow Rotation", "Player.GlowRotation", -180, 180)
-	onOff(player, "Healthbar", "Player.Healthbar")
-	onOff(player, "Healthbar Text", "Player.HealthText")
-	color(player, "High Health", "Player.HealthHigh")
-	color(player, "Mid Health", "Player.HealthMid")
-	color(player, "Low Health", "Player.HealthLow")
-	onOff(player, "Calamari Names", "Player.Names")
-	color(player, "Names Text Color", "Player.NameColor")
-	onOff(player, "Distance Text", "Player.Distance")
-	color(player, "Distance Text Color", "Player.DistanceColor")
-	onOff(player, "Weapon Text", "Player.Weapon")
-	color(player, "Weapon Text Color", "Player.WeaponColor")
-	onOff(player, "Flags", "Player.Flags")
-	color(player, "Flags Text Color", "Player.FlagsColor")
-	onOff(player, "Calamari Chams", "Player.Chams")
-	color(player, "Chams Inside Color", "Player.ChamsInside")
-	color(player, "Chams Outside Color", "Player.ChamsOutside")
-	slider(player, "Chams Inside Transparency %", "Player.ChamsInsideTransparency", 0, 100, 100)
-	slider(player, "Chams Outline Transparency %", "Player.ChamsOutsideTransparency", 0, 100, 100)
+        function Esp:Connection(signal, callback)
+            local Connection = signal:Connect(callback)
+            Esp.Connections[#Esp.Connections + 1] = Connection
 
-	local worldSection = section(right, "Calamari Misc ESP")
-	local world = feature(worldSection, "Calamari Misc ESP", "World.Enabled")
-	for _, name in ipairs({
-		"Stone", "Metal", "Phosphate", "Wool", "Animals", "Care Package", "Drops",
-		"Body Bag", "Salvaged Flycopter", "Eggs", "Auto Turret", "Shotgun Turret",
-	}) do
-		local path = "World.Categories." .. name
-		onOff(world, "Calamari " .. name, path .. ".Enabled")
-		color(world, "Calamari " .. name .. " Color", path .. ".Color")
-		slider(world, "Calamari " .. name .. " Max Distance", path .. ".MaxDistance", 10, 5000)
-	end
+            return Connection
+        end
 
-	local vfxSection = section(right, "Calamari Gun VFX")
-	local gun = feature(vfxSection, "Calamari Gun Chams", "Gun.Enabled")
-	color(gun, "Gun Color", "Gun.Color")
-	dropdown(gun, "Gun Material", "Gun.Material", {"ForceField", "Neon", "Glass", "Ice", "Wood", "Plastic", "Metal"})
-	dropdown(gun, "Gun Texture", "Gun.Texture", {
-		"Web", "Swirl", "Checkers", "CandyCane", "Dots", "Scanning", "Bubbles",
-		"Player FF Texture", "Shield Forcefield", "Water", "America", "Rainbow", "Akatsuki", "None",
-	})
-	local arms = feature(vfxSection, "Calamari Arms Chams", "Arms.Enabled")
-	color(arms, "Arms Color", "Arms.Color")
-	dropdown(arms, "Arms Material", "Arms.Material", {"ForceField", "Neon", "Glass", "Ice", "Wood", "Plastic", "Metal"})
-	dropdown(arms, "Arms Texture", "Arms.Texture", {
-		"Web", "Swirl", "Checkers", "CandyCane", "Dots", "Scanning", "Bubbles",
-		"Player FF Texture", "Shield Forcefield", "Water", "America", "Rainbow", "Akatsuki", "None",
-	})
-	local highlight = feature(vfxSection, "Calamari Viewmodel Highlight", "Viewmodel.Highlight")
-	color(highlight, "Calamari VM Fill Color", "Viewmodel.Fill")
-	slider(highlight, "Fill Transparency %", "Viewmodel.FillTransparency", 0, 100, 100)
-	color(highlight, "Outline Color", "Viewmodel.Outline")
-	slider(highlight, "Outline Transparency %", "Viewmodel.OutlineTransparency", 0, 100, 100)
-	local position = feature(vfxSection, "Calamari Viewmodel Position", "Viewmodel.Position")
-	slider(position, "X pos", "Viewmodel.X", -20, 20, 10)
-	slider(position, "Y pos", "Viewmodel.Y", -20, 20, 10)
-	slider(position, "Z pos", "Viewmodel.Z", -20, 20, 10)
-	local bullet = feature(vfxSection, "Calamari Bullet Tracers", "Bullet.Enabled")
-	dropdown(bullet, "Tracer Type", "Bullet.Type", {"Dark", "Lightning", "Water"})
-	color(bullet, "Calamari Tracer Color", "Bullet.Color")
-	slider(bullet, "Tracer Duration", "Bullet.Duration", 1, 50, 10)
-	local effects = feature(vfxSection, "Calamari Hit Effects", "HitEffects.Enabled")
-	dropdown(effects, "Hit Effect Type", "HitEffects.Type", {"Spark", "SmokeRing", "particles.js"})
-	color(effects, "Hit Effect Color 1", "HitEffects.Color1")
-	color(effects, "Hit Effect Color 2", "HitEffects.Color2")
-	feature(vfxSection, "Calamari Hit Notifications", "HitNotifications.Enabled")
+        function Esp:BoxSolve(torso)
+            if not torso then
+                return nil, nil, nil
+            end
 
-	if menuOptions.Camera and menuOptions.Camera ~= "None" then
-		local cameraSection = section(left, "Calamari Camera")
-		if menuOptions.Camera == "Full" then
-			local fov = feature(cameraSection, "Calamari Field Of View", "Camera.CustomFOV")
-			slider(fov, "Calamari FOV Value", "Camera.FOV", 70, 120)
-			local zoom = feature(cameraSection, "Calamari Zoom", "Camera.Zoom")
-			slider(zoom, "Zoom Amount", "Camera.ZoomAmount", 20, 100)
-			bind(zoom, "Zoom Key", "Camera.ZoomKey")
-		end
-	end
+            local ViewportTop = torso.Position + (torso.CFrame.UpVector * 1.8) + Camera.CFrame.UpVector
+            local ViewportBottom = torso.Position - (torso.CFrame.UpVector * 2.5) - Camera.CFrame.UpVector
+            local Distance = (torso.Position - Camera.CFrame.p).Magnitude
+
+            local NewDistance = math.floor(Distance * 0.333)
+
+            local Top, TopIsRendered = Esp:ConvertScreenPoint(ViewportTop)
+            local Bottom, BottomIsRendered = Esp:ConvertScreenPoint(ViewportBottom)
+
+            local Width = math.max(math.floor(math.abs(Top.X - Bottom.X)), 8)
+            local Height = math.max(math.floor(math.max(math.abs(Bottom.Y - Top.Y), Width / 2)), 12)
+            local BoxSize = Vector2.new(math.floor(math.max(Height / 1.5, Width)), Height)
+            local BoxPosition = Vector2.new(math.floor(Top.X * 0.5 + Bottom.X * 0.5 - BoxSize.X * 0.5), math.floor(math.min(Top.Y, Bottom.Y)))
+
+            return BoxSize, BoxPosition, TopIsRendered, NewDistance
+        end
+
+        function Esp:Lerp(start, finish, t)
+            t = t or 1 / 8
+
+            return start * (1 - t) + finish * t
+        end
+
+        function Esp:Tween(obj, props, info)
+            local tween = TweenService:Create(obj, info, props)
+            tween:Play()
+
+            return tween
+        end
+
+        function Esp.CreateObject( player, typechar )
+            local Data = {
+                Items = { },
+                Info = {Character; Humanoid; Health = 0};
+                Drawings = { },
+                Type = typechar or "player",
+                Handles = { },
+            }; Data.Chams = Data.Type == "player" and true or false;
+
+            local Items = Data.Items; do
+
+                    Items.Holder = Esp:Create( "Frame" , {
+                        Parent = Esp.ScreenGui;
+                        Visible = false;
+                        Name = "\0";
+                        BackgroundTransparency = 1;
+                        Position = dim2(0.4332570433616638, 0, 0.3255814015865326, 0);
+                        BorderColor3 = rgb(0, 0, 0);
+                        Size = dim2(0, 211, 0, 240);
+                        BorderSizePixel = 0;
+                        BackgroundColor3 = rgb(255, 255, 255)
+                    });
+
+                    Items.HolderGradient = Esp:Create( "UIGradient" , {
+                        Rotation = 0;
+                        Name = "\0";
+                        Color = rgbseq{rgbkey(0, rgb(255, 255, 255)), rgbkey(1, rgb(255, 255, 255))};
+                        Parent = Items.Holder;
+                        Enabled = true
+                    });
+
+                        Items.Left = Esp:Create( "Frame" , {
+                            Parent = Items.Holder;
+                            Size = dim2(0, 0, 1, 0);
+                            Name = "\0";
+                            BackgroundTransparency = 1;
+                            Position = dim2(0, -1, 0, 0);
+                            BorderColor3 = rgb(0, 0, 0);
+                            ZIndex = 2;
+                            BorderSizePixel = 0;
+                            BackgroundColor3 = rgb(255, 255, 255)
+                        });
+
+                        Items.HealthbarTextsLeft = Esp:Create( "Frame", {
+                            Visible = true;
+                            BorderColor3 = rgb(0, 0, 0);
+                            Parent = Esp.Cache;
+                            Name = "\0";
+                            BackgroundTransparency = 1;
+                            LayoutOrder = -100;
+                            BorderSizePixel = 0;
+                            ZIndex = 0;
+                            AutomaticSize = Enum.AutomaticSize.X;
+                            BackgroundColor3 = rgb(255, 255, 255)
+                        });
+
+                        Esp:Create( "UIListLayout" , {
+                            FillDirection = Enum.FillDirection.Horizontal;
+                            HorizontalAlignment = Enum.HorizontalAlignment.Right;
+                            VerticalFlex = Enum.UIFlexAlignment.Fill;
+                            Parent = Items.Left;
+                            Padding = dim(0, 1);
+                            SortOrder = Enum.SortOrder.LayoutOrder
+                        });
+
+                        Items.LeftTexts = Esp:Create( "Frame" , {
+                            LayoutOrder = -100;
+                            Parent = Items.Left;
+                            BackgroundTransparency = 1;
+                            Name = "\0";
+                            BorderColor3 = rgb(0, 0, 0);
+                            BorderSizePixel = 0;
+                            AutomaticSize = Enum.AutomaticSize.X;
+                            BackgroundColor3 = rgb(255, 255, 255)
+                        });
+
+                        Esp:Create( "UIListLayout" , {
+                            Parent = Items.LeftTexts;
+                            Padding = dim(0, 1);
+                            SortOrder = Enum.SortOrder.LayoutOrder
+                        });
+
+                        Items.Bottom = Esp:Create( "Frame" , {
+                            Parent = Items.Holder;
+                            Size = dim2(1, 0, 0, 0);
+                            Name = "\0";
+                            BackgroundTransparency = 1;
+                            Position = dim2(0, 0, 1, 1);
+                            BorderColor3 = rgb(0, 0, 0);
+                            ZIndex = 2;
+                            BorderSizePixel = 0;
+                            BackgroundColor3 = rgb(255, 255, 255)
+                        });
+
+                        Items.HealthbarTextsBottom = Esp:Create( "Frame", {
+                            Visible = true;
+                            BorderColor3 = rgb(0, 0, 0);
+                            Parent = Esp.Cache;
+                            Name = "\0";
+                            BackgroundTransparency = 1;
+                            LayoutOrder = 0;
+                            BorderSizePixel = 0;
+                            ZIndex = 0;
+                            AutomaticSize = Enum.AutomaticSize.Y;
+                            BackgroundColor3 = rgb(255, 255, 255)
+                        });
+
+                        Esp:Create( "UIListLayout" , {
+                            SortOrder = Enum.SortOrder.LayoutOrder;
+                            HorizontalAlignment = Enum.HorizontalAlignment.Center;
+                            HorizontalFlex = Enum.UIFlexAlignment.Fill;
+                            Parent = Items.Bottom;
+                            Padding = dim(0, 1)
+                        });
+
+                        Items.BottomTexts = Esp:Create( "Frame", {
+                            LayoutOrder = 1;
+                            Parent = Items.Bottom;
+                            BackgroundTransparency = 1;
+                            Name = "\0";
+                            BorderColor3 = rgb(0, 0, 0);
+                            BorderSizePixel = 0;
+                            AutomaticSize = Enum.AutomaticSize.XY;
+                            BackgroundColor3 = rgb(255, 255, 255)
+                        });
+
+                        Esp:Create( "UIListLayout", {
+                            Parent = Items.BottomTexts;
+                            Padding = dim(0, 1);
+                            SortOrder = Enum.SortOrder.LayoutOrder
+                        });
+
+                        Items.Top = Esp:Create( "Frame" , {
+                            Parent = Items.Holder;
+                            Size = dim2(1, 0, 0, 0);
+                            Name = "\0";
+                            BackgroundTransparency = 1;
+                            Position = dim2(0, 0, 0, -1);
+                            BorderColor3 = rgb(0, 0, 0);
+                            ZIndex = 2;
+                            BorderSizePixel = 0;
+                            BackgroundColor3 = rgb(255, 255, 255)
+                        });
+
+                        Items.HealthbarTextsTop = Esp:Create( "Frame", {
+                            Visible = true;
+                            BorderColor3 = rgb(0, 0, 0);
+                            Parent = Esp.Cache;
+                            Name = "\0";
+                            BackgroundTransparency = 1;
+                            LayoutOrder = -100;
+                            BorderSizePixel = 0;
+                            ZIndex = 0;
+                            AutomaticSize = Enum.AutomaticSize.Y;
+                            BackgroundColor3 = rgb(255, 255, 255)
+                        });
+
+                        Esp:Create( "UIListLayout" , {
+                            VerticalAlignment = Enum.VerticalAlignment.Bottom;
+                            SortOrder = Enum.SortOrder.LayoutOrder;
+                            HorizontalAlignment = Enum.HorizontalAlignment.Center;
+                            HorizontalFlex = Enum.UIFlexAlignment.Fill;
+                            Parent = Items.Top;
+                            Padding = dim(0, 1)
+                        });
+
+                        Items.TopTexts = Esp:Create( "Frame", {
+                            LayoutOrder = -100;
+                            Parent = Items.Top;
+                            BackgroundTransparency = 1;
+                            Name = "\0";
+                            BorderColor3 = rgb(0, 0, 0);
+                            BorderSizePixel = 0;
+                            AutomaticSize = Enum.AutomaticSize.XY;
+                            BackgroundColor3 = rgb(255, 255, 255)
+                        });
+
+                        Esp:Create( "UIListLayout", {
+                            Parent = Items.TopTexts;
+                            Padding = dim(0, 1);
+                            SortOrder = Enum.SortOrder.LayoutOrder
+                        });
+
+                        Items.Right = Esp:Create( "Frame" , {
+                            Parent = Esp.Cache;
+                            Size = dim2(0, 0, 1, 0);
+                            Name = "\0";
+                            BackgroundTransparency = 1;
+                            Position = dim2(1, 1, 0, 0);
+                            BorderColor3 = rgb(0, 0, 0);
+                            ZIndex = 2;
+                            BorderSizePixel = 0;
+                            BackgroundColor3 = rgb(255, 255, 255)
+                        });
+
+                        Esp:Create( "UIListLayout" , {
+                            FillDirection = Enum.FillDirection.Horizontal;
+                            VerticalFlex = Enum.UIFlexAlignment.Fill;
+                            Parent = Items.Right;
+                            Padding = dim(0, 1);
+                            SortOrder = Enum.SortOrder.LayoutOrder
+                        });
+
+                        Items.RightTexts = Esp:Create( "Frame" , {
+                            LayoutOrder = 100;
+                            Parent = Esp.Cache;
+                            BackgroundTransparency = 1;
+                            Name = "\0";
+                            BorderColor3 = rgb(0, 0, 0);
+                            BorderSizePixel = 0;
+                            AutomaticSize = Enum.AutomaticSize.X;
+                            BackgroundColor3 = rgb(255, 255, 255)
+                        });
+
+                        Esp:Create( "UIListLayout" , {
+                            Parent = Items.RightTexts;
+                            Padding = dim(0, 1);
+                            SortOrder = Enum.SortOrder.LayoutOrder
+                        });
+
+                        Items.HealthbarTextsRight = Esp:Create( "Frame", {
+                            Visible = true;
+                            BorderColor3 = rgb(0, 0, 0);
+                            Parent = Esp.Cache;
+                            Name = "\0";
+                            BackgroundTransparency = 1;
+                            LayoutOrder = 99;
+                            BorderSizePixel = 0;
+                            ZIndex = 0;
+                            AutomaticSize = Enum.AutomaticSize.X;
+                            BackgroundColor3 = rgb(255, 255, 255)
+                        });
+
+                    Items.Corners = Esp:Create( "Frame", {
+                        Parent = Esp.Cache;
+                        Name = "\0";
+                        BackgroundTransparency = 1;
+                        BorderColor3 = rgb(0, 0, 0);
+                        Size = dim2(1, 0, 1, 0);
+                        BorderSizePixel = 0;
+                        BackgroundColor3 = rgb(255, 255, 255)
+                    });
+
+                    Items.BottomLeftX = Esp:Create( "ImageLabel", {
+                        ScaleType = Enum.ScaleType.Slice;
+                        Parent = Items.Corners;
+                        BorderColor3 = rgb(0, 0, 0);
+                        Name = "\0";
+                        BackgroundColor3 = rgb(255, 255, 255);
+                        Size = dim2(0.4, 0, 0, 3);
+                        AnchorPoint = vec2(0, 1);
+                        Image = "rbxassetid://83548615999411";
+                        BackgroundTransparency = 1;
+                        Position = dim2(0, 0, 1, 0);
+                        ZIndex = 2;
+                        BorderSizePixel = 0;
+                        SliceCenter = rect(vec2(1, 1), vec2(99, 2))
+                    });
+
+                    Esp:Create( "UIGradient", {
+                        Parent = Items.BottomLeftX
+                    });
+
+                    Items.BottomLeftY = Esp:Create( "ImageLabel", {
+                        ScaleType = Enum.ScaleType.Slice;
+                        Parent = Items.Corners;
+                        BorderColor3 = rgb(0, 0, 0);
+                        Name = "\0";
+                        BackgroundColor3 = rgb(255, 255, 255);
+                        Size = dim2(0, 3, 0.25, 0);
+                        AnchorPoint = vec2(0, 1);
+                        Image = "rbxassetid://101715268403902";
+                        BackgroundTransparency = 1;
+                        Position = dim2(0, 0, 1, -2);
+                        ZIndex = 500;
+                        BorderSizePixel = 0;
+                        SliceCenter = rect(vec2(1, 0), vec2(2, 96))
+                    });
+
+                    Esp:Create( "UIGradient", {
+                        Rotation = -90;
+                        Parent = Items.BottomLeftY
+                    });
+
+                    Items.BottomRighX = Esp:Create( "ImageLabel", {
+                        ScaleType = Enum.ScaleType.Slice;
+                        Parent = Items.Corners;
+                        BorderColor3 = rgb(0, 0, 0);
+                        Name = "\0";
+                        BackgroundColor3 = rgb(255, 255, 255);
+                        Size = dim2(0.4, 0, 0, 3);
+                        AnchorPoint = vec2(1, 1);
+                        Image = "rbxassetid://83548615999411";
+                        BackgroundTransparency = 1;
+                        Position = dim2(1, 0, 1, 0);
+                        ZIndex = 2;
+                        BorderSizePixel = 0;
+                        SliceCenter = rect(vec2(1, 1), vec2(99, 2))
+                    });
+
+                    Esp:Create( "UIGradient", {
+                        Parent = Items.BottomRighX
+                    });
+
+                    Items.BottomLeftY = Esp:Create( "ImageLabel", {
+                        ScaleType = Enum.ScaleType.Slice;
+                        Parent = Items.Corners;
+                        BorderColor3 = rgb(0, 0, 0);
+                        Name = "\0";
+                        BackgroundColor3 = rgb(255, 255, 255);
+                        Size = dim2(0, 3, 0.25, 0);
+                        AnchorPoint = vec2(1, 1);
+                        Image = "rbxassetid://101715268403902";
+                        BackgroundTransparency = 1;
+                        Position = dim2(1, 0, 1, -2);
+                        ZIndex = 500;
+                        BorderSizePixel = 0;
+                        SliceCenter = rect(vec2(1, 0), vec2(2, 96))
+                    });
+
+                    Esp:Create( "UIGradient", {
+                        Rotation = 90;
+                        Parent = Items.BottomLeftY
+                    });
+
+                    Items.TopLeftY = Esp:Create( "ImageLabel", {
+                        ScaleType = Enum.ScaleType.Slice;
+                        BorderColor3 = rgb(0, 0, 0);
+                        Parent = Items.Corners;
+                        Name = "\0";
+                        BackgroundColor3 = rgb(255, 255, 255);
+                        Size = dim2(0, 3, 0.25, 0);
+                        Image = "rbxassetid://102467475629368";
+                        BackgroundTransparency = 1;
+                        Position = dim2(0, 0, 0, 2);
+                        ZIndex = 500;
+                        BorderSizePixel = 0;
+                        SliceCenter = rect(vec2(1, 0), vec2(2, 98))
+                    });
+
+                    Esp:Create( "UIGradient", {
+                        Rotation = 90;
+                        Parent = Items.TopLeftY
+                    });
+
+                    Items.TopRightY = Esp:Create( "ImageLabel", {
+                        ScaleType = Enum.ScaleType.Slice;
+                        Parent = Items.Corners;
+                        BorderColor3 = rgb(0, 0, 0);
+                        Name = "\0";
+                        BackgroundColor3 = rgb(255, 255, 255);
+                        Size = dim2(0, 3, 0.25, 0);
+                        AnchorPoint = vec2(1, 0);
+                        Image = "rbxassetid://102467475629368";
+                        BackgroundTransparency = 1;
+                        Position = dim2(1, 0, 0, 2);
+                        ZIndex = 500;
+                        BorderSizePixel = 0;
+                        SliceCenter = rect(vec2(1, 0), vec2(2, 98))
+                    });
+
+                    Esp:Create( "UIGradient", {
+                        Rotation = -90;
+                        Parent = Items.TopRightY
+                    });
+
+                    Items.TopRightX = Esp:Create( "ImageLabel", {
+                        ScaleType = Enum.ScaleType.Slice;
+                        Parent = Items.Corners;
+                        BorderColor3 = rgb(0, 0, 0);
+                        Name = "\0";
+                        BackgroundColor3 = rgb(255, 255, 255);
+                        Size = dim2(0.4, 0, 0, 3);
+                        AnchorPoint = vec2(1, 0);
+                        Image = "rbxassetid://83548615999411";
+                        BackgroundTransparency = 1;
+                        Position = dim2(1, 0, 0, 0);
+                        ZIndex = 2;
+                        BorderSizePixel = 0;
+                        SliceCenter = rect(vec2(1, 1), vec2(99, 2))
+                    });
+
+                    Esp:Create( "UIGradient", {
+                        Parent = Items.TopRightX
+                    });
+
+                    Items.TopLeftX = Esp:Create( "ImageLabel", {
+                        ScaleType = Enum.ScaleType.Slice;
+                        BorderColor3 = rgb(0, 0, 0);
+                        Parent = Items.Corners;
+                        Name = "\0";
+                        BackgroundColor3 = rgb(255, 255, 255);
+                        Image = "rbxassetid://83548615999411";
+                        BackgroundTransparency = 1;
+                        Size = dim2(0.4, 0, 0, 3);
+                        ZIndex = 2;
+                        BorderSizePixel = 0;
+                        SliceCenter = rect(vec2(1, 1), vec2(99, 2))
+                    });
+
+                    Esp:Create( "UIGradient", {
+                        Parent = Items.TopLeftX
+                    });
+
+                    Items.Box = Esp:Create( "Frame" , {
+                        Parent = Esp.Cache;
+                        Name = "\0";
+                        BackgroundTransparency = 1;
+                        Position = dim2(0, 1, 0, 1);
+                        BorderColor3 = rgb(0, 0, 0);
+                        Size = dim2(1, -2, 1, -2);
+                        BorderSizePixel = 0;
+                        BackgroundColor3 = rgb(255, 255, 255)
+                    });
+
+                    Esp:Create( "UIStroke" , {
+                        Parent = Items.Box;
+                        LineJoinMode = Enum.LineJoinMode.Miter
+                    });
+
+                    Items.Inner = Esp:Create( "Frame" , {
+                        Parent = Items.Box;
+                        Name = "\0";
+                        BackgroundTransparency = 1;
+                        Position = dim2(0, 1, 0, 1);
+                        BorderColor3 = rgb(0, 0, 0);
+                        Size = dim2(1, -2, 1, -2);
+                        BorderSizePixel = 0;
+                        BackgroundColor3 = rgb(255, 255, 255)
+                    });
+
+                    Items.UIStroke = Esp:Create( "UIStroke" , {
+                        Color = rgb(255, 255, 255);
+                        LineJoinMode = Enum.LineJoinMode.Miter;
+                        Parent = Items.Inner
+                    });
+
+                    Items.BoxGradient = Esp:Create( "UIGradient" , {
+                        Parent = Items.UIStroke
+                    });
+
+                    Items.Inner2 = Esp:Create( "Frame" , {
+                        Parent = Items.Inner;
+                        Name = "\0";
+                        BackgroundTransparency = 1;
+                        Position = dim2(0, 1, 0, 1);
+                        BorderColor3 = rgb(0, 0, 0);
+                        Size = dim2(1, -2, 1, -2);
+                        BorderSizePixel = 0;
+                        BackgroundColor3 = rgb(255, 255, 255)
+                    });
+
+                    Esp:Create( "UIStroke" , {
+                        Parent = Items.Inner2;
+                        LineJoinMode = Enum.LineJoinMode.Miter
+                    });
+
+                    Items.Healthbar = Esp:Create( "Frame" , {
+                        Name = "Left";
+                        Parent = Esp.Cache;
+                        BorderColor3 = rgb(0, 0, 0);
+                        Size = dim2(0, 3, 0, 3);
+                        BorderSizePixel = 0;
+                        BackgroundColor3 = rgb(0, 0, 0)
+                    });
+
+                    Items.HealthbarAccent = Esp:Create( "Frame" , {
+                        Parent = Items.Healthbar;
+                        Name = "\0";
+                        Position = dim2(0, 1, 0, 1);
+                        BorderColor3 = rgb(0, 0, 0);
+                        Size = dim2(1, -2, 1, -2);
+                        BorderSizePixel = 0;
+                        BackgroundColor3 = rgb(255, 255, 255)
+                    });
+
+                    Items.HealthbarFade = Esp:Create( "Frame" , {
+                        Parent = Items.Healthbar;
+                        Name = "\0";
+                        Position = dim2(0, 1, 0, 1);
+                        BorderColor3 = rgb(0, 0, 0);
+                        Size = dim2(1, -2, 1, -2);
+                        BorderSizePixel = 0;
+                        BackgroundColor3 = rgb(0, 0, 0)
+                    });
+
+                    Items.HealthbarGradient = Esp:Create( "UIGradient" , {
+                        Enabled = true;
+                        Parent = Items.HealthbarAccent;
+                        Rotation = 90;
+                        Color = rgbseq{rgbkey(0, rgb(0, 255, 0)), rgbkey(0.5, rgb(255, 125, 0)), rgbkey(1, rgb(255, 0, 0))}
+                    });
+
+                    Items.HealthbarText = Esp:Create( "TextLabel", {
+                        FontFace = Fonts.ProggyClean;
+                        TextColor3 = rgb(255, 255, 255);
+                        BorderColor3 = rgb(0, 0, 0);
+                        Parent = Esp.Cache;
+                        Name = "\0";
+                        Visible = true;
+                        BackgroundTransparency = 1;
+                        Size = dim2(0, 0, 0, 0);
+                        BorderSizePixel = 0;
+                        AutomaticSize = Enum.AutomaticSize.XY;
+                        TextSize = 12;
+                        BackgroundColor3 = rgb(255, 255, 255)
+                    });
+
+                    Esp:Create( "UIStroke", {
+                        Parent = Items.HealthbarText;
+                        LineJoinMode = Enum.LineJoinMode.Miter
+                    });
+
+                    Items.Text = Esp:Create( "TextLabel", {
+                        FontFace = Fonts.ProggyClean;
+                        TextColor3 = rgb(255, 255, 255);
+                        BorderColor3 = rgb(0, 0, 0);
+                        Parent = Esp.Cache;
+                        Name = "Left";
+                        Text = player.Name;
+                        BackgroundTransparency = 1;
+                        Size = dim2(1, 0, 0, 0);
+                        BorderSizePixel = 0;
+                        AutomaticSize = Enum.AutomaticSize.XY;
+                        TextSize = 9;
+                        BackgroundColor3 = rgb(255, 255, 255)
+                    });
+
+                    Esp:Create( "UIStroke", {
+                        Parent = Items.Text;
+                        LineJoinMode = Enum.LineJoinMode.Miter
+                    });
+
+                    Items.Distance = Esp:Create( "TextLabel", {
+                        FontFace = Fonts.ProggyClean;
+                        TextColor3 = rgb(255, 255, 255);
+                        BorderColor3 = rgb(0, 0, 0);
+                        Parent = Esp.Cache;
+                        Name = "Left";
+                        BackgroundTransparency = 1;
+                        Size = dim2(1, 0, 0, 0);
+                        BorderSizePixel = 0;
+                        AutomaticSize = Enum.AutomaticSize.XY;
+                        TextSize = 9;
+                        BackgroundColor3 = rgb(255, 255, 255)
+                    });
+
+                    Esp:Create( "UIStroke", {
+                        Parent = Items.Distance;
+                        LineJoinMode = Enum.LineJoinMode.Miter
+                    });
+                    Items["Weapon"] = Esp:Create( "TextLabel", {
+                        FontFace = Fonts.ProggyClean;
+                        TextColor3 = rgb(255, 255, 255);
+                        BorderColor3 = rgb(0, 0, 0);
+                        Parent = Esp.Cache;
+                        Text = "[NONE]";
+                        Name = "Wep";
+                        BackgroundTransparency = 1;
+                        Size = dim2(1, 0, 0, 0);
+                        BorderSizePixel = 0;
+                        AutomaticSize = Enum.AutomaticSize.XY;
+                        TextSize = 9;
+                        BackgroundColor3 = rgb(255, 255, 255)
+                    });
+
+                    Esp:Create( "UIStroke", {
+                        Parent = Items.Distance;
+                        LineJoinMode = Enum.LineJoinMode.Miter
+                    });
+
+            end
+
+            Data.RefreshChams = function()
+                local Character = Data.Info.Character
+
+                local Enabled = Flags["Players_CHAMS"]
+                local FillSettings = Flags["Players_FILL_CHAMS"]
+                local OutlineSettings = Flags["Players_OUTLINE_CHAMS"]
+
+                if not Data.Highlight then
+                    Data.Highlight = Esp:Create( "Highlight", {
+                        FillColor = FillSettings.Color;
+                        Enabled = Flags["Players_CHAMS"];
+                        OutlineTransparency = OutlineSettings.Transparency;
+                        Adornee = Character;
+                        FillTransparency = FillSettings.Transparency;
+                        OutlineColor = OutlineSettings.Color;
+                        Parent = CoreGui
+                    });
+                else
+                    Data.Highlight.Adornee = Character
+                end
+            end
+
+            Data.ToolAdded = function(item)
+                 if not item:FindFirstChildOfClass("Tool") then
+                    Items["Weapon"].Text = "[NONE]"
+                     return
+                 end
+
+                 local exists = Data.Info.Character:FindFirstChild(item.Name)
+                 Items["Weapon"].Text = "[" .. item.Name .. "]"
+
+                 pcall(function()
+                     Items["Weapon"].Parent = exists and Items["Holder"] or Esp.Cache
+                 end)
+
+            end
+
+            Data.HealthChanged = function(Value)
+                if not MiscOptions.Healthbar then
+                    return
+                end
+
+                local Humanoid = Data.Info.Humanoid
+                local Multiplier = Value / 100
+                local isHorizontal = MiscOptions.Healthbar_Position == "Top" or MiscOptions.Healthbar_Position == "Bottom"
+
+                local Color = MiscOptions.Healthbar_Low.Color:Lerp(MiscOptions.Healthbar_Medium.Color, Multiplier)
+                local Color_2 = Color:Lerp(MiscOptions.Healthbar_High.Color, Multiplier)
+
+                if MiscOptions.Healthbar_Number then
+                    if Items.HealthbarText.Parent == Esp.Cache then
+                        Options.Healthbar = MiscOptions.Healthbar_Position
+                        Options.Healthbar_Number = true
+                    end
+                end
+
+                if MiscOptions.Healthbar_Tween then
+                    local Health = Data.Info.Health
+
+                    Esp:Tween(Items.HealthbarFade, {
+                        Size = dim2(isHorizontal and 1 - Multiplier or 1, isHorizontal and -2 or -2, isHorizontal and 1 or 1 - Multiplier, -1),
+                        Position = dim2(isHorizontal and Multiplier or 0, 1, 0, 1)
+                    }, TweenInfo.new(MiscOptions.Healthbar_Easing_Speed, Enum.EasingStyle[MiscOptions.Healthbar_EasingStyle], Enum.EasingDirection[MiscOptions.Healthbar_EasingDirection], 0, false, 0))
+                    Esp:Tween(Items.HealthbarText, {
+                        Position = dim2(isHorizontal and Multiplier or 0, isHorizontal and -(Items.HealthbarText.TextBounds.X / 2) or 0, isHorizontal and 0 or 1 - Multiplier, 0),
+                        TextColor3 = Color_2
+                    }, TweenInfo.new(MiscOptions.Healthbar_Easing_Speed, Enum.EasingStyle[MiscOptions.Healthbar_EasingStyle], Enum.EasingDirection[MiscOptions.Healthbar_EasingDirection], 0, false, 0))
+
+                    task.spawn(function()
+                        local Start = tick()
+
+                        while true do
+                            if not Esp then
+                                break
+                            end
+
+                            local Elapsed = tick() - Start
+                            local Alpha = math.clamp(Elapsed, 0, 1)
+
+                            local Value = Esp:Lerp(
+                                Data.Info.Health,
+                                Value,
+                                TweenService:GetValue(
+                                    Alpha,
+                                    Enum.EasingStyle[MiscOptions.Healthbar_EasingStyle],
+                                    Enum.EasingDirection[MiscOptions.Healthbar_EasingDirection]
+                                )
+                            )
+
+                            Items.HealthbarText.Text = math.floor(Value)
+
+                            if Elapsed >= MiscOptions.Healthbar_Easing_Speed then
+                                Data.Info.Health = Value
+                                break
+                            end
+
+                            task.wait()
+                        end
+                    end)
+                else
+                    Items.HealthbarFade.Size = dim2(isHorizontal and 1 - Multiplier or 1, isHorizontal and -2 or -2, isHorizontal and 1 or 1 - Multiplier, -3)
+                    Items.HealthbarFade.Position = dim2(isHorizontal and Multiplier or 0, 1, 0, 1)
+
+                    Items.HealthbarText.Text = math.floor(Value)
+                    Items.HealthbarText.Position = dim2(isHorizontal and Multiplier or 0, isHorizontal and -(Items.HealthbarText.TextBounds.X / 2) or 0, isHorizontal and 0 or 1 - Multiplier, 0)
+                    Items.HealthbarText.TextColor3 = Color_2
+                end
+            end
+
+            Data.RefreshDescendants = function()
+                local Character = (typechar and player) or player.Character or player.CharacterAdded:Wait()
+                local Humanoid = Character:FindFirstChild("Humanoid") or Character:WaitForChild( "Humanoid" )
+
+                Data.Info.Character = typechar and player or Character
+                Data.Info.Humanoid = Humanoid
+                Data.Info.RootPart = Humanoid.RootPart
+
+                Esp:Connection(Humanoid.HealthChanged, Data.HealthChanged)
+                Esp:Connection(Character.ChildAdded, Data.ToolAdded)
+                Esp:Connection(Character.ChildRemoved, Data.ToolAdded)
+
+                Data.HealthChanged(Data.Info.Humanoid.Health)
+
+                Data.RefreshChams()
+            end
+
+            Data.Destroy = function()
+                if Items["Holder"] then
+                    Items["Holder"].Parent = nil
+                    Items["Holder"]:Destroy()
+                end
+
+                Data.Highlight:Destroy()
+
+                if Esp.Players[index] then
+                    Esp.Players[index] = nil
+                end
+            end
+
+            Data.RefreshDescendants()
+            Esp:Connection(Data.Info.Character.ChildAdded, Data.ToolAdded)
+            Esp:Connection(player.CharacterAdded, Data.RefreshDescendants)
+
+            for _,ItemParentor in {Items.Left, Items.Right, Items.Top, Items.Bottom} do
+                Esp:Connection(ItemParentor.ChildAdded, function()
+                    task.wait(.1)
+
+                    if ItemParentor.Parent == nil then
+                        return
+                    end
+
+                    ItemParentor.Parent = Items.Holder
+                end)
+
+                Esp:Connection(ItemParentor.ChildRemoved, function()
+                    task.wait(.1)
+                    if #ItemParentor:GetChildren() == 0 then
+                        if ItemParentor.Parent == nil then
+                            return
+                        end
+
+                        ItemParentor.Parent = Esp.Cache
+                    end
+                end)
+            end
+
+            for _,HealthHolder in {"Right", "Left", "Top", "Bottom"} do
+                local Parent = Items["HealthbarTexts" .. HealthHolder]
+
+                Esp:Connection(Parent.ChildAdded, function()
+                    task.wait(.1)
+
+                    if Parent.Parent == nil then
+                        return
+                    end
+
+                    Parent.Parent = Items[HealthHolder]
+                end)
+
+                Esp:Connection(Parent.ChildRemoved, function()
+                    task.wait(.1)
+                    if #Parent:GetChildren() == 0 then
+                        if Parent.Parent == nil then
+                            return
+                        end
+
+                        Parent.Parent = Esp.Cache
+                    end
+                end)
+            end
+
+            for _,TextHolder in {"Right", "Left", "Bottom", "Top"} do
+                local Parent = Items[TextHolder .. "Texts"]
+
+                Esp:Connection(Parent.ChildAdded, function()
+                    task.wait(.1)
+
+                    if Parent.Parent == nil then
+                        return
+                    end
+
+                    Parent.Parent = Items[TextHolder]
+                end)
+
+                Esp:Connection(Parent.ChildRemoved, function()
+                    task.wait(.1)
+                    if #Parent:GetChildren() == 0 then
+                        if Parent.Parent == nil then
+                            return
+                        end
+
+                        Parent.Parent = Esp.Cache
+                    end
+                end)
+            end
+
+            Esp.Players[ player.Name ] = Data
+
+            return Data
+        end
+
+        function Esp.Update()
+            if not Esp then
+                return
+            end
+
+            if not MiscOptions.Enabled then
+                return
+            end
+
+            for _,Data in Esp.Players do
+                if not Data.Info then
+                    continue
+                end
+
+                local Character = Data.Info.Character
+
+                if not Character then
+                    continue
+                end
+
+                local Humanoid = Data.Info.Humanoid
+
+                if not Humanoid then
+                    continue
+                end
+
+                if not (Character or Humanoid) then
+                    continue
+                end
+
+                local Items = Data and Data.Items
+
+                if not Items then
+                    continue
+                end
+
+                local BoxSize, BoxPos, OnScreen, Distance = Esp:BoxSolve(Humanoid.RootPart)
+                local Holder = Items["Holder"]
+
+                if not (Holder or MiscOptions["Render Distance"]) then
+                    continue
+                end
+
+                if Distance == nil then
+                    if Holder.Visible then
+                        Holder.Visible = false
+                    end
+
+                    continue
+                end
+
+                if Distance > MiscOptions["Render Distance"] and Holder.Visible then
+                    Holder.Visible = false
+                    continue
+                end
+
+                if Holder.Visible ~= OnScreen and not (Distance > MiscOptions["Render Distance"]) then
+                    Holder.Visible = OnScreen
+                end
+
+                if not OnScreen then
+                    continue
+                end
+
+                local Pos = dim_offset(BoxPos.X, BoxPos.Y)
+                if Pos ~= Holder.Position then
+                    Holder.Position = Pos
+                end
+
+                local Size = dim2(0, BoxSize.X, 0, BoxSize.Y)
+                if Size ~= Holder.Size then
+                    Holder.Size = Size
+                end
+
+                local DistanceLabel = Items.Distance
+                local Text = tostring( math.round(Distance) )  .. " meter"
+                if DistanceLabel.Text ~= Text then
+                    DistanceLabel.Text = Text
+                end
+
+            end
+        end
+
+        function Esp.RefreshElements(key, value)
+            for _,Data in Esp.Players do
+                local Items = Data and Data.Items
+
+                if not Items then
+                    continue
+                end
+
+                if not Items.Holder then
+                    continue
+                end
+
+                if Items.Holder.Parent == nil then
+                    continue
+                end
+
+                if key == "Enabled" then
+                    Items.Holder.Visible = value
+                end
+
+                    if key == "BoxType" then
+                        if not (Items.Box.Parent == Items.Holder or Items.Corners.Parent == Items.Holder) then
+                            continue
+                        end
+
+                        local isCorner = value == "Corner"
+                        Items.Box.Parent = isCorner and Esp.Cache or Items.Holder
+                        Items.Corners.Parent = isCorner and Items.Holder or Esp.Cache
+                    end
+
+                    if key == "Boxes" then
+                        local isCorner = Items.Corners.Parent == Items.Holder and true or false
+                        local Enabled = value and Items.Holder or Esp.Cache
+
+                        if isCorner then
+                            Items.Corners.Parent = Enabled
+                        else
+                            Items.Box.Parent = Enabled
+                        end
+                    end
+
+                    if key == "Box Gradient 1" then
+                        local Color = rgbseq{
+                            Items.BoxGradient.Color.Keypoints[1],
+                            rgbkey(1, value.Color)
+                        }
+
+                        for _,corner in Items.Corners:GetChildren() do
+                            corner:FindFirstChildOfClass("UIGradient").Color = Color
+                        end
+
+                        Items.BoxGradient.Color = Color
+                    end
+
+                    if key == "Box Gradient 2" then
+                        local Color = rgbseq{
+                            rgbkey(0, value.Color),
+                            Items.BoxGradient.Color.Keypoints[2]
+                        }
+
+                        for _,corner in Items.Corners:GetChildren() do
+                            corner:FindFirstChildOfClass("UIGradient").Color = Color
+                        end
+
+                        Items.BoxGradient.Color = Color
+                    end
+
+                    if key == "Box Gradient Rotation" then
+                        Items.BoxGradient.Rotation = 180 - value
+
+                        for _,corner in Items.Corners:GetChildren() do
+                            corner:FindFirstChildOfClass("UIGradient").Rotation = 180 - value
+                        end
+                    end
+
+                    if key == "Box Fill" then
+                        Items.Holder.BackgroundTransparency = value and 0 or 1
+                    end
+
+                    if key == "Box Fill 1" then
+                        local Path = Items.HolderGradient
+                        Path.Transparency = numseq{
+                            numkey(0, 1 - value.Transparency),
+                            Path.Transparency.Keypoints[2]
+                        };
+
+                        Path.Color = rgbseq{
+                            rgbkey(0, value.Color),
+                            Path.Color.Keypoints[2]
+                        }
+                    end
+
+                    if key == "Box Fill 2" then
+                        local Path = Items.HolderGradient
+                        Path.Transparency = numseq{
+                            Path.Transparency.Keypoints[1],
+                            numkey(1, 1 - value.Transparency)
+                        };
+
+                        Path.Color = rgbseq{
+                            Path.Color.Keypoints[1],
+                            rgbkey(1, value.Color)
+                        };
+                    end
+
+                    if key == "Box Fill Rotation" then
+                        Items.HolderGradient.Rotation = value
+                    end
+
+                    if key == "Healthbar" then
+                        if Items.Healthbar.Parent == nil then
+                            continue
+                        end
+
+                        Items.Healthbar.Parent = value and Items[Items.Healthbar.Name] or Esp.Cache
+                        Items.HealthbarText.Parent = (Items.HealthbarText.Parent ~= Esp.Cache and value) and Items["HealthbarTexts" .. Items.Healthbar.Name] or Esp.Cache
+                    end
+
+                    if key == "Healthbar_Position" then
+                        local isEnabled = not (Items.Healthbar.Parent == Esp.Cache)
+
+                        if Items.Healthbar.Parent == nil then
+                            return
+                        end
+
+                        Items.Healthbar.Parent = isEnabled and Items[value] or Esp.Cache
+                        Items.Healthbar.Name = value
+                        Items.HealthbarText.Parent = isEnabled and value and Items.HealthbarText.Parent ~= Esp.Cache and Items["HealthbarTexts" .. Items.Healthbar.Name] or Esp.Cache
+
+                        if value == "Bottom" or value == "Top" then
+                            Items.HealthbarGradient.Rotation = -180
+                        else
+                            Items.HealthbarGradient.Rotation = 90
+                        end
+
+                        Data.HealthChanged(Data.Info.Humanoid.Health)
+                    end
+
+                    if key == "Healthbar_Number" then
+                        if Items.Healthbar.Parent == Esp.Cache then
+                            continue
+                        end
+
+                        local Parent = Items["HealthbarTexts" .. Items.Healthbar.Name]
+
+                        Items.HealthbarText.Parent = value and Parent or Esp.Cache
+                    end
+
+                    if key == "Healthbar_Low" then
+                        local Color = rgbseq{
+                            Items.HealthbarGradient.Color.Keypoints[1],
+                            Items.HealthbarGradient.Color.Keypoints[2],
+                            rgbkey(1, value.Color)
+                        }
+
+                        Items.HealthbarGradient.Color = Color
+                    end
+
+                    if key == "Healthbar_Medium" then
+                        local Color = rgbseq{
+                            Items.HealthbarGradient.Color.Keypoints[1],
+                            rgbkey(0.5, value.Color),
+                            Items.HealthbarGradient.Color.Keypoints[3]
+                        }
+
+                        Items.HealthbarGradient.Color = Color
+                    end
+
+                    if key == "Healthbar_High" then
+                        local Color = rgbseq{
+                            rgbkey(0, value.Color),
+                            Items.HealthbarGradient.Color.Keypoints[2],
+                            Items.HealthbarGradient.Color.Keypoints[3]
+                        }
+
+                        Items.HealthbarGradient.Color = Color
+                    end
+
+                    if key == "Healthbar_Thickness" then
+                        local Bar = Items.Healthbar
+                        local isHorizontal = Bar.Parent == Items.Bottom or Bar.Parent == Items.Top
+
+                        Bar.Size = dim2(0, value + 2, 0, value + 2)
+                    end
+
+                    if key == "Healthbar_Text_Size" then
+                        Items.HealthbarText.TextSize = value
+                    end
+
+                    if key == "Healthbar_Font" then
+                        Items.HealthbarText.FontFace = Fonts[value]
+                    end
+
+                    local Text;
+                    local Match;
+                    if string.match(key, "Name") then
+                        Text = Items.Text
+                        Match = "Name"
+                    elseif string.match(key, "Distance") then
+                        Text = Items.Distance
+                        Match = "Distance"
+                    end
+
+                    if Text then
+                        if key == Match .. "_Text" then
+                            if Text.Parent == nil then
+                                continue
+                            end
+
+                            Text.Parent = value and Items[Text.Name .. "Texts"] or Esp.Cache
+                        end
+
+                        if key == Match .. "_Text_Position" then
+                            local isEnabled = not (Text.Parent == Esp.Cache)
+
+                            if Text.Parent == nil then
+                                return
+                            end
+
+                            Text.Parent = isEnabled and Items[value .. "Texts"] or Esp.Cache
+                            Text.Name = tostring(value)
+
+                            if value == "Top" or value == "Bottom" then
+                                Text.AutomaticSize = Enum.AutomaticSize.Y
+                                Text.TextXAlignment = Enum.TextXAlignment.Center
+                            else
+                                Text.AutomaticSize = Enum.AutomaticSize.XY
+                                Text.TextXAlignment = Enum.TextXAlignment[value == "Right" and "Left" or "Right"]
+                            end
+                        end
+
+                        if key == Match .. "_Text_Color" then
+                            Text.TextColor3 = value.Color
+                        end
+
+                        if key == Match .. "_Text_Font" then
+                            Text.FontFace = Fonts[value]
+                        end
+
+                        if key == Match .. "_Text_Size" then
+                            Text.TextSize = value
+                        end
+                    end
+
+                    if key == "ChamsEnabled" then
+                        Data.Highlight.Enabled = value
+                    end
+
+                    if key == "Chams Fill" then
+                        Data.Highlight.FillColor = value.Color
+                        Data.Highlight.FillTransparency = 1 - value.Transparency
+                    end
+
+                    if key == "Chams Outline" then
+                        Data.Highlight.OutlineColor = value.Color
+                        Data.Highlight.OutlineTransparency = 1 - value.Transparency
+                    end
+
+            end
+        end
+
+        function Esp.Unload()
+            for _,player in Players:GetPlayers() do
+                Esp.RemovePlayer(player)
+            end
+
+            for _,connection in Esp.Connections do
+                connection:Disconnect()
+                connection = nil
+            end
+
+            if Esp.Loop then
+                RunService:UnbindFromRenderStep("Run Loop")
+                Esp.Loop = nil
+            end
+
+            Esp.Cache:Destroy()
+            Esp.ScreenGui:Destroy()
+
+            getgenv().Esp = nil
+            Esp = nil
+        end
+
+        function Esp.RemovePlayer(player)
+            local Path = Esp.Players[player.Name]
+
+            if Path then
+                Path.Destroy()
+            end
+        end
+    end
+
+    Esp.Loop = RunService:BindToRenderStep("Run Loop", 400, Esp.Update)
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local function upd()
+    if not Esp or not Esp.RefreshElements then return end
+
+    for key, value in pairs(MiscOptions) do
+        Esp.RefreshElements(key, value)
+    end
 end
-return mountBurmaldaCalamariMenu
 
-  end)()
-  mountCalamari(calamari, {Camera = "None", Lighting = false})
+for _, player in ipairs(Players:GetPlayers()) do
+    if player ~= LocalPlayer then
+        Esp.CreateObject(player)
+    end
 end
+
+upd()
+
+Players.PlayerAdded:Connect(function(player)
+    if player == LocalPlayer then return end
+
+    player.CharacterAdded:Connect(function()
+        task.wait(0.2)
+
+        if not Esp.Players[player.Name] then
+            Esp.CreateObject(player)
+        end
+
+        upd()
+    end)
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    Esp.RemovePlayer(player)
+end)
+
+return Esp, MiscOptions
+end)
+local __velocityOk, __velocityRuntime, __velocityOptions = pcall(__velocityFactory)
+if not __velocityOk then
+    __velocityRuntime = {Connections = {}, ScreenGui = {}, Cache = {},
+        CreateObject = function() end, Update = function() end,
+        RemovePlayer = function() end, Unload = function() end,
+        RefreshElements = function() end}
+    __velocityOptions = {}
+end
+local __velocityHost = nil
+local __velocitySyncConnection = nil
+if type(Runtime) == "table" then __velocityHost = Runtime
+elseif type(runtime) == "table" then __velocityHost = runtime
+elseif type(mainGame) == "table" then __velocityHost = mainGame end
+local __velocityCleanup = function()
+    pcall(function() if __velocitySyncConnection then __velocitySyncConnection:Disconnect() end end)
+    pcall(function() __velocityRuntime.Unload() end)
+end
+if __velocityHost then
+    __velocityHost.VelocityESP = __velocityRuntime
+    __velocityHost.VelocityOptions = __velocityOptions
+    for _, key in ipairs({"Cleanup", "extendedCleanups", "unloadCallbacks"}) do
+        if type(__velocityHost[key]) == "table" then table.insert(__velocityHost[key], __velocityCleanup) end
+    end
+end
+if type(menuCleanup) == "table" then table.insert(menuCleanup, __velocityCleanup) end
+local __velocityLastEnabled = false
+pcall(function()
+    local __velocityRun = game:GetService("RunService")
+    if __velocityRun and type(__velocityRun.RenderStepped) == "table" then
+        __velocitySyncConnection = __velocityRun.RenderStepped:Connect(function()
+            local enabled = false
+            if type(S) == "table" and S.ESPEnabled ~= nil then enabled = S.ESPEnabled
+            elseif type(cfg) == "table" and type(cfg.ESP) == "table" then enabled = cfg.ESP.Enabled end
+            enabled = enabled and true or false
+            if enabled ~= __velocityLastEnabled then
+                __velocityLastEnabled = enabled
+                __velocityOptions.Enabled = enabled
+                pcall(function() __velocityRuntime.RefreshElements("Enabled", enabled) end)
+            end
+        end)
+    end
+end)
+pcall(function()
+    if type(Environment) == "table" then Environment.BurmaldaVelocityESP = __velocityRuntime end
+    if type(getgenv) == "function" then getgenv().BurmaldaVelocityESP = __velocityRuntime end
+    if type(_G) == "table" then _G.BurmaldaVelocityESP = __velocityRuntime end
+end)
 
     -- Qwerty-equivalent controls, organized into the existing five tabs.
     local extraRuntime = mainGame.extraFeatures
