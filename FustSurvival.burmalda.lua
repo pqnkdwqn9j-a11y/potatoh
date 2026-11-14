@@ -1,16 +1,3 @@
-local __burmaldaFustEnv = getgenv and getgenv() or _G
-local __burmaldaFustKey = tostring(__burmaldaFustEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
-if tostring(__burmaldaFustEnv.PHOOKGATE or "") ~= "1347571535"
-    or __burmaldaFustKey == ""
-    or __burmaldaFustKey:upper() == "BETA"
-then
-    __burmaldaFustEnv.PHOOKGATE = nil
-    __burmaldaFustEnv.SCRIPT_KEY = nil
-    return
-end
-__burmaldaFustEnv.PHOOKGATE = nil
-__burmaldaFustEnv.SCRIPT_KEY = nil
-
 
 
 
@@ -79,11 +66,14 @@ local S = {
 	AimHeli = false,
 	AimPlayersFirst = true,
 	AimPrediction = false,
+	AimLead = 1.0,
 	FOVCircle = true,
 	TargetLine = false,
 
 	AutoCross = false,
 	AutoFarm = false,
+	Freecam = false,
+	FreecamSpeed = 50,
 	AutoFarmMode = "Ore",
 	AutoFarmRange = 60,
 	LootContents = false,
@@ -2557,7 +2547,6 @@ do
 		if typeof(payload.origin) ~= "Vector3" or typeof(payload.dir) ~= "Vector3" then
 			return callOriginal(self, method, args)
 		end
-		return callOriginal(self, method, args)
 	end
 
 	function Aim.InstallNamecall()
@@ -2650,9 +2639,9 @@ do
 		return velocitySample.Velocity
 	end
 
-	local function predictedPosition(target, part, sampledVelocity)
+	local function predictedPosition(target, part, sampledVelocity, enabled)
 		local position = part.Position
-		if not S.AimPrediction then return position end
+		if not enabled then return position end
 		local tool = string.lower(Shared.ToolName())
 		local speed, gravity
 		for _, entry in ipairs(gunBallistics) do
@@ -2672,7 +2661,8 @@ do
 			if partVelocity then velocity = partVelocity end
 		end
 		if velocity.Magnitude < 0.5 and sampledVelocity then velocity = sampledVelocity end
-		return position + velocity * travel + Vector3.new(0, gravity * travel * travel * 0.5, 0)
+		local lead = S.AimLead or 1.0
+		return position + velocity * travel * lead + Vector3.new(0, gravity * travel * travel * 0.5, 0)
 	end
 
 	function Aim.Update(dt)
@@ -2708,7 +2698,7 @@ do
 		Aim.CurrentTarget = best.Target
 		Aim.CurrentPart = best.Part
 		local sampledVelocity = sampleTargetVelocity(best.Part, dt)
-		local position = predictedPosition(best.Target, best.Part, sampledVelocity)
+		local position = predictedPosition(best.Target, best.Part, sampledVelocity, S.AimPrediction)
 		Aim.CurrentPosition = position
 		local x, y, _, visible = Shared.Project(position)
 		if visible then Aim.CurrentScreen = Vector2.new(x, y) end
@@ -3392,6 +3382,7 @@ Runtime.FeatureHandlers.AutoCross = function(value)
 		onOff(editor, "Target Patrol Heli", "AimHeli")
 		onOff(editor, "Players First", "AimPlayersFirst")
 		onOff(editor, "Prediction", "AimPrediction")
+		slider(editor, "Lead Multiplier", 0.0, 2.0, "AimLead")
 		onOff(editor, "FOV Circle", "FOVCircle")
 		onOff(editor, "Target Line", "TargetLine")
 		color(editor, "FOV Color", "FOV")
@@ -3524,6 +3515,9 @@ Runtime.FeatureHandlers.AutoCross = function(value)
 		toggleBind(editor, "High Jump", "HighJump")
 		editor = feature(section(rc, "Collision"), "Noclip", "Noclip")
 		toggleBind(editor, "Noclip", "Noclip")
+		editor = feature(section(rc, "Camera"), "Freecam", "Freecam")
+		slider(editor, "Speed", 10, 200, "FreecamSpeed")
+		toggleBind(editor, "Freecam", "Freecam")
 	end
 
 	do
@@ -3794,6 +3788,97 @@ Runtime.FeatureHandlers.AutoCross = function(value)
 	end
 end
 
+	local UIS = game:GetService("UserInputService")
+	local Camera = workspace.CurrentCamera
+
+	local Freecam = {
+		Active = false,
+		OriginalCamera = nil,
+		Offset = CFrame.new(),
+		Keys = {},
+		MouseDelta = Vector2.new(),
+	}
+	Runtime.Freecam = Freecam
+
+	local keys = {
+		[Enum.KeyCode.W] = Vector3.new(0, 0, -1),
+		[Enum.KeyCode.S] = Vector3.new(0, 0, 1),
+		[Enum.KeyCode.A] = Vector3.new(-1, 0, 0),
+		[Enum.KeyCode.D] = Vector3.new(1, 0, 0),
+		[Enum.KeyCode.Q] = Vector3.new(0, -1, 0),
+		[Enum.KeyCode.E] = Vector3.new(0, 1, 0),
+	}
+
+	local keyDown, keyUp, mouseMoved
+
+	function Freecam.Enable()
+		if Freecam.Active then return end
+		Freecam.Active = true
+		Freecam.OriginalCamera = Camera.CFrame
+		Freecam.Offset = CFrame.new()
+		table.clear(Freecam.Keys)
+
+		keyDown = UIS.InputBegan:Connect(function(input)
+			if input.UserInputType ~= Enum.UserInputType.Keyboard then return end
+			local direction = keys[input.KeyCode]
+			if direction then Freecam.Keys[input.KeyCode] = direction end
+		end)
+
+		keyUp = UIS.InputEnded:Connect(function(input)
+			if input.UserInputType ~= Enum.UserInputType.Keyboard then return end
+			Freecam.Keys[input.KeyCode] = nil
+		end)
+
+		mouseMoved = UIS.InputChanged:Connect(function(input)
+			if input.UserInputType ~= Enum.UserInputType.MouseMovement then return end
+			Freecam.MouseDelta = input.Delta
+		end)
+	end
+
+	function Freecam.Disable()
+		if not Freecam.Active then return end
+		Freecam.Active = false
+		if keyDown then keyDown:Disconnect() end
+		if keyUp then keyUp:Disconnect() end
+		if mouseMoved then mouseMoved:Disconnect() end
+		keyDown, keyUp, mouseMoved = nil, nil, nil
+		table.clear(Freecam.Keys)
+		Freecam.MouseDelta = Vector2.new()
+		if Freecam.OriginalCamera then
+			Camera.CFrame = Freecam.OriginalCamera
+			Freecam.OriginalCamera = nil
+		end
+		Freecam.Offset = CFrame.new()
+	end
+
+	function Freecam.Update(dt)
+		if not Freecam.Active or not Camera then return end
+		local speed = (S.FreecamSpeed or 50) * (dt or 0)
+		local direction = Vector3.zero
+		for _, delta in pairs(Freecam.Keys) do
+			direction = direction + delta
+		end
+		if direction.Magnitude > 0 then
+			direction = direction.Unit * speed
+		end
+		local yaw, pitch = Freecam.MouseDelta.X * 0.003, Freecam.MouseDelta.Y * 0.003
+		Freecam.MouseDelta = Vector2.new()
+		local rotation = CFrame.Angles(-pitch, -yaw, 0)
+		local forward = Freecam.Offset.LookVector * direction.Z
+		local right = Freecam.Offset.RightVector * direction.X
+		local up = Freecam.Offset.UpVector * direction.Y
+		Freecam.Offset = Freecam.Offset * CFrame.new(forward + right + up) * rotation
+		Camera.CFrame = Freecam.OriginalCamera * Freecam.Offset
+	end
+
+	Runtime.FeatureHandlers.Freecam = function(value)
+		if value then
+			Freecam.Enable()
+		else
+			Freecam.Disable()
+		end
+	end
+
 
 function Runtime.Unload()
 	if Runtime.Unloaded then return end
@@ -3839,6 +3924,7 @@ renderConnection = RunService.RenderStepped:Connect(function(dt)
 	guardedStep("Environment", Runtime.Environment and Runtime.Environment.Update, dt)
 	guardedStep("Aim", Runtime.Aim and Runtime.Aim.Update, dt)
 	guardedStep("Trigger", Runtime.Aim and Runtime.Aim.UpdateTrigger, dt)
+	guardedStep("Freecam", Runtime.Freecam and Runtime.Freecam.Update, dt)
 	guardedStep("Visuals", Runtime.Visuals and Runtime.Visuals.Update, dt)
 end)
 onCleanup(function()
