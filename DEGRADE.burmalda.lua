@@ -97,6 +97,8 @@ local S = {
 	LowPC = false,
 	HUD = true,
 	UIAnimations = true,
+	Freecam = false,
+	FreecamSpeed = 50,
 }
 
 local Colors = {
@@ -1789,35 +1791,35 @@ do
 				local position = part.Position
 				local distance = (position - origin).Magnitude
 				if distance <= options.Range then
-					local x, y, z, visible = Shared.Project(position)
-					if x and z > 0 and visible then
-						local dx = x - Camera.ViewportSize.X * 0.5
-						local dy = y - Camera.ViewportSize.Y * 0.5
-						local screenDistance = math.sqrt(dx * dx + dy * dy)
-						if screenDistance <= options.FOV then
-							local score = screenDistance
-							if options.Priority == "Distance" then
-								score = distance + screenDistance * 0.0001
-							elseif options.Priority == "Low HP" then
-								score = humanoid.Health + screenDistance * 0.0001
-							end
-							if score < best.Score then
-								if not options.WallCheck or Shared.WallClear(position, character) then
-									best.Score = score
-									best.Target = {
-										Model = character,
-										Root = root,
-										Humanoid = humanoid,
-										Player = player,
-									}
-									best.Part = part
-									best.Position = position
-									best.ScreenX = x
-									best.ScreenY = y
-								end
+			local x, y, z = Shared.Project(position)
+				if x and z > 0 then
+					local dx = x - Camera.ViewportSize.X * 0.5
+					local dy = y - Camera.ViewportSize.Y * 0.5
+					local screenDistance = math.sqrt(dx * dx + dy * dy)
+					if screenDistance <= options.FOV then
+						local score = screenDistance
+						if options.Priority == "Distance" then
+							score = distance + screenDistance * 0.0001
+						elseif options.Priority == "Low HP" then
+							score = humanoid.Health + screenDistance * 0.0001
+						end
+						if score < best.Score then
+							if not options.WallCheck or Shared.WallClear(position, character) then
+								best.Score = score
+								best.Target = {
+									Model = character,
+									Root = root,
+									Humanoid = humanoid,
+									Player = player,
+								}
+								best.Part = part
+								best.Position = position
+								best.ScreenX = x
+								best.ScreenY = y
 							end
 						end
 					end
+				end
 				end
 			end
 		end
@@ -2393,6 +2395,9 @@ do
 		toggleBind(editor, "Fly", "Fly")
 		editor = feature(section(rc, "Collision"), "Noclip", "Noclip")
 		toggleBind(editor, "Noclip", "Noclip")
+		editor = feature(section(rc, "Camera"), "Freecam", "Freecam")
+		slider(editor, "Speed", 10, 200, "FreecamSpeed")
+		toggleBind(editor, "Freecam", "Freecam")
 		editor = feature(section(rc, "Teleport"), "Teleport To Mouse", "TeleportMouse")
 		slider(editor, "Raycast Distance", 100, 5000, "TeleportDistance")
 		addBind(editor, "Teleport Bind", "None", function()
@@ -2652,6 +2657,97 @@ do
 	end
 end
 
+local UIS = game:GetService("UserInputService")
+local Camera = workspace.CurrentCamera
+
+local Freecam = {
+	Active = false,
+	OriginalCamera = nil,
+	Offset = CFrame.new(),
+	Keys = {},
+	MouseDelta = Vector2.new(),
+}
+Runtime.Freecam = Freecam
+
+local keys = {
+	[Enum.KeyCode.W] = Vector3.new(0, 0, -1),
+	[Enum.KeyCode.S] = Vector3.new(0, 0, 1),
+	[Enum.KeyCode.A] = Vector3.new(-1, 0, 0),
+	[Enum.KeyCode.D] = Vector3.new(1, 0, 0),
+	[Enum.KeyCode.Q] = Vector3.new(0, -1, 0),
+	[Enum.KeyCode.E] = Vector3.new(0, 1, 0),
+}
+
+local keyDown, keyUp, mouseMoved
+
+function Freecam.Enable()
+	if Freecam.Active then return end
+	Freecam.Active = true
+	Freecam.OriginalCamera = Camera.CFrame
+	Freecam.Offset = CFrame.new()
+	table.clear(Freecam.Keys)
+
+	keyDown = UIS.InputBegan:Connect(function(input)
+		if input.UserInputType ~= Enum.UserInputType.Keyboard then return end
+		local direction = keys[input.KeyCode]
+		if direction then Freecam.Keys[input.KeyCode] = direction end
+	end)
+
+	keyUp = UIS.InputEnded:Connect(function(input)
+		if input.UserInputType ~= Enum.UserInputType.Keyboard then return end
+		Freecam.Keys[input.KeyCode] = nil
+	end)
+
+	mouseMoved = UIS.InputChanged:Connect(function(input)
+		if input.UserInputType ~= Enum.UserInputType.MouseMovement then return end
+		Freecam.MouseDelta = input.Delta
+	end)
+end
+
+function Freecam.Disable()
+	if not Freecam.Active then return end
+	Freecam.Active = false
+	if keyDown then keyDown:Disconnect() end
+	if keyUp then keyUp:Disconnect() end
+	if mouseMoved then mouseMoved:Disconnect() end
+	keyDown, keyUp, mouseMoved = nil, nil, nil
+	table.clear(Freecam.Keys)
+	Freecam.MouseDelta = Vector2.new()
+	if Freecam.OriginalCamera then
+		Camera.CFrame = Freecam.OriginalCamera
+		Freecam.OriginalCamera = nil
+	end
+	Freecam.Offset = CFrame.new()
+end
+
+function Freecam.Update(dt)
+	if not Freecam.Active or not Camera then return end
+	local speed = (S.FreecamSpeed or 50) * (dt or 0)
+	local direction = Vector3.zero
+	for _, delta in pairs(Freecam.Keys) do
+		direction = direction + delta
+	end
+	if direction.Magnitude > 0 then
+		direction = direction.Unit * speed
+	end
+	local yaw, pitch = Freecam.MouseDelta.X * 0.003, Freecam.MouseDelta.Y * 0.003
+	Freecam.MouseDelta = Vector2.new()
+	local rotation = CFrame.Angles(-pitch, -yaw, 0)
+	local forward = Freecam.Offset.LookVector * direction.Z
+	local right = Freecam.Offset.RightVector * direction.X
+	local up = Freecam.Offset.UpVector * direction.Y
+	Freecam.Offset = Freecam.Offset * CFrame.new(forward + right + up) * rotation
+	Camera.CFrame = Freecam.OriginalCamera * Freecam.Offset
+end
+
+Runtime.FeatureHandlers.Freecam = function(value)
+	if value then
+		Freecam.Enable()
+	else
+		Freecam.Disable()
+	end
+end
+
 function Runtime.Unload()
 	if Runtime.Unloaded then return end
 	Runtime.Unloaded = true
@@ -2688,6 +2784,7 @@ renderConnection = RunService.RenderStepped:Connect(function(dt)
 	guardedStep("Movement", Runtime.Movement and Runtime.Movement.Update, dt)
 	guardedStep("Environment", Runtime.Environment and Runtime.Environment.Update, dt)
 	guardedStep("Aim", Runtime.Aim and Runtime.Aim.Update, dt)
+	guardedStep("Freecam", Runtime.Freecam and Runtime.Freecam.Update, dt)
 	guardedStep("Visuals", Runtime.Visuals and Runtime.Visuals.Update, dt)
 end)
 onCleanup(function()
