@@ -12,10 +12,6 @@ elseif type(getexecutorname) == "function" then
 	if ok and name ~= nil then executorName = tostring(name) end
 end
 if string.find(string.lower(executorName), "xeno", 1, true) then return end
-if game.PlaceId ~= 129437813830973 then
-	warn("Burmalda.hook: this build is only for DEGRADE")
-	return
-end
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
