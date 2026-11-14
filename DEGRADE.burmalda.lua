@@ -1,21 +1,3 @@
-local __burmaldaDEGRADEEnv = getgenv and getgenv() or _G
-local __burmaldaDEGRADEGame = tostring(__burmaldaDEGRADEEnv.BURMALDA_GAME or ""):match("^%s*(.-)%s*$")
-local __burmaldaDEGRADEKey = tostring(__burmaldaDEGRADEEnv.SCRIPT_KEY or ""):match("^%s*(.-)%s*$")
-if game.PlaceId ~= 129437813830973
-    or __burmaldaDEGRADEGame ~= "degrade"
-    or tostring(__burmaldaDEGRADEEnv.PHOOKGATE or "") ~= "1347571535"
-    or __burmaldaDEGRADEKey == ""
-    or __burmaldaDEGRADEKey:upper() == "BETA"
-then
-    __burmaldaDEGRADEEnv.PHOOKGATE = nil
-    __burmaldaDEGRADEEnv.SCRIPT_KEY = nil
-    __burmaldaDEGRADEEnv.BURMALDA_GAME = nil
-    return
-end
-__burmaldaDEGRADEEnv.PHOOKGATE = nil
-__burmaldaDEGRADEEnv.SCRIPT_KEY = nil
-__burmaldaDEGRADEEnv.BURMALDA_GAME = nil
-
 local _degradeEnv = getgenv and getgenv() or _G
 if _degradeEnv.BurmaldaDEGRADE and _degradeEnv.BurmaldaDEGRADE.Unload then
 	pcall(_degradeEnv.BurmaldaDEGRADE.Unload)
