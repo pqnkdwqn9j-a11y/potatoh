@@ -861,7 +861,7 @@ function addBind(p, name, def, onPress, onChanged)
 		if pressConn then pressConn:Disconnect(); pressConn = nil end
 		if not (boundKey or boundMouse) then return end
 		pressConn = connectUI(UIS.InputBegan, function(input, gameProcessed)
-			if gameProcessed or picking or input == ignoreInput then return end
+			if picking or input == ignoreInput then return end
 			if (boundKey and input.KeyCode == boundKey) or (boundMouse and input.UserInputType == boundMouse) then
 				if onPress then onPress() end
 			end
