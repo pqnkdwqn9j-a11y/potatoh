@@ -1443,168 +1443,255 @@ do
 	end
 end
 
-do
-	local Shared = Runtime.Shared
-	local Movement = {
-		NoclipOriginals = setmetatable({}, {__mode = "k"}),
-		NoclipParts = {},
-		NoclipCharacter = nil,
-		NextNoclipScan = 0,
-		FlyVelocity = nil,
-		FlyGyro = nil,
-		FlyHumanoid = nil,
-		FlyPlatformStand = false,
-	}
-	Runtime.Movement = Movement
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local PhysicsService = game:GetService("PhysicsService")
+local UIS = game:GetService("UserInputService")
+local LocalPlayer = Players.LocalPlayer
 
-	function Movement.RestoreNoclip()
-		for part, canCollide in pairs(Movement.NoclipOriginals) do
-			pcall(function() part.CanCollide = canCollide end)
-		end
-		Movement.NoclipOriginals = setmetatable({}, {__mode = "k"})
-		Movement.NoclipParts = {}
-		Movement.NoclipCharacter = nil
-		Movement.NextNoclipScan = 0
+local Movement = {
+	SpeedEnabled = false,
+	OriginalWalkSpeed = 16,
+	FlyEnabled = false,
+	FlyCFrame = nil,
+	NoclipEnabled = false,
+	NoclipPartsCache = {},
+	NoclipLastChar = nil,
+	Keys = {},
+}
+Runtime.Movement = Movement
+
+local noclipGroupReady = false
+local function ensureNoclipGroup()
+	if noclipGroupReady then return true end
+	local ok = pcall(function() PhysicsService:CreateCollisionGroup("BurmaldaNC") end)
+	if ok or true then
+		pcall(function() PhysicsService:CollisionGroupSetCollidable("BurmaldaNC", "Default", false) end)
+		noclipGroupReady = true
+		return true
 	end
+	return false
+end
 
-	function Movement.RestoreFly()
-		if Movement.FlyVelocity then pcall(function() Movement.FlyVelocity:Destroy() end) end
-		if Movement.FlyGyro then pcall(function() Movement.FlyGyro:Destroy() end) end
-		Movement.FlyVelocity = nil
-		Movement.FlyGyro = nil
-		if Movement.FlyHumanoid then
-			pcall(function() Movement.FlyHumanoid.PlatformStand = Movement.FlyPlatformStand end)
-		end
-		Movement.FlyHumanoid = nil
-		Movement.FlyPlatformStand = false
+local function applyNoclipToCharacter(character)
+	if not character then return end
+	if Movement.NoclipLastChar == character then return end
+	Movement.NoclipLastChar = character
+
+	for _, obj in ipairs(Movement.NoclipPartsCache) do
+		if typeof(obj) == "RBXScriptConnection" then pcall(function() obj:Disconnect() end) end
 	end
+	Movement.NoclipPartsCache = {}
+	if not ensureNoclipGroup() then return end
 
-	function Movement.Restore()
-		Movement.RestoreNoclip()
-		Movement.RestoreFly()
-	end
+	local flying = Movement.FlyEnabled
+	for _, desc in ipairs(character:GetDescendants()) do
+		if desc:IsA("BasePart") then
+			if flying then
 
-	local function updateNoclip(character)
-		local now = os.clock()
-		if Movement.NoclipCharacter ~= character or now >= Movement.NextNoclipScan then
-			Movement.NoclipCharacter = character
-			Movement.NextNoclipScan = now + 1
-			Movement.NoclipParts = {}
-			for _, part in ipairs(character:GetDescendants()) do
-				if part:IsA("BasePart") then
-					if Movement.NoclipOriginals[part] == nil then Movement.NoclipOriginals[part] = part.CanCollide end
-					table.insert(Movement.NoclipParts, part)
+				pcall(function() PhysicsService:SetPartCollisionGroup(desc, "BurmaldaNC") end)
+			else
+
+				local name = desc.Name
+				if name ~= "HumanoidRootPart" and name ~= "LeftHand" and name ~= "RightHand"
+				   and name ~= "LeftFoot" and name ~= "RightFoot" then
+					pcall(function() PhysicsService:SetPartCollisionGroup(desc, "BurmaldaNC") end)
 				end
 			end
 		end
-		for _, part in ipairs(Movement.NoclipParts) do
-			if part.Parent then part.CanCollide = false end
-		end
 	end
-
-	local function updateFly(character, humanoid, root)
-		if Movement.FlyHumanoid ~= humanoid then
-			Movement.RestoreFly()
-			Movement.FlyHumanoid = humanoid
-			Movement.FlyPlatformStand = humanoid.PlatformStand == true
-		end
-		if not Movement.FlyVelocity or Movement.FlyVelocity.Parent ~= root then
-			if Movement.FlyVelocity then pcall(function() Movement.FlyVelocity:Destroy() end) end
-			Movement.FlyVelocity = Instance.new("BodyVelocity")
-			Movement.FlyVelocity.Name = "BurmaldaFlyVelocity"
-			Movement.FlyVelocity.MaxForce = Vector3.new(1000000000, 1000000000, 1000000000)
-			Movement.FlyVelocity.P = 1250
-			Movement.FlyVelocity.Parent = root
-		end
-		if not Movement.FlyGyro or Movement.FlyGyro.Parent ~= root then
-			if Movement.FlyGyro then pcall(function() Movement.FlyGyro:Destroy() end) end
-			Movement.FlyGyro = Instance.new("BodyGyro")
-			Movement.FlyGyro.Name = "BurmaldaFlyGyro"
-			Movement.FlyGyro.MaxTorque = Vector3.new(1000000000, 1000000000, 1000000000)
-			Movement.FlyGyro.P = 90000
-			Movement.FlyGyro.Parent = root
-		end
-		humanoid.PlatformStand = true
-		local direction = Vector3.zero
-		local look = Camera.CFrame.LookVector or Vector3.new(0, 0, -1)
-		local right = Camera.CFrame.RightVector or Vector3.new(1, 0, 0)
-		if Shared.KeyDown("W") then direction += look end
-		if Shared.KeyDown("S") then direction -= look end
-		if Shared.KeyDown("D") then direction += right end
-		if Shared.KeyDown("A") then direction -= right end
-		if Shared.KeyDown("Space") then direction += Vector3.new(0, 1, 0) end
-		if Shared.KeyDown("LeftControl") then direction -= Vector3.new(0, 1, 0) end
-		Movement.FlyVelocity.Velocity = direction.Magnitude > 0.05 and direction.Unit * S.FlySpeed or Vector3.zero
-		Movement.FlyGyro.CFrame = Camera.CFrame
-	end
-
-	function Movement.TeleportToMouse()
-		if Runtime.Unloaded or not Camera then return false end
-		local character = Shared.Character()
-		local root = Shared.Root(character)
-		if not character or not root then return false end
-		local mouse = UIS:GetMouseLocation()
-		local ray = Camera:ViewportPointToRay(mouse.X, mouse.Y)
-		local params = RaycastParams.new()
-		params.FilterType = Enum.RaycastFilterType.Exclude
-		params.FilterDescendantsInstances = {character}
-		params.IgnoreWater = true
-		Runtime.RaycastBypass += 1
-		local ok, result = pcall(workspace.Raycast, workspace, ray.Origin, ray.Direction * S.TeleportDistance, params)
-		Runtime.RaycastBypass -= 1
-		if not ok then return false end
-		local destination
-		if result and result.Position then
-			destination = result.Position + Vector3.new(0, 3, 0)
-		else
-			destination = ray.Origin + ray.Direction * 100
-		end
-		root.CFrame = CFrame.new(destination)
-		return true
-	end
-
-	function Movement.Update()
-		local character = Shared.Character()
-		local humanoid = Shared.Humanoid(character)
-		local root = Shared.Root(character)
-		if not character or not humanoid or not root or humanoid.Health <= 0 then
-			if Movement.FlyHumanoid or Movement.FlyVelocity or Movement.FlyGyro then Movement.RestoreFly() end
-			return
-		end
-		if S.Speed and not S.Fly and not humanoid.Sit then
-			local direction = humanoid.MoveDirection
-			if direction.Magnitude > 0.05 then
-				direction = direction.Unit
-				local velocity = root.AssemblyLinearVelocity
-				root.AssemblyLinearVelocity = Vector3.new(direction.X * S.SpeedValue, velocity.Y, direction.Z * S.SpeedValue)
+	local conn = character.DescendantAdded:Connect(function(desc)
+		if Movement.NoclipEnabled and desc:IsA("BasePart") then
+			if Movement.FlyEnabled then
+				pcall(function() PhysicsService:SetPartCollisionGroup(desc, "BurmaldaNC") end)
+			else
+				local name = desc.Name
+				if name ~= "HumanoidRootPart" and name ~= "LeftHand" and name ~= "RightHand"
+				   and name ~= "LeftFoot" and name ~= "RightFoot" then
+					pcall(function() PhysicsService:SetPartCollisionGroup(desc, "BurmaldaNC") end)
+				end
 			end
 		end
-		if S.Fly then
-			updateFly(character, humanoid, root)
-		elseif Movement.FlyHumanoid or Movement.FlyVelocity or Movement.FlyGyro then
-			Movement.RestoreFly()
-		end
-		if S.Noclip then
-			updateNoclip(character)
-		elseif Movement.NoclipCharacter then
-			Movement.RestoreNoclip()
+	end)
+	table.insert(Movement.NoclipPartsCache, conn)
+end
+
+local function removeNoclipFromCharacter(character)
+	if not character then return end
+	for _, obj in ipairs(Movement.NoclipPartsCache) do
+		if typeof(obj) == "Instance" and obj:IsA("BasePart") then
+			pcall(function() PhysicsService:SetPartCollisionGroup(obj, "Default") end)
+		elseif typeof(obj) == "RBXScriptConnection" then
+			pcall(function() obj:Disconnect() end)
 		end
 	end
-
-	local characterConnection = LocalPlayer.CharacterAdded:Connect(function()
-		Movement.RestoreNoclip()
-		Movement.RestoreFly()
-	end)
-	local removingConnection = LocalPlayer.CharacterRemoving:Connect(function()
-		Movement.RestoreNoclip()
-		Movement.RestoreFly()
-	end)
-	onCleanup(function()
-		if characterConnection then pcall(function() characterConnection:Disconnect() end) end
-		if removingConnection then pcall(function() removingConnection:Disconnect() end) end
-		Movement.Restore()
-	end)
+	Movement.NoclipPartsCache = {}
+	Movement.NoclipLastChar = nil
 end
+
+UIS.InputBegan:Connect(function(input, gp)
+	if gp then return end
+	if input.UserInputType == Enum.UserInputType.Keyboard then
+		Movement.Keys[input.KeyCode] = true
+	end
+end)
+UIS.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.Keyboard then
+		Movement.Keys[input.KeyCode] = nil
+	end
+end)
+
+local function updateFly(dt)
+	local character = LocalPlayer.Character
+	if not character then return end
+	local root = character:FindFirstChild("HumanoidRootPart")
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	if not root or not humanoid then return end
+
+	humanoid.AutoRotate = false
+	root.AssemblyLinearVelocity = Vector3.zero
+	root.AssemblyAngularVelocity = Vector3.zero
+
+	local camCF = workspace.CurrentCamera.CFrame
+	local moveDir = Vector3.zero
+	if Movement.Keys[Enum.KeyCode.W] then moveDir = moveDir + camCF.LookVector end
+	if Movement.Keys[Enum.KeyCode.S] then moveDir = moveDir - camCF.LookVector end
+	if Movement.Keys[Enum.KeyCode.A] then moveDir = moveDir - camCF.RightVector end
+	if Movement.Keys[Enum.KeyCode.D] then moveDir = moveDir + camCF.RightVector end
+	if Movement.Keys[Enum.KeyCode.E] or Movement.Keys[Enum.KeyCode.Space] then
+		moveDir = moveDir + Vector3.new(0, 1, 0)
+	end
+	if Movement.Keys[Enum.KeyCode.Q] or Movement.Keys[Enum.KeyCode.LeftControl] then
+		moveDir = moveDir - Vector3.new(0, 1, 0)
+	end
+
+	local speed = S.FlySpeed or 50
+	if moveDir.Magnitude > 0 then
+		Movement.FlyCFrame = Movement.FlyCFrame + moveDir.Unit * speed * dt
+	end
+	root.CFrame = Movement.FlyCFrame
+end
+
+local function applySpeed()
+	local character = LocalPlayer.Character
+	if not character then return end
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	if humanoid and humanoid.WalkSpeed ~= S.SpeedValue then
+		humanoid.WalkSpeed = S.SpeedValue
+	end
+end
+
+Runtime.FeatureHandlers.Fly = function(value)
+	if value then
+		local character = LocalPlayer.Character
+		if not character then return end
+		local root = character:FindFirstChild("HumanoidRootPart")
+		if not root then return end
+		Movement.FlyEnabled = true
+		Movement.FlyCFrame = root.CFrame
+
+		Movement.NoclipLastChar = nil
+		if Movement.NoclipEnabled then
+			applyNoclipToCharacter(character)
+		end
+	else
+		Movement.FlyEnabled = false
+		local character = LocalPlayer.Character
+		if character then
+			local humanoid = character:FindFirstChildOfClass("Humanoid")
+			if humanoid then humanoid.AutoRotate = true end
+
+			Movement.NoclipLastChar = nil
+			if Movement.NoclipEnabled then
+				applyNoclipToCharacter(character)
+			end
+		end
+	end
+end
+
+Runtime.FeatureHandlers.Speed = function(value)
+	local character = LocalPlayer.Character
+	if not character then return end
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	if not humanoid then return end
+	if value then
+		Movement.SpeedEnabled = true
+		Movement.OriginalWalkSpeed = humanoid.WalkSpeed
+		humanoid.WalkSpeed = S.SpeedValue or 24
+	else
+		Movement.SpeedEnabled = false
+		humanoid.WalkSpeed = Movement.OriginalWalkSpeed
+	end
+end
+
+Runtime.FeatureHandlers.SpeedValue = function() if Movement.SpeedEnabled then applySpeed() end end
+
+Runtime.FeatureHandlers.Noclip = function(value)
+	if value then
+		Movement.NoclipEnabled = true
+		applyNoclipToCharacter(LocalPlayer.Character)
+	else
+		Movement.NoclipEnabled = false
+		removeNoclipFromCharacter(LocalPlayer.Character)
+	end
+end
+
+Runtime.FeatureHandlers.TeleportMouse = function() end
+
+function Movement.TeleportToMouse()
+	local character = LocalPlayer.Character
+	if not character then return false end
+	local root = character:FindFirstChild("HumanoidRootPart")
+	if not root then return false end
+	local camera = workspace.CurrentCamera
+	if not camera then return false end
+	local rayOrigin = camera.CFrame.Position
+	local rayDirection = camera.CFrame.LookVector * 1000
+	local result = workspace:Raycast(rayOrigin, rayDirection)
+	if result then
+		root.CFrame = CFrame.new(result.Position + Vector3.new(0, 3, 0))
+	else
+		root.CFrame = CFrame.new(rayOrigin + camera.CFrame.LookVector * 100)
+	end
+	return true
+end
+
+local tpKey = Enum.KeyCode.T
+UIS.InputBegan:Connect(function(input, gp)
+	if gp then return end
+	if S.TeleportMouse and input.KeyCode == tpKey then
+		Movement.TeleportToMouse()
+	end
+end)
+
+function Movement.Update(dt)
+	if Movement.FlyEnabled then updateFly(dt) end
+	if Movement.SpeedEnabled then applySpeed() end
+end
+
+Players.LocalPlayer.CharacterAdded:Connect(function(character)
+	character:WaitForChild("HumanoidRootPart")
+	task.wait(0.5)
+	if Movement.NoclipEnabled then applyNoclipToCharacter(character) end
+end)
+
+function Movement.Restore()
+	Movement.FlyEnabled = false
+	Movement.SpeedEnabled = false
+	Movement.NoclipEnabled = false
+	Movement.Keys = {}
+	local character = LocalPlayer.Character
+	if character then
+		local humanoid = character:FindFirstChildOfClass("Humanoid")
+		if humanoid then
+			humanoid.AutoRotate = true
+			humanoid.WalkSpeed = 16
+		end
+	end
+	removeNoclipFromCharacter(character)
+end
+
+onCleanup(Movement.Restore)
 
 do
 	local Environment = {Captured = false, NextApply = 0}
@@ -2306,8 +2393,7 @@ do
 	end
 
 	Runtime.FeatureHandlers.HUD = function(value) statsHud.SetVisible(value) end
-	Runtime.FeatureHandlers.Noclip = function(value) if not value then Runtime.Movement.RestoreNoclip() end end
-	Runtime.FeatureHandlers.Fly = function(value) if not value then Runtime.Movement.RestoreFly() end end
+
 	Runtime.FeatureHandlers.PlayerESP = function(value)
 		if not value and not (S.PlayerChams or S.PlayerTracers) then Runtime.Visuals.Clear() end
 	end
@@ -2470,6 +2556,7 @@ do
 		function Config.Apply(data)
 			if type(data) ~= "table" or type(data.State) ~= "table" then return false end
 			local accepted = {}
+
 			for key, value in pairs(data.State) do
 				local current = S[key]
 				if current ~= nil and type(current) == type(value) and (type(value) == "boolean" or type(value) == "number" or type(value) == "string") then
@@ -2477,6 +2564,7 @@ do
 					accepted[key] = true
 				end
 			end
+
 			if type(data.Colors) == "table" then
 				for key, rgb in pairs(data.Colors) do
 					if Colors[key] and type(rgb) == "table" and tonumber(rgb[1]) and tonumber(rgb[2]) and tonumber(rgb[3]) then
