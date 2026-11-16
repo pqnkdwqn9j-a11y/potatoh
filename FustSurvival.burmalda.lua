@@ -170,6 +170,14 @@ local S = {
 	LowPC = false,
 	HUD = true,
 	UIAnimations = true,
+	
+	FullBright = false,
+	RemoveFog = false,
+	NoSpread = false,
+	AntiAimFix = false,
+	GunChams = false,
+	GunChamsColor = Color3.fromRGB(255, 100, 100),
+	GunChamsTransparency = 0,
 }
 
 local Colors = {
@@ -536,7 +544,7 @@ Theme = {
 	Accent = Color3.fromRGB(255, 255, 255),
 }
 UIAnimations = true
-local SOURCE_WINDOW_WIDTH, SOURCE_WINDOW_HEIGHT = 621, 542
+local SOURCE_WINDOW_WIDTH, SOURCE_WINDOW_HEIGHT = 480, 420
 local SOURCE_PAGE_HEIGHT, SOURCE_SECTION_GAP = 30, 12
 local SOURCE_SECTION_TOPBAR, SOURCE_CONTROL_GAP = 25, 6
 
@@ -585,13 +593,31 @@ local title = Instance.new("TextLabel", header)
 title.Name = "Title"
 title.BackgroundTransparency = 1
 title.Position = UDim2.new(0, 8, 0, 10)
-title.Size = UDim2.new(1, -16, 0, 15)
+title.Size = UDim2.new(1, -40, 0, 15)
 title.Font = Enum.Font.Gotham
-title.Text = "Burmalda.hook"
+title.Text = "AntiCheatAnalyzer"
 title.TextSize = 14
 title.TextColor3 = Theme.Text
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.TextYAlignment = Enum.TextYAlignment.Center
+
+local closeButton = Instance.new("TextButton", header)
+closeButton.Name = "CloseButton"
+closeButton.AnchorPoint = Vector2.new(1, 0)
+closeButton.Position = UDim2.new(1, -4, 0, 8)
+closeButton.Size = UDim2.new(0, 24, 0, 24)
+closeButton.BackgroundColor3 = Color3.fromRGB(180, 60, 60)
+closeButton.BackgroundTransparency = 0.2
+closeButton.BorderSizePixel = 0
+closeButton.AutoButtonColor = true
+closeButton.Text = "X"
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextSize = 14
+closeButton.TextColor3 = Color3.new(1, 1, 1)
+closeButton.MouseButton1Click:Connect(function()
+	Runtime.MenuOpen = not Runtime.MenuOpen
+	main.Visible = Runtime.MenuOpen
+end)
 
 local contentShell = Instance.new("Frame", main:FindFirstChild("Inline"))
 contentShell.Name = "ContentShell"
@@ -994,7 +1020,7 @@ function addBind(p, name, def, onPress, onChanged)
 		if pressConn then pressConn:Disconnect(); pressConn = nil end
 		if not (boundKey or boundMouse) then return end
 		pressConn = connectUI(UIS.InputBegan, function(input, gameProcessed)
-			if gameProcessed or picking or input == ignoreInput then return end
+			if picking or input == ignoreInput then return end
 			if (boundKey and input.KeyCode == boundKey) or (boundMouse and input.UserInputType == boundMouse) then
 				if onPress then onPress() end
 			end
@@ -1504,7 +1530,6 @@ onCleanup(function()
 	hidePopups()
 end)
 
-if Runtime.StartClosed and menuOpen then toggleMenu() end
 end
 
 do
@@ -2007,8 +2032,9 @@ do
 	end
 
 	local function desired(key)
-		if not S.WeaponPatches then return nil end
+		if not S.WeaponPatches and not S.NoSpread then return nil end
 		if key == "rate" and S.WeaponFireRate then return S.FireInterval / 1000 end
+		if key == "spread" and S.NoSpread then return 0 end
 		if S.WeaponClean then
 			for _, cleanKey in ipairs(cleanKeys) do
 				if key == cleanKey then return 0 end
@@ -2069,7 +2095,7 @@ do
 	end
 
 	function Weapons.Update()
-		local active = S.WeaponPatches and (S.WeaponFireRate or S.WeaponClean)
+		local active = S.NoSpread or (S.WeaponPatches and (S.WeaponFireRate or S.WeaponClean))
 		if not active then
 			if Weapons.Status ~= "off" then Weapons.Restore() end
 			return
@@ -2085,6 +2111,37 @@ do
 	end
 
 	onCleanup(function() Weapons.Restore() end)
+end
+
+
+do
+	local antiAimActive = false
+	
+	local function updateAntiAim()
+		if not S.AntiAimFix then
+			if antiAimActive then
+				antiAimActive = false
+			end
+			return
+		end
+		
+		
+		local character = LocalPlayer.Character
+		if not character then return end
+		
+		
+		local camera = workspace.CurrentCamera
+		if camera then
+			
+			if camera.CameraShake then
+				pcall(function() camera.CameraShake = 0 end)
+			end
+		end
+		
+		antiAimActive = true
+	end
+	
+	Runtime.AntiAimUpdate = updateAntiAim
 end
 
 do
@@ -3086,6 +3143,10 @@ local function containerContents(model)
 		local step = Visuals.Clock
 		Visuals.Clock = 0
 		Visuals.Generation += 1
+		
+		
+		if Visuals.GunChamsUpdate then Visuals.GunChamsUpdate() end
+		
 		local renderedPlayers, renderedNPCs = 0, 0
 		if S.PlayerESP then
 			playerOptions.Box = S.PlayerBox
@@ -3166,6 +3227,58 @@ local function containerContents(model)
 			renderWorld()
 		end
 	end
+
+	
+	local gunHighlight = nil
+	local lastGunModel = nil
+	
+	local function updateGunChams()
+		if not S.GunChams then
+			if gunHighlight then
+				pcall(function() gunHighlight:Destroy() end)
+				gunHighlight = nil
+				lastGunModel = nil
+			end
+			return
+		end
+		
+		local character = LocalPlayer.Character
+		if not character then return end
+		
+		local tool = character:FindFirstChildOfClass("Tool")
+		local gunModel = tool and tool:FindFirstChild("Model")
+		
+		if gunModel ~= lastGunModel then
+			if gunHighlight then
+				pcall(function() gunHighlight:Destroy() end)
+				gunHighlight = nil
+			end
+			
+			if gunModel then
+				gunHighlight = Instance.new("Highlight")
+				gunHighlight.Adornee = gunModel
+				gunHighlight.FillColor = S.GunChamsColor or Color3.fromRGB(255, 100, 100)
+				gunHighlight.FillTransparency = (S.GunChamsTransparency or 0) / 100
+				gunHighlight.OutlineColor = S.GunChamsColor or Color3.fromRGB(255, 100, 100)
+				gunHighlight.OutlineTransparency = 0
+				gunHighlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+				gunHighlight.Parent = gunModel
+				lastGunModel = gunModel
+			end
+		else
+			if gunHighlight then
+				gunHighlight.FillColor = S.GunChamsColor or Color3.fromRGB(255, 100, 100)
+				gunHighlight.FillTransparency = (S.GunChamsTransparency or 0) / 100
+				gunHighlight.OutlineColor = S.GunChamsColor or Color3.fromRGB(255, 100, 100)
+			end
+		end
+	end
+	
+	onCleanup(function()
+		if gunHighlight then pcall(function() gunHighlight:Destroy() end) end
+	end)
+	
+	Visuals.GunChamsUpdate = updateGunChams
 
 	onCleanup(function()
 		for _, entry in pairs(Visuals.Rigs) do
@@ -3349,6 +3462,8 @@ do
 	Runtime.FeatureHandlers.HUD = function(value) statsHud.SetVisible(value) end
 	Runtime.FeatureHandlers.HideGrass = function() Runtime.Environment.Apply() end
 	Runtime.FeatureHandlers.LowPC = function() Runtime.Environment.Apply() end
+	Runtime.FeatureHandlers.FullBright = function() Runtime.Environment.Apply() end
+	Runtime.FeatureHandlers.RemoveFog = function() Runtime.Environment.Apply() end
 	Runtime.FeatureHandlers.Noclip = function(value) if not value then Runtime.Movement.Restore() end end
 Runtime.FeatureHandlers.AutoCross = function(value)
 		if value and not Runtime.Aim.InstallNamecall() then
@@ -3405,6 +3520,8 @@ Runtime.FeatureHandlers.AutoCross = function(value)
 		onOff(editor, "Fire Rate", "WeaponFireRate")
 		slider(editor, "Fire Interval", 80, 190, "FireInterval")
 		onOff(editor, "Reduce Spread / Sway / Kick", "WeaponClean")
+		onOff(editor, "No Spread", "NoSpread")
+		onOff(editor, "Anti-Aim Fix", "AntiAimFix")
 
 		local harvestSection = section(rc, "Harvesting")
 		editor = feature(harvestSection, "Weak Spot Aim", "AutoCross")
@@ -3430,6 +3547,12 @@ Runtime.FeatureHandlers.AutoCross = function(value)
 		color(editor, "Box Color", "Player")
 		color(editor, "Text Color", "PlayerText")
 		toggleBind(editor, "Player ESP", "PlayerESP")
+
+		local gunChamsSection = section(rc, "Weapon Chams")
+		editor = feature(gunChamsSection, "Gun Chams", "GunChams")
+		onOff(editor, "Gun Chams", "GunChams")
+		slider(editor, "Transparency", 0, 100, "GunChamsTransparency")
+		color(editor, "Color", "GunChamsColor")
 
 		local npcSection = section(rc, "NPCs")
 		editor = feature(npcSection, "NPC ESP", "NPCESP")
@@ -3522,7 +3645,11 @@ Runtime.FeatureHandlers.AutoCross = function(value)
 
 	do
 		local lc, rc = getTab("MISC")
-		local editor = feature(section(lc, "Performance"), "Hide Grass", "HideGrass")
+		local editor = feature(section(lc, "Lighting"), "FullBright", "FullBright")
+		toggleBind(editor, "FullBright", "FullBright")
+		editor = feature(section(lc, "Lighting"), "Remove Fog", "RemoveFog")
+		toggleBind(editor, "Remove Fog", "RemoveFog")
+		editor = feature(section(rc, "Performance"), "Hide Grass", "HideGrass")
 		toggleBind(editor, "Hide Grass", "HideGrass")
 		editor = feature(section(lc, "Performance"), "Low PC", "LowPC")
 		toggleBind(editor, "Low PC", "LowPC")
@@ -3920,6 +4047,7 @@ renderConnection = RunService.RenderStepped:Connect(function(dt)
 	guardedStep("Entities", Runtime.Entities and Runtime.Entities.Update, dt)
 	guardedStep("World", Runtime.World and Runtime.World.Update, dt)
 	guardedStep("Weapons", Runtime.Weapons and Runtime.Weapons.Update, dt)
+	guardedStep("AntiAim", Runtime.AntiAimUpdate)
 	guardedStep("Movement", Runtime.Movement and Runtime.Movement.Update, dt)
 	guardedStep("Environment", Runtime.Environment and Runtime.Environment.Update, dt)
 	guardedStep("Aim", Runtime.Aim and Runtime.Aim.Update, dt)
