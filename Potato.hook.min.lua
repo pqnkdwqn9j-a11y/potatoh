@@ -228,6 +228,9 @@ local S = {
 	NoJumpDelay    = false,
 	CopterFly      = false,
 	CopterFlySpeed = 100,
+	FreeCam        = false,
+	FreeCamSpeed   = 50,
+	NoSpread       = false,
 }
 local SA_CurrentTarget = nil
 
@@ -6486,62 +6489,328 @@ initializeVomaglaFeatures()
 end 
 
 
+	do
+		local lc, rc = getTab("MISC")
+		local editor = createFeature(rc, "Anti Aim", false, function(value)
+			S.AntiAim = value
+			if not value and Runtime.AntiAimState then Runtime.AntiAimState.Restore() end
+		end)
+		addDropdown(editor, "Mode", {"Under Ground", "Spin"}, 1, function(value)
+			S.AntiAimMode = value
+		end)
+		local depthSetter = addSlider(editor, "Depth", 1, 12, 3, function(value)
+			S.AntiAimDepth = value
+		end)
+		local spinSetter = addSlider(editor, "Spin Speed", 30, 720, 180, function(value)
+			S.AntiAimSpin = value
+		end)
+		addBind(editor, "Toggle Bind", "None", function()
+			if _fFS["Anti Aim"] then _fFS["Anti Aim"](not S.AntiAim) end
+		end)
+		Runtime.AntiAimControls = {Depth = depthSetter, Spin = spinSetter}
+
+		local AntiAimState = {Saved = nil, Angle = 0, LastCFrame = nil}
+		Runtime.AntiAimState = AntiAimState
+		
+		local function rootPart()
+			local character = LocalPlayer and LocalPlayer.Character
+			if not character then return nil end
+			return character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("Torso") or character.PrimaryPart
+		end
+		
+		function AntiAimState.Restore()
+			local saved = AntiAimState.Saved
+			AntiAimState.Saved = nil
+			AntiAimState.LastCFrame = nil
+			if not saved or not saved.Root or not saved.Root.Parent then return end
+			pcall(function() 
+				if saved.CFrame then
+					saved.Root.CFrame = saved.CFrame 
+				end
+			end)
+		end
+		
+		AntiAimState.Connection = RunService.Heartbeat:Connect(function(dt)
+			dt = dt or 0.016
+			if Runtime.Unloaded or not S.AntiAim then
+				AntiAimState.Restore()
+				return
+			end
+			
+			local root = rootPart()
+			if not root or not root.Parent then 
+				AntiAimState.Restore()
+				return 
+			end
+			
+			local current = root.CFrame
+			local position = current.Position
+			
+			
+			if not AntiAimState.LastCFrame or AntiAimState.LastCFrame ~= current then
+				AntiAimState.LastCFrame = current
+				AntiAimState.Saved = {Root = root, CFrame = current}
+			end
+			
+			local spoof
+			if S.AntiAimMode == "Spin" then
+				AntiAimState.Angle = (AntiAimState.Angle + S.AntiAimSpin * dt) % 360
+				spoof = CFrame.new(position) * CFrame.Angles(0, math.rad(AntiAimState.Angle), 0)
+			else
+				local depth = math.min(math.max(S.AntiAimDepth, 1), 12)
+				spoof = CFrame.new(position - Vector3.new(0, depth, 0))
+			end
+			
+			pcall(function() root.CFrame = spoof end)
+		end)
+		
+		table.insert(Runtime.Cleanup, function()
+			AntiAimState.Restore()
+			if AntiAimState.Connection then 
+				AntiAimState.Connection:Disconnect() 
+				AntiAimState.Connection = nil
+			end
+		end)
+	end
+
+
 do
 	local lc, rc = getTab("MISC")
-	local editor = createFeature(rc, "Anti Aim", false, function(value)
-		S.AntiAim = value
-		if not value and Runtime.AntiAimState then Runtime.AntiAimState.Restore() end
+	local editor = createFeature(lc, "FreeCam", false, function(value)
+		S.FreeCam = value
+		if not value then FreecamModule.Restore() end
 	end)
-	addDropdown(editor, "Mode", {"Under Ground", "Spin"}, 1, function(value)
-		S.AntiAimMode = value
-	end)
-	local depthSetter = addSlider(editor, "Depth", 1, 12, 3, function(value)
-		S.AntiAimDepth = value
-	end)
-	local spinSetter = addSlider(editor, "Spin Speed", 30, 720, 180, function(value)
-		S.AntiAimSpin = value
+	addSlider(editor, "Speed", 10, 200, 50, function(value)
+		S.FreeCamSpeed = value
 	end)
 	addBind(editor, "Toggle Bind", "None", function()
-		if _fFS["Anti Aim"] then _fFS["Anti Aim"](not S.AntiAim) end
+		if _fFS["FreeCam"] then _fFS["FreeCam"](not S.FreeCam) end
 	end)
-	Runtime.AntiAimControls = {Depth = depthSetter, Spin = spinSetter}
 
-	local AntiAimState = {Saved = nil, Angle = 0}
-	Runtime.AntiAimState = AntiAimState
-	local function rootPart()
-		local character = LocalPlayer and LocalPlayer.Character
-		if not character then return nil end
-		return character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("Torso") or character.PrimaryPart
+	FreecamModule = {}
+	local savedCamera = nil
+	local cameraCFrame = nil
+	local inputState = {
+		Forward = false,
+		Backward = false,
+		Left = false,
+		Right = false,
+		Up = false,
+		Down = false,
+	}
+
+	local function getCamera()
+		return workspace.CurrentCamera
 	end
-	function AntiAimState.Restore()
-		local saved = AntiAimState.Saved
-		AntiAimState.Saved = nil
-		if not saved or not saved.Root or not saved.Root.Parent then return end
-		pcall(function() saved.Root.CFrame = saved.CFrame end)
+
+	local function updateMovement(dt)
+		if not cameraCFrame then return end
+		local speed = S.FreeCamSpeed or 50
+		local moveSpeed = speed * dt
+		local direction = Vector3.new()
+
+		if inputState.Forward then direction = direction + cameraCFrame.LookVector end
+		if inputState.Backward then direction = direction - cameraCFrame.LookVector end
+		if inputState.Left then direction = direction - cameraCFrame.RightVector end
+		if inputState.Right then direction = direction + cameraCFrame.RightVector end
+		if inputState.Up then direction = direction + Vector3.new(0, 1, 0) end
+		if inputState.Down then direction = direction - Vector3.new(0, 1, 0) end
+
+		if direction.Magnitude > 0 then
+			direction = direction.Unit * moveSpeed
+			cameraCFrame = cameraCFrame + direction
+		end
 	end
-	AntiAimState.Connection = RunService.Heartbeat:Connect(function(dt)
-		if Runtime.Unloaded or not S.AntiAim then
-			AntiAimState.Restore()
+
+	local inputConnection
+	local renderConnection
+
+	function FreecamModule.Enable()
+		if savedCamera then return end
+		local camera = getCamera()
+		if not camera then return end
+
+		savedCamera = camera
+		cameraCFrame = camera.CFrame
+		camera.CameraType = Enum.CameraType.Scriptable
+
+		inputConnection = UIS.InputBegan:Connect(function(input, processed)
+			if processed then return end
+			if input.KeyCode == Enum.KeyCode.W then inputState.Forward = true
+			elseif input.KeyCode == Enum.KeyCode.S then inputState.Backward = true
+			elseif input.KeyCode == Enum.KeyCode.A then inputState.Left = true
+			elseif input.KeyCode == Enum.KeyCode.D then inputState.Right = true
+			elseif input.KeyCode == Enum.KeyCode.E or input.KeyCode == Enum.KeyCode.Space then inputState.Up = true
+			elseif input.KeyCode == Enum.KeyCode.Q then inputState.Down = true
+			end
+		end)
+
+		local inputEndConnection
+		inputEndConnection = UIS.InputEnded:Connect(function(input)
+			if input.KeyCode == Enum.KeyCode.W then inputState.Forward = false
+			elseif input.KeyCode == Enum.KeyCode.S then inputState.Backward = false
+			elseif input.KeyCode == Enum.KeyCode.A then inputState.Left = false
+			elseif input.KeyCode == Enum.KeyCode.D then inputState.Right = false
+			elseif input.KeyCode == Enum.KeyCode.E or input.KeyCode == Enum.KeyCode.Space then inputState.Up = false
+			elseif input.KeyCode == Enum.KeyCode.Q then inputState.Down = false
+			end
+		end)
+
+		renderConnection = RunService.RenderStepped:Connect(function(dt)
+			if not S.FreeCam or not cameraCFrame then
+				FreecamModule.Restore()
+				return
+			end
+			updateMovement(dt or 0.016)
+			if savedCamera then savedCamera.CFrame = cameraCFrame end
+		end)
+
+		table.insert(Runtime.Cleanup, function()
+			if inputEndConnection then inputEndConnection:Disconnect() end
+		end)
+	end
+
+	function FreecamModule.Restore()
+		if inputConnection then inputConnection:Disconnect() inputConnection = nil end
+		if renderConnection then renderConnection:Disconnect() renderConnection = nil end
+
+		inputState.Forward = false
+		inputState.Backward = false
+		inputState.Left = false
+		inputState.Right = false
+		inputState.Up = false
+		inputState.Down = false
+
+		if savedCamera then
+			savedCamera.CameraType = Enum.CameraType.Custom
+			savedCamera = nil
+		end
+		cameraCFrame = nil
+	end
+
+	table.insert(Runtime.Cleanup, function()
+		FreecamModule.Restore()
+	end)
+end
+
+
+do
+	local lc, rc = getTab("COMBAT")
+	local editor = createFeature(rc, "No Spread", false, function(value)
+		S.NoSpread = value
+		if not value then NoSpreadModule.Restore() end
+	end)
+
+	NoSpreadModule = {}
+	local originalValues = {}
+	local hooked = false
+
+	local function findWeaponTables()
+		local tables = {}
+		if not getgc then return tables end
+		
+		local ok, gc = pcall(getgc, true)
+		if not ok or type(gc) ~= "table" then 
+			ok, gc = pcall(getgc) 
+		end
+		if not ok or type(gc) ~= "table" then return tables end
+
+		for _, obj in ipairs(gc) do
+			if type(obj) == "table" then
+				local score = 0
+				if type(rawget(obj, "spread")) == "number" then score = score + 1 end
+				if type(rawget(obj, "sway")) == "number" then score = score + 1 end
+				if type(rawget(obj, "kick")) == "number" then score = score + 1 end
+				if score >= 2 then
+					table.insert(tables, obj)
+				end
+			end
+		end
+		return tables
+	end
+
+	local function writeValue(tbl, key, value)
+		local readonly = false
+		if type(isreadonly) == "function" then
+			local ok, result = pcall(isreadonly, tbl)
+			readonly = ok and result == true
+		end
+		
+		if readonly and type(setreadonly) == "function" then
+			pcall(setreadonly, tbl, false)
+		end
+		
+		local ok = pcall(rawset, tbl, key, value)
+		
+		if readonly and type(setreadonly) == "function" then
+			pcall(setreadonly, tbl, true)
+		end
+		
+		return ok
+	end
+
+	function NoSpreadModule.Apply()
+		if not S.NoSpread then return end
+		
+		local weaponTables = findWeaponTables()
+		for _, tbl in ipairs(weaponTables) do
+			if not originalValues[tbl] then
+				originalValues[tbl] = {
+					spread = rawget(tbl, "spread"),
+					sway = rawget(tbl, "sway"),
+					kick = rawget(tbl, "kick"),
+					kickRoll = rawget(tbl, "kickRoll"),
+					adsKick = rawget(tbl, "adsKick"),
+					bloom = rawget(tbl, "bloom"),
+				}
+			end
+			
+			writeValue(tbl, "spread", 0)
+			writeValue(tbl, "sway", 0)
+			writeValue(tbl, "kick", 0)
+			writeValue(tbl, "kickRoll", 0)
+			writeValue(tbl, "adsKick", 0)
+			writeValue(tbl, "bloom", 0)
+		end
+		
+		hooked = true
+	end
+
+	function NoSpreadModule.Restore()
+		if not hooked then return end
+		
+		for tbl, values in pairs(originalValues) do
+			for key, value in pairs(values) do
+				if value ~= nil then
+					writeValue(tbl, key, value)
+				end
+			end
+		end
+		
+		originalValues = {}
+		hooked = false
+	end
+
+	local heartbeatConnection
+	heartbeatConnection = RunService.Heartbeat:Connect(function()
+		if Runtime.Unloaded then
+			NoSpreadModule.Restore()
+			if heartbeatConnection then
+				heartbeatConnection:Disconnect()
+			end
 			return
 		end
-		AntiAimState.Restore()
-		local root = rootPart()
-		if not root then return end
-		local current = root.CFrame
-		local position = current.Position
-		local spoof
-		if S.AntiAimMode == "Spin" then
-			AntiAimState.Angle = (AntiAimState.Angle + S.AntiAimSpin * (dt or 0)) % 360
-			spoof = CFrame.new(position) * CFrame.Angles(0, math.rad(AntiAimState.Angle), 0)
-		else
-			spoof = CFrame.new(position - Vector3.new(0, S.AntiAimDepth, 0))
+		
+		if S.NoSpread then
+			NoSpreadModule.Apply()
 		end
-		AntiAimState.Saved = {Root = root, CFrame = current}
-		pcall(function() root.CFrame = spoof end)
 	end)
+
 	table.insert(Runtime.Cleanup, function()
-		AntiAimState.Restore()
-		if AntiAimState.Connection then AntiAimState.Connection:Disconnect() end
+		NoSpreadModule.Restore()
+		if heartbeatConnection then
+			heartbeatConnection:Disconnect()
+		end
 	end)
 end
 
