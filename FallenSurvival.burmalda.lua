@@ -242,12 +242,17 @@ local env = {
 	LocalPlayer = LocalPlayer,
 	newDrawing = function(t) return Drawing and Drawing.new(t) or nil end,
 	newHighlight = function() return Instance.new("Highlight") end,
-	onCleanup = function(fn) table.insert(Runtime._cleanup, fn) end,
 }
+
+local function onCleanup(fn)
+	table.insert(Runtime._cleanup, fn)
+end
+
 setmetatable(env, {__index = function(_, key)
 	if key == "Camera" then return Workspace.CurrentCamera end
 	return _G[key]
 end})
+
 setfenv(0, env)
 
 local function guardedStep(name, fn, ...)
@@ -1648,7 +1653,7 @@ Theme = {
 	Accent = Color3.fromRGB(255, 255, 255),
 }
 UIAnimations = true
-local SOURCE_WINDOW_WIDTH, SOURCE_WINDOW_HEIGHT = 621, 542
+local SOURCE_WINDOW_WIDTH, SOURCE_WINDOW_HEIGHT = 480, 420
 local SOURCE_PAGE_HEIGHT, SOURCE_SECTION_GAP = 30, 12
 local SOURCE_SECTION_TOPBAR, SOURCE_CONTROL_GAP = 25, 6
 
@@ -1697,13 +1702,31 @@ local title = Instance.new("TextLabel", header)
 title.Name = "Title"
 title.BackgroundTransparency = 1
 title.Position = UDim2.new(0, 8, 0, 10)
-title.Size = UDim2.new(1, -16, 0, 15)
+title.Size = UDim2.new(1, -40, 0, 15)
 title.Font = Enum.Font.Gotham
-title.Text = "Burmalda.hook"
+title.Text = "BurmaldaFS"
 title.TextSize = 14
 title.TextColor3 = Theme.Text
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.TextYAlignment = Enum.TextYAlignment.Center
+
+local closeButton = Instance.new("TextButton", header)
+closeButton.Name = "CloseButton"
+closeButton.AnchorPoint = Vector2.new(1, 0)
+closeButton.Position = UDim2.new(1, -4, 0, 8)
+closeButton.Size = UDim2.new(0, 24, 0, 24)
+closeButton.BackgroundColor3 = Color3.fromRGB(180, 60, 60)
+closeButton.BackgroundTransparency = 0.2
+closeButton.BorderSizePixel = 0
+closeButton.AutoButtonColor = true
+closeButton.Text = "X"
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextSize = 14
+closeButton.TextColor3 = Color3.new(1, 1, 1)
+closeButton.MouseButton1Click:Connect(function()
+	Runtime.MenuOpen = not Runtime.MenuOpen
+	main.Visible = Runtime.MenuOpen
+end)
 
 local contentShell = Instance.new("Frame", main:FindFirstChild("Inline"))
 contentShell.Name = "ContentShell"
@@ -1745,7 +1768,7 @@ local openPopups = {}
 
 local function connectUI(signal, fn)
 	local connection = signal:Connect(fn)
-	table.insert(Runtime._cleanup, function() pcall(function() connection:Disconnect() end) end)
+	onCleanup(function() pcall(function() connection:Disconnect() end) end)
 	return connection
 end
 
@@ -2606,7 +2629,7 @@ do
 	end)
 end
 
-table.insert(Runtime._cleanup, function()
+onCleanup(function()
 	Runtime.Unloaded = true
 	hidePopups()
 end)
