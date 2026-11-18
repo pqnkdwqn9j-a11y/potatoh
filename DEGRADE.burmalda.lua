@@ -3,6 +3,8 @@ if _degradeEnv.BurmaldaDEGRADE and _degradeEnv.BurmaldaDEGRADE.Unload then
 	pcall(_degradeEnv.BurmaldaDEGRADE.Unload)
 end
 
+if game.PlaceId ~= 129437813830973 then return end
+
 local executorName = "unknown"
 if type(identifyexecutor) == "function" then
 	local ok, name = pcall(identifyexecutor)
@@ -1863,13 +1865,13 @@ do
 	local targetLine = newDrawing("Line")
 	if fovCircle then
 		fovCircle.NumSides = 40
-		fovCircle.Thickness = 1
+		fovCircle.Thickness = 2
 		fovCircle.Filled = false
-		fovCircle.Transparency = 1
+		fovCircle.Transparency = 0.4
 	end
 	if targetLine then
-		targetLine.Thickness = 1
-		targetLine.Transparency = 1
+		targetLine.Thickness = 2
+		targetLine.Transparency = 0.4
 	end
 
 	local function resetBest(best)
