@@ -396,7 +396,6 @@ local getTab, smartCol, getSection, defaultSectionName, selectTab, createFeature
 local addBind, addSlider, addDropdown, addColor
 local setMenuAccent, sourceText, sourceStroke, sourceGradient
 local toggleMenu, menuOpen
-toggleMenu = function() end
 do
 Theme = {
 	Background = Color3.fromRGB(8, 8, 8),
@@ -464,23 +463,6 @@ title.TextSize = 14
 title.TextColor3 = Theme.Text
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.TextYAlignment = Enum.TextYAlignment.Center
-
-local closeButton = Instance.new("TextButton", header)
-closeButton.Name = "CloseButton"
-closeButton.AnchorPoint = Vector2.new(1, 0)
-closeButton.Position = UDim2.new(1, -4, 0, 8)
-closeButton.Size = UDim2.new(0, 24, 0, 24)
-closeButton.BackgroundColor3 = Color3.fromRGB(180, 60, 60)
-closeButton.BackgroundTransparency = 0.2
-closeButton.BorderSizePixel = 0
-closeButton.AutoButtonColor = true
-closeButton.Text = "X"
-closeButton.Font = Enum.Font.GothamBold
-closeButton.TextSize = 14
-closeButton.TextColor3 = Color3.new(1, 1, 1)
-closeButton.MouseButton1Click:Connect(function()
-	toggleMenu()
-end)
 
 local contentShell = Instance.new("Frame", main:FindFirstChild("Inline"))
 contentShell.Name = "ContentShell"
@@ -1321,6 +1303,24 @@ toggleMenu = function(viaSHIFT)
 		openBtn.Visible = true
 	end
 end
+
+local closeButton = Instance.new("TextButton", header)
+closeButton.Name = "CloseButton"
+closeButton.AnchorPoint = Vector2.new(1, 0)
+closeButton.Position = UDim2.new(1, -4, 0, 8)
+closeButton.Size = UDim2.new(0, 24, 0, 24)
+closeButton.BackgroundColor3 = Color3.fromRGB(180, 60, 60)
+closeButton.BackgroundTransparency = 0.2
+closeButton.BorderSizePixel = 0
+closeButton.AutoButtonColor = true
+closeButton.Text = "X"
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextSize = 14
+closeButton.TextColor3 = Color3.new(1, 1, 1)
+closeButton.MouseButton1Click:Connect(function()
+	toggleMenu()
+end)
+
 connectUI(openBtn.MouseButton1Click, function() toggleMenu() end)
 connectUI(UIS.InputBegan, function(input, gameProcessed)
 	if gameProcessed or Runtime.Unloaded then return end
