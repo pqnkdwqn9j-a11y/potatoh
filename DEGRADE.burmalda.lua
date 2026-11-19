@@ -396,6 +396,7 @@ local getTab, smartCol, getSection, defaultSectionName, selectTab, createFeature
 local addBind, addSlider, addDropdown, addColor
 local setMenuAccent, sourceText, sourceStroke, sourceGradient
 local toggleMenu, menuOpen
+toggleMenu = function() end
 do
 Theme = {
 	Background = Color3.fromRGB(8, 8, 8),
@@ -1299,7 +1300,7 @@ Runtime.MenuOpen = true
 main.Visible = true
 openBtn.Visible = false
 
-function toggleMenu(viaSHIFT)
+toggleMenu = function(viaSHIFT)
 	menuOpen = not menuOpen
 	Runtime.MenuOpen = menuOpen
 	hidePopups()
