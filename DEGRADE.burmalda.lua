@@ -1280,7 +1280,9 @@ end
 menuOpen = true
 Runtime.MenuOpen = true
 main.Visible = true
+main.BackgroundTransparency = 0
 openBtn.Visible = false
+warn("[DEGRADE] Menu initialized, main.Visible = " .. tostring(main.Visible))
 
 toggleMenu = function(viaSHIFT)
 	menuOpen = not menuOpen
