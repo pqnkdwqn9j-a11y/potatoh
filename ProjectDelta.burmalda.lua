@@ -4,14 +4,34 @@ if _pdEnv.BurmaldaProjectDelta and _pdEnv.BurmaldaProjectDelta.UnloadAll then
 end
 
 local executorName = "unknown"
-if type(identifyexecutor) == "function" then
-	local ok, name = pcall(identifyexecutor)
-	if ok and name ~= nil then executorName = tostring(name) end
-elseif type(getexecutorname) == "function" then
-	local ok, name = pcall(getexecutorname)
-	if ok and name ~= nil then executorName = tostring(name) end
+local ok, name = pcall(function()
+	if type(identifyexecutor) == "function" then return identifyexecutor() end
+	if type(getexecutorname) == "function" then return getexecutorname() end
+	return "unknown"
+end)
+if ok and name ~= nil then executorName = tostring(name) end
+
+local supportedExecutors = {"real", "opiumware", "madium", "potassium", "synapse z", "volt", "volcano", "solara", "delta", "krnl", "fluxus", "arceus"}
+local executorLower = string.lower(executorName)
+local isSupported = false
+for _, supported in ipairs(supportedExecutors) do
+	if string.find(executorLower, supported, 1, true) then
+		isSupported = true
+		break
+	end
 end
-if string.find(string.lower(executorName), "xeno", 1, true) then return end
+
+if string.find(executorLower, "xeno", 1, true) then return end
+if not isSupported then
+	pcall(function()
+		game:GetService("StarterGui"):SetCore("SendNotification", {
+			Title = "Burmalda Project Delta",
+			Text = "Executor not supported: " .. executorName,
+			Duration = 5
+		})
+	end)
+	return
+end
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
