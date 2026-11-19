@@ -478,8 +478,7 @@ closeButton.Font = Enum.Font.GothamBold
 closeButton.TextSize = 14
 closeButton.TextColor3 = Color3.new(1, 1, 1)
 closeButton.MouseButton1Click:Connect(function()
-	Runtime.MenuOpen = not Runtime.MenuOpen
-	main.Visible = Runtime.MenuOpen
+	toggleMenu()
 end)
 
 local contentShell = Instance.new("Frame", main:FindFirstChild("Inline"))
