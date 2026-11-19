@@ -1,4 +1,5 @@
-local _pdEnv = getgenv and getgenv() or _G
+local _pdEnv = (getgenv and getgenv()) or _G
+if not _pdEnv then _pdEnv = _G end
 if _pdEnv.BurmaldaProjectDelta and _pdEnv.BurmaldaProjectDelta.UnloadAll then
 	pcall(_pdEnv.BurmaldaProjectDelta.UnloadAll)
 end
@@ -332,7 +333,7 @@ local Runtime = {
 	NameTags = {},
 	Visuals = {Rigs = {}, Clear = function() end},
 }
-_projectDeltaEnv.BurmaldaProjectDelta = Runtime
+_pdEnv.BurmaldaProjectDelta = Runtime
 
 local _instanceNew = Instance.new
 local function newScreenGui()
@@ -399,8 +400,8 @@ end
 
 local Config = {Folder = "BurmaldaPD", Session = {}}
 Runtime.Config = Config
-_projectDeltaEnv.BurmaldaPDConfigs = type(_projectDeltaEnv.BurmaldaPDConfigs) == "table" and _projectDeltaEnv.BurmaldaPDConfigs or {}
-Config.Session = _projectDeltaEnv.BurmaldaPDConfigs
+_pdEnv.BurmaldaPDConfigs = type(_pdEnv.BurmaldaPDConfigs) == "table" and _pdEnv.BurmaldaPDConfigs or {}
+Config.Session = _pdEnv.BurmaldaPDConfigs
 
 function Config.BuildTable()
 	local state = {}
@@ -527,7 +528,7 @@ function Runtime.UnloadAll()
 	Runtime.Cleanup = {}
 	for gui in pairs(Runtime.Guis) do pcall(function() gui:Destroy() end) end
 	Runtime.Guis = {}
-	if _projectDeltaEnv.BurmaldaProjectDelta == Runtime then _projectDeltaEnv.BurmaldaProjectDelta = nil end
+	if _pdEnv.BurmaldaProjectDelta == Runtime then _pdEnv.BurmaldaProjectDelta = nil end
 end
 
 Runtime.Environment = env
