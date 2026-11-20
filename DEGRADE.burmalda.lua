@@ -3,8 +3,6 @@ if _degradeEnv.BurmaldaDEGRADE and _degradeEnv.BurmaldaDEGRADE.Unload then
 	pcall(_degradeEnv.BurmaldaDEGRADE.Unload)
 end
 
-if game.PlaceId ~= 129437813830973 then return end
-
 local executorName = "unknown"
 if type(identifyexecutor) == "function" then
 	local ok, name = pcall(identifyexecutor)
@@ -456,9 +454,9 @@ local title = Instance.new("TextLabel", header)
 title.Name = "Title"
 title.BackgroundTransparency = 1
 title.Position = UDim2.new(0, 8, 0, 10)
-title.Size = UDim2.new(1, -40, 0, 15)
+title.Size = UDim2.new(1, -16, 0, 15)
 title.Font = Enum.Font.Gotham
-title.Text = "Burmalda.hook"
+title.Text = "BurmaldaDEGRADE"
 title.TextSize = 14
 title.TextColor3 = Theme.Text
 title.TextXAlignment = Enum.TextXAlignment.Left
@@ -683,15 +681,107 @@ function getTab(name)
 	return columns[1], columns[2], smartCol
 end
 
+local gunFeatures = {
+	["No Recoil"] = true, ["Auto Fire"] = true, ["Rapid Fire"] = true,
+	["Full Auto"] = true, ["Melee Mods"] = true, ["Hitbox Expander"] = true,
+	["No Spread"] = true, ["Always Shoot"] = true, ["No Slowdown"] = true,
+	["Force Headshots"] = true,
+}
+local worldFeatures = {
+	["Custom FOV"] = true, ["Night Mode"] = true, ["Night Vision"] = true, ["Low PC"] = true,
+	["Third Person"] = true, ["Stretch Resolution"] = true, ["Jump Circles"] = true,
+	["Fullbright"] = true, ["No Decoration"] = true, ["Sky Color"] = true,
+	["Skybox"] = true, ["Delete Spikes"] = true, ["Delete Leaves"] = true,
+	["Custom Models"] = true, ["Custom Fog"] = true, ["Custom Water"] = true,
+	["Custom Hand Position"] = true, ["X-Ray"] = true, ["Remove Fog"] = true,
+	["Remove Grass"] = true, ["Remove Shadows"] = true,
+}
+local resourceFeatures = {
+	["Resource ESP"] = true, ["Resource Boxes"] = true, ["Resource Names"] = true,
+	["Resource Distance"] = true, ["Cloth"] = true, ["Iron"] = true,
+	["Sulfur"] = true, ["Stone"] = true, ["Body Bag"] = true,
+}
+local projectileFeatures = {
+	["Aim All Projectiles"] = true, ["Extend Throws"] = true,
+}
+local aimVisualFeatures = {
+	["Target HUD"] = true, ["Hit Logs"] = true, ["Hitmarker"] = true,
+	["Damage FX"] = true, ["Reload Indicator"] = true, ["Bullet Tracers"] = true,
+	["FOV Circle"] = true, ["Dynamic FOV"] = true, ["Snapline"] = true,
+	["Target Indicator"] = true, ["Hitscan Indicator"] = true,
+}
+local cameraFeatures = {
+	["Custom FOV"] = true, ["Third Person"] = true, ["Stretch Resolution"] = true,
+	["Custom Hand Position"] = true, ["FOV Changer"] = true, ["Zoom"] = true,
+}
+local performanceFeatures = { ["Low PC"] = true, ["Performance Overlay"] = true }
+local effectFeatures = { ["Jump Circles"] = true, ["Tool Outline"] = true }
+local localFeatures = { ["Instant Loot"] = true, ["No Fall"] = true, ["Silent Walk"] = true }
+local diagnosticFeatures = { ["Print debug"] = true, ["Reset aim stats"] = true }
+local soundFeatures = { ["Hit Sound"] = true, ["Kill Sound"] = true, ["Kill Notify"] = true }
+local hudFeatures = {
+	["HUD"] = true, ["Hotbar Overlay"] = true, ["Crosshair"] = true,
+	["Pickup Notifications"] = true, ["Keybind List"] = true, ["Detection Notifier"] = true,
+}
+local interfaceFeatures = {
+	["Menu Accent"] = true, ["UI Animations"] = true,
+}
+
+local featureTabOverrides = {
+	["Target HUD"] = "VISUALS", ["Hit Logs"] = "VISUALS",
+	["Hitmarker"] = "VISUALS", ["Damage FX"] = "VISUALS",
+	["Reload Indicator"] = "VISUALS", ["Bullet Tracers"] = "VISUALS",
+	["FOV Circle"] = "VISUALS", ["Dynamic FOV"] = "VISUALS",
+	["Snapline"] = "VISUALS", ["Target Indicator"] = "VISUALS",
+	["Hitscan Indicator"] = "VISUALS", ["FOV Changer"] = "VISUALS", ["Zoom"] = "VISUALS",
+	["Aim All Projectiles"] = "COMBAT", ["Extend Throws"] = "COMBAT",
+	["Night Mode"] = "MISC", ["Night Vision"] = "MISC", ["Low PC"] = "MISC",
+	["Fullbright"] = "MISC", ["No Decoration"] = "MISC", ["Sky Color"] = "MISC",
+	["Skybox"] = "MISC", ["Delete Spikes"] = "MISC", ["Delete Leaves"] = "MISC",
+	["Custom Models"] = "MISC", ["Custom Fog"] = "MISC", ["Custom Water"] = "MISC",
+	["X-Ray"] = "MISC", ["Remove Fog"] = "MISC", ["Remove Grass"] = "MISC",
+	["Remove Shadows"] = "MISC",
+}
+
+local function organizeFeatureParent(parent, featureName)
+	local currentTab = columnTabs[parent]
+	local targetTab = currentTab and featureTabOverrides[featureName]
+	if not targetTab then return parent end
+	if targetTab == "MISC" and not tabColumns.MISC and tabColumns.WORLD then targetTab = "WORLD" end
+	local targetColumns = tabColumns[targetTab]
+	if not targetColumns then return parent end
+	local currentColumns = tabColumns[currentTab]
+	if currentColumns and parent == currentColumns[2] then return targetColumns[2] end
+	return targetColumns[1]
+end
+
 function defaultSectionName(parent, featureName)
 	local existing = sectionContents[parent]
 	if existing then return existing.Name end
 	local tabName = columnTabs[parent] or "MISC"
-	if tabName == "COMBAT" then return "Aimbot" end
-	if tabName == "VISUALS" then return "Players" end
-	if tabName == "WORLD" then return "World" end
-	if tabName == "MOVEMENT" then return "Movement" end
-	if tabName == "CONFIG" then return "Configs" end
+	if tabName == "COMBAT" then
+		if projectileFeatures[featureName] then return "Projectiles" end
+		return gunFeatures[featureName] and "Gun Mods" or "Aimbot"
+	elseif tabName == "VISUALS" then
+		if resourceFeatures[featureName] then return "Resources" end
+		if aimVisualFeatures[featureName] then return "Aim Visuals" end
+		if cameraFeatures[featureName] then return "Camera" end
+		if effectFeatures[featureName] then return "Effects" end
+		return worldFeatures[featureName] and "World" or "Players"
+	elseif tabName == "MOVEMENT" then
+		return projectileFeatures[featureName] and "Projectiles" or "Movement"
+	elseif tabName == "MISC" then
+		if performanceFeatures[featureName] then return "Performance" end
+		if localFeatures[featureName] then return "Local" end
+		if diagnosticFeatures[featureName] or string.find(featureName, "Insert / RightShift", 1, true) then return "Diagnostics" end
+		if soundFeatures[featureName] then return "Sounds" end
+		if hudFeatures[featureName] then return "HUD" end
+		return worldFeatures[featureName] and "World" or "Misc"
+	elseif tabName == "WORLD" then
+		return cameraFeatures[featureName] and "Camera" or "World"
+	elseif tabName == "CONFIG" then
+		return interfaceFeatures[featureName] and "Interface" or "Configs"
+	end
 	return "Misc"
 end
 
@@ -753,6 +843,7 @@ function getSection(parent, sectionName)
 end
 
 function createFeature(parent, name, default, callback, hasSettings)
+	parent = organizeFeatureParent(parent, name)
 	local section = getSection(parent, defaultSectionName(parent, name))
 	local toggle = Instance.new("TextButton", section.Content)
 	toggle.Name = name
@@ -863,7 +954,7 @@ function addBind(p, name, def, onPress, onChanged)
 		if pressConn then pressConn:Disconnect(); pressConn = nil end
 		if not (boundKey or boundMouse) then return end
 		pressConn = connectUI(UIS.InputBegan, function(input, gameProcessed)
-			if picking or input == ignoreInput then return end
+			if gameProcessed or picking or input == ignoreInput then return end
 			if (boundKey and input.KeyCode == boundKey) or (boundMouse and input.UserInputType == boundMouse) then
 				if onPress then onPress() end
 			end
@@ -1278,15 +1369,11 @@ function addColor(p, name, callback, defaultColor)
 end
 
 menuOpen = true
-Runtime.MenuOpen = true
 main.Visible = true
-main.BackgroundTransparency = 0
 openBtn.Visible = false
-warn("[DEGRADE] Menu initialized, main.Visible = " .. tostring(main.Visible))
 
-toggleMenu = function(viaSHIFT)
+function toggleMenu(viaSHIFT)
 	menuOpen = not menuOpen
-	Runtime.MenuOpen = menuOpen
 	hidePopups()
 	if menuOpen then
 		main.Visible = true
@@ -1305,29 +1392,91 @@ toggleMenu = function(viaSHIFT)
 		openBtn.Visible = true
 	end
 end
-
-local closeButton = Instance.new("TextButton", header)
-closeButton.Name = "CloseButton"
-closeButton.AnchorPoint = Vector2.new(1, 0)
-closeButton.Position = UDim2.new(1, -4, 0, 8)
-closeButton.Size = UDim2.new(0, 24, 0, 24)
-closeButton.BackgroundColor3 = Color3.fromRGB(180, 60, 60)
-closeButton.BackgroundTransparency = 0.2
-closeButton.BorderSizePixel = 0
-closeButton.AutoButtonColor = true
-closeButton.Text = "X"
-closeButton.Font = Enum.Font.GothamBold
-closeButton.TextSize = 14
-closeButton.TextColor3 = Color3.new(1, 1, 1)
-closeButton.MouseButton1Click:Connect(function()
-	toggleMenu()
-end)
-
 connectUI(openBtn.MouseButton1Click, function() toggleMenu() end)
 connectUI(UIS.InputBegan, function(input, gameProcessed)
 	if gameProcessed or Runtime.Unloaded then return end
 	if input.KeyCode == Enum.KeyCode.RightShift then toggleMenu(true) end
 end)
+
+local craftingOpen, craftingChecking, craftRestoreMenu = false, false, false
+local craftGuiStates = {}
+local function craftingIsOpen()
+	local mainGui = pGui and pGui:FindFirstChild("Main")
+	local crafting = mainGui and mainGui:FindFirstChild("Crafting")
+	return crafting ~= nil and crafting.Visible == true
+end
+local function updateCrafting()
+	if Runtime.Unloaded then return end
+	local open = craftingIsOpen()
+	local changed = open ~= craftingOpen
+	if changed then
+		craftingOpen = open
+		Runtime.CraftingMenuOpen = open
+		if open then
+			craftRestoreMenu = menuOpen
+			if menuOpen then toggleMenu() end
+		else
+			for gui, enabled in pairs(craftGuiStates) do
+				pcall(function() gui.Enabled = enabled end)
+			end
+			table.clear(craftGuiStates)
+			if craftRestoreMenu and not menuOpen then toggleMenu() end
+			craftRestoreMenu = false
+		end
+	end
+	if open then
+		for gui in pairs(Runtime.Guis) do
+			if craftGuiStates[gui] == nil then craftGuiStates[gui] = gui.Enabled ~= false end
+			pcall(function() gui.Enabled = false end)
+		end
+	end
+end
+Runtime.UpdateCraftingMenu = updateCrafting
+local function checkCrafting()
+	if craftingChecking then return end
+	craftingChecking = true
+	task.defer(function()
+		craftingChecking = false
+		updateCrafting()
+	end)
+end
+do
+
+	local mainChildConnection, craftingConnection
+	local function disconnectOwned(connection)
+		if connection then pcall(function() connection:Disconnect() end) end
+	end
+	local function bindCrafting(crafting)
+		disconnectOwned(craftingConnection)
+		craftingConnection = nil
+		if crafting then
+			craftingConnection = connectUI(crafting:GetPropertyChangedSignal("Visible"), checkCrafting)
+		end
+		checkCrafting()
+	end
+	local function bindMain(mainGui)
+		disconnectOwned(mainChildConnection)
+		mainChildConnection = nil
+		if mainGui then
+			mainChildConnection = connectUI(mainGui.ChildAdded, function(child)
+				if child.Name == "Crafting" then bindCrafting(child) end
+			end)
+			bindCrafting(mainGui:FindFirstChild("Crafting"))
+		else
+			bindCrafting(nil)
+		end
+	end
+	connectUI(pGui.ChildAdded, function(child)
+		if child.Name == "Main" then bindMain(child) end
+	end)
+	bindMain(pGui and pGui:FindFirstChild("Main"))
+	onCleanup(function()
+		disconnectOwned(mainChildConnection)
+		disconnectOwned(craftingConnection)
+		mainChildConnection, craftingConnection = nil, nil
+	end)
+	updateCrafting()
+end
 
 do
 	local dragging, dragInput, dragStart, startPos = false, nil, nil, nil
@@ -1390,6 +1539,7 @@ onCleanup(function()
 	hidePopups()
 end)
 
+if Runtime.StartClosed and menuOpen then toggleMenu() end
 end
 
 do
