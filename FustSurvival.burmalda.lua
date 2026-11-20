@@ -9,6 +9,187 @@ if _fustEnv.BurmaldaFust and _fustEnv.BurmaldaFust.Unload then
 	pcall(_fustEnv.BurmaldaFust.Unload)
 end
 
+
+
+
+local bypass = {}
+
+
+local originals = {}
+local protected = newproxy(true)
+
+local function storeOriginal(name, fn)
+    originals[name] = fn
+end
+
+
+storeOriginal("getfenv", getfenv)
+storeOriginal("getrawmetatable", getrawmetatable)
+storeOriginal("setrawmetatable", setrawmetatable)
+storeOriginal("hookfunction", hookfunction)
+storeOriginal("hookmetamethod", hookmetamethod)
+storeOriginal("newcclosure", newcclosure)
+storeOriginal("checkcaller", checkcaller)
+storeOriginal("isexecutorclosure", isexecutorclosure)
+storeOriginal("identifyexecutor", identifyexecutor)
+storeOriginal("getexecutorname", getexecutorname)
+storeOriginal("loadstring", loadstring)
+
+
+local HIDE_FROM_ENV = {
+    "getgenv", "getrenv", "getsenv", "getgc", "getreg",
+    "hookfunction", "hookmetamethod", "unhookfunction",
+    "newcclosure", "newlclosure", "checkcaller", "isexecutorclosure",
+    "getrawmetatable", "setrawmetatable",
+    "getconnections", "getscripthash",
+    "identifyexecutor", "getexecutorname",
+    "loadfile", "savefile", "appendfile", "writefile", "readfile",
+    "restorefunction", "getupvalue", "setupvalue",
+    "getconstant", "getconstants", "setconstant",
+    "getstack", "setstack",
+    "getnamecallmethod", "setnamecallmethod",
+    "fireclickdetector", "firesignal",
+    "queue_on_teleport", "setclipboard",
+    "getthreadidentity", "setthreadidentity",
+}
+
+
+local function fakeGetfenv(level)
+    local realEnv = originals.getfenv(level)
+    if type(realEnv) ~= "table" then return realEnv end
+    
+    local fake = {}
+    for k, v in pairs(realEnv) do
+        local hide = false
+        for _, name in ipairs(HIDE_FROM_ENV) do
+            if k == name then hide = true break end
+        end
+        if not hide then fake[k] = v end
+    end
+    return fake
+end
+
+
+local function fakeGetrawmetatable(obj)
+    local mt = originals.getrawmetatable(obj)
+    if not mt then return mt end
+    
+    local fake = {}
+    for k, v in pairs(mt) do
+        if k ~= "__namecall" and k ~= "__index" then
+            fake[k] = v
+        end
+    end
+    return fake
+end
+
+
+local function fakeIdentifyExecutor()
+    return "Roblox"
+end
+
+
+local function fakeCheckcaller()
+    return true
+end
+
+
+local function fakeIsExecutorClosure(fn)
+    return false
+end
+
+
+local function fakeLoadstring(str, chunkName)
+    if str == "" then return nil, "disabled" end
+    return originals.loadstring(str, chunkName)
+end
+
+
+if rawget(getfenv(1), "loadstring") then
+    rawset(getfenv(1), "loadstring", nil)
+end
+
+
+local function patchHandshake()
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+    local handshake = ReplicatedStorage:WaitForChild("Handshake", 10)
+    if not handshake then return false end
+    
+    local mt = getrawmetatable(handshake)
+    if mt and mt.__namecall then
+        local oldNamecall = mt.__namecall
+        setreadonly(mt, false)
+        mt.__namecall = newcclosure(function(self, method, ...)
+            if method == "InvokeServer" then
+                local args = {...}
+                if args[1] == "k" then
+                    
+                    local result = {
+                        [1] = 0,
+                        [2] = {}
+                    }
+                    for i = 1, 20 do
+                        result[2][i] = 0
+                    end
+                    return result
+                end
+            end
+            return oldNamecall(self, method, ...)
+        end)
+        setreadonly(mt, true)
+    end
+    return true
+end
+
+
+function bypass.install()
+    local env = getfenv(1)
+    
+    
+    if originals.hookfunction then
+        originals.hookfunction(getfenv, newcclosure(fakeGetfenv))
+    else
+        rawset(env, "getfenv", newcclosure(fakeGetfenv))
+    end
+    
+    
+    if originals.hookfunction then
+        originals.hookfunction(getrawmetatable, newcclosure(fakeGetrawmetatable))
+    else
+        rawset(env, "getrawmetatable", newcclosure(fakeGetrawmetatable))
+    end
+    
+    
+    for _, name in ipairs(HIDE_FROM_ENV) do
+        if rawget(env, name) then
+            rawset(env, name, nil)
+        end
+    end
+    
+    
+    rawset(env, "identifyexecutor", newcclosure(fakeIdentifyExecutor))
+    rawset(env, "checkcaller", newcclosure(fakeCheckcaller))
+    rawset(env, "isexecutorclosure", newcclosure(fakeIsExecutorClosure))
+    rawset(env, "loadstring", newcclosure(fakeLoadstring))
+    
+    
+    pcall(patchHandshake)
+    
+    return true
+end
+
+function bypass.uninstall()
+    
+    local env = getfenv(1)
+    for name, fn in pairs(originals) do
+        rawset(env, name, fn)
+    end
+end
+
+return bypass
+
+
+
 local executorName = "unknown"
 if type(identifyexecutor) == "function" then
 	local ok, name = pcall(identifyexecutor)
@@ -601,23 +782,6 @@ title.TextColor3 = Theme.Text
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.TextYAlignment = Enum.TextYAlignment.Center
 
-local closeButton = Instance.new("TextButton", header)
-closeButton.Name = "CloseButton"
-closeButton.AnchorPoint = Vector2.new(1, 0)
-closeButton.Position = UDim2.new(1, -4, 0, 8)
-closeButton.Size = UDim2.new(0, 24, 0, 24)
-closeButton.BackgroundColor3 = Color3.fromRGB(180, 60, 60)
-closeButton.BackgroundTransparency = 0.2
-closeButton.BorderSizePixel = 0
-closeButton.AutoButtonColor = true
-closeButton.Text = "X"
-closeButton.Font = Enum.Font.GothamBold
-closeButton.TextSize = 14
-closeButton.TextColor3 = Color3.new(1, 1, 1)
-closeButton.MouseButton1Click:Connect(function()
-	Runtime.MenuOpen = not Runtime.MenuOpen
-	main.Visible = Runtime.MenuOpen
-end)
 
 local contentShell = Instance.new("Frame", main:FindFirstChild("Inline"))
 contentShell.Name = "ContentShell"
@@ -1440,7 +1604,7 @@ Runtime.MenuOpen = true
 main.Visible = true
 openBtn.Visible = false
 
-function toggleMenu(viaSHIFT)
+toggleMenu = function(viaSHIFT)
 	menuOpen = not menuOpen
 	Runtime.MenuOpen = menuOpen
 	hidePopups()
@@ -1461,6 +1625,23 @@ function toggleMenu(viaSHIFT)
 		openBtn.Visible = true
 	end
 end
+local closeButton = Instance.new("TextButton", header)
+closeButton.Name = "CloseButton"
+closeButton.AnchorPoint = Vector2.new(1, 0)
+closeButton.Position = UDim2.new(1, -4, 0, 8)
+closeButton.Size = UDim2.new(0, 24, 0, 24)
+closeButton.BackgroundColor3 = Color3.fromRGB(180, 60, 60)
+closeButton.BackgroundTransparency = 0.2
+closeButton.BorderSizePixel = 0
+closeButton.AutoButtonColor = true
+closeButton.Text = "X"
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextSize = 14
+closeButton.TextColor3 = Color3.new(1, 1, 1)
+closeButton.MouseButton1Click:Connect(function()
+	toggleMenu()
+end)
+
 connectUI(openBtn.MouseButton1Click, function() toggleMenu() end)
 connectUI(UIS.InputBegan, function(input, gameProcessed)
 	if gameProcessed or Runtime.Unloaded then return end
