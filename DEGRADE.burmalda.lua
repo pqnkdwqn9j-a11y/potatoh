@@ -1,5 +1,4 @@
 local _degradeEnv = getgenv and getgenv() or _G
-warn("[DEGRADE] Loading script...")
 if _degradeEnv.BurmaldaDEGRADE and _degradeEnv.BurmaldaDEGRADE.Unload then
 	pcall(_degradeEnv.BurmaldaDEGRADE.Unload)
 end
@@ -388,11 +387,9 @@ btnIco.Image = "rbxassetid://110686514699024"
 btnIco.ScaleType = Enum.ScaleType.Fit
 hudMakeDrag(openBtn)
 
-warn("[DEGRADE] After menu insert")
-
 local Theme, UIAnimations, main, mainStroke, mainScale, baseMenuScale
 local tabs, tabFrames, tabButtons, activeFrame
-local _fFS, _fDD, sectionContents, columnSections
+_fFS, _fDD, sectionContents, columnSections = {}, {}, {}, {}
 local getTab, smartCol, getSection, defaultSectionName, selectTab, createFeature
 local addBind, addSlider, addDropdown, addColor
 local setMenuAccent, sourceText, sourceStroke, sourceGradient
@@ -495,11 +492,10 @@ tabsHolder.BackgroundTransparency = 1
 local tabNames = Runtime.TabNames or {"COMBAT", "VISUALS", "MOVEMENT", "MISC", "CONFIG"}
 tabs = tabNames
 tabFrames, tabButtons = {}, {}
-local tabUnderlines, tabColumns = {}, {}
-columnSections, sectionContents = {}, {}
+local tabUnderlines
+tabUnderlines, tabColumns = {}, {}
 local columnTabs = {}
 local featureRecords = {}
-_fFS, _fDD = {}, {}
 Runtime.BindApis = {}
 local openPopups = {}
 
@@ -1545,7 +1541,6 @@ end)
 if Runtime.StartClosed and menuOpen then toggleMenu() end
 end
 
-warn("[DEGRADE] Menu inserted")
 do
 	local Shared = {}
 	Runtime.Shared = Shared
@@ -2924,8 +2919,6 @@ do
 	end
 end
 
-warn("[DEGRADE] Feature menu inserted")
-
 local UIS = game:GetService("UserInputService")
 local Camera = workspace.CurrentCamera
 
@@ -3061,4 +3054,3 @@ onCleanup(function()
 end)
 
 Runtime.Ready = true
-warn("[DEGRADE] Script ready")
