@@ -1399,6 +1399,7 @@ end)
 
 local craftingOpen, craftingChecking, craftRestoreMenu = false, false, false
 local craftGuiStates = {}
+local pGui = LocalPlayer:WaitForChild("PlayerGui", 10) or uiParent
 local function craftingIsOpen()
 	local mainGui = pGui and pGui:FindFirstChild("Main")
 	local crafting = mainGui and mainGui:FindFirstChild("Crafting")
@@ -1539,6 +1540,20 @@ onCleanup(function()
 end)
 
 if Runtime.StartClosed and menuOpen then toggleMenu() end
+
+_G._BURMALDA_getTab = getTab
+_G._BURMALDA_getSection = getSection
+_G._BURMALDA_createFeature = createFeature
+_G._BURMALDA_addSlider = addSlider
+_G._BURMALDA_addDropdown = addDropdown
+_G._BURMALDA_addColor = addColor
+_G._BURMALDA_addBind = addBind
+_G._BURMALDA_setMenuAccent = setMenuAccent
+_G._BURMALDA_tabColumns = tabColumns
+_G._BURMALDA_columnSections = columnSections
+_G._BURMALDA_sectionContents = sectionContents
+_G._BURMALDA_smartCol = smartCol
+
 end
 
 do
@@ -2502,6 +2517,20 @@ do
 end
 
 do
+
+	local getSection = _G._BURMALDA_getSection
+	local getTab = _G._BURMALDA_getTab
+	local createFeature = _G._BURMALDA_createFeature
+	local addSlider = _G._BURMALDA_addSlider
+	local addDropdown = _G._BURMALDA_addDropdown
+	local addColor = _G._BURMALDA_addColor
+	local addBind = _G._BURMALDA_addBind
+	local setMenuAccent = _G._BURMALDA_setMenuAccent
+	local tabColumns = _G._BURMALDA_tabColumns
+	local columnSections = _G._BURMALDA_columnSections
+	local sectionContents = _G._BURMALDA_sectionContents
+	local smartCol = _G._BURMALDA_smartCol
+
 	local function section(parent, name)
 		return getSection(parent, name).Content
 	end
