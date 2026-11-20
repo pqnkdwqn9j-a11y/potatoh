@@ -1,4 +1,5 @@
 local _degradeEnv = getgenv and getgenv() or _G
+warn("[DEGRADE] Loading script...")
 if _degradeEnv.BurmaldaDEGRADE and _degradeEnv.BurmaldaDEGRADE.Unload then
 	pcall(_degradeEnv.BurmaldaDEGRADE.Unload)
 end
@@ -386,6 +387,8 @@ btnIco.BackgroundTransparency = 1
 btnIco.Image = "rbxassetid://110686514699024"
 btnIco.ScaleType = Enum.ScaleType.Fit
 hudMakeDrag(openBtn)
+
+warn("[DEGRADE] After menu insert")
 
 local Theme, UIAnimations, main, mainStroke, mainScale, baseMenuScale
 local tabs, tabFrames, tabButtons, activeFrame
@@ -1542,6 +1545,7 @@ end)
 if Runtime.StartClosed and menuOpen then toggleMenu() end
 end
 
+warn("[DEGRADE] Menu inserted")
 do
 	local Shared = {}
 	Runtime.Shared = Shared
@@ -2920,6 +2924,8 @@ do
 	end
 end
 
+warn("[DEGRADE] Feature menu inserted")
+
 local UIS = game:GetService("UserInputService")
 local Camera = workspace.CurrentCamera
 
@@ -3055,3 +3061,4 @@ onCleanup(function()
 end)
 
 Runtime.Ready = true
+warn("[DEGRADE] Script ready")
