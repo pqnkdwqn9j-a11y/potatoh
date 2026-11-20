@@ -390,6 +390,9 @@ setmetatable(env, {__index = function(_, key)
 	return _G[key]
 end})
 
+local newDrawing = env.newDrawing
+local newHighlight = env.newHighlight
+
 local function guardedStep(name, fn, ...)
 	local ok, err = pcall(fn, ...)
 	if not ok then
@@ -2173,7 +2176,7 @@ end
 
 local Theme, UIAnimations, main, mainStroke, mainScale, baseMenuScale
 local tabs, tabFrames, tabButtons, activeFrame
-local _fFS, _fDD, sectionContents, columnSections
+_fFS, _fDD, sectionContents, columnSections = {}, {}, {}, {}
 local getTab, smartCol, getSection, defaultSectionName, selectTab, createFeature
 local addBind, addSlider, addDropdown, addColor
 local setMenuAccent, sourceText, sourceStroke, sourceGradient
@@ -2294,11 +2297,10 @@ tabsHolder.BackgroundTransparency = 1
 local tabNames = Runtime.TabNames or {"COMBAT", "VISUALS", "MOVEMENT", "MISC", "CONFIG"}
 tabs = tabNames
 tabFrames, tabButtons = {}, {}
-local tabUnderlines, tabColumns = {}, {}
-columnSections, sectionContents = {}, {}
+local tabUnderlines
+	tabUnderlines, tabColumns = {}, {}
 local columnTabs = {}
 local featureRecords = {}
-_fFS, _fDD = {}, {}
 Runtime.BindApis = {}
 local openPopups = {}
 
